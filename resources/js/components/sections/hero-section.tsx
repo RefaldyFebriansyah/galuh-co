@@ -273,14 +273,14 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                                 <div className="relative size-full overflow-hidden rounded-[20px] border border-[#EAE3D6] bg-[#FAF8F3]">
                                     {/* Real Product Photo */}
                                     <img
-                                        src="/images/hero_hamper.jpg"
-                                        alt="Koleksi Hampers Signature Galuh & Co."
+                                        src="/images/product_emerald_box.jpg"
+                                        alt="Signature Emerald Hampers Galuh & Co."
                                         className="size-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                                     />
 
                                     {/* Subtle Vignette & Gradient Overlays for Luxury Contrast */}
                                     <div
-                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/35"
+                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/35"
                                         aria-hidden="true"
                                     />
 
@@ -302,22 +302,22 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                                                 GALUH &amp; CO.
                                             </span>
                                             <span className="rounded-full border border-[#C5A880]/40 bg-[#C5A880]/20 px-2 py-0.5 text-[8px] font-bold tracking-widest text-[#FAF0D7] uppercase">
-                                                KURASI PILIHAN
+                                                SIGNATURE BOX
                                             </span>
                                         </div>
                                         <p className="mt-1.5 text-[11px] leading-relaxed text-white/90 sm:text-xs">
-                                            Koleksi hampers anyaman bambu
-                                            eksklusif dengan toples kue kering,
-                                            madu hutan, &amp; tumbler istimewa.
+                                            Hardbox beludru hijau zamrud dengan
+                                            aksen foil emas, toples nastar, madu
+                                            murni, &amp; tumbler eksklusif.
                                         </p>
 
                                         {/* Micro Tags */}
                                         <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
                                             <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
-                                                Anyaman Bambu
+                                                Hardbox Zamrud
                                             </span>
                                             <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
-                                                Pita Satin Hijau
+                                                Foil Emas
                                             </span>
                                             <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
                                                 Kartu Wax Seal
