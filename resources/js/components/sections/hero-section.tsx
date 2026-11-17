@@ -268,69 +268,61 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                             <motion.div
                                 variants={floatingVisual}
                                 animate="animate"
-                                className="relative aspect-[4/4.5] rounded-[26px] border border-[#E0D5C3] bg-gradient-to-b from-white via-[#FCFAF7] to-[#F5EFE6] p-3 shadow-xl sm:p-3.5"
+                                className="group relative aspect-[4/4.8] overflow-hidden rounded-[26px] border border-[#E0D5C3] bg-gradient-to-b from-white via-[#FCFAF7] to-[#F5EFE6] p-2.5 shadow-2xl transition-all duration-500 hover:shadow-[0_25px_60px_rgba(26,24,21,0.18)] sm:aspect-[4/4.6] sm:p-3"
                             >
-                                <div className="relative flex size-full flex-col justify-between overflow-hidden rounded-[20px] border border-[#EAE3D6] bg-gradient-to-b from-[#FBF8F3] via-[#F5EFE5] to-[#EBE0CF] p-5 text-center sm:p-6">
-                                    {/* Subtle Ambient Decorative Ring */}
-                                    <div className="pointer-events-none absolute -top-12 -right-12 size-48 rounded-full border border-[#C5A880]/15" />
-                                    <div className="pointer-events-none absolute -bottom-16 -left-16 size-56 rounded-full border border-[#C5A880]/10" />
+                                <div className="relative size-full overflow-hidden rounded-[20px] border border-[#EAE3D6] bg-[#FAF8F3]">
+                                    {/* Real Product Photo */}
+                                    <img
+                                        src="/images/hero_hamper.jpg"
+                                        alt="Koleksi Hampers Signature Galuh & Co."
+                                        className="size-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                                    />
+
+                                    {/* Subtle Vignette & Gradient Overlays for Luxury Contrast */}
+                                    <div
+                                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/35"
+                                        aria-hidden="true"
+                                    />
 
                                     {/* Top Prestige Bar */}
-                                    <div className="flex items-center justify-between">
-                                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C5A880]/30 bg-white/80 px-2.5 py-0.5 text-[8px] font-bold tracking-[0.2em] text-[#8B6B38] uppercase backdrop-blur-xs sm:px-3 sm:py-1 sm:text-[8.5px]">
+                                    <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-between sm:inset-x-4 sm:top-4">
+                                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/40 px-2.5 py-1 text-[8px] font-bold tracking-[0.2em] text-[#FAF0D7] uppercase backdrop-blur-md sm:px-3 sm:py-1 sm:text-[8.5px]">
                                             <Sparkles className="size-2.5 text-[#C5A880]" />
                                             <span>SIGNATURE ATELIER</span>
                                         </span>
-                                        <span className="font-serif text-[9px] font-bold tracking-[0.2em] text-[#8C877E] uppercase sm:text-[10px]">
+                                        <span className="rounded-full border border-white/20 bg-black/35 px-2.5 py-1 font-serif text-[9px] font-bold tracking-[0.2em] text-white/90 uppercase backdrop-blur-md sm:text-[10px]">
                                             EST. 2026
                                         </span>
                                     </div>
 
-                                    {/* Center Monogram & Typography */}
-                                    <div className="my-auto py-2">
-                                        <div className="relative mx-auto flex size-20 items-center justify-center rounded-full border-2 border-[#C5A880]/40 bg-gradient-to-b from-white to-[#FAF6EE] p-1 shadow-md sm:size-24">
-                                            <div className="flex size-full items-center justify-center rounded-full border border-[#C5A880]/25 bg-gradient-to-b from-[#FAF5EB] to-[#EFE5D3]">
-                                                <span className="font-serif text-4xl font-normal text-[#8B6B38] sm:text-5xl">
-                                                    G
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <span className="mt-3.5 block font-serif text-lg font-bold tracking-[0.24em] text-[#1A1815] uppercase sm:mt-4 sm:text-xl">
-                                            GALUH &amp; CO.
-                                        </span>
-
-                                        <div className="mt-1 flex items-center justify-center gap-2">
-                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
-                                            <span className="text-[9px] font-bold tracking-[0.22em] text-[#8C877E] uppercase sm:text-[10px]">
-                                                HAMPERS &amp; GIFT
+                                    {/* Bottom Editorial Caption Card */}
+                                    <div className="absolute inset-x-3 bottom-3 rounded-2xl border border-white/20 bg-black/45 p-3.5 text-left text-white shadow-xl backdrop-blur-md sm:inset-x-4 sm:bottom-4 sm:p-4">
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-serif text-xs font-bold tracking-[0.22em] text-[#EADBBE] uppercase sm:text-sm">
+                                                GALUH &amp; CO.
                                             </span>
-                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
+                                            <span className="rounded-full border border-[#C5A880]/40 bg-[#C5A880]/20 px-2 py-0.5 text-[8px] font-bold tracking-widest text-[#FAF0D7] uppercase">
+                                                KURASI PILIHAN
+                                            </span>
                                         </div>
-
-                                        <p className="mx-auto mt-2.5 max-w-xs text-xs leading-relaxed text-[#6E6962] sm:mt-3 sm:text-[12.5px]">
-                                            Koleksi hampers personal dan
-                                            korporat eksklusif dengan kurasi
-                                            berkelas serta kemasan mewah.
+                                        <p className="mt-1.5 text-[11px] leading-relaxed text-white/90 sm:text-xs">
+                                            Koleksi hampers anyaman bambu
+                                            eksklusif dengan toples kue kering,
+                                            madu hutan, &amp; tumbler istimewa.
                                         </p>
 
-                                        {/* 3 Luxury Micro-Tags */}
-                                        <div className="mt-3.5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-                                            <span className="rounded-full border border-[#D5CEC2] bg-white/80 px-2.5 py-0.5 text-[8px] font-bold tracking-wider text-[#7A746B] uppercase sm:text-[8.5px]">
-                                                Kurasi Pilihan
+                                        {/* Micro Tags */}
+                                        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                                            <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
+                                                Anyaman Bambu
                                             </span>
-                                            <span className="rounded-full border border-[#D5CEC2] bg-white/80 px-2.5 py-0.5 text-[8px] font-bold tracking-wider text-[#7A746B] uppercase sm:text-[8.5px]">
-                                                Pita Satin Mewah
+                                            <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
+                                                Pita Satin Hijau
                                             </span>
-                                            <span className="rounded-full border border-[#D5CEC2] bg-white/80 px-2.5 py-0.5 text-[8px] font-bold tracking-wider text-[#7A746B] uppercase sm:text-[8.5px]">
-                                                Kartu Personal
+                                            <span className="rounded-md border border-white/15 bg-white/10 px-2 py-0.5 text-[8px] font-medium tracking-wide text-white/90 sm:text-[8.5px]">
+                                                Kartu Wax Seal
                                             </span>
                                         </div>
-                                    </div>
-
-                                    {/* Bottom Decorative Baseline */}
-                                    <div className="pt-2">
-                                        <div className="h-px w-full bg-gradient-to-r from-transparent via-[#C5A880]/30 to-transparent" />
                                     </div>
                                 </div>
                             </motion.div>

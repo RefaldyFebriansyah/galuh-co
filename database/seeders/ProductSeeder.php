@@ -28,7 +28,7 @@ class ProductSeeder extends Seeder
                     'Hardbox Beludru Zamrud Aksen Foil Emas & Kartu Kaligrafi',
                 ],
                 'price_from' => 2150000,
-                'image' => null,
+                'image' => '/images/hero_hamper.jpg',
                 'sort_order' => 1,
                 'is_active' => true,
             ],
