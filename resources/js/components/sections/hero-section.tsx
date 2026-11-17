@@ -93,21 +93,6 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                 aria-hidden="true"
             />
 
-            {/* 2. Editorial Architectural Hairline Grid Guidelines */}
-            <div
-                className="pointer-events-none absolute inset-0 mx-auto max-w-7xl px-6 lg:px-12"
-                aria-hidden="true"
-            >
-                <div className="relative size-full">
-                    {/* Left hairline guide */}
-                    <div className="absolute top-0 bottom-0 left-6 w-px bg-gradient-to-b from-[#E5DFD3]/0 via-[#E5DFD3]/45 to-[#E5DFD3]/0 lg:left-12" />
-                    {/* Right hairline guide */}
-                    <div className="absolute top-0 right-6 bottom-0 w-px bg-gradient-to-b from-[#E5DFD3]/0 via-[#E5DFD3]/45 to-[#E5DFD3]/0 lg:right-12" />
-                    {/* Center hairline guide (desktop only) */}
-                    <div className="absolute top-0 bottom-0 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-[#E5DFD3]/0 via-[#E5DFD3]/20 to-[#E5DFD3]/0 lg:block" />
-                </div>
-            </div>
-
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
                 <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
                     {/* Left Content */}
@@ -285,13 +270,10 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                                     />
 
                                     {/* Top Prestige Bar */}
-                                    <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-between sm:inset-x-4 sm:top-4">
+                                    <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-start sm:inset-x-4 sm:top-4">
                                         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/40 px-2.5 py-1 text-[8px] font-bold tracking-[0.2em] text-[#FAF0D7] uppercase backdrop-blur-md sm:px-3 sm:py-1 sm:text-[8.5px]">
                                             <Sparkles className="size-2.5 text-[#C5A880]" />
                                             <span>SIGNATURE ATELIER</span>
-                                        </span>
-                                        <span className="rounded-full border border-white/20 bg-black/35 px-2.5 py-1 font-serif text-[9px] font-bold tracking-[0.2em] text-white/90 uppercase backdrop-blur-md sm:text-[10px]">
-                                            EST. 2026
                                         </span>
                                     </div>
 
