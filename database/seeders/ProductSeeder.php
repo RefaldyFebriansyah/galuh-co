@@ -14,34 +14,34 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $products = [
-            // 1. Lebaran (Idul Fitri)
+            // 1. Ramadan & Eid (Lebaran)
             [
-                'name' => 'Noor Mubarak Royal Hamper',
-                'category' => 'Lebaran',
-                'short_description' => 'Hantaran Idul Fitri megah dengan sentuhan beludru zamrud, kue kering artisan mentega Wijsman, dan sajadah sutra eksklusif.',
+                'name' => 'Seri Kencana Lebaran',
+                'category' => 'Ramadan & Eid',
+                'short_description' => 'Kotak beludru hijau dengan nastar pilihan, kurma premium, dan teh spesialisasi.',
                 'contents' => [
+                    'Nastar Nanas Madu Wijsman 350g',
                     'Kastengel Keju Edam Tua 350g',
-                    'Nastar Nanas Madu Organik 350g',
-                    'Kurma Ajwa Madinah Grade A dalam Toples Kaca',
+                    'Kurma Medjool Grade A dalam Jar Kaca',
+                    'Artisan Royal Jasmine Tea Tin 75g',
                     'Sajadah Tenun Sutra Halus Eksklusif',
-                    'Artisan Green Jasmine Tea Tin 75g',
-                    'Hardbox Beludru Zamrud Aksen Foil Emas & Kartu Ucapan Kaligrafi',
+                    'Hardbox Beludru Zamrud Aksen Foil Emas & Kartu Kaligrafi',
                 ],
-                'price_from' => 1450000,
-                'image' => 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1000&q=80',
+                'price_from' => 2150000,
+                'image' => '/images/product_1.jpg',
                 'sort_order' => 1,
                 'is_active' => true,
             ],
             [
-                'name' => 'Safiya Signature Eid Box',
-                'category' => 'Lebaran',
+                'name' => 'Seri Safiya Mubarak',
+                'category' => 'Ramadan & Eid',
                 'short_description' => 'Sentuhan kehangatan hari raya dalam kotak kayu jati ukir berisi kue premium dan madu hutan murni.',
                 'contents' => [
                     'Putri Salju Mede Mentega Wijsman 300g',
                     'Sagu Keju Istimewa 300g',
                     'Madu Hutan Liar Kalimantan 250ml',
                     'Sendok Madu Kayu Jati Handmade',
-                    'Tasbih Kristal Khusus & Kartu Idul Fitri',
+                    'Kartu Idul Fitri Wax Seal',
                 ],
                 'price_from' => 850000,
                 'image' => 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
@@ -49,79 +49,27 @@ class ProductSeeder extends Seeder
                 'is_active' => true,
             ],
 
-            // 2. Natal (Christmas & New Year)
+            // 2. Wedding
             [
-                'name' => 'Starlight Noel Prestige Hamper',
-                'category' => 'Natal',
-                'short_description' => 'Kemewahan suasana Natal hangat dengan aroma rempah kayu manis, sparkling cuvée non-alkohol, dan cokelat Belgia artisan.',
+                'name' => 'Seri Zamrud Klasik',
+                'category' => 'Wedding',
+                'short_description' => 'Set cangkir keramik beraksen emas, teh pilihan, dan madu murni dalam kotak satin.',
                 'contents' => [
-                    'Sparkling White Grape Cuvée (Non-Alcohol) 750ml',
-                    'Gingerbread & Cinnamon Speculoos Cookies 250g',
-                    'Dark Chocolate Truffle Belgia Artisan 180g',
-                    'Lilin Aromaterapi Pine & Cedarwood Soy Candle',
-                    'Ornamen Natal Kaca Emas & Pinecone Hiasan',
-                    'Kotak Kulit Sintetis Vintage Ivory dengan Sabuk Gesper Emas',
+                    'Cangkir Keramik Beraksen Emas Handmade (2 pcs)',
+                    'Teh Putih Silver Needle Artisan 50g',
+                    'Madu Murni Acacia dalam Jar Kaca Mewah 250ml',
+                    'Sendok Emas Brass & Marble Coaster',
+                    'Kotak Beludru Satin dengan Grafir Monogram Pengantin',
                 ],
-                'price_from' => 1650000,
-                'image' => 'https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&w=1000&q=80',
+                'price_from' => 1450000,
+                'image' => '/images/product_2.jpg',
                 'sort_order' => 3,
                 'is_active' => true,
             ],
             [
-                'name' => 'Winter Solstice Petite Gift',
-                'category' => 'Natal',
-                'short_description' => 'Bingkisan Natal elegan untuk sahabat terdekat dengan cokelat artisanal dan cangkir keramik handmade.',
-                'contents' => [
-                    'Cangkir Keramik Handmade Glaze Ivory',
-                    'Artisan Hot Cocoa Mix with Mini Marshmallows 200g',
-                    'Peppermint Chocolate Bark 200g',
-                    'Kartu Ucapan Merry Christmas dengan Segel Wax Seal Merah Bata',
-                ],
-                'price_from' => 550000,
-                'image' => 'https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=1000&q=80',
-                'sort_order' => 4,
-                'is_active' => true,
-            ],
-
-            // 3. Corporate (B2B & Executive Gifting)
-            [
-                'name' => 'The Executive Legacy Suite',
-                'category' => 'Corporate',
-                'short_description' => 'Hadiah korporat representatif bagi dewan direksi, mitra strategis, dan klien VIP dengan personalisasi logo perusahaan.',
-                'contents' => [
-                    'Buku Agenda Kulit Asli dengan Grafir Emboss Foil Emas',
-                    'Pulpen Metal Rollerball Aksen Gold Brass',
-                    'Single Origin Specialty Coffee Beans Toraja 250g',
-                    'Stainless Steel Tumbler Termos Double Wall Matte Emerald 500ml',
-                    'Artisan Dark Chocolate Almond Bark 150g',
-                    'Kotak Kayu Solid dengan Sablon Logo Korporat & Sertifikat Kurasi',
-                ],
-                'price_from' => 1850000,
-                'image' => 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1000&q=80',
-                'sort_order' => 5,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Apex Business Appreciation Box',
-                'category' => 'Corporate',
-                'short_description' => 'Paket apresiasi karyawan dan rekanan bisnis dengan kurasi produk fungsional dan estetika modern berkelas.',
-                'contents' => [
-                    'Wireless Desktop Charger Pad Bamboo Finish 15W',
-                    'Gourmet Drip Coffee Sachets (5 Variasi Nusantara)',
-                    'Artisan Granola Bites Honey Cranberry 150g',
-                    'Custom Corporate Sleeve & Foil Gold Greeting Card',
-                ],
-                'price_from' => 750000,
-                'image' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80',
-                'sort_order' => 6,
-                'is_active' => true,
-            ],
-
-            // 4. Wedding (Seserahan & Souvenir Mewah)
-            [
-                'name' => 'Eternal Vows Bridal Seserahan',
+                'name' => 'Seri Mahligai Seserahan',
                 'category' => 'Wedding',
-                'short_description' => 'Set hantaran pernikahan berbalut kain satin silk mewah, parfum signature, dan bunga preserved abadi yang memikat hati.',
+                'short_description' => 'Set hantaran pernikahan berbalut kain satin silk mewah, parfum signature, dan bunga preserved abadi.',
                 'contents' => [
                     'Parfum Artisan Eau de Parfum Amber & Peony 50ml',
                     'Silk Robe Kimono dengan Bordir Monogram Pengantin',
@@ -130,29 +78,81 @@ class ProductSeeder extends Seeder
                     'Bunga Preserved Rose & Baby Breath Abadi dalam Kubah Kaca',
                 ],
                 'price_from' => 2250000,
-                'image' => 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80',
+                'image' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80',
+                'sort_order' => 4,
+                'is_active' => true,
+            ],
+
+            // 3. Natal & Tahun Baru
+            [
+                'name' => 'Seri Anyaman Nusantara',
+                'category' => 'Natal & Tahun Baru',
+                'short_description' => 'Keranjang rotan anyaman tangan berisi kopi arabika pilihan dan kue kering khas.',
+                'contents' => [
+                    'Keranjang Anyaman Rotan Halus Handmade',
+                    'Single Origin Specialty Arabica Coffee Beans 250g',
+                    'Gingerbread & Cinnamon Speculoos Cookies 250g',
+                    'Dark Chocolate Truffle Belgia Artisan 180g',
+                    'Cangkir Enamel Vintage & Kartu Ucapan Akhir Tahun',
+                ],
+                'price_from' => 850000,
+                'image' => '/images/product_3.jpg',
+                'sort_order' => 5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Seri Noel Prestige',
+                'category' => 'Natal & Tahun Baru',
+                'short_description' => 'Kemewahan suasana Natal hangat dengan aroma rempah kayu manis dan cokelat Belgia artisan.',
+                'contents' => [
+                    'Sparkling White Grape Cuvée (Non-Alcohol) 750ml',
+                    'Kue Kering Butter Wijsman Edisi Natal 300g',
+                    'Lilin Aromaterapi Pine & Cedarwood Soy Candle',
+                    'Ornamen Natal Kaca Emas & Pinecone Hiasan',
+                    'Kotak Kulit Sintetis Vintage Ivory dengan Sabuk Gesper Emas',
+                ],
+                'price_from' => 1650000,
+                'image' => 'https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=1000&q=80',
+                'sort_order' => 6,
+                'is_active' => true,
+            ],
+
+            // 4. Paket Kantor (Corporate)
+            [
+                'name' => 'Seri Eksekutif Kantor',
+                'category' => 'Paket Kantor',
+                'short_description' => 'Kotak eksklusif berisi botol minum grafir logo, pulpen elegan, dan kartu ucapan.',
+                'contents' => [
+                    'Stainless Steel Tumbler Termos Double Wall Matte Emerald 500ml (Grafir Logo)',
+                    'Pulpen Metal Rollerball Aksen Gold Brass dalam Kotak Beludru',
+                    'Buku Agenda Kulit Asli dengan Grafir Emboss Foil Emas',
+                    'Single Origin Drip Bag Coffee 5 Sachet',
+                    'Kotak Kayu Solid dengan Sablon Logo Korporat & Kartu Ucapan',
+                ],
+                'price_from' => 1850000,
+                'image' => '/images/product_4.jpg',
                 'sort_order' => 7,
                 'is_active' => true,
             ],
             [
-                'name' => 'Opulence Wedding Favors Box',
-                'category' => 'Wedding',
-                'short_description' => 'Kenang-kenangan eksklusif untuk tamu VIP pernikahan bernuansa champagne dan perak mewah.',
+                'name' => 'Seri Apresiasi Bisnis',
+                'category' => 'Paket Kantor',
+                'short_description' => 'Paket apresiasi karyawan dan rekanan bisnis dengan kurasi fungsional dan estetika modern berkelas.',
                 'contents' => [
-                    'Mini Tin Tea Blend Rose Lavender 40g',
-                    'Lilin Aromaterapi Mini Tin Gold',
-                    'Handmade Honey Dipper & Jar Madu Murni Mini',
-                    'Pita Sutra Organza & Kartu Terima Kasih Custom Cetak Timbul',
+                    'Wireless Desktop Charger Pad Bamboo Finish 15W',
+                    'Gourmet Drip Coffee Sachets (5 Variasi Nusantara)',
+                    'Artisan Granola Bites Honey Cranberry 150g',
+                    'Custom Corporate Sleeve & Foil Gold Greeting Card',
                 ],
-                'price_from' => 450000,
-                'image' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80',
+                'price_from' => 750000,
+                'image' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80',
                 'sort_order' => 8,
                 'is_active' => true,
             ],
 
-            // 5. Custom (Bespoke Hampers)
+            // 5. Custom
             [
-                'name' => 'Bespoke Royal Heritage Chest',
+                'name' => 'Seri Bespoke Royal Heritage',
                 'category' => 'Custom',
                 'short_description' => 'Pilihan hampers kustom penuh yang dirancang khusus bersama desainer GALUH & CO. untuk momen sakral Anda.',
                 'contents' => [
@@ -165,21 +165,6 @@ class ProductSeeder extends Seeder
                 'image' => 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1000&q=80',
                 'sort_order' => 9,
                 'is_active' => true,
-            ],
-
-            // Inactive product for testing query filters
-            [
-                'name' => 'Limited Edition Amber Reserve (Archive)',
-                'category' => 'Custom',
-                'short_description' => 'Produk arsip terbatas musim lalu untuk verifikasi filter produk aktif.',
-                'contents' => [
-                    'Vintage Harvest Black Tea 100g',
-                    'Rare Organic Wild Honey 300g',
-                ],
-                'price_from' => 980000,
-                'image' => 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
-                'sort_order' => 10,
-                'is_active' => false,
             ],
         ];
 

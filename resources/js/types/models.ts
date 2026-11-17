@@ -1,7 +1,7 @@
 export type ProductCategory =
-    | 'Lebaran'
-    | 'Natal'
-    | 'Corporate'
+    | 'Ramadan & Eid'
+    | 'Natal & Tahun Baru'
+    | 'Paket Kantor'
     | 'Wedding'
     | 'Custom';
 
