@@ -89,7 +89,7 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                     <div className="lg:col-span-4">
                         <GaluhLogo
                             variant="white"
-                            className="h-14 md:h-16 w-auto"
+                            className="h-14 w-auto md:h-16"
                         />
                         <p className="mt-4 max-w-sm text-xs leading-relaxed text-white/60">
                             Hampers premium dan layanan corporate gifting dengan
