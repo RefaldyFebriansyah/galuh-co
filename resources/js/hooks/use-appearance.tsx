@@ -75,6 +75,12 @@ export function initializeTheme(): void {
         return;
     }
 
+    if (window.location.pathname === '/') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+        return;
+    }
+
     if (!localStorage.getItem('appearance')) {
         localStorage.setItem('appearance', 'system');
         setCookie('appearance', 'system');
