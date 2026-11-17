@@ -18,59 +18,40 @@ export function AboutSection() {
                         viewport={viewportOnce}
                         className="flex justify-center lg:col-span-5 lg:h-full"
                     >
-                        <div className="relative flex w-full max-w-md flex-col justify-between overflow-hidden rounded-[26px] border border-[#EAE5DC] bg-white p-3 shadow-xl sm:p-3.5 lg:h-full lg:max-w-none">
-                            <div className="flex size-full flex-1 flex-col justify-between rounded-[20px] border border-[#EAE5DC] bg-gradient-to-b from-[#F9F6F0] via-[#F4EFE6] to-[#ECE3D4] p-6 text-center sm:p-8">
-                                {/* Top Gold Monogram & Brand Crest */}
-                                <div>
-                                    <div className="mx-auto flex size-20 items-center justify-center rounded-full border border-[#C5A880]/40 bg-white/95 shadow-sm sm:size-22">
-                                        <span className="font-serif text-3xl font-normal text-[#C5A880] sm:text-4xl">
-                                            G
-                                        </span>
-                                    </div>
+                        <div className="group relative flex w-full max-w-md flex-col overflow-hidden rounded-[26px] border border-[#EAE5DC] bg-white p-2.5 shadow-xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(26,24,21,0.15)] sm:p-3 lg:h-full lg:max-w-none">
+                            <div className="relative flex size-full min-h-[440px] flex-1 flex-col justify-between overflow-hidden rounded-[20px] border border-[#EAE3D6] bg-[#FAF8F3] sm:min-h-[480px]">
+                                {/* Real Product Photo: Besek Anyaman Bambu Eksklusif */}
+                                <img
+                                    src="/images/product_bamboo_box.jpg"
+                                    alt="Sentuhan Ketulusan Hampers Galuh & Co."
+                                    className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
 
-                                    <div className="mt-4">
-                                        <span className="font-serif text-lg font-bold tracking-[0.22em] text-[#1A1815] uppercase sm:text-xl">
-                                            GALUH &amp; CO.
-                                        </span>
-                                        <div className="mt-1.5 flex items-center justify-center gap-2">
-                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
-                                            <span className="text-[9px] font-bold tracking-[0.2em] text-[#8C877E] uppercase sm:text-[9.5px]">
-                                                ATELIER OF FINE GIFTS
-                                            </span>
-                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
-                                        </div>
-                                    </div>
+                                {/* Subtle Gradient Overlays for Readability */}
+                                <div
+                                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40"
+                                    aria-hidden="true"
+                                />
+
+                                {/* Top Badge */}
+                                <div className="relative z-10 p-4 sm:p-5">
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/40 px-3 py-1 text-[8.5px] font-bold tracking-[0.2em] text-[#FAF0D7] uppercase backdrop-blur-md sm:text-[9px]">
+                                        <Sparkles className="size-2.5 text-[#C5A880]" />
+                                        <span>SENTUHAN KETULUSAN</span>
+                                    </span>
                                 </div>
 
-                                {/* Middle Message & Badge */}
-                                <div className="my-auto py-5 sm:py-7">
-                                    <h3 className="font-serif text-base font-bold tracking-wider text-[#1A1815] uppercase sm:text-lg">
-                                        Sentuhan Ketulusan
-                                    </h3>
-                                    <p className="mx-auto mt-2.5 max-w-xs text-xs leading-relaxed text-[#6E6962] sm:text-[13px]">
-                                        Setiap kotak hadiah kami rangkai dengan
-                                        teliti dan penuh kehangatan,
-                                        menghadirkan keindahan personal pada
-                                        setiap momen istimewa Anda.
-                                    </p>
-                                    <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-white/85 px-4 py-1 text-[9px] font-bold tracking-wider text-[#8C877E] uppercase shadow-2xs">
-                                        <Sparkles className="size-3 text-[#C5A880]" />
-                                        <span>
-                                            Dirangkai dengan Sepenuh Hati
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Bottom Dark Green Quote Block */}
-                                <div className="rounded-2xl bg-[#0E2A1E] p-4 text-left text-white shadow-lg sm:p-5">
+                                {/* Bottom Dark Green Luxury Quote Block */}
+                                <div className="relative z-10 m-3 rounded-2xl border border-white/20 bg-[#0E2A1E]/90 p-4 text-left text-white shadow-2xl backdrop-blur-md sm:m-4 sm:p-5">
                                     <p className="font-serif text-xs leading-relaxed text-white/95 italic sm:text-[13px]">
                                         “Setiap kotak hadiah kami rangkai dengan
-                                        hangat, agar menghadirkan senyum tulus
-                                        saat pertama kali dibuka.”
+                                        teliti dan penuh kehangatan,
+                                        menghadirkan senyum tulus saat pertama
+                                        kali dibuka.”
                                     </p>
-                                    <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-2.5 text-[9px] font-bold tracking-widest text-[#C5A880] uppercase sm:text-[10px]">
+                                    <div className="mt-3 flex items-center justify-between border-t border-white/15 pt-2.5 text-[9px] font-bold tracking-widest text-[#C5A880] uppercase sm:text-[10px]">
                                         <span>GALUH &amp; CO.</span>
-                                        <span>EST. 2026</span>
+                                        <span>ANYAMAN BAMBU MEWAH</span>
                                     </div>
                                 </div>
                             </div>
