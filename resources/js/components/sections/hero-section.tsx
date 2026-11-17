@@ -1,5 +1,6 @@
 import type { Variants } from 'motion/react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { WhatsAppIcon } from '@/components/whatsapp-icon';
 import {
     buttonTap,
     floatingVisual,
@@ -108,12 +109,7 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-2 rounded-full border border-[#D5CEC2] bg-white px-6 py-3 text-xs font-bold tracking-[0.12em] text-[#0E2A1E] shadow-xs transition-all hover:border-[#0E2A1E]"
                             >
-                                <svg
-                                    className="size-4 fill-emerald-600"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.062-2.13-.531-1.834-.755-3.003-2.614-3.094-2.735-.09-.12-1.74-2.316-1.74-4.415 0-2.099 1.101-3.13 1.492-3.555.39-.425.852-.532 1.137-.532.285 0 .57.003.82.016.262.013.615-.098.962.736.358.857 1.222 2.977 1.328 3.195.106.218.177.472.035.755-.141.283-.213.46-.425.708-.213.248-.448.555-.64.745-.213.212-.435.442-.187.868.249.426 1.108 1.824 2.378 2.955 1.633 1.455 3.011 1.907 3.438 2.119.427.213.676.177.925-.106.249-.283 1.066-1.239 1.35-1.664.284-.425.568-.354.96-.213.39.142 2.483 1.17 2.909 1.383.426.213.71.319.817.497.106.177.106 1.028-.038 1.433z" />
-                                </svg>
+                                <WhatsAppIcon className="size-4 text-[#25D366]" />
                                 <span>PESAN VIA WHATSAPP</span>
                             </motion.a>
                         </div>
