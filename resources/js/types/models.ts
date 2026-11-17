@@ -3,8 +3,7 @@ export type ProductCategory =
     | 'Natal'
     | 'Corporate'
     | 'Wedding'
-    | 'Custom'
-    | string;
+    | 'Custom';
 
 export interface Product {
     id: number;

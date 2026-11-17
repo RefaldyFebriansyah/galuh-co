@@ -67,12 +67,17 @@ export default function Welcome({
                                     Katalog Produk Aktif & Integrasi WhatsApp
                                 </h1>
                                 <p className="text-sm text-muted-foreground">
-                                    Data terkirim dari controller Laravel via props Inertia.
+                                    Data terkirim dari controller Laravel via
+                                    props Inertia.
                                 </p>
                             </div>
                             <div className="rounded-lg border border-border/80 bg-muted/40 p-3 text-xs">
-                                <span className="block text-muted-foreground">Nomor WhatsApp (.env):</span>
-                                <span className="font-mono font-bold text-foreground">+{whatsappNumber}</span>
+                                <span className="block text-muted-foreground">
+                                    Nomor WhatsApp (.env):
+                                </span>
+                                <span className="font-mono font-bold text-foreground">
+                                    +{whatsappNumber}
+                                </span>
                             </div>
                         </div>
 
@@ -80,7 +85,8 @@ export default function Welcome({
                         <div className="mt-6 border-t border-border pt-6">
                             <div className="mb-4 flex items-center justify-between">
                                 <h2 className="font-serif text-lg font-medium">
-                                    Daftar Produk Aktif ({products.length} produk)
+                                    Daftar Produk Aktif ({products.length}{' '}
+                                    produk)
                                 </h2>
                             </div>
 
@@ -104,7 +110,7 @@ export default function Welcome({
                                             <h3 className="mt-1 font-serif text-base font-semibold">
                                                 {product.name}
                                             </h3>
-                                            <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                                            <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
                                                 {product.short_description}
                                             </p>
                                         </div>
@@ -116,7 +122,7 @@ export default function Welcome({
                                                 href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Halo GALUH & CO., saya tertarik dengan hampers ${product.name}`)}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="rounded-full bg-brand-primary px-3 py-1 font-medium text-brand-ivory transition-colors hover:bg-brand-primary-dark dark:bg-brand-accent dark:text-brand-dark"
+                                                className="dark:text-brand-dark rounded-full bg-brand-primary px-3 py-1 font-medium text-brand-ivory transition-colors hover:bg-brand-primary-dark dark:bg-brand-accent"
                                             >
                                                 Pesan WhatsApp
                                             </a>

@@ -18,7 +18,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->words(3, true);
+        $name = rtrim(fake()->sentence(3), '.');
 
         return [
             'name' => Str::title($name),

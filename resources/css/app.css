@@ -9,13 +9,13 @@
 
 @theme {
     --font-sans:
-        'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui,
+        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
     --font-serif:
-        'Cormorant Garamond', 'Playfair Display', Georgia, Cambria, 'Times New Roman',
-        Times, serif;
+        'Cormorant Garamond', 'Playfair Display', Georgia, Cambria,
+        'Times New Roman', Times, serif;
 
     /* GALUH & CO. Brand Color Tokens */
     --color-ivory: #faf7f2;
