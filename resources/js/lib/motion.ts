@@ -41,10 +41,10 @@ export const transitionGentleSpring: Transition = {
     mass: 0.9,
 };
 
-// Default Viewport config for scroll triggers (always once: true)
+// Default Viewport config for scroll triggers (always once: true, eager trigger)
 export const viewportOnce = {
     once: true,
-    amount: 0.25,
+    amount: 0.08,
 } as const;
 
 export const viewportHeader = {

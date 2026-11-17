@@ -1,3 +1,4 @@
+import { Gift, HeartHandshake, Package, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { fadeInUp, viewportOnce } from '@/lib/motion';
 
@@ -8,33 +9,70 @@ export function AboutSection() {
             className="border-t border-[#EAE5DC] bg-[#FAF8F5] py-10 md:py-14 lg:py-16"
         >
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
-                <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-                    {/* Left Image with Quote Card Overlay */}
+                <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-12 lg:gap-12">
+                    {/* Left Brand Atelier Card */}
                     <motion.div
                         variants={fadeInUp}
                         initial="hidden"
                         whileInView="visible"
                         viewport={viewportOnce}
-                        className="lg:col-span-5"
+                        className="flex justify-center lg:col-span-5 lg:h-full"
                     >
-                        <div className="relative aspect-[4/4.8] overflow-hidden rounded-[26px] border border-[#EAE5DC] bg-white p-2 shadow-xl">
-                            <img
-                                src="/images/about_artisan.jpg"
-                                alt="Perakitan Kemasan Eksklusif Galuh & Co"
-                                className="size-full rounded-[20px] object-cover"
-                                loading="lazy"
-                            />
+                        <div className="relative flex w-full max-w-md flex-col justify-between overflow-hidden rounded-[26px] border border-[#EAE5DC] bg-white p-3 shadow-xl sm:p-3.5 lg:h-full lg:max-w-none">
+                            <div className="flex size-full flex-1 flex-col justify-between rounded-[20px] border border-[#EAE5DC] bg-gradient-to-b from-[#F9F6F0] via-[#F4EFE6] to-[#ECE3D4] p-6 text-center sm:p-8">
+                                {/* Top Gold Monogram & Brand Crest */}
+                                <div>
+                                    <div className="mx-auto flex size-20 items-center justify-center rounded-full border border-[#C5A880]/40 bg-white/95 shadow-sm sm:size-22">
+                                        <span className="font-serif text-3xl font-normal text-[#C5A880] sm:text-4xl">
+                                            G
+                                        </span>
+                                    </div>
 
-                            {/* Dark Green Overlay Card at Bottom */}
-                            <div className="absolute right-5 bottom-5 left-5 rounded-2xl bg-[#0E2A1E]/95 p-4 text-white shadow-xl backdrop-blur-xs">
-                                <p className="font-serif text-[11px] leading-relaxed text-white/90 italic">
-                                    “Setiap kotak hadiah kami rangkai dengan
-                                    hangat, agar menghadirkan senyum tulus saat
-                                    pertama kali dibuka.”
-                                </p>
-                                <span className="mt-2 block text-[9px] font-bold tracking-widest text-[#C5A880] uppercase">
-                                    — GALUH &amp; CO.
-                                </span>
+                                    <div className="mt-4">
+                                        <span className="font-serif text-lg font-bold tracking-[0.22em] text-[#1A1815] uppercase sm:text-xl">
+                                            GALUH &amp; CO.
+                                        </span>
+                                        <div className="mt-1.5 flex items-center justify-center gap-2">
+                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
+                                            <span className="text-[9px] font-bold tracking-[0.2em] text-[#8C877E] uppercase sm:text-[9.5px]">
+                                                ATELIER OF FINE GIFTS
+                                            </span>
+                                            <span className="h-px w-5 bg-[#C5A880]/60 sm:w-6" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Middle Message & Badge */}
+                                <div className="my-auto py-5 sm:py-7">
+                                    <h3 className="font-serif text-base font-bold tracking-wider text-[#1A1815] uppercase sm:text-lg">
+                                        Sentuhan Ketulusan
+                                    </h3>
+                                    <p className="mx-auto mt-2.5 max-w-xs text-xs leading-relaxed text-[#6E6962] sm:text-[13px]">
+                                        Setiap kotak hadiah kami rangkai dengan
+                                        teliti dan penuh kehangatan,
+                                        menghadirkan keindahan personal pada
+                                        setiap momen istimewa Anda.
+                                    </p>
+                                    <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-white/85 px-4 py-1 text-[9px] font-bold tracking-wider text-[#8C877E] uppercase shadow-2xs">
+                                        <Sparkles className="size-3 text-[#C5A880]" />
+                                        <span>
+                                            Dirangkai dengan Sepenuh Hati
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Bottom Dark Green Quote Block */}
+                                <div className="rounded-2xl bg-[#0E2A1E] p-4 text-left text-white shadow-lg sm:p-5">
+                                    <p className="font-serif text-xs leading-relaxed text-white/95 italic sm:text-[13px]">
+                                        “Setiap kotak hadiah kami rangkai dengan
+                                        hangat, agar menghadirkan senyum tulus
+                                        saat pertama kali dibuka.”
+                                    </p>
+                                    <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-2.5 text-[9px] font-bold tracking-widest text-[#C5A880] uppercase sm:text-[10px]">
+                                        <span>GALUH &amp; CO.</span>
+                                        <span>EST. 2026</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </motion.div>
@@ -97,44 +135,71 @@ export function AboutSection() {
 
                         {/* 3 Pillars Cards */}
                         <div className="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-3">
-                            <div className="rounded-2xl border border-[#EAE5DC] bg-white p-3.5 shadow-2xs">
-                                <span className="flex size-7 items-center justify-center rounded-lg bg-[#FAF0D7] text-xs">
-                                    🎁
+                            <motion.div
+                                whileHover={{
+                                    y: -4,
+                                    transition: {
+                                        duration: 0.25,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    },
+                                }}
+                                className="group rounded-2xl border border-[#EAE5DC] bg-white p-4 shadow-2xs transition-all duration-300 hover:border-[#C5A880]/60 hover:shadow-md"
+                            >
+                                <span className="flex size-9.5 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110">
+                                    <Gift className="size-4.5" />
                                 </span>
-                                <h4 className="mt-2.5 font-serif text-xs font-bold text-[#1A1815]">
+                                <h4 className="mt-3 font-serif text-sm font-bold text-[#1A1815]">
                                     Kurasi Pilihan
                                 </h4>
-                                <p className="mt-1 text-[10px] leading-relaxed text-[#8C877E]">
+                                <p className="mt-1 text-[11px] leading-relaxed text-[#7A746B]">
                                     Produk pilihan berkualitas tinggi yang
                                     dirangkai cermat untuk setiap momen.
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div className="rounded-2xl border border-[#EAE5DC] bg-white p-3.5 shadow-2xs">
-                                <span className="flex size-7 items-center justify-center rounded-lg bg-[#FAF0D7] text-xs">
-                                    📦
+                            <motion.div
+                                whileHover={{
+                                    y: -4,
+                                    transition: {
+                                        duration: 0.25,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    },
+                                }}
+                                className="group rounded-2xl border border-[#EAE5DC] bg-white p-4 shadow-2xs transition-all duration-300 hover:border-[#C5A880]/60 hover:shadow-md"
+                            >
+                                <span className="flex size-9.5 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110">
+                                    <Package className="size-4.5" />
                                 </span>
-                                <h4 className="mt-2.5 font-serif text-xs font-bold text-[#1A1815]">
+                                <h4 className="mt-3 font-serif text-sm font-bold text-[#1A1815]">
                                     Kemasan Premium
                                 </h4>
-                                <p className="mt-1 text-[10px] leading-relaxed text-[#8C877E]">
+                                <p className="mt-1 text-[11px] leading-relaxed text-[#7A746B]">
                                     Kotak hadiah mewah dengan detail pita dan
                                     sentuhan akhir yang berkelas.
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div className="rounded-2xl border border-[#EAE5DC] bg-white p-3.5 shadow-2xs">
-                                <span className="flex size-7 items-center justify-center rounded-lg bg-[#FAF0D7] text-xs">
-                                    ✍️
+                            <motion.div
+                                whileHover={{
+                                    y: -4,
+                                    transition: {
+                                        duration: 0.25,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    },
+                                }}
+                                className="group rounded-2xl border border-[#EAE5DC] bg-white p-4 shadow-2xs transition-all duration-300 hover:border-[#C5A880]/60 hover:shadow-md"
+                            >
+                                <span className="flex size-9.5 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110">
+                                    <HeartHandshake className="size-4.5" />
                                 </span>
-                                <h4 className="mt-2.5 font-serif text-xs font-bold text-[#1A1815]">
+                                <h4 className="mt-3 font-serif text-sm font-bold text-[#1A1815]">
                                     Sentuhan Personal
                                 </h4>
-                                <p className="mt-1 text-[10px] leading-relaxed text-[#8C877E]">
+                                <p className="mt-1 text-[11px] leading-relaxed text-[#7A746B]">
                                     Bebas custom kartu ucapan dan pesan khusus
                                     agar hadiah terasa lebih hangat.
                                 </p>
-                            </div>
+                            </motion.div>
                         </div>
                     </motion.div>
                 </div>

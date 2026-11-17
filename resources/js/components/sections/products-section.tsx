@@ -1,15 +1,32 @@
+import { ShoppingCart } from 'lucide-react';
+import type { Variants } from 'motion/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
-import { WhatsAppIcon } from '@/components/whatsapp-icon';
-import {
-    buttonTap,
-    cardHover,
-    fadeIn,
-    staggerContainer,
-    staggerItem,
-    viewportOnce,
-} from '@/lib/motion';
+import { buttonTap, fadeIn } from '@/lib/motion';
 import type { Product, ProductCategory } from '@/types';
+
+const eagerStaggerContainer: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.02,
+        },
+    },
+};
+
+const eagerStaggerItem: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.38,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
 
 interface ProductsSectionProps {
     products: Product[];
@@ -103,29 +120,53 @@ export function ProductsSection({
                     </motion.div>
                 ) : (
                     <motion.div
-                        variants={staggerContainer}
+                        variants={eagerStaggerContainer}
                         initial="hidden"
                         whileInView="visible"
-                        viewport={viewportOnce}
-                        className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+                        viewport={{ once: true, amount: 0.01 }}
+                        className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredProducts.map((product, idx) => (
                                 <motion.div
                                     key={product.id}
                                     layout
-                                    variants={staggerItem}
-                                    whileHover={cardHover.hover}
+                                    variants={eagerStaggerItem}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.94,
+                                        transition: { duration: 0.2 },
+                                    }}
+                                    transition={{
+                                        layout: {
+                                            duration: 0.35,
+                                            ease: [0.25, 0.1, 0.25, 1],
+                                        },
+                                    }}
+                                    whileHover={{
+                                        y: -5,
+                                        transition: {
+                                            duration: 0.25,
+                                            ease: [0.16, 1, 0.3, 1],
+                                        },
+                                    }}
                                     className="group flex flex-col overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white shadow-2xs transition-shadow duration-300 hover:shadow-lg"
                                 >
-                                    {/* Product Image */}
-                                    <div className="relative aspect-[4/4.2] w-full overflow-hidden bg-[#F0EBE1]">
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                                            loading="lazy"
-                                        />
+                                    {/* Product Image Placeholder Area */}
+                                    <div className="relative flex aspect-[4/3.8] w-full items-center justify-center overflow-hidden bg-[#F2EDE4]">
+                                        <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-4 text-center transition-transform duration-500 ease-out group-hover:scale-105 sm:p-6">
+                                            <div className="relative flex size-11 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs sm:size-14">
+                                                <span className="font-serif text-xl font-normal text-[#C5A880] sm:text-2xl">
+                                                    G
+                                                </span>
+                                            </div>
+                                            <span className="mt-2 font-serif text-[10px] font-bold tracking-[0.18em] text-[#8C877E] uppercase sm:mt-2.5 sm:text-[11px] sm:tracking-[0.2em]">
+                                                GALUH &amp; CO.
+                                            </span>
+                                            <span className="mt-0.5 text-[7.5px] tracking-wider text-[#A69E91] sm:text-[8px]">
+                                                Foto Koleksi Segera Hadir
+                                            </span>
+                                        </div>
 
                                         {/* Badge on Top Right */}
                                         <div className="absolute top-2.5 right-2.5 flex items-center">
@@ -185,9 +226,9 @@ export function ProductsSection({
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={`Pesan ${product.name} via WhatsApp`}
-                                                className="flex size-8 items-center justify-center rounded-full bg-[#0E2A1E] text-white shadow-xs transition-colors hover:bg-[#25D366]"
+                                                className="flex size-8 items-center justify-center rounded-full bg-[#0E2A1E] text-white shadow-xs transition-colors hover:bg-[#C5A880]"
                                             >
-                                                <WhatsAppIcon className="size-4" />
+                                                <ShoppingCart className="size-3.5" />
                                             </motion.a>
                                         </div>
                                     </div>

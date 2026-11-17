@@ -1,3 +1,4 @@
+import { Gem, MessageCircle, Palette, Truck } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -64,29 +65,29 @@ export function FeaturesSection() {
             title: 'Kurasi Produk Pilihan',
             description:
                 'Setiap isi hampers dipilih secara cermat dari produk berkualitas terbaik dan higienis untuk menghadirkan pengalaman membuka hadiah yang berkesan.',
-            iconBg: 'bg-[#FAF0D7]',
-            icon: '💎',
+            iconBg: 'bg-[#FAF0D7] text-[#8B6B38] border border-[#C5A880]/30',
+            icon: Gem,
         },
         {
-            title: 'Costum Identisan & Kartu',
+            title: 'Kustom Identitas & Kartu',
             description:
                 'Bebas menambahkan logo perusahaan, pita serasi, serta kartu ucapan khusus yang dipersonalisasi sesuai kebutuhan acara Anda.',
-            iconBg: 'bg-[#E2EBE5]',
-            icon: '🏷️',
+            iconBg: 'bg-[#E2EBE5] text-[#0E2A1E] border border-[#0E2A1E]/15',
+            icon: Palette,
         },
         {
             title: 'Pengiriman Aman & Tepat',
             description:
                 'Dikemas rapi dengan perlindungan berlapis untuk memastikan setiap kotak hadiah tiba dalam kondisi sempurna dan tepat waktu di lokasi tujuan.',
-            iconBg: 'bg-[#F5EEDD]',
-            icon: '🚚',
+            iconBg: 'bg-[#F5EEDD] text-[#8B6B38] border border-[#C5A880]/30',
+            icon: Truck,
         },
         {
             title: 'Konsultasi Mudah Via WhatsApp',
             description:
                 'Tim kami siap membantu merekomendasikan pilihan paket terbaik yang sesuai dengan tema acara maupun anggaran Anda secara langsung.',
-            iconBg: 'bg-[#FBE8DE]',
-            icon: '💬',
+            iconBg: 'bg-[#EAF3ED] text-[#0E2A1E] border border-[#0E2A1E]/15',
+            icon: MessageCircle,
         },
     ];
 
@@ -135,27 +136,37 @@ export function FeaturesSection() {
                     viewport={viewportOnce}
                     className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
                 >
-                    {features.map((feature, idx) => (
-                        <motion.div
-                            key={idx}
-                            variants={staggerItem}
-                            className="flex flex-col rounded-2xl border border-[#EAE5DC] bg-white p-5 shadow-2xs transition-shadow duration-300 hover:shadow-md"
-                        >
-                            <span
-                                className={`flex size-10 items-center justify-center rounded-xl text-base ${feature.iconBg}`}
+                    {features.map((feature, idx) => {
+                        const Icon = feature.icon;
+                        return (
+                            <motion.div
+                                key={idx}
+                                variants={staggerItem}
+                                whileHover={{
+                                    y: -5,
+                                    transition: {
+                                        duration: 0.25,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    },
+                                }}
+                                className="group flex flex-col rounded-2xl border border-[#EAE5DC] bg-white p-5 shadow-2xs transition-shadow duration-300 hover:shadow-md"
                             >
-                                {feature.icon}
-                            </span>
+                                <span
+                                    className={`flex size-10 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110 ${feature.iconBg}`}
+                                >
+                                    <Icon className="size-5" />
+                                </span>
 
-                            <h3 className="mt-4 font-serif text-sm font-bold text-[#1A1815] md:text-base">
-                                {feature.title}
-                            </h3>
+                                <h3 className="mt-4 font-serif text-sm font-bold text-[#1A1815] md:text-base">
+                                    {feature.title}
+                                </h3>
 
-                            <p className="mt-2 text-[11px] leading-relaxed text-[#8C877E]">
-                                {feature.description}
-                            </p>
-                        </motion.div>
-                    ))}
+                                <p className="mt-2 text-[11px] leading-relaxed text-[#8C877E]">
+                                    {feature.description}
+                                </p>
+                            </motion.div>
+                        );
+                    })}
                 </motion.div>
 
                 {/* Deep Emerald Stats Banner with Animated Count-Up */}

@@ -1,6 +1,8 @@
+import { useForm } from '@inertiajs/react';
+import { CheckCircle2, Send } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
-import { GaluhLogo } from '@/components/galuh-logo';
+import { WhatsAppIcon } from '@/components/whatsapp-icon';
 import { buttonTap, fadeInUp, viewportOnce } from '@/lib/motion';
 
 interface CorporateSectionProps {
@@ -8,36 +10,51 @@ interface CorporateSectionProps {
 }
 
 export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
-    const [formData, setFormData] = useState({
+    const [submitted, setSubmitted] = useState(false);
+
+    const form = useForm({
         name: '',
-        company_role: '',
+        company_name: '',
         email: '',
-        whatsapp: '',
-        packages: '20 - 50 paket',
-        budget: 'Rp 300.000 - Rp 500.000',
+        whatsapp_number: '',
+        estimated_packages: '20 - 50 paket',
+        budget_per_package: 'Rp 300.000 - Rp 500.000',
         needed_at: '',
         notes: '',
+        website: '', // Honeypot field for bot protection
     });
-
-    const [submitted, setSubmitted] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
 
-        const text = `Halo Tim B2B GALUH & CO., saya ingin mengajukan penawaran corporate hampers:
-• Nama Lengkap: ${formData.name || 'Refaldy Febriansyah'}
-• Perusahaan & Jabatan: ${formData.company_role || 'PT. Makmoer Abadi - HRD'}
-• Email Bisnis: ${formData.email || 'ipang@makmuer.co.id'}
-• No. WhatsApp: ${formData.whatsapp || '+62 812-3456-7890'}
-• Jumlah Paket: ${formData.packages}
-• Estimasi Budget / Paket: ${formData.budget}
-• Tanggal Kebutuhan Event: ${formData.needed_at || 'Segera'}
-• Catatan & Kebutuhan Khusus: ${formData.notes || '-'}`;
-
-        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
+        form.post('/inquiry', {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                setSubmitted(true);
+            },
+        });
     };
+
+    const clientPartners = [
+        'BANK MANDIRI',
+        'BANK BCA',
+        'TELKOMSEL',
+        'TOKOPEDIA',
+        'SHOPEE INDONESIA',
+        'ASTRA INTERNATIONAL',
+        'BANK SYARIAH INDONESIA',
+        'PERTAMINA',
+        'UNILEVER',
+        'GOJEK GRAB',
+    ];
+
+    // Double the array for seamless infinite marquee loop
+    const marqueeItems = [...clientPartners, ...clientPartners];
+
+    const directWhatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        'Halo Tim Concierge B2B GALUH & CO., saya ingin konsultasi penawaran corporate hampers.',
+    )}`;
 
     return (
         <section
@@ -45,7 +62,7 @@ export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
             className="bg-[#FAF8F5] py-10 md:py-14 lg:py-16"
         >
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
-                {/* 1. Corporate Form Big Card (Page 3 Bottom) */}
+                {/* 1. Corporate Form Big Card */}
                 <motion.div
                     variants={fadeInUp}
                     initial="hidden"
@@ -66,37 +83,32 @@ export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
                             </h3>
 
                             <p className="mt-4 text-xs leading-relaxed text-[#6E6962] md:text-sm">
-                                Tim kami siap membantu menyiapkan paket hampers
-                                custom sesuai identitas brand dan anggaran
-                                perusahaan Anda.
+                                Tim konsultan kami siap membantu menyiapkan
+                                paket hampers kustom yang selaras dengan
+                                identitas brand, nilai estetika, dan anggaran
+                                korporat Anda.
                             </p>
 
                             <div className="mt-6 space-y-3 text-xs text-[#1A1815]">
                                 <div className="flex items-center gap-2.5">
-                                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E2EBE5] text-[10px] text-[#0E2A1E]">
-                                        ✓
-                                    </span>
+                                    <CheckCircle2 className="size-4 shrink-0 text-[#0E2A1E]" />
                                     <span>
                                         Pengiriman Langsung Ke Banyak Alamat
-                                        Penerima
+                                        Penerima Seluruh Indonesia
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2.5">
-                                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E2EBE5] text-[10px] text-[#0E2A1E]">
-                                        ✓
-                                    </span>
+                                    <CheckCircle2 className="size-4 shrink-0 text-[#0E2A1E]" />
                                     <span>
                                         Gratis Pratinjau Desain Kartu Ucapan
-                                        &amp; Kemasan
+                                        &amp; Branding Logo Perusahaan
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2.5">
-                                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#E2EBE5] text-[10px] text-[#0E2A1E]">
-                                        ✓
-                                    </span>
+                                    <CheckCircle2 className="size-4 shrink-0 text-[#0E2A1E]" />
                                     <span>
-                                        Dukungan Invoice &amp; Administrasi
-                                        Resmi Perusahaan
+                                        Dukungan Invoice, Faktur Pajak, &amp;
+                                        Administrasi Resmi Perusahaan
                                     </span>
                                 </div>
                             </div>
@@ -110,204 +122,314 @@ export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
                                     Hampers@galuh.co | +62 811-9283-888
                                 </span>
                             </div>
-
-                            {/* Logo */}
-                            <div className="mt-8">
-                                <GaluhLogo />
-                            </div>
                         </div>
 
-                        {/* Right Side Form */}
+                        {/* Right Side Form (Inertia useForm) */}
                         <div className="lg:col-span-7">
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            NAMA LENGKAP
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.name}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    name: e.target.value,
-                                                })
-                                            }
-                                            placeholder="Refaldy Febriansyah"
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            NAMA PERUSAHAAN &amp; JABATAN
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.company_role}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    company_role:
-                                                        e.target.value,
-                                                })
-                                            }
-                                            placeholder="PT. Makmoer Abadi - HRD"
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            EMAIL BISNIS
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={formData.email}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                            placeholder="ipang@makmuer.co.id"
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            NO. WHATSAPP
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={formData.whatsapp}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    whatsapp: e.target.value,
-                                                })
-                                            }
-                                            placeholder="+62 812-3456-7890"
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            JUMLAH PAKET
-                                        </label>
-                                        <select
-                                            value={formData.packages}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    packages: e.target.value,
-                                                })
-                                            }
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        >
-                                            <option value="20 - 50 paket">
-                                                20 - 50 paket
-                                            </option>
-                                            <option value="50 - 100 paket">
-                                                50 - 100 paket
-                                            </option>
-                                            <option value="100 - 250 paket">
-                                                100 - 250 paket
-                                            </option>
-                                            <option value="250+ paket">
-                                                250+ paket
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                            ESTIMASI BUDGET / PAKET
-                                        </label>
-                                        <select
-                                            value={formData.budget}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    budget: e.target.value,
-                                                })
-                                            }
-                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                        >
-                                            <option value="Rp 300.000 - Rp 500.000">
-                                                Rp 300.000 - Rp 500.000
-                                            </option>
-                                            <option value="Rp 500.000 - Rp 1.000.000">
-                                                Rp 500.000 - Rp 1.000.000
-                                            </option>
-                                            <option value="Rp 1.000.000 - Rp 2.000.000">
-                                                Rp 1.000.000 - Rp 2.000.000
-                                            </option>
-                                            <option value="> Rp 2.000.000">
-                                                &gt; Rp 2.000.000
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                        TANGGAL KEBUTUHAN EVENT
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={formData.needed_at}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                needed_at: e.target.value,
-                                            })
-                                        }
-                                        className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
-                                        CATATAN &amp; KEBUTUHAN KHUSUS
-                                    </label>
-                                    <textarea
-                                        rows={3}
-                                        value={formData.notes}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                notes: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Tuliskan tema acara, kebutuhan custom logo, atau permintaan khusus lainnya..."
-                                        className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
-                                    />
-                                </div>
-
-                                <motion.button
-                                    whileTap={buttonTap.tap}
-                                    type="submit"
-                                    className="mt-2 w-full rounded-full bg-[#0E2A1E] py-4 text-xs font-bold tracking-[0.14em] text-white shadow-md transition-colors hover:bg-[#163d2c]"
-                                >
-                                    KIRIM PERMINTAAN PENAWARAN ▷
-                                </motion.button>
-
-                                {submitted && (
-                                    <p className="text-center text-xs text-emerald-700">
-                                        ✓ Membuka WhatsApp Concierge B2B...
+                            {submitted || form.recentlySuccessful ? (
+                                <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-8 text-center">
+                                    <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm">
+                                        <CheckCircle2 className="size-6" />
+                                    </span>
+                                    <h4 className="mt-4 font-serif text-2xl font-bold text-[#0E2A1E]">
+                                        Permintaan Penawaran Berhasil Dikirim!
+                                    </h4>
+                                    <p className="mt-2 text-xs leading-relaxed text-[#4A5D53]">
+                                        Data penawaran Anda telah tersimpan dan
+                                        notifikasi email telah diteruskan ke tim
+                                        corporate gifting GALUH &amp; CO. Kami
+                                        akan segera menghubungi kontak Anda.
                                     </p>
-                                )}
-                            </form>
+
+                                    <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                                        <a
+                                            href={directWhatsappUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-[#20ba5a]"
+                                        >
+                                            <WhatsAppIcon className="size-4" />
+                                            <span>Chat WhatsApp Langsung</span>
+                                        </a>
+                                        <button
+                                            type="button"
+                                            onClick={() => setSubmitted(false)}
+                                            className="rounded-full border border-[#D5CEC2] bg-white px-5 py-2.5 text-xs font-bold text-[#1A1815] hover:bg-[#FAF8F5]"
+                                        >
+                                            Kirim Formulir Lain
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <form
+                                    onSubmit={handleSubmit}
+                                    className="space-y-4"
+                                >
+                                    {/* Honeypot field (hidden from real users, traps automated spam bots) */}
+                                    <input
+                                        type="text"
+                                        name="website"
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                        aria-hidden="true"
+                                        className="pointer-events-none sr-only absolute -z-50 opacity-0"
+                                        value={form.data.website}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'website',
+                                                e.target.value,
+                                            )
+                                        }
+                                    />
+
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                NAMA LENGKAP{' '}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                required
+                                                value={form.data.name}
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'name',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="Nama Anda"
+                                                className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:bg-white focus:outline-hidden ${
+                                                    form.errors.name
+                                                        ? 'border-red-400 focus:border-red-500'
+                                                        : 'border-[#EAE5DC] focus:border-[#C5A880]'
+                                                }`}
+                                            />
+                                            {form.errors.name && (
+                                                <p className="mt-1 text-[10px] text-red-600">
+                                                    {form.errors.name}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                PERUSAHAAN &amp; JABATAN
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={form.data.company_name}
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'company_name',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="PT. Nama Perusahaan - HRD"
+                                                className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                            />
+                                            {form.errors.company_name && (
+                                                <p className="mt-1 text-[10px] text-red-600">
+                                                    {form.errors.company_name}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                EMAIL BISNIS{' '}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                type="email"
+                                                required
+                                                value={form.data.email}
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'email',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="corporate@perusahaan.co.id"
+                                                className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:bg-white focus:outline-hidden ${
+                                                    form.errors.email
+                                                        ? 'border-red-400 focus:border-red-500'
+                                                        : 'border-[#EAE5DC] focus:border-[#C5A880]'
+                                                }`}
+                                            />
+                                            {form.errors.email && (
+                                                <p className="mt-1 text-[10px] text-red-600">
+                                                    {form.errors.email}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                NO. WHATSAPP{' '}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                required
+                                                value={
+                                                    form.data.whatsapp_number
+                                                }
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'whatsapp_number',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="+62 812-3456-7890"
+                                                className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:bg-white focus:outline-hidden ${
+                                                    form.errors.whatsapp_number
+                                                        ? 'border-red-400 focus:border-red-500'
+                                                        : 'border-[#EAE5DC] focus:border-[#C5A880]'
+                                                }`}
+                                            />
+                                            {form.errors.whatsapp_number && (
+                                                <p className="mt-1 text-[10px] text-red-600">
+                                                    {
+                                                        form.errors
+                                                            .whatsapp_number
+                                                    }
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                JUMLAH PAKET
+                                            </label>
+                                            <select
+                                                value={
+                                                    form.data.estimated_packages
+                                                }
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'estimated_packages',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                            >
+                                                <option value="20 - 50 paket">
+                                                    20 - 50 paket
+                                                </option>
+                                                <option value="50 - 100 paket">
+                                                    50 - 100 paket
+                                                </option>
+                                                <option value="100 - 250 paket">
+                                                    100 - 250 paket
+                                                </option>
+                                                <option value="250+ paket">
+                                                    250+ paket
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                                ESTIMASI BUDGET / PAKET
+                                            </label>
+                                            <select
+                                                value={
+                                                    form.data.budget_per_package
+                                                }
+                                                onChange={(e) =>
+                                                    form.setData(
+                                                        'budget_per_package',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                            >
+                                                <option value="Rp 300.000 - Rp 500.000">
+                                                    Rp 300.000 - Rp 500.000
+                                                </option>
+                                                <option value="Rp 500.000 - Rp 1.000.000">
+                                                    Rp 500.000 - Rp 1.000.000
+                                                </option>
+                                                <option value="Rp 1.000.000 - Rp 2.000.000">
+                                                    Rp 1.000.000 - Rp 2.000.000
+                                                </option>
+                                                <option value="> Rp 2.000.000">
+                                                    &gt; Rp 2.000.000
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                            TANGGAL KEBUTUHAN EVENT
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={form.data.needed_at}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'needed_at',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[10px] font-bold tracking-wider text-[#1A1815] uppercase">
+                                            CATATAN &amp; KEBUTUHAN KHUSUS
+                                        </label>
+                                        <textarea
+                                            rows={3}
+                                            value={form.data.notes}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'notes',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder="Tuliskan tema acara, kebutuhan custom logo, atau permintaan khusus lainnya..."
+                                            className="mt-1.5 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-4 py-2.5 text-xs text-[#1A1815] focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                        />
+                                    </div>
+
+                                    <motion.button
+                                        whileTap={buttonTap.tap}
+                                        type="submit"
+                                        disabled={form.processing}
+                                        className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-[#0E2A1E] py-4 text-xs font-bold tracking-[0.14em] text-white shadow-md transition-colors hover:bg-[#163d2c] disabled:opacity-60"
+                                    >
+                                        {form.processing ? (
+                                            'MEMPROSES PERMINTAAN...'
+                                        ) : (
+                                            <>
+                                                <span>
+                                                    KIRIM PERMINTAAN PENAWARAN
+                                                </span>
+                                                <Send className="size-3.5" />
+                                            </>
+                                        )}
+                                    </motion.button>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </motion.div>
 
-                {/* 2. Layanan Corporate Gifting & Logo Mitra (Page 4 Top) */}
+                {/* 2. Layanan Corporate Gifting & Marquee Logo Klien */}
                 <div className="mt-12 text-center md:mt-14">
                     <span className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
                         ✦ LAYANAN CORPORATE GIFTING ✦
@@ -322,18 +444,36 @@ export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
                         perusahaan serta dikirimkan aman ke berbagai alamat.
                     </p>
 
-                    {/* Logo Box */}
-                    <div className="mx-auto mt-6 max-w-5xl rounded-2xl border border-[#EAE5DC] bg-white p-5 shadow-2xs">
+                    {/* Marquee Container */}
+                    <div className="mx-auto mt-6 max-w-5xl overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white p-5 shadow-2xs">
                         <span className="block text-[9px] font-bold tracking-[0.2em] text-[#8C877E] uppercase">
                             DIPERCAYA OLEH BERBAGAI PERUSAHAAN &amp; MITRA
                             BISNIS
                         </span>
-                        <div className="mt-3 flex items-center justify-center">
-                            <img
-                                src="/images/partner_logos.jpg"
-                                alt="Mitra Perusahaan: Mandiri, Tokopedia, Shopee, Gojek, Grab, BCA, BSI"
-                                className="h-9 w-auto max-w-full object-contain md:h-11"
-                            />
+
+                        <div className="relative mt-4 flex overflow-x-hidden">
+                            {/* Left & Right Elegant Edge Fades */}
+                            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white to-transparent" />
+                            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white to-transparent" />
+
+                            <motion.div
+                                animate={{ x: ['0%', '-50%'] }}
+                                transition={{
+                                    repeat: Infinity,
+                                    ease: 'linear',
+                                    duration: 24,
+                                }}
+                                className="flex shrink-0 items-center gap-10 py-1 pr-10 whitespace-nowrap"
+                            >
+                                {marqueeItems.map((brand, i) => (
+                                    <span
+                                        key={i}
+                                        className="font-serif text-xs font-bold tracking-[0.25em] text-[#8C877E] transition-colors hover:text-[#0E2A1E] md:text-sm"
+                                    >
+                                        ✦ {brand}
+                                    </span>
+                                ))}
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -341,3 +481,8 @@ export function CorporateSection({ whatsappNumber }: CorporateSectionProps) {
         </section>
     );
 }
+
+export {
+    CorporateSection as CorporateGifting,
+    CorporateSection as CorporateGiftingSection,
+};
