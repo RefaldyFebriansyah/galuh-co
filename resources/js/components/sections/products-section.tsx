@@ -1,32 +1,8 @@
 import { ShoppingCart } from 'lucide-react';
-import type { Variants } from 'motion/react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { useMemo, useState } from 'react';
-import { buttonTap, fadeIn } from '@/lib/motion';
+import { buttonTap } from '@/lib/motion';
 import type { Product, ProductCategory } from '@/types';
-
-const eagerStaggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.05,
-            delayChildren: 0.02,
-        },
-    },
-};
-
-const eagerStaggerItem: Variants = {
-    hidden: { opacity: 0, y: 16 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.38,
-            ease: [0.16, 1, 0.3, 1],
-        },
-    },
-};
 
 interface ProductsSectionProps {
     products: Product[];
@@ -35,9 +11,9 @@ interface ProductsSectionProps {
 
 const CATEGORIES: { label: string; value: 'all' | ProductCategory }[] = [
     { label: 'SEMUA KOLEKSI', value: 'all' },
-    { label: 'RAMADAN & EID', value: 'Ramadan & Eid' },
-    { label: 'NATAL & TAHUN BARU', value: 'Natal & Tahun Baru' },
+    { label: 'PAKET LEBARAN', value: 'Paket Lebaran' },
     { label: 'PAKET KANTOR', value: 'Paket Kantor' },
+    { label: 'NATAL & TAHUN BARU', value: 'Natal & Tahun Baru' },
     { label: 'WEDDING', value: 'Wedding' },
     { label: 'CUSTOM', value: 'Custom' },
 ];
@@ -52,7 +28,69 @@ export function ProductsSection({
         if (selectedCategory === 'all') {
             return products;
         }
-        return products.filter((p) => p.category === selectedCategory);
+
+        const normalize = (val: string) =>
+            val.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const sel = normalize(selectedCategory);
+
+        return products.filter((p) => {
+            const cat = normalize(p.category || '');
+            if (cat === sel) {
+                return true;
+            }
+
+            // Lebaran / Ramadan matches
+            if (
+                sel.includes('lebaran') &&
+                (cat.includes('lebaran') ||
+                    cat.includes('ramadan') ||
+                    cat.includes('eid'))
+            ) {
+                return true;
+            }
+
+            // Kantor / Corporate matches
+            if (
+                sel.includes('kantor') &&
+                (cat.includes('kantor') ||
+                    cat.includes('corporate') ||
+                    cat.includes('office') ||
+                    cat.includes('bisnis'))
+            ) {
+                return true;
+            }
+
+            // Natal / Tahun Baru matches
+            if (
+                (sel.includes('natal') || sel.includes('tahunbaru')) &&
+                (cat.includes('natal') ||
+                    cat.includes('christmas') ||
+                    cat.includes('tahunbaru'))
+            ) {
+                return true;
+            }
+
+            // Wedding matches
+            if (
+                sel.includes('wedding') &&
+                (cat.includes('wedding') ||
+                    cat.includes('seserahan') ||
+                    cat.includes('hantaran') ||
+                    cat.includes('nikah'))
+            ) {
+                return true;
+            }
+
+            // Custom matches
+            if (
+                sel.includes('custom') &&
+                (cat.includes('custom') || cat.includes('bespoke'))
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }, [products, selectedCategory]);
 
     const createOrderUrl = (productName: string) => {
@@ -61,10 +99,71 @@ export function ProductsSection({
     };
 
     const getBadgeLabel = (product: Product, idx: number) => {
-        if (idx === 0) return '✦ EDISI TERBATAS ✦';
-        if (idx === 1) return 'FAVORIT';
-        if (idx === 2) return 'EDISI SPESIAL';
-        return 'PAKET KANTOR';
+        // Tag produk unggulan berdasarkan slug / nama
+        if (product.slug === 'seri-kencana-lebaran') {
+            return '✦ BEST SELLER ✦';
+        }
+        if (product.slug === 'seri-rayyan-mubarak') {
+            return '✦ EDISI SPESIAL ✦';
+        }
+        if (product.slug === 'seri-safiya-mubarak') {
+            return 'FAVORIT';
+        }
+        if (product.slug === 'seri-eksekutif-kantor') {
+            return '✦ VIP EXECUTIVE ✦';
+        }
+        if (product.slug === 'seri-sinergi-korporat') {
+            return '✦ TECH & COFFEE ✦';
+        }
+        if (product.slug === 'seri-apresiasi-bisnis') {
+            return '✦ B2B FAVORIT ✦';
+        }
+        if (product.slug === 'seri-harmoni-bisnis') {
+            return '✦ WELLNESS DESK ✦';
+        }
+        if (product.slug === 'seri-mahligai-seserahan') {
+            return 'SESERAHAN MEWAH';
+        }
+        if (product.slug === 'seri-noel-luminary') {
+            return '✦ FESTIVE BESTSELLER ✦';
+        }
+        if (product.slug === 'seri-starlight-prestige') {
+            return '✦ EDISI TAHUN BARU ✦';
+        }
+        if (product.slug === 'seri-winter-harmony') {
+            return 'FAVORIT';
+        }
+        if (product.slug === 'seri-bespoke-royal-heritage') {
+            return 'BESPOKE DESIGN';
+        }
+
+        // Tag kategori konsisten
+        const norm = (product.category || '').toLowerCase();
+        if (
+            norm.includes('lebaran') ||
+            norm.includes('ramadan') ||
+            norm.includes('eid')
+        ) {
+            return idx === 0 ? '✦ EDISI TERBATAS ✦' : 'EDISI LEBARAN';
+        }
+        if (
+            norm.includes('kantor') ||
+            norm.includes('corporate') ||
+            norm.includes('office')
+        ) {
+            return 'PAKET KANTOR';
+        }
+        if (norm.includes('natal') || norm.includes('christmas')) {
+            return 'EDISI NATAL';
+        }
+        if (norm.includes('wedding') || norm.includes('seserahan')) {
+            return 'WEDDING';
+        }
+        if (norm.includes('custom') || norm.includes('bespoke')) {
+            return 'CUSTOM ORDER';
+        }
+
+        return 'EKSKLUSIF';
     };
 
     return (
@@ -108,41 +207,29 @@ export function ProductsSection({
 
                 {/* Products Grid (4 Columns) */}
                 {filteredProducts.length === 0 ? (
-                    <motion.div
-                        variants={fadeIn}
-                        initial="hidden"
-                        animate="visible"
-                        className="mt-8 rounded-3xl border border-dashed border-[#EAE5DC] p-12 text-center"
-                    >
+                    <div className="mt-8 rounded-3xl border border-dashed border-[#EAE5DC] p-12 text-center">
                         <p className="font-serif text-sm text-[#8C877E]">
                             Belum ada produk untuk kategori ini.
                         </p>
-                    </motion.div>
+                    </div>
                 ) : (
                     <motion.div
-                        variants={eagerStaggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.01 }}
+                        key={selectedCategory}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.28,
+                            ease: [0.16, 1, 0.3, 1],
+                        }}
                         className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5"
                     >
-                        <AnimatePresence mode="popLayout">
-                            {filteredProducts.map((product, idx) => (
+                        {filteredProducts.map((product, idx) => {
+                            const badgeText = getBadgeLabel(product, idx);
+                            const isHighlightedBadge = badgeText.includes('✦');
+
+                            return (
                                 <motion.div
                                     key={product.id}
-                                    layout
-                                    variants={eagerStaggerItem}
-                                    exit={{
-                                        opacity: 0,
-                                        scale: 0.94,
-                                        transition: { duration: 0.2 },
-                                    }}
-                                    transition={{
-                                        layout: {
-                                            duration: 0.35,
-                                            ease: [0.25, 0.1, 0.25, 1],
-                                        },
-                                    }}
                                     whileHover={{
                                         y: -5,
                                         transition: {
@@ -152,44 +239,50 @@ export function ProductsSection({
                                     }}
                                     className="group flex flex-col overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white shadow-2xs transition-shadow duration-300 hover:shadow-lg"
                                 >
-                                    {/* Product Image Placeholder Area */}
+                                    {/* Product Image Area */}
                                     <div className="relative flex aspect-[4/3.8] w-full items-center justify-center overflow-hidden bg-[#F2EDE4]">
-                                        <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-4 text-center transition-transform duration-500 ease-out group-hover:scale-105 sm:p-6">
-                                            <div className="relative flex size-11 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs sm:size-14">
-                                                <span className="font-serif text-xl font-normal text-[#C5A880] sm:text-2xl">
-                                                    G
+                                        {product.image ? (
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                loading="lazy"
+                                                className="size-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-4 text-center transition-transform duration-500 ease-out group-hover:scale-105 sm:p-6">
+                                                <div className="relative flex size-11 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs sm:size-14">
+                                                    <span className="font-serif text-xl font-normal text-[#C5A880] sm:text-2xl">
+                                                        G
+                                                    </span>
+                                                </div>
+                                                <span className="mt-2 font-serif text-[10px] font-bold tracking-[0.18em] text-[#8C877E] uppercase sm:mt-2.5 sm:text-[11px] sm:tracking-[0.2em]">
+                                                    GALUH &amp; CO.
+                                                </span>
+                                                <span className="mt-0.5 text-[7.5px] tracking-wider text-[#A69E91] sm:text-[8px]">
+                                                    Foto Koleksi Segera Hadir
                                                 </span>
                                             </div>
-                                            <span className="mt-2 font-serif text-[10px] font-bold tracking-[0.18em] text-[#8C877E] uppercase sm:mt-2.5 sm:text-[11px] sm:tracking-[0.2em]">
-                                                GALUH &amp; CO.
-                                            </span>
-                                            <span className="mt-0.5 text-[7.5px] tracking-wider text-[#A69E91] sm:text-[8px]">
-                                                Foto Koleksi Segera Hadir
-                                            </span>
-                                        </div>
+                                        )}
 
                                         {/* Badge on Top Right */}
                                         <div className="absolute top-2.5 right-2.5 flex items-center">
                                             <span
                                                 className={`rounded-full px-3 py-0.5 text-[8px] font-bold tracking-wider uppercase backdrop-blur-xs ${
-                                                    idx === 0
-                                                        ? 'border border-[#C5A880]/50 bg-[#0E2A1E] text-white'
+                                                    isHighlightedBadge
+                                                        ? 'border border-[#C5A880]/50 bg-[#0E2A1E] text-[#F3E8D2] shadow-xs'
                                                         : 'border border-[#EAE5DC] bg-white/95 text-[#1A1815] shadow-xs'
                                                 }`}
                                             >
-                                                {getBadgeLabel(product, idx)}
+                                                {badgeText}
                                             </span>
                                         </div>
 
-                                        {/* Optional pill for first product */}
-                                        {idx === 0 && (
-                                            <div className="absolute bottom-2.5 left-2.5">
-                                                <span className="rounded-full bg-white/90 px-2.5 py-0.5 font-serif text-[9px] text-[#8B6B38] italic backdrop-blur-xs">
-                                                    Ramadan &amp; Spesial
-                                                    Lebaran
-                                                </span>
-                                            </div>
-                                        )}
+                                        {/* Category pill on bottom left */}
+                                        <div className="absolute bottom-2.5 left-2.5">
+                                            <span className="rounded-full bg-white/90 px-2.5 py-0.5 font-serif text-[9px] text-[#8B6B38] italic backdrop-blur-xs shadow-2xs">
+                                                {product.category}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     {/* Card Content */}
@@ -233,8 +326,8 @@ export function ProductsSection({
                                         </div>
                                     </div>
                                 </motion.div>
-                            ))}
-                        </AnimatePresence>
+                            );
+                        })}
                     </motion.div>
                 )}
             </div>

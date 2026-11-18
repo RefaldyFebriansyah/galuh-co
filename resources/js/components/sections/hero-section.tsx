@@ -6,6 +6,9 @@ import { buttonTap, floatingVisual, fadeInUp } from '@/lib/motion';
 
 interface HeroSectionProps {
     whatsappNumber: string;
+    heroBadge?: string;
+    heroTitlePrefix?: string;
+    heroDescription?: string;
 }
 
 interface TypedPhrase {
@@ -19,7 +22,12 @@ const typedPhrases: TypedPhrase[] = [
     { gold: 'Momen ', dark: 'Istimewa' },
 ];
 
-export function HeroSection({ whatsappNumber }: HeroSectionProps) {
+export function HeroSection({
+    whatsappNumber,
+    heroBadge = 'Signature Atelier Hampers & Gift',
+    heroTitlePrefix = 'Hampers Eksklusif',
+    heroDescription = 'Pilihan hampers premium dan hadiah perusahaan dengan kemasan eksklusif. Siap melengkapi setiap momen istimewa Anda dengan mudah dan berkelas.',
+}: HeroSectionProps) {
     const { scrollY } = useScroll();
     const parallaxY = useTransform(scrollY, [0, 500], [0, 20]);
 
@@ -82,17 +90,7 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
     )}`;
 
     return (
-        <section className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-center overflow-hidden py-4 sm:py-6 lg:min-h-[calc(100vh-5rem)] lg:py-4">
-            {/* 1. Subtle Radial Glow (#9E7B3C at 6%-7% Opacity) */}
-            <div
-                className="pointer-events-none absolute -top-32 -left-32 size-[480px] rounded-full bg-[#9E7B3C]/[0.06] blur-[120px] sm:size-[560px] sm:blur-[140px]"
-                aria-hidden="true"
-            />
-            <div
-                className="pointer-events-none absolute top-1/2 -right-24 size-[520px] -translate-y-1/2 rounded-full bg-[#9E7B3C]/[0.07] blur-[130px] sm:size-[620px] sm:blur-[150px]"
-                aria-hidden="true"
-            />
-
+        <section className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-center py-4 sm:py-6 lg:min-h-[calc(100vh-5.5rem)] lg:py-6">
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
                 <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
                     {/* Left Content */}
@@ -108,11 +106,11 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                     >
                         {/* Heading with Typewriter Animation & Blinking Gold Cursor */}
                         <motion.h1
-                            aria-label="Hampers Eksklusif untuk Personal & Perusahaan"
+                            aria-label={`${heroTitlePrefix} untuk Personal & Perusahaan`}
                             className="font-serif text-4xl leading-[1.12] font-normal tracking-tight sm:text-5xl md:text-5xl lg:text-6xl"
                         >
                             <span className="block text-[#1A1815]">
-                                Hampers Eksklusif{' '}
+                                {heroTitlePrefix}{' '}
                                 <span className="text-[#C5A880] italic">
                                     untuk
                                 </span>
@@ -141,9 +139,7 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
 
                         {/* Description */}
                         <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#6E6962] md:text-base">
-                            Pilihan hampers premium dan hadiah perusahaan dengan
-                            kemasan eksklusif. Siap melengkapi setiap momen
-                            istimewa Anda dengan mudah dan berkelas.
+                            {heroDescription}
                         </p>
 
                         {/* CTA Buttons */}
@@ -269,11 +265,10 @@ export function HeroSection({ whatsappNumber }: HeroSectionProps) {
                                         aria-hidden="true"
                                     />
 
-                                    {/* Top Prestige Bar */}
+                                    {/* Top Prestige Label */}
                                     <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-start sm:inset-x-4 sm:top-4">
-                                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/40 px-2.5 py-1 text-[8px] font-bold tracking-[0.2em] text-[#FAF0D7] uppercase backdrop-blur-md sm:px-3 sm:py-1 sm:text-[8.5px]">
-                                            <Sparkles className="size-2.5 text-[#C5A880]" />
-                                            <span>SIGNATURE ATELIER</span>
+                                        <span className="inline-flex items-center rounded-full border border-[#D5CEC2] bg-[#FAF8F5]/95 px-3 py-1 text-[8.5px] font-bold tracking-[0.16em] text-[#0E2A1E] shadow-sm backdrop-blur-xs sm:px-3.5 sm:py-1 sm:text-[9.5px] uppercase">
+                                            {(heroBadge || 'Signature Atelier').replace(/^[✦*✨\s]+|[✦*✨\s]+$/g, '').trim()}
                                         </span>
                                     </div>
 

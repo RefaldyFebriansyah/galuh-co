@@ -1,9 +1,10 @@
 export type ProductCategory =
-    | 'Ramadan & Eid'
-    | 'Natal & Tahun Baru'
+    | 'Paket Lebaran'
     | 'Paket Kantor'
+    | 'Natal & Tahun Baru'
     | 'Wedding'
-    | 'Custom';
+    | 'Custom'
+    | 'Ramadan & Eid';
 
 export interface Product {
     id: number;
@@ -14,7 +15,7 @@ export interface Product {
     contents: string[];
     price_from: number;
     formatted_price: string;
-    image: string;
+    image: string | null;
     sort_order: number;
     is_active: boolean;
     created_at?: string;

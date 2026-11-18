@@ -6,9 +6,27 @@ import { buttonTap, fadeInUp, viewportOnce } from '@/lib/motion';
 
 interface FooterSectionProps {
     whatsappNumber: string;
+    logoSrc?: string;
+    contactEmail?: string;
+    contactPhone?: string;
+    companyAddress?: string;
+    operationalHours?: string;
+    instagramUrl?: string;
+    tiktokUrl?: string;
+    linkedinUrl?: string;
 }
 
-export function FooterSection({ whatsappNumber }: FooterSectionProps) {
+export function FooterSection({
+    whatsappNumber,
+    logoSrc,
+    contactEmail = 'halo@galuh.co',
+    contactPhone = '+62 815-7241-4233',
+    companyAddress = 'Jl. Galuh Mas Raya No. 88, Karawang Barat, Jawa Barat 41361',
+    operationalHours = 'Senin - Sabtu: 08.00 - 20.00 WIB',
+    instagramUrl = 'https://instagram.com/galuh.co',
+    tiktokUrl = 'https://tiktok.com/@galuh.co',
+    linkedinUrl,
+}: FooterSectionProps) {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya ingin konsultasi pemesanan hampers.',
     )}`;
@@ -90,6 +108,7 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                         <div className="lg:col-span-4">
                             <GaluhLogo
                                 variant="white"
+                                src={logoSrc}
                                 className="h-14 w-auto md:h-16"
                             />
                             <p className="mt-4 max-w-sm text-xs leading-relaxed text-white/60">
@@ -109,10 +128,10 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                                 <li>
                                     Email:{' '}
                                     <a
-                                        href="mailto:hampers@galuh.co"
+                                        href={`mailto:${contactEmail}`}
                                         className="transition-colors hover:text-white"
                                     >
-                                        hampers@galuh.co
+                                        {contactEmail}
                                     </a>
                                 </li>
                                 <li>
@@ -123,20 +142,35 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                                         rel="noopener noreferrer"
                                         className="transition-colors hover:text-white"
                                     >
-                                        +62 811-9283-888
+                                        {contactPhone}
                                     </a>
                                 </li>
-                                <li>
-                                    Instagram:{' '}
-                                    <a
-                                        href="https://instagram.com/galuh.co"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="transition-colors hover:text-white"
-                                    >
-                                        @galuh.co
-                                    </a>
-                                </li>
+                                {instagramUrl && (
+                                    <li>
+                                        Instagram:{' '}
+                                        <a
+                                            href={instagramUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="transition-colors hover:text-white"
+                                        >
+                                            @galuh.co
+                                        </a>
+                                    </li>
+                                )}
+                                {tiktokUrl && (
+                                    <li>
+                                        TikTok:{' '}
+                                        <a
+                                            href={tiktokUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="transition-colors hover:text-white"
+                                        >
+                                            @galuh.co
+                                        </a>
+                                    </li>
+                                )}
                             </ul>
                         </div>
 
@@ -145,13 +179,11 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                             <h4 className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
                                 GALERI &amp; STUDIO
                             </h4>
-                            <p className="mt-4 text-xs leading-relaxed text-white/70">
-                                Perumahan Jati Indah, Jl. Otista No. 57 <br />
-                                Blok. B, Panyingkiran, Kec. Ciamis, <br />
-                                Kabupaten Ciamis, Jawa Barat 46211
+                            <p className="mt-4 text-xs leading-relaxed text-white/70 whitespace-pre-line">
+                                {companyAddress}
                             </p>
                             <a
-                                href="https://maps.google.com/?q=Perumahan+Jati+Indah+Jl+Otista+Ciamis"
+                                href={`https://maps.google.com/?q=${encodeURIComponent(companyAddress)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-2 inline-flex items-center gap-1 text-[11px] text-[#C5A880] hover:underline"
@@ -166,13 +198,9 @@ export function FooterSection({ whatsappNumber }: FooterSectionProps) {
                             <h4 className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
                                 JAM OPERASIONAL
                             </h4>
-                            <ul className="mt-4 space-y-1.5 text-xs text-white/70">
-                                <li>Senin - Jumat: 09:00 - 18:00 WIB</li>
-                                <li>Sabtu: 10:00 - 16:00 WIB</li>
-                                <li className="text-[#C5A880]">
-                                    Minggu &amp; Libur: Perjanjian Temu
-                                </li>
-                            </ul>
+                            <p className="mt-4 text-xs leading-relaxed text-white/70 whitespace-pre-line">
+                                {operationalHours}
+                            </p>
                         </div>
                     </div>
 

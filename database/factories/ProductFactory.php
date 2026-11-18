@@ -23,7 +23,7 @@ class ProductFactory extends Factory
         return [
             'name' => Str::title($name),
             'slug' => Str::slug($name),
-            'category' => fake()->randomElement(['Lebaran', 'Natal', 'Corporate', 'Wedding', 'Custom']),
+            'category' => fake()->randomElement(['Paket Lebaran', 'Paket Kantor', 'Natal & Tahun Baru', 'Wedding', 'Custom']),
             'short_description' => fake()->sentence(12),
             'contents' => [
                 'Artisan Gourmet Tea 100g',

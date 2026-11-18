@@ -18,6 +18,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $budget_per_package
  * @property Carbon|string|null $needed_at
  * @property string|null $notes
+ * @property string $status
+ * @property string|null $admin_notes
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -30,6 +32,8 @@ use Illuminate\Support\Carbon;
     'budget_per_package',
     'needed_at',
     'notes',
+    'status',
+    'admin_notes',
 ])]
 class Inquiry extends Model
 {

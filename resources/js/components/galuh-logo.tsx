@@ -3,6 +3,7 @@ interface GaluhLogoProps {
     variant?: 'dark' | 'light' | 'gold' | 'white';
     showText?: boolean;
     textClassName?: string;
+    src?: string;
 }
 
 export function GaluhLogo({
@@ -10,11 +11,12 @@ export function GaluhLogo({
     variant = 'gold',
     showText = true,
     textClassName = '',
+    src,
 }: GaluhLogoProps) {
     const isWhite = variant === 'light' || variant === 'white';
-    const logoSrc = isWhite
-        ? '/images/galuh_logo_white.png'
-        : '/images/galuh_logo_gold.png';
+    const logoSrc =
+        src ||
+        (isWhite ? '/images/galuh_logo_white.png' : '/images/galuh_logo_gold.png');
 
     return (
         <div className="inline-flex items-center gap-6 text-left sm:gap-7">

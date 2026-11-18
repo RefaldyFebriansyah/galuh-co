@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { FloatingWhatsApp } from '@/components/floating-whatsapp';
+import { HeroBackgroundAnimation } from '@/components/hero-background-animation';
 import { AboutSection } from '@/components/sections/about-section';
 import { CorporateSection } from '@/components/sections/corporate-section';
 import { FaqSection } from '@/components/sections/faq-section';
@@ -16,16 +17,34 @@ import type { Product } from '@/types';
 interface WelcomeProps {
     products?: Product[];
     whatsappNumber?: string;
+    settings?: {
+        whatsapp_number?: string;
+        contact_email?: string;
+        contact_phone?: string;
+        company_address?: string;
+        operational_hours?: string;
+        instagram_url?: string;
+        tiktok_url?: string;
+        linkedin_url?: string;
+        logo_gold?: string;
+        logo_white?: string;
+        hero_badge?: string;
+        hero_title_prefix?: string;
+        hero_description?: string;
+    };
 }
 
 export default function Welcome({
     products = [],
     whatsappNumber = '6281572414233',
+    settings,
 }: WelcomeProps) {
     useEffect(() => {
         // Ensure luxury ivory brand theme is active on landing page
         document.documentElement.classList.remove('dark');
     }, []);
+
+    const activeWa = settings?.whatsapp_number || whatsappNumber;
 
     return (
         <>
@@ -42,11 +61,22 @@ export default function Welcome({
                     aria-hidden="true"
                 />
 
-                {/* 1. Navbar */}
-                <Navbar whatsappNumber={whatsappNumber} />
-
-                {/* 2. Hero Section */}
-                <HeroSection whatsappNumber={whatsappNumber} />
+                {/* 1 & 2. Continuous Hero Area: Navbar + Hero Section sharing one seamless animated luxury background */}
+                <div className="relative overflow-hidden bg-[#FAF7F2]">
+                    <HeroBackgroundAnimation />
+                    <Navbar
+                        whatsappNumber={activeWa}
+                        logoSrc={settings?.logo_gold}
+                    />
+                    <HeroSection
+                        whatsappNumber={activeWa}
+                        heroBadge={settings?.hero_badge}
+                        heroTitlePrefix={settings?.hero_title_prefix}
+                        heroDescription={settings?.hero_description}
+                    />
+                    {/* Soft gradient fade into subsequent section */}
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[#FAF7F2]" />
+                </div>
 
                 {/* 3. Tentang Brand */}
                 <AboutSection />
@@ -54,7 +84,7 @@ export default function Welcome({
                 {/* 4. Koleksi Hampers (Database Products with Filter) */}
                 <ProductsSection
                     products={products}
-                    whatsappNumber={whatsappNumber}
+                    whatsappNumber={activeWa}
                 />
 
                 {/* 5. Kenapa Memilih Kami & Metrik Stats */}
@@ -64,7 +94,7 @@ export default function Welcome({
                 <StepsSection />
 
                 {/* 7. Corporate Gifting & Inquiry Form */}
-                <CorporateSection whatsappNumber={whatsappNumber} />
+                <CorporateSection whatsappNumber={activeWa} />
 
                 {/* 8. Testimoni Pelanggan */}
                 <TestimonialsSection />
@@ -73,10 +103,20 @@ export default function Welcome({
                 <FaqSection />
 
                 {/* 10. CTA Penutup & Footer */}
-                <FooterSection whatsappNumber={whatsappNumber} />
+                <FooterSection
+                    whatsappNumber={activeWa}
+                    logoSrc={settings?.logo_white}
+                    contactEmail={settings?.contact_email}
+                    contactPhone={settings?.contact_phone}
+                    companyAddress={settings?.company_address}
+                    operationalHours={settings?.operational_hours}
+                    instagramUrl={settings?.instagram_url}
+                    tiktokUrl={settings?.tiktok_url}
+                    linkedinUrl={settings?.linkedin_url}
+                />
 
                 {/* Floating WhatsApp CTA (Pojok Kanan Bawah) */}
-                <FloatingWhatsApp whatsappNumber={whatsappNumber} />
+                <FloatingWhatsApp whatsappNumber={activeWa} />
             </div>
         </>
     );

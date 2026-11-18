@@ -6,9 +6,10 @@ import { WhatsAppIcon } from '@/components/whatsapp-icon';
 
 interface NavbarProps {
     whatsappNumber: string;
+    logoSrc?: string;
 }
 
-export function Navbar({ whatsappNumber }: NavbarProps) {
+export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -45,7 +46,7 @@ export function Navbar({ whatsappNumber }: NavbarProps) {
             >
                 {/* Brand Logo */}
                 <a href="#" className="flex items-center pl-2 sm:pl-3">
-                    <GaluhLogo />
+                    <GaluhLogo src={logoSrc} />
                 </a>
 
                 {/* Desktop Nav Links */}
