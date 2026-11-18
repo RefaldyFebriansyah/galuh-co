@@ -1,16 +1,17 @@
 import { Head } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { MotionConfig } from 'motion/react';
 import { FloatingWhatsApp } from '@/components/floating-whatsapp';
 import { HeroBackgroundAnimation } from '@/components/hero-background-animation';
 import { AboutSection } from '@/components/sections/about-section';
-import { CorporateSection } from '@/components/sections/corporate-section';
+import { CorporateGifting } from '@/components/sections/CorporateGifting';
 import { FaqSection } from '@/components/sections/faq-section';
 import { FeaturesSection } from '@/components/sections/features-section';
 import { FooterSection } from '@/components/sections/footer-section';
-import { HeroSection } from '@/components/sections/hero-section';
+import { Hero } from '@/components/sections/Hero';
+import { HowToOrder } from '@/components/sections/HowToOrder';
 import { Navbar } from '@/components/sections/navbar';
-import { ProductsSection } from '@/components/sections/products-section';
-import { StepsSection } from '@/components/sections/steps-section';
+import { Catalog } from '@/components/sections/Catalog';
 import { TestimonialsSection } from '@/components/sections/testimonials-section';
 import type { Product } from '@/types';
 
@@ -47,17 +48,13 @@ export default function Welcome({
     const activeWa = settings?.whatsapp_number || whatsappNumber;
 
     return (
-        <>
+        <MotionConfig reducedMotion="user">
             <Head title="GALUH & CO. — Hampers Premium & Corporate Gifting" />
 
             <div className="relative min-h-screen bg-[#FAF7F2] font-sans text-[#1A1815] selection:bg-[#C59746] selection:text-white">
                 {/* Subtle Luxury Paper Grain Texture Overlay (Opacity ~2.5%, Quiet Luxury Invitation Paper) */}
                 <div
-                    className="pointer-events-none fixed inset-0 z-30 opacity-[0.025] mix-blend-multiply"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'repeat',
-                    }}
+                    className="paper-texture pointer-events-none fixed inset-0 z-30 opacity-[0.03] mix-blend-multiply"
                     aria-hidden="true"
                 />
 
@@ -68,33 +65,28 @@ export default function Welcome({
                         whatsappNumber={activeWa}
                         logoSrc={settings?.logo_gold}
                     />
-                    <HeroSection
+                    <Hero
                         whatsappNumber={activeWa}
                         heroBadge={settings?.hero_badge}
                         heroTitlePrefix={settings?.hero_title_prefix}
                         heroDescription={settings?.hero_description}
                     />
-                    {/* Soft gradient fade into subsequent section */}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[#FAF7F2]" />
                 </div>
 
                 {/* 3. Tentang Brand */}
                 <AboutSection />
 
                 {/* 4. Koleksi Hampers (Database Products with Filter) */}
-                <ProductsSection
-                    products={products}
-                    whatsappNumber={activeWa}
-                />
+                <Catalog products={products} whatsappNumber={activeWa} />
 
                 {/* 5. Kenapa Memilih Kami & Metrik Stats */}
                 <FeaturesSection />
 
                 {/* 6. Cara Pesan 4 Langkah */}
-                <StepsSection />
+                <HowToOrder />
 
                 {/* 7. Corporate Gifting & Inquiry Form */}
-                <CorporateSection whatsappNumber={activeWa} />
+                <CorporateGifting whatsappNumber={activeWa} />
 
                 {/* 8. Testimoni Pelanggan */}
                 <TestimonialsSection />
@@ -118,6 +110,6 @@ export default function Welcome({
                 {/* Floating WhatsApp CTA (Pojok Kanan Bawah) */}
                 <FloatingWhatsApp whatsappNumber={activeWa} />
             </div>
-        </>
+        </MotionConfig>
     );
 }

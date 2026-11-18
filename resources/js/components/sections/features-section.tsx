@@ -115,13 +115,18 @@ export function FeaturesSection() {
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
                 {/* Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
-                        ✦ KEUNGGULAN KAMI ✦
-                    </span>
-                    <h2 className="mt-2 font-serif text-3xl font-normal text-[#1A1815] md:text-4xl lg:text-5xl">
-                        Komitmen Kualitas &amp; Kepercayaan
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
+                        <span>STANDAR KRIYA</span>
+                        <span className="size-1 rounded-full bg-[#C5A880]" />
+                        <span>INTEGRITAS PRODUK</span>
+                    </div>
+                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] md:text-4xl lg:text-5xl">
+                        Komitmen Kualitas &amp;{' '}
+                        <span className="text-[#9E7E45] italic">
+                            Kepercayaan
+                        </span>
                     </h2>
-                    <p className="mt-3 text-xs leading-relaxed text-[#6E6962] md:text-sm">
+                    <p className="mt-3 text-sm leading-relaxed text-[#5C564C] md:text-base">
                         Setiap bingkisan kami rangkai dengan standar terbaik
                         untuk menjaga kesan hangat bagi orang terdekat maupun
                         citra positif perusahaan Anda.

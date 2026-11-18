@@ -1,58 +1,58 @@
 import type { Transition, Variants } from 'motion/react';
 
 /**
- * GALUH & CO. - Motion Architecture
+ * GALUH & CO. - Editorial Luxury Motion Architecture
  *
  * Rules:
  * 1. Durasi 0.3s - 0.8s
- * 2. Easing halus (easeOut / spring lembut)
+ * 2. Easing lembut (easeOut / smooth spring)
  * 3. Scroll animation runs once (viewport: { once: true })
- * 4. Strictly GPU-accelerated: ONLY transform & opacity (never width/height/top/left)
+ * 4. Strictly GPU-accelerated: ONLY transform & opacity (never width, height, top, left)
  * 5. Respect prefers-reduced-motion via <MotionConfig reducedMotion="user">
  */
 
-// Timing and Easing Presets (0.3s - 0.8s)
+// 1. Timing and Easing Presets (0.3s - 0.8s)
 export const transitionFast: Transition = {
-    duration: 0.3,
-    ease: [0.16, 1, 0.3, 1], // Smooth snappy easeOut
+    duration: 0.35,
+    ease: [0.16, 1, 0.3, 1], // Crisp snappy easeOut
 };
 
 export const transitionBase: Transition = {
-    duration: 0.5,
-    ease: [0.25, 0.1, 0.25, 1], // Refined natural ease
+    duration: 0.55,
+    ease: [0.22, 1, 0.36, 1], // Natural luxury ease
 };
 
 export const transitionSlow: Transition = {
-    duration: 0.8,
-    ease: [0.22, 1, 0.36, 1], // Elegant luxury easeOut
+    duration: 0.75,
+    ease: [0.19, 1, 0.22, 1], // Elegant stately easeOut
 };
 
 export const transitionSpring: Transition = {
     type: 'spring',
-    stiffness: 260,
-    damping: 24,
+    stiffness: 220,
+    damping: 22,
     mass: 0.8,
 };
 
 export const transitionGentleSpring: Transition = {
     type: 'spring',
-    stiffness: 140,
+    stiffness: 130,
     damping: 18,
     mass: 0.9,
 };
 
-// Default Viewport config for scroll triggers (always once: true, eager trigger)
+// 2. Default Viewport Config for Scroll Triggers (Strictly once: true)
 export const viewportOnce = {
-    once: true,
-    amount: 0.08,
-} as const;
-
-export const viewportHeader = {
     once: true,
     amount: 0.1,
 } as const;
 
-// Reusable Variants (strictly transform & opacity)
+export const viewportEager = {
+    once: true,
+    amount: 0.05,
+} as const;
+
+// 3. Reusable Variants (Transform & Opacity Only)
 export const fadeIn: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -62,7 +62,7 @@ export const fadeIn: Variants = {
 };
 
 export const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: 22 },
     visible: {
         opacity: 1,
         y: 0,
@@ -71,7 +71,7 @@ export const fadeInUp: Variants = {
 };
 
 export const fadeInDown: Variants = {
-    hidden: { opacity: 0, y: -24 },
+    hidden: { opacity: 0, y: -22 },
     visible: {
         opacity: 1,
         y: 0,
@@ -98,7 +98,7 @@ export const fadeInRight: Variants = {
 };
 
 export const scaleIn: Variants = {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.94 },
     visible: {
         opacity: 1,
         scale: 1,
@@ -106,20 +106,20 @@ export const scaleIn: Variants = {
     },
 };
 
-// Staggered Container for Product Grids & Lists
+// 4. Staggered Container for Grids & Lists
 export const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1,
+            staggerChildren: 0.07,
+            delayChildren: 0.05,
         },
     },
 };
 
 export const staggerItem: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 18 },
     visible: {
         opacity: 1,
         y: 0,
@@ -127,12 +127,12 @@ export const staggerItem: Variants = {
     },
 };
 
-// Micro-interactions (hover & tap using transform only)
+// 5. Interactive Micro-Interactions (GPU-Friendly)
 export const cardHover = {
     rest: { y: 0, scale: 1 },
     hover: {
-        y: -6,
-        scale: 1.015,
+        y: -5,
+        scale: 1.012,
         transition: transitionFast,
     },
     tap: {
@@ -143,16 +143,27 @@ export const cardHover = {
 
 export const buttonTap = {
     rest: { scale: 1 },
-    hover: { scale: 1.02, transition: transitionFast },
+    hover: { scale: 1.025, transition: transitionFast },
     tap: { scale: 0.97, transition: transitionFast },
 };
 
-// Floating animation for luxury hampers hero visual
 export const floatingVisual: Variants = {
     animate: {
-        y: [-4, 6, -4],
+        y: [-3, 5, -3],
         transition: {
-            duration: 5,
+            duration: 6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+        },
+    },
+};
+
+export const pulseGlow: Variants = {
+    animate: {
+        opacity: [0.6, 1, 0.6],
+        scale: [0.98, 1.02, 0.98],
+        transition: {
+            duration: 3.5,
             repeat: Infinity,
             ease: 'easeInOut',
         },

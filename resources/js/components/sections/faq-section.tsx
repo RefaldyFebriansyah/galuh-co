@@ -52,15 +52,19 @@ export function FaqSection() {
             <div className="mx-auto max-w-4xl px-6 lg:px-12">
                 {/* Header */}
                 <div className="text-center">
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
-                        ✦ TANYA JAWAB ✦
-                    </span>
-                    <h2 className="mt-2 font-serif text-3xl font-normal text-[#1A1815] md:text-4xl lg:text-5xl">
-                        Pertanyaan yang Sering Diajukan
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
+                        <span>INFORMASI &amp; BANTUAN</span>
+                        <span className="size-1 rounded-full bg-[#C5A880]" />
+                        <span>FAQ ATELIER</span>
+                    </div>
+                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] md:text-4xl lg:text-5xl">
+                        Pertanyaan yang Sering{' '}
+                        <span className="text-[#9E7E45] italic">Diajukan</span>
                     </h2>
-                    <p className="mt-3 text-xs leading-relaxed text-[#6E6962] md:text-sm">
+                    <p className="mt-3 text-sm leading-relaxed text-[#5C564C] md:text-base">
                         Informasi lengkap seputar pemesanan, kustomisasi paket,
-                        hingga jaminan pengiriman hampers kami.
+                        hingga jaminan pengiriman hampers kami ke seluruh
+                        Indonesia.
                     </p>
                 </div>
 

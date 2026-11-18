@@ -52,14 +52,18 @@ export function TestimonialsSection() {
             <div className="mx-auto max-w-7xl px-6 lg:px-12">
                 {/* Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
-                        ✦ KATA MEREKA ✦
-                    </span>
-                    <h2 className="mt-2 font-serif text-3xl font-normal text-[#1A1815] md:text-4xl lg:text-5xl">
-                        Kisah dari Mereka yang <br />
-                        Mempercayai Galuh &amp; Co.
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
+                        <span>KISAH &amp; APRESIASI</span>
+                        <span className="size-1 rounded-full bg-[#C5A880]" />
+                        <span>TESTIMONI KLIEN</span>
+                    </div>
+                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] md:text-4xl lg:text-5xl">
+                        Kisah dari Mereka yang{' '}
+                        <span className="text-[#9E7E45] italic">
+                            Mempercayai Kami
+                        </span>
                     </h2>
-                    <p className="mt-3 text-xs leading-relaxed text-[#6E6962] md:text-sm">
+                    <p className="mt-3 text-sm leading-relaxed text-[#5C564C] md:text-base">
                         Senyum penerima dan kepuasan setiap pengirim selalu
                         menjadi motivasi utama kami dalam merangkai setiap kotak
                         hadiah istimewa.

@@ -1,139 +1,425 @@
+import { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
-import { useEffect } from 'react';
 
-// Distribusi partikel emas yang terkurasi elegan (stardust / ambient shimmer)
-const PARTICLES = [
-    {
-        id: 1,
-        left: '8%',
-        top: '22%',
-        size: 14,
-        char: '✦',
-        delay: 0,
-        duration: 6.2,
-    },
-    {
-        id: 2,
-        left: '18%',
-        top: '65%',
-        size: 9,
-        char: '•',
-        delay: 1.4,
-        duration: 5.5,
-    },
-    {
-        id: 3,
-        left: '28%',
-        top: '32%',
-        size: 12,
-        char: '⋆',
-        delay: 0.8,
-        duration: 7.1,
-    },
-    {
-        id: 4,
-        left: '44%',
-        top: '16%',
-        size: 11,
-        char: '✦',
-        delay: 2.1,
-        duration: 6.8,
-    },
-    {
-        id: 5,
-        left: '52%',
-        top: '78%',
-        size: 8,
-        char: '•',
-        delay: 0.4,
-        duration: 5.2,
-    },
-    {
-        id: 6,
-        left: '68%',
-        top: '25%',
-        size: 13,
-        char: '⋆',
-        delay: 1.8,
-        duration: 7.4,
-    },
-    {
-        id: 7,
-        left: '82%',
-        top: '55%',
-        size: 10,
-        char: '✦',
-        delay: 2.7,
-        duration: 6.0,
-    },
-    {
-        id: 8,
-        left: '91%',
-        top: '20%',
-        size: 8,
-        char: '•',
-        delay: 1.1,
-        duration: 5.8,
-    },
-    {
-        id: 9,
-        left: '14%',
-        top: '84%',
-        size: 12,
-        char: '⋆',
-        delay: 2.3,
-        duration: 6.5,
-    },
-    {
-        id: 10,
-        left: '60%',
-        top: '45%',
-        size: 10,
-        char: '✦',
-        delay: 0.9,
-        duration: 6.3,
-    },
-    {
-        id: 11,
-        left: '36%',
-        top: '88%',
-        size: 9,
-        char: '•',
-        delay: 1.6,
-        duration: 5.9,
-    },
-    {
-        id: 12,
-        left: '88%',
-        top: '82%',
-        size: 11,
-        char: '⋆',
-        delay: 2.5,
-        duration: 7.0,
-    },
-];
+/**
+ * 3D Luxury Atelier Canvas Background for GALUH & CO.
+ *
+ * Implements a bespoke, hardware-accelerated 3D coordinate space on HTML5 Canvas:
+ * 1. 3D Floating Gold Leaf Foils: True 3D planar polygons (tumble, yaw, pitch, roll)
+ *    with specular metallic lighting reflections based on face normals.
+ * 2. 3D Architectural Armillary Rings: Ultra-fine rotating luxury geometry wireframes.
+ * 3. 3D Parallax Camera: Interactive cursor tracking with spring physics.
+ * 4. Ambient Warmth Blobs: Soft champagne and deep emerald background light.
+ */
+
+interface Point3D {
+    x: number;
+    y: number;
+    z: number;
+}
+
+interface GoldFoil {
+    pos: Point3D;
+    rot: Point3D;
+    rotVel: Point3D;
+    vel: Point3D;
+    size: number;
+    aspectRatio: number;
+    baseColor: string;
+    opacity: number;
+}
+
+interface Ring3D {
+    radius: number;
+    pitch: number;
+    yaw: number;
+    rollSpeed: number;
+    roll: number;
+    segments: number;
+    alpha: number;
+}
 
 export function HeroBackgroundAnimation() {
-    // Mouse follower spring yang halus dan elegan
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+    // Spring physics for smooth pointer tracking
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const smoothMouseX = useSpring(mouseX, { damping: 28, stiffness: 100 });
-    const smoothMouseY = useSpring(mouseY, { damping: 28, stiffness: 100 });
+    const smoothMouseX = useSpring(mouseX, { damping: 30, stiffness: 75 });
+    const smoothMouseY = useSpring(mouseY, { damping: 30, stiffness: 75 });
 
     useEffect(() => {
-        // Posisi awal di tengah atas layar sebelum mouse bergerak
-        if (typeof window !== 'undefined') {
-            mouseX.set(window.innerWidth * 0.45);
-            mouseY.set(window.innerHeight * 0.35);
+        const canvas = canvasRef.current;
+        if (!canvas) {
+            return;
         }
 
-        const handleMouseMove = (e: MouseEvent) => {
-            mouseX.set(e.clientX);
-            mouseY.set(e.clientY);
+        const ctx = canvas.getContext('2d', { alpha: true });
+        if (!ctx) {
+            return;
+        }
+
+        let animationFrameId: number;
+        let width = (canvas.width =
+            canvas.parentElement?.clientWidth || window.innerWidth);
+        let height = (canvas.height =
+            canvas.parentElement?.clientHeight || window.innerHeight);
+
+        // Retain high-DPI crispness
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+
+        const handleResize = () => {
+            if (!canvas.parentElement) return;
+            width = canvas.parentElement.clientWidth;
+            height = canvas.parentElement.clientHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        window.addEventListener('resize', handleResize);
+
+        // 3D Camera parameters
+        const focalLength = 520;
+        let camTargetX = 0;
+        let camTargetY = 0;
+        let camCurX = 0;
+        let camCurY = 0;
+
+        // Interactive mouse handling
+        const onMouseMove = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+
+            mouseX.set(relX);
+            mouseY.set(relY);
+
+            // Normalized camera parallax offset (-1 to 1)
+            camTargetX = ((relX / width) * 2 - 1) * 70;
+            camTargetY = ((relY / height) * 2 - 1) * 50;
+        };
+
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+        // Initialize 3D Gold Leaf Foils
+        const FOIL_COUNT = 34;
+        const goldColors = [
+            '#D4AF37',
+            '#E5BA73',
+            '#C5A880',
+            '#D6A658',
+            '#EED9A4',
+        ];
+        const foils: GoldFoil[] = [];
+
+        for (let i = 0; i < FOIL_COUNT; i++) {
+            foils.push({
+                pos: {
+                    x: (Math.random() - 0.5) * (width * 1.2),
+                    y: (Math.random() - 0.5) * (height * 1.2),
+                    z: Math.random() * 800 - 200, // Z depth from -200 to 600
+                },
+                rot: {
+                    x: Math.random() * Math.PI * 2,
+                    y: Math.random() * Math.PI * 2,
+                    z: Math.random() * Math.PI * 2,
+                },
+                rotVel: {
+                    x: (Math.random() - 0.5) * 0.02,
+                    y: (Math.random() - 0.5) * 0.02,
+                    z: (Math.random() - 0.5) * 0.015,
+                },
+                vel: {
+                    x: (Math.random() - 0.5) * 0.25,
+                    y: 0.15 + Math.random() * 0.35, // Gentle downward floating drift
+                    z: (Math.random() - 0.5) * 0.2,
+                },
+                size: 7 + Math.random() * 11,
+                aspectRatio: 0.5 + Math.random() * 0.9,
+                baseColor:
+                    goldColors[Math.floor(Math.random() * goldColors.length)],
+                opacity: 0.35 + Math.random() * 0.45,
+            });
+        }
+
+        // Initialize 3D Luxury Architectural Rings (Center-right behind hero hamper showcase)
+        const rings: Ring3D[] = [
+            {
+                radius: 260,
+                pitch: 1.05,
+                yaw: 0.35,
+                roll: 0,
+                rollSpeed: 0.0016,
+                segments: 72,
+                alpha: 0.18,
+            },
+            {
+                radius: 340,
+                pitch: 0.85,
+                yaw: -0.4,
+                roll: 1.2,
+                rollSpeed: -0.0012,
+                segments: 90,
+                alpha: 0.14,
+            },
+            {
+                radius: 420,
+                pitch: 1.2,
+                yaw: 0.15,
+                roll: 2.4,
+                rollSpeed: 0.0008,
+                segments: 100,
+                alpha: 0.1,
+            },
+        ];
+
+        // 3D Point Rotation & Projection Helper
+        function project(
+            p: Point3D,
+            camX: number,
+            camY: number,
+            cx: number,
+            cy: number,
+        ): { x: number; y: number; scale: number; visible: boolean } {
+            const relX = p.x - camX;
+            const relY = p.y - camY;
+            const relZ = p.z + focalLength;
+
+            if (relZ <= 10) {
+                return { x: 0, y: 0, scale: 0, visible: false };
+            }
+
+            const scale = focalLength / relZ;
+            return {
+                x: cx + relX * scale,
+                y: cy + relY * scale,
+                scale,
+                visible: true,
+            };
+        }
+
+        let time = 0;
+
+        // Main Animation Loop
+        const render = () => {
+            time += 0.016;
+
+            // Camera lerp
+            camCurX += (camTargetX - camCurX) * 0.05;
+            camCurY += (camTargetY - camCurY) * 0.05;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const centerX = width * 0.5;
+            const centerY = height * 0.5;
+            const ringCenter: Point3D = {
+                x: width * 0.22, // slightly shifted towards right/hamper area
+                y: -height * 0.04,
+                z: 220,
+            };
+
+            // 1. Draw 3D Architectural Armillary Rings
+            ctx.save();
+            ctx.lineWidth = 1;
+            rings.forEach((ring) => {
+                ring.roll += ring.rollSpeed;
+
+                ctx.beginPath();
+                let started = false;
+
+                for (let i = 0; i <= ring.segments; i++) {
+                    const theta = (i / ring.segments) * Math.PI * 2;
+                    // Circle in local XY plane
+                    const lx = Math.cos(theta) * ring.radius;
+                    const ly = Math.sin(theta) * ring.radius;
+                    const lz = 0;
+
+                    // Rotate by roll (Z)
+                    const rz_x =
+                        lx * Math.cos(ring.roll) - ly * Math.sin(ring.roll);
+                    const rz_y =
+                        lx * Math.sin(ring.roll) + ly * Math.cos(ring.roll);
+
+                    // Rotate by pitch (X)
+                    const rx_y =
+                        rz_y * Math.cos(ring.pitch) - lz * Math.sin(ring.pitch);
+                    const rx_z =
+                        rz_y * Math.sin(ring.pitch) + lz * Math.cos(ring.pitch);
+
+                    // Rotate by yaw (Y)
+                    const ry_x =
+                        rz_x * Math.cos(ring.yaw) + rx_z * Math.sin(ring.yaw);
+                    const ry_z =
+                        -rz_x * Math.sin(ring.yaw) + rx_z * Math.cos(ring.yaw);
+
+                    const p3d: Point3D = {
+                        x: ringCenter.x + ry_x,
+                        y: ringCenter.y + rx_y,
+                        z: ringCenter.z + ry_z,
+                    };
+
+                    const proj = project(
+                        p3d,
+                        camCurX * 0.4,
+                        camCurY * 0.4,
+                        centerX,
+                        centerY,
+                    );
+                    if (proj.visible) {
+                        if (!started) {
+                            ctx.moveTo(proj.x, proj.y);
+                            started = true;
+                        } else {
+                            ctx.lineTo(proj.x, proj.y);
+                        }
+                    }
+                }
+
+                ctx.strokeStyle = `rgba(197, 168, 128, ${ring.alpha})`;
+                ctx.stroke();
+            });
+            ctx.restore();
+
+            // 2. Sort Foils by Depth (Z-sorting for clean layering)
+            foils.sort((a, b) => b.pos.z - a.pos.z);
+
+            // 3. Draw 3D Floating Gold Leaf Foils
+            foils.forEach((foil) => {
+                // Update position
+                foil.pos.x +=
+                    foil.vel.x + Math.sin(time + foil.pos.y * 0.005) * 0.2;
+                foil.pos.y += foil.vel.y;
+                foil.pos.z += foil.vel.z;
+
+                // Update 3D rotation
+                foil.rot.x += foil.rotVel.x;
+                foil.rot.y += foil.rotVel.y;
+                foil.rot.z += foil.rotVel.z;
+
+                // Wrap boundaries in 3D volume
+                const boundX = width * 0.65;
+                const boundY = height * 0.65;
+                if (foil.pos.y > boundY) {
+                    foil.pos.y = -boundY;
+                    foil.pos.x = (Math.random() - 0.5) * boundX * 2;
+                }
+                if (foil.pos.x > boundX) foil.pos.x = -boundX;
+                if (foil.pos.x < -boundX) foil.pos.x = boundX;
+                if (foil.pos.z > 600) foil.pos.z = -150;
+                if (foil.pos.z < -150) foil.pos.z = 600;
+
+                // 3D Quad local vertices
+                const hw = (foil.size * foil.aspectRatio) / 2;
+                const hh = foil.size / 2;
+
+                const localVerts = [
+                    { x: -hw, y: -hh, z: 0 },
+                    { x: hw, y: -hh * 0.85, z: 0 },
+                    { x: hw * 0.9, y: hh, z: 0 },
+                    { x: -hw * 0.95, y: hh * 0.9, z: 0 },
+                ];
+
+                // Rotate local vertices by foil Euler angles (rx, ry, rz)
+                const cx = Math.cos(foil.rot.x),
+                    sx = Math.sin(foil.rot.x);
+                const cy = Math.cos(foil.rot.y),
+                    sy = Math.sin(foil.rot.y);
+                const cz = Math.cos(foil.rot.z),
+                    sz = Math.sin(foil.rot.z);
+
+                const projectedVerts: { x: number; y: number }[] = [];
+                let allVisible = true;
+
+                for (let v = 0; v < 4; v++) {
+                    const vert = localVerts[v];
+                    // Rotate X
+                    const y1 = vert.y * cx - vert.z * sx;
+                    const z1 = vert.y * sx + vert.z * cx;
+                    // Rotate Y
+                    const x2 = vert.x * cy + z1 * sy;
+                    const z2 = -vert.x * sy + z1 * cy;
+                    // Rotate Z
+                    const x3 = x2 * cz - y1 * sz;
+                    const y3 = x2 * sz + y1 * cz;
+
+                    const worldP: Point3D = {
+                        x: foil.pos.x + x3,
+                        y: foil.pos.y + y3,
+                        z: foil.pos.z + z2,
+                    };
+
+                    const proj = project(
+                        worldP,
+                        camCurX,
+                        camCurY,
+                        centerX,
+                        centerY,
+                    );
+                    if (!proj.visible) {
+                        allVisible = false;
+                        break;
+                    }
+                    projectedVerts.push({ x: proj.x, y: proj.y });
+                }
+
+                if (!allVisible || projectedVerts.length < 4) return;
+
+                // Normal Z to compute specular shine (light facing vs angled)
+                const v0 = projectedVerts[0];
+                const v1 = projectedVerts[1];
+                const v2 = projectedVerts[2];
+                const normalZ =
+                    (v1.x - v0.x) * (v2.y - v0.y) -
+                    (v1.y - v0.y) * (v2.x - v0.x);
+                const isFacing = Math.abs(normalZ) > 8;
+
+                // Draw 3D polygon
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(v0.x, v0.y);
+                ctx.lineTo(v1.x, v1.y);
+                ctx.lineTo(v2.x, v2.y);
+                ctx.lineTo(projectedVerts[3].x, projectedVerts[3].y);
+                ctx.closePath();
+
+                // Specular gradient simulating physical gold metallic foil reflection
+                const grad = ctx.createLinearGradient(v0.x, v0.y, v2.x, v2.y);
+                if (isFacing) {
+                    grad.addColorStop(0, '#FFFFFF');
+                    grad.addColorStop(0.35, foil.baseColor);
+                    grad.addColorStop(1, '#9E7E45');
+                    ctx.globalAlpha = foil.opacity * 0.9;
+                } else {
+                    grad.addColorStop(0, foil.baseColor);
+                    grad.addColorStop(1, '#7A5E2E');
+                    ctx.globalAlpha = foil.opacity * 0.55;
+                }
+
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Crisp micro-border for physical foil feel
+                ctx.lineWidth = 0.5;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${isFacing ? 0.4 : 0.15})`;
+                ctx.stroke();
+
+                ctx.restore();
+            });
+
+            animationFrameId = requestAnimationFrame(render);
+        };
+
+        render();
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', onMouseMove);
+        };
     }, [mouseX, mouseY]);
 
     return (
@@ -141,42 +427,12 @@ export function HeroBackgroundAnimation() {
             className="pointer-events-none absolute inset-0 overflow-hidden"
             aria-hidden="true"
         >
-            {/* 1. Interactive Mouse Spotlight (Subtle Warm Champagne Gold Glow) */}
-            <motion.div
-                className="absolute size-[580px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 mix-blend-multiply blur-[100px]"
-                style={{
-                    x: smoothMouseX,
-                    y: smoothMouseY,
-                    background:
-                        'radial-gradient(circle, rgba(197, 168, 128, 0.25) 0%, rgba(229, 186, 115, 0.10) 40%, transparent 70%)',
-                }}
-            />
-
-            {/* 2. Floating Ambient Luxury Orb 1 (Kiri Atas - Warm Champagne Gold) */}
+            {/* 1. Ambient Warm Gallery Bloom (Soft Champagne Foundation) */}
             <motion.div
                 animate={{
-                    x: [0, 40, -25, 0],
-                    y: [0, -30, 25, 0],
-                    scale: [1, 1.15, 0.95, 1],
-                }}
-                transition={{
-                    duration: 18,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                }}
-                style={{
-                    background:
-                        'radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(197, 168, 128, 0.10) 45%, transparent 70%)',
-                }}
-                className="absolute -top-16 -left-16 size-[560px] rounded-full blur-[100px] sm:size-[680px]"
-            />
-
-            {/* 3. Floating Ambient Luxury Orb 2 (Kanan Belakang Card - Emerald Forest Depth) */}
-            <motion.div
-                animate={{
-                    x: [0, -35, 25, 0],
-                    y: [0, 35, -25, 0],
-                    scale: [1, 1.18, 0.92, 1],
+                    x: [0, 30, -20, 0],
+                    y: [0, -25, 20, 0],
+                    scale: [1, 1.06, 0.95, 1],
                 }}
                 transition={{
                     duration: 22,
@@ -185,95 +441,46 @@ export function HeroBackgroundAnimation() {
                 }}
                 style={{
                     background:
-                        'radial-gradient(circle, rgba(14, 42, 30, 0.08) 0%, rgba(22, 66, 47, 0.05) 45%, transparent 70%)',
+                        'radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(197, 168, 128, 0.05) 50%, transparent 75%)',
                 }}
-                className="absolute top-1/4 -right-20 size-[600px] rounded-full blur-[110px] sm:size-[720px]"
+                className="absolute -top-24 -left-20 size-[620px] rounded-full blur-[110px]"
             />
 
-            {/* 4. Floating Ambient Luxury Orb 3 (Tengah Bawah - Amber Warmth) */}
+            {/* 2. Forest Emerald Depth (Atmosphere behind the Hamper showcase) */}
             <motion.div
                 animate={{
-                    x: [0, 30, -30, 0],
-                    y: [0, -20, 25, 0],
-                    scale: [1, 1.1, 0.95, 1],
+                    x: [0, -20, 15, 0],
+                    y: [0, 20, -15, 0],
+                    scale: [1, 1.08, 0.95, 1],
                 }}
                 transition={{
-                    duration: 20,
+                    duration: 26,
                     repeat: Infinity,
                     ease: 'easeInOut',
                 }}
                 style={{
                     background:
-                        'radial-gradient(circle, rgba(229, 186, 115, 0.12) 0%, rgba(197, 168, 128, 0.06) 50%, transparent 70%)',
+                        'radial-gradient(circle, rgba(14, 42, 30, 0.08) 0%, rgba(22, 66, 47, 0.03) 50%, transparent 75%)',
                 }}
-                className="absolute -bottom-16 left-1/3 size-[480px] rounded-full blur-[90px]"
+                className="absolute top-1/4 -right-24 size-[650px] rounded-full blur-[120px]"
             />
 
-            {/* 5. Flowing Silk Ribbon Hairline Waves (Garis Kurva Sutra Emas Eksklusif) */}
-            <svg
-                className="absolute inset-0 size-full opacity-[0.15]"
-                viewBox="0 0 1440 900"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-            >
-                <motion.path
-                    d="M-100 250 C 300 120, 650 420, 1100 200 C 1300 100, 1500 280, 1600 240"
-                    stroke="#C5A880"
-                    strokeWidth="1.2"
-                    strokeDasharray="4 6"
-                    initial={{ pathOffset: 0 }}
-                    animate={{ pathOffset: [0, 1] }}
-                    transition={{
-                        duration: 35,
-                        repeat: Infinity,
-                        ease: 'linear',
-                    }}
-                />
-                <motion.path
-                    d="M-100 680 C 250 540, 700 780, 1050 560 C 1300 420, 1500 620, 1600 580"
-                    stroke="#0E2A1E"
-                    strokeWidth="0.8"
-                    strokeOpacity="0.5"
-                    strokeDasharray="3 5"
-                    initial={{ pathOffset: 0 }}
-                    animate={{ pathOffset: [1, 0] }}
-                    transition={{
-                        duration: 42,
-                        repeat: Infinity,
-                        ease: 'linear',
-                    }}
-                />
-            </svg>
+            {/* 3. Subtle Interactive Cursor Spotlight */}
+            <motion.div
+                className="absolute size-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-multiply blur-[100px]"
+                style={{
+                    x: smoothMouseX,
+                    y: smoothMouseY,
+                    background:
+                        'radial-gradient(circle, rgba(197, 168, 128, 0.16) 0%, rgba(229, 186, 115, 0.06) 45%, transparent 70%)',
+                }}
+            />
 
-            {/* 6. Floating Golden Stardust Particles (✦, ⋆, •) */}
-            {PARTICLES.map((p) => (
-                <motion.div
-                    key={p.id}
-                    className="absolute font-serif text-[#C5A880] select-none"
-                    style={{
-                        left: p.left,
-                        top: p.top,
-                        fontSize: `${p.size}px`,
-                        textShadow: '0 0 10px rgba(197, 168, 128, 0.45)',
-                    }}
-                    animate={{
-                        y: [0, -20, -38, -16, 0],
-                        x: [0, 8, -6, 10, 0],
-                        opacity: [0.15, 0.75, 0.35, 0.8, 0.15],
-                        scale: [0.85, 1.25, 0.9, 1.2, 0.85],
-                        rotate: [0, 25, -20, 15, 0],
-                    }}
-                    transition={{
-                        duration: p.duration,
-                        repeat: Infinity,
-                        delay: p.delay,
-                        ease: 'easeInOut',
-                    }}
-                >
-                    {p.char}
-                </motion.div>
-            ))}
+            {/* 4. The 3D Atelier Perspective Canvas (60fps hardware accelerated 3D foils & armillary geometry) */}
+            <canvas
+                ref={canvasRef}
+                className="absolute inset-0 size-full mix-blend-normal"
+            />
         </div>
     );
 }
