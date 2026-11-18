@@ -92,7 +92,7 @@ export function Hero({
         <MotionConfig reducedMotion="user">
             <section
                 ref={sectionRef}
-                className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-between py-2 sm:py-4 lg:py-3"
+                className="relative flex min-h-[100svh] flex-col justify-between pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
             >
                 {/* Center Editorial Hero Area - Perfectly Scaled to Always Fit Viewport */}
                 <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 text-center sm:px-8 lg:px-12">

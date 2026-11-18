@@ -58,13 +58,15 @@ export default function Welcome({
                     aria-hidden="true"
                 />
 
-                {/* 1 & 2. Continuous Hero Area: Navbar + Hero Section sharing one seamless animated luxury background */}
+                {/* Fixed Top Luxury Sticky Header: Stays at the top of the viewport when scrolling */}
+                <Navbar
+                    whatsappNumber={activeWa}
+                    logoSrc={settings?.logo_gold}
+                />
+
+                {/* 1 & 2. Continuous Hero Area with 3D Background */}
                 <div className="relative overflow-hidden bg-[#FAF7F2]">
                     <HeroBackgroundAnimation />
-                    <Navbar
-                        whatsappNumber={activeWa}
-                        logoSrc={settings?.logo_gold}
-                    />
                     <Hero
                         whatsappNumber={activeWa}
                         heroBadge={settings?.hero_badge}

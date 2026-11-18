@@ -40,7 +40,7 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
 
     return (
         <header
-            className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+            className={`fixed inset-x-0 top-0 z-50 w-full transition-all duration-300 ${
                 isScrolled
                     ? 'border-b border-[#EAE3D6] bg-[#FAF7F2]/90 shadow-[0_4px_24px_-4px_rgba(20,54,40,0.06)] backdrop-blur-md'
                     : 'border-b border-transparent bg-transparent'
