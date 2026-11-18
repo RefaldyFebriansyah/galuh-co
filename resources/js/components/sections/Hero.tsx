@@ -78,7 +78,7 @@ export function Hero({
         offset: ['start start', 'end start'],
     });
 
-    const parallaxTextY = useTransform(scrollYProgress, [0, 1], [0, 24]);
+    const parallaxTextY = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya tertarik bertanya mengenai koleksi hampers premium & corporate gifting.',
@@ -92,21 +92,21 @@ export function Hero({
         <MotionConfig reducedMotion="user">
             <section
                 ref={sectionRef}
-                className="relative flex min-h-[calc(100svh-4.75rem)] flex-col justify-between pt-6 pb-0 sm:pt-10 sm:pb-0 lg:h-[calc(100vh-4.75rem)] lg:max-h-[820px] lg:min-h-[580px] lg:py-6"
+                className="relative flex min-h-[calc(100svh-4.5rem)] flex-col justify-between py-2 sm:py-4 lg:py-3"
             >
-                {/* Center Editorial Hero Area */}
-                <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 text-center sm:px-8 lg:px-12">
+                {/* Center Editorial Hero Area - Perfectly Scaled to Always Fit Viewport */}
+                <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 text-center sm:px-8 lg:px-12">
                     <motion.div
                         style={{ y: parallaxTextY }}
                         variants={staggerContainer}
                         initial="hidden"
                         animate="visible"
-                        className="flex flex-col items-center space-y-5 sm:space-y-6"
+                        className="flex flex-col items-center space-y-3 sm:space-y-4 lg:space-y-4"
                     >
                         {/* 1. Atelier Metadata Tag */}
                         <motion.div
                             variants={staggerItem}
-                            className="inline-flex items-center gap-2.5 rounded-full border border-[#D5CEC2]/75 bg-white/70 px-4 py-1.5 text-[10px] font-semibold tracking-[0.2em] text-[#8C877E] uppercase shadow-2xs backdrop-blur-xs sm:text-[11px]"
+                            className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2]/75 bg-white/70 px-3.5 py-1 text-[9.5px] font-semibold tracking-[0.2em] text-[#8C877E] uppercase shadow-2xs backdrop-blur-xs sm:px-4 sm:py-1.5 sm:text-[10.5px]"
                         >
                             <span className="font-bold text-[#9E7E45]">
                                 ATELIER GALUH &amp; CO.
@@ -118,7 +118,7 @@ export function Hero({
                         {/* 2. Headline with High-Craft Serif Typography */}
                         <motion.h1
                             variants={staggerItem}
-                            className="font-serif text-4xl leading-[1.12] font-normal tracking-tight text-[#1A1815] sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.4rem]"
+                            className="font-serif text-3xl leading-[1.12] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
                         >
                             <span>
                                 {heroTitlePrefix || 'Hampers Eksklusif'}
@@ -133,7 +133,7 @@ export function Hero({
                         {/* 3. Description */}
                         <motion.p
                             variants={staggerItem}
-                            className="max-w-2xl text-base leading-relaxed text-[#5C564C] sm:text-lg lg:text-[17px]"
+                            className="max-w-xl text-xs leading-relaxed text-[#5C564C] sm:text-sm md:text-base lg:text-[15px]"
                         >
                             {heroDescription}
                         </motion.p>
@@ -141,12 +141,12 @@ export function Hero({
                         {/* 4. Action Buttons */}
                         <motion.div
                             variants={staggerItem}
-                            className="flex flex-wrap items-center justify-center gap-3.5 pt-2 sm:gap-4 sm:pt-3"
+                            className="flex flex-wrap items-center justify-center gap-3 pt-1 sm:gap-3.5 sm:pt-2"
                         >
                             <MagneticButton>
                                 <a
                                     href="#koleksi"
-                                    className="group inline-flex cursor-pointer items-center gap-2.5 rounded-full bg-[#0E2A1E] px-7 py-3.5 text-xs font-bold tracking-[0.14em] text-white shadow-sm transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md sm:px-8 sm:py-4"
+                                    className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0E2A1E] px-6 py-3 text-[11px] font-bold tracking-[0.14em] text-white shadow-sm transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md sm:px-7 sm:py-3.5 sm:text-xs"
                                 >
                                     <span>JELAJAHI KOLEKSI</span>
                                     <ArrowRight className="size-3.5 text-[#C5A880] transition-transform duration-300 group-hover:translate-x-1" />
@@ -158,7 +158,7 @@ export function Hero({
                                     href={whatsappUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-[#D5CEC2] bg-white px-6 py-3.5 text-xs font-bold tracking-[0.12em] text-[#0E2A1E] shadow-2xs transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#FAF8F5] sm:px-7 sm:py-4"
+                                    className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#D5CEC2] bg-white px-5 py-3 text-[11px] font-bold tracking-[0.12em] text-[#0E2A1E] shadow-2xs transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#FAF8F5] sm:px-6.5 sm:py-3.5 sm:text-xs"
                                 >
                                     <WhatsAppIcon className="size-4 text-[#25D366]" />
                                     <span>KONSULTASI HAMPERS</span>
@@ -169,29 +169,29 @@ export function Hero({
                         {/* 5. Clean 3-Part Metric Strip */}
                         <motion.div
                             variants={staggerItem}
-                            className="grid w-full max-w-2xl grid-cols-3 gap-4 border-t border-[#EAE5DC] pt-6 sm:gap-8 sm:pt-8"
+                            className="grid w-full max-w-xl grid-cols-3 gap-3 border-t border-[#EAE5DC] pt-3 text-center sm:gap-6 sm:pt-4"
                         >
                             <div>
-                                <span className="font-serif text-2xl font-bold tracking-tight text-[#1A1815] sm:text-3xl lg:text-4xl">
+                                <span className="font-serif text-xl font-bold tracking-tight text-[#1A1815] sm:text-2xl lg:text-3xl">
                                     5,000+
                                 </span>
-                                <p className="mt-1 text-[10px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[11px]">
+                                <p className="mt-0.5 text-[9px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
                                     Hampers Terkirim
                                 </p>
                             </div>
-                            <div className="border-l border-[#EAE5DC] pl-4 sm:pl-8">
-                                <span className="font-serif text-2xl font-bold tracking-tight text-[#0E2A1E] sm:text-3xl lg:text-4xl">
+                            <div className="border-l border-[#EAE5DC] pl-3 sm:pl-6">
+                                <span className="font-serif text-xl font-bold tracking-tight text-[#0E2A1E] sm:text-2xl lg:text-3xl">
                                     100+
                                 </span>
-                                <p className="mt-1 text-[10px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[11px]">
+                                <p className="mt-0.5 text-[9px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
                                     Klien Korporat
                                 </p>
                             </div>
-                            <div className="border-l border-[#EAE5DC] pl-4 sm:pl-8">
-                                <span className="font-serif text-2xl font-bold tracking-tight text-[#9E7E45] sm:text-3xl lg:text-4xl">
+                            <div className="border-l border-[#EAE5DC] pl-3 sm:pl-6">
+                                <span className="font-serif text-xl font-bold tracking-tight text-[#9E7E45] sm:text-2xl lg:text-3xl">
                                     4.9 / 5.0
                                 </span>
-                                <p className="mt-1 text-[10px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[11px]">
+                                <p className="mt-0.5 text-[9px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
                                     Rating Kepuasan
                                 </p>
                             </div>
@@ -199,8 +199,8 @@ export function Hero({
                     </motion.div>
                 </div>
 
-                {/* Atelier Silk Ribbon Running Marquee - Pinned Elegantly at Hero Baseline */}
-                <div className="mt-4 overflow-hidden border-y border-[#EAE3D6] bg-white/40 py-2.5 backdrop-blur-xs sm:py-3">
+                {/* Atelier Silk Ribbon Running Marquee - Fits Viewport Naturally Without Cut-Off */}
+                <div className="mt-2 overflow-hidden border-y border-[#EAE3D6] bg-white/40 py-2 backdrop-blur-xs sm:mt-3 sm:py-2.5">
                     <div className="relative flex overflow-hidden">
                         {/* Soft Edge Gradient Masks */}
                         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#FAF7F2] to-transparent sm:w-24" />
@@ -213,7 +213,7 @@ export function Hero({
                                 ease: 'linear',
                                 duration: 32,
                             }}
-                            className="flex shrink-0 items-center gap-8 py-0.5 text-[10px] font-semibold tracking-[0.24em] whitespace-nowrap text-[#5C564C] uppercase sm:text-[11px]"
+                            className="flex shrink-0 items-center gap-8 py-0.5 text-[9.5px] font-semibold tracking-[0.24em] whitespace-nowrap text-[#5C564C] uppercase sm:text-[10.5px]"
                         >
                             {[
                                 'BUTTER WIJSMAN BELANDA',
