@@ -1,6 +1,7 @@
-import { useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import {
     motion,
+    AnimatePresence,
     useMotionValue,
     useSpring,
     useTransform,
@@ -17,6 +18,13 @@ export interface HeroProps {
     heroTitlePrefix?: string;
     heroDescription?: string;
 }
+
+const ROTATING_PHRASES = [
+    'Sentuhan Personal',
+    'Hadiah Prestisius',
+    'Kemitraan Eksklusif',
+    'Perayaan Bermakna',
+];
 
 /**
  * Magnetic button wrapper for subtle interactive feedback
@@ -71,6 +79,15 @@ export function Hero({
     heroDescription = 'Pilihan hampers premium dan hadiah perusahaan dengan kemasan eksklusif. Siap melengkapi setiap momen istimewa Anda dengan mudah dan berkelas.',
 }: HeroProps) {
     const sectionRef = useRef<HTMLElement>(null);
+    const [phraseIndex, setPhraseIndex] = useState(0);
+
+    // Dynamic Editorial Keyword Transition (Continuous luxury cycle without cliché typewriter)
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setPhraseIndex((prev) => (prev + 1) % ROTATING_PHRASES.length);
+        }, 3600);
+        return () => clearInterval(timer);
+    }, []);
 
     // Scroll-linked Parallax for atmospheric luxury feel
     const { scrollYProgress } = useScroll({
@@ -115,19 +132,47 @@ export function Hero({
                             <span>{cleanKicker}</span>
                         </motion.div>
 
-                        {/* 2. Headline with High-Craft Serif Typography */}
+                        {/* 2. Headline with High-Craft Serif Typography & Kinetic Phrase Glide */}
                         <motion.h1
                             variants={staggerItem}
-                            className="font-serif text-3xl leading-[1.12] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
+                            className="font-serif text-3xl leading-[1.18] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
                         >
-                            <span>
+                            <span className="inline-block">
                                 {heroTitlePrefix || 'Hampers Eksklusif'}
                             </span>{' '}
-                            <span className="font-normal text-[#9E7E45] italic">
-                                Sentuhan Personal
+                            <span className="relative inline-block overflow-hidden align-baseline">
+                                <AnimatePresence mode="wait">
+                                    <motion.span
+                                        key={ROTATING_PHRASES[phraseIndex]}
+                                        initial={{
+                                            y: 28,
+                                            opacity: 0,
+                                            filter: 'blur(4px)',
+                                        }}
+                                        animate={{
+                                            y: 0,
+                                            opacity: 1,
+                                            filter: 'blur(0px)',
+                                        }}
+                                        exit={{
+                                            y: -28,
+                                            opacity: 0,
+                                            filter: 'blur(4px)',
+                                        }}
+                                        transition={{
+                                            duration: 0.55,
+                                            ease: [0.16, 1, 0.3, 1],
+                                        }}
+                                        className="inline-block bg-gradient-to-r from-[#9E7E45] via-[#C5A880] to-[#8C6D37] bg-clip-text font-normal text-transparent italic"
+                                    >
+                                        {ROTATING_PHRASES[phraseIndex]}
+                                    </motion.span>
+                                </AnimatePresence>
                             </span>{' '}
                             <br className="hidden sm:inline" />
-                            <span>untuk Momen Istimewa.</span>
+                            <span className="inline-block">
+                                untuk Momen Istimewa.
+                            </span>
                         </motion.h1>
 
                         {/* 3. Description */}
