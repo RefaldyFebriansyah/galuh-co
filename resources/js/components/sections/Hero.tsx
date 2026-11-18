@@ -19,11 +19,10 @@ export interface HeroProps {
     heroDescription?: string;
 }
 
-const ROTATING_PHRASES = [
-    'Sentuhan Personal',
-    'Hadiah Prestisius',
-    'Kemitraan Eksklusif',
-    'Perayaan Bermakna',
+const ROTATING_TARGETS = [
+    'Personal & Perusahaan',
+    'Mitra Perusahaan',
+    'Momen Istimewa',
 ];
 
 /**
@@ -84,7 +83,7 @@ export function Hero({
     // Dynamic Editorial Keyword Transition (Continuous luxury cycle without cliché typewriter)
     useEffect(() => {
         const timer = setInterval(() => {
-            setPhraseIndex((prev) => (prev + 1) % ROTATING_PHRASES.length);
+            setPhraseIndex((prev) => (prev + 1) % ROTATING_TARGETS.length);
         }, 3600);
         return () => clearInterval(timer);
     }, []);
@@ -132,22 +131,25 @@ export function Hero({
                             <span>{cleanKicker}</span>
                         </motion.div>
 
-                        {/* 2. Headline with High-Craft Serif Typography & Kinetic Phrase Glide */}
+                        {/* 2. Headline with High-Craft Serif Typography & Kinetic Target Glide */}
                         <motion.h1
                             variants={staggerItem}
-                            className="font-serif text-3xl leading-[1.18] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
+                            className="font-serif text-3xl leading-[1.2] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.85rem] xl:text-[3.35rem]"
                         >
-                            <span className="inline-block">
-                                {heroTitlePrefix || 'Hampers Eksklusif'}
-                            </span>{' '}
-                            <span className="relative inline-block overflow-hidden align-baseline">
+                            <span className="block">
+                                {heroTitlePrefix || 'Hampers Eksklusif'}{' '}
+                                <span className="font-normal text-[#9E7E45] italic">
+                                    untuk
+                                </span>
+                            </span>
+                            <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
                                 <AnimatePresence mode="wait">
                                     <motion.span
-                                        key={ROTATING_PHRASES[phraseIndex]}
+                                        key={ROTATING_TARGETS[phraseIndex]}
                                         initial={{
-                                            y: 28,
+                                            y: 30,
                                             opacity: 0,
-                                            filter: 'blur(4px)',
+                                            filter: 'blur(5px)',
                                         }}
                                         animate={{
                                             y: 0,
@@ -155,9 +157,9 @@ export function Hero({
                                             filter: 'blur(0px)',
                                         }}
                                         exit={{
-                                            y: -28,
+                                            y: -30,
                                             opacity: 0,
-                                            filter: 'blur(4px)',
+                                            filter: 'blur(5px)',
                                         }}
                                         transition={{
                                             duration: 0.55,
@@ -165,13 +167,9 @@ export function Hero({
                                         }}
                                         className="inline-block bg-gradient-to-r from-[#9E7E45] via-[#C5A880] to-[#8C6D37] bg-clip-text font-normal text-transparent italic"
                                     >
-                                        {ROTATING_PHRASES[phraseIndex]}
+                                        {ROTATING_TARGETS[phraseIndex]}
                                     </motion.span>
                                 </AnimatePresence>
-                            </span>{' '}
-                            <br className="hidden sm:inline" />
-                            <span className="inline-block">
-                                untuk Momen Istimewa.
                             </span>
                         </motion.h1>
 
