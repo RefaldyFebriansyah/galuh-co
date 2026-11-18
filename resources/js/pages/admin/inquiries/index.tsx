@@ -11,14 +11,9 @@ import {
     Coins,
     MessageSquare,
     ExternalLink,
-    Clock,
-    CheckCircle2,
-    AlertCircle,
-    XCircle,
     Trash2,
     FileEdit,
     X,
-    Filter,
 } from 'lucide-react';
 
 interface Inquiry {
@@ -89,16 +84,19 @@ const STATUS_MAP: Record<
 export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
-    const [editingNoteInquiry, setEditingNoteInquiry] = useState<Inquiry | null>(null);
+    const [editingNoteInquiry, setEditingNoteInquiry] =
+        useState<Inquiry | null>(null);
     const [noteDraft, setNoteDraft] = useState('');
-    const [deletingInquiry, setDeletingInquiry] = useState<Inquiry | null>(null);
+    const [deletingInquiry, setDeletingInquiry] = useState<Inquiry | null>(
+        null,
+    );
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
             '/admin/inquiries',
             { search, status: statusFilter },
-            { preserveState: true, replace: true }
+            { preserveState: true, replace: true },
         );
     };
 
@@ -107,7 +105,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
         router.get(
             '/admin/inquiries',
             { search, status: newStatus },
-            { preserveState: true, replace: true }
+            { preserveState: true, replace: true },
         );
     };
 
@@ -120,7 +118,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
             },
             {
                 preserveScroll: true,
-            }
+            },
         );
     };
 
@@ -139,7 +137,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                     setEditingNoteInquiry(null);
                     setNoteDraft('');
                 },
-            }
+            },
         );
     };
 
@@ -169,7 +167,10 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
     };
 
     const getWhatsAppChatUrl = (inquiry: Inquiry) => {
-        let cleanNumber = (inquiry.whatsapp_number || '').replace(/[^0-9]/g, '');
+        let cleanNumber = (inquiry.whatsapp_number || '').replace(
+            /[^0-9]/g,
+            '',
+        );
         if (cleanNumber.startsWith('0')) {
             cleanNumber = '62' + cleanNumber.slice(1);
         }
@@ -188,7 +189,10 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                 {/* Search & Status Filter Bar */}
                 <div className="flex flex-col gap-3 rounded-xl border border-[#E7E2D8] bg-white p-3.5 shadow-2xs md:flex-row md:items-center md:justify-between">
                     {/* Search Field */}
-                    <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
+                    <form
+                        onSubmit={handleSearchSubmit}
+                        className="relative max-w-md flex-1"
+                    >
                         <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#8C8479]" />
                         <input
                             type="text"
@@ -205,7 +209,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                     router.get(
                                         '/admin/inquiries',
                                         { search: '', status: statusFilter },
-                                        { preserveState: true, replace: true }
+                                        { preserveState: true, replace: true },
                                     );
                                 }}
                                 className="absolute top-1/2 right-2.5 -translate-y-1/2 text-stone-400 hover:text-stone-700"
@@ -217,7 +221,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
 
                     {/* Filter Segmented Pills */}
                     <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
-                        <span className="text-[10px] font-semibold text-[#8C8479] uppercase tracking-wider mr-1 shrink-0">
+                        <span className="mr-1 shrink-0 text-[10px] font-semibold tracking-wider text-[#8C8479] uppercase">
                             Status:
                         </span>
                         {[
@@ -230,11 +234,14 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                             <button
                                 key={tab.key}
                                 type="button"
-                                onClick={() => handleStatusFilterChange(tab.key)}
-                                className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${statusFilter === tab.key
-                                    ? 'bg-[#0E2A1E] text-white font-semibold'
-                                    : 'bg-[#FAF8F5] text-[#4D4841] hover:bg-[#F0EBE1]'
-                                    }`}
+                                onClick={() =>
+                                    handleStatusFilterChange(tab.key)
+                                }
+                                className={`rounded-md px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
+                                    statusFilter === tab.key
+                                        ? 'bg-[#0E2A1E] font-semibold text-white'
+                                        : 'bg-[#FAF8F5] text-[#4D4841] hover:bg-[#F0EBE1]'
+                                }`}
                             >
                                 {tab.label}
                             </button>
@@ -245,12 +252,13 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                 {/* Inquiry Cards Stream */}
                 {inquiries.data.length === 0 ? (
                     <div className="rounded-xl border border-[#E7E2D8] bg-white p-12 text-center shadow-2xs">
-                        <MessageSquare className="size-8 mx-auto text-[#C0B9AD] stroke-1" />
+                        <MessageSquare className="mx-auto size-8 stroke-1 text-[#C0B9AD]" />
                         <h3 className="mt-2 text-xs font-bold text-[#1C1A18]">
                             Tidak ada inquiries ditemukan
                         </h3>
                         <p className="mt-1 text-[11px] text-[#7A746B]">
-                            Belum ada formulir inquiry yang cocok dengan filter yang dipilih.
+                            Belum ada formulir inquiry yang cocok dengan filter
+                            yang dipilih.
                         </p>
                     </div>
                 ) : (
@@ -262,11 +270,11 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                             return (
                                 <div
                                     key={item.id}
-                                    className="rounded-xl border border-[#E7E2D8] bg-white p-4 sm:p-5 shadow-2xs transition-all hover:border-[#D0C7B7]"
+                                    className="rounded-xl border border-[#E7E2D8] bg-white p-4 shadow-2xs transition-all hover:border-[#D0C7B7] sm:p-5"
                                 >
-                                    <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+                                    <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
                                         {/* Left Side: Client Data & Requirements */}
-                                        <div className="space-y-3 flex-1 min-w-0">
+                                        <div className="min-w-0 flex-1 space-y-3">
                                             {/* Header Row: Name, Company, Status, Timestamp */}
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <h3 className="text-sm font-bold text-[#1C1A18]">
@@ -274,14 +282,14 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                                 </h3>
 
                                                 {item.company_name && (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#FAF8F5] text-[#0E2A1E] border border-[#E0D8CB]">
+                                                    <span className="inline-flex items-center gap-1 rounded-md border border-[#E0D8CB] bg-[#FAF8F5] px-2 py-0.5 text-[11px] font-medium text-[#0E2A1E]">
                                                         <Building2 className="size-3 text-[#9E7E45]" />
                                                         {item.company_name}
                                                     </span>
                                                 )}
 
                                                 <span
-                                                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-medium border ${statusInfo.badge}`}
+                                                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[10px] font-medium ${statusInfo.badge}`}
                                                 >
                                                     <span
                                                         className={`size-1.5 rounded-full ${statusInfo.dot}`}
@@ -289,8 +297,10 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                                     {statusInfo.label}
                                                 </span>
 
-                                                <span className="text-[11px] text-[#8C8479] ml-auto lg:ml-0 font-mono">
-                                                    {formatDate(item.created_at)}
+                                                <span className="ml-auto font-mono text-[11px] text-[#8C8479] lg:ml-0">
+                                                    {formatDate(
+                                                        item.created_at,
+                                                    )}
                                                 </span>
                                             </div>
 
@@ -298,27 +308,29 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#4D4841]">
                                                 <a
                                                     href={`mailto:${item.email}`}
-                                                    className="flex items-center gap-1.5 hover:text-[#0E2A1E] transition-colors"
+                                                    className="flex items-center gap-1.5 transition-colors hover:text-[#0E2A1E]"
                                                 >
                                                     <Mail className="size-3 text-[#8C8479]" />
                                                     <span>{item.email}</span>
                                                 </a>
                                                 <a
                                                     href={`tel:${item.whatsapp_number}`}
-                                                    className="flex items-center gap-1.5 hover:text-[#0E2A1E] transition-colors font-mono"
+                                                    className="flex items-center gap-1.5 font-mono transition-colors hover:text-[#0E2A1E]"
                                                 >
                                                     <Phone className="size-3 text-[#8C8479]" />
-                                                    <span>{item.whatsapp_number}</span>
+                                                    <span>
+                                                        {item.whatsapp_number}
+                                                    </span>
                                                 </a>
                                             </div>
 
                                             {/* Inquiry Specification Grid */}
-                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2.5 rounded-lg bg-[#FAF8F5] border border-[#EAE5DC] text-xs">
+                                            <div className="grid grid-cols-2 gap-2 rounded-lg border border-[#EAE5DC] bg-[#FAF8F5] p-2.5 text-xs sm:grid-cols-3">
                                                 <div>
-                                                    <span className="text-[#8C8479] block text-[10px] uppercase font-semibold">
+                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
                                                         Estimasi Jumlah
                                                     </span>
-                                                    <span className="font-semibold text-[#1C1A18] flex items-center gap-1 mt-0.5">
+                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18]">
                                                         <Package className="size-3 text-[#0E2A1E]" />
                                                         {item.estimated_packages
                                                             ? `${item.estimated_packages} Paket`
@@ -326,32 +338,36 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <span className="text-[#8C8479] block text-[10px] uppercase font-semibold">
+                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
                                                         Budget per Paket
                                                     </span>
-                                                    <span className="font-semibold text-[#1C1A18] flex items-center gap-1 mt-0.5 tabular-nums">
+                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18] tabular-nums">
                                                         <Coins className="size-3 text-[#9E7E45]" />
-                                                        {formatIdr(item.budget_per_package)}
+                                                        {formatIdr(
+                                                            item.budget_per_package,
+                                                        )}
                                                     </span>
                                                 </div>
                                                 <div className="col-span-2 sm:col-span-1">
-                                                    <span className="text-[#8C8479] block text-[10px] uppercase font-semibold">
+                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
                                                         Target Pengiriman
                                                     </span>
-                                                    <span className="font-semibold text-[#1C1A18] flex items-center gap-1 mt-0.5">
+                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18]">
                                                         <Calendar className="size-3 text-[#0E2A1E]" />
-                                                        {formatDate(item.needed_at)}
+                                                        {formatDate(
+                                                            item.needed_at,
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
 
                                             {/* Client Message */}
                                             {item.notes && (
-                                                <div className="text-xs border-l-2 border-[#C5A880] pl-3 py-1 bg-[#FAF8F5]/80 rounded-r-lg text-[#2C2925]">
-                                                    <span className="text-[10px] font-bold text-[#8C8479] uppercase block mb-0.5">
+                                                <div className="rounded-r-lg border-l-2 border-[#C5A880] bg-[#FAF8F5]/80 py-1 pl-3 text-xs text-[#2C2925]">
+                                                    <span className="mb-0.5 block text-[10px] font-bold text-[#8C8479] uppercase">
                                                         Pesan Klien:
                                                     </span>
-                                                    <p className="whitespace-pre-line leading-relaxed">
+                                                    <p className="leading-relaxed whitespace-pre-line">
                                                         {item.notes}
                                                     </p>
                                                 </div>
@@ -359,24 +375,30 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
 
                                             {/* Internal Admin Follow-up Note */}
                                             {item.admin_notes && (
-                                                <div className="text-xs bg-[#FFFDF9] border border-[#E8DEC8] rounded-lg p-2.5 text-[#4D4841]">
-                                                    <div className="flex items-center justify-between font-semibold mb-1">
-                                                        <span className="flex items-center gap-1 text-[#876822] text-[11px]">
+                                                <div className="rounded-lg border border-[#E8DEC8] bg-[#FFFDF9] p-2.5 text-xs text-[#4D4841]">
+                                                    <div className="mb-1 flex items-center justify-between font-semibold">
+                                                        <span className="flex items-center gap-1 text-[11px] text-[#876822]">
                                                             <FileEdit className="size-3" />
-                                                            Catatan Internal Admin
+                                                            Catatan Internal
+                                                            Admin
                                                         </span>
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setEditingNoteInquiry(item);
-                                                                setNoteDraft(item.admin_notes || '');
+                                                                setEditingNoteInquiry(
+                                                                    item,
+                                                                );
+                                                                setNoteDraft(
+                                                                    item.admin_notes ||
+                                                                        '',
+                                                                );
                                                             }}
-                                                            className="text-[#876822] hover:text-[#523e12] underline text-[10px]"
+                                                            className="text-[10px] text-[#876822] underline hover:text-[#523e12]"
                                                         >
                                                             Ubah Catatan
                                                         </button>
                                                     </div>
-                                                    <p className="whitespace-pre-line text-[11px] leading-relaxed">
+                                                    <p className="text-[11px] leading-relaxed whitespace-pre-line">
                                                         {item.admin_notes}
                                                     </p>
                                                 </div>
@@ -384,13 +406,13 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                         </div>
 
                                         {/* Right Side: Operational Action Group */}
-                                        <div className="lg:w-56 flex flex-col gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 lg:border-l border-[#F0EBE1] lg:pl-4 shrink-0">
+                                        <div className="flex shrink-0 flex-col gap-2 border-t border-[#F0EBE1] pt-3 lg:w-56 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-4">
                                             {/* 1-Click WhatsApp Button */}
                                             <a
                                                 href={getWhatsAppChatUrl(item)}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] text-white font-semibold text-xs shadow-2xs hover:bg-[#20ba5a] transition-colors"
+                                                className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-2 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#20ba5a]"
                                             >
                                                 <MessageSquare className="size-3.5 fill-white" />
                                                 <span>Chat WhatsApp</span>
@@ -399,20 +421,31 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
 
                                             {/* Status Selector Dropdown */}
                                             <div>
-                                                <label className="text-[10px] font-semibold text-[#8C8479] block mb-1 uppercase tracking-wider">
+                                                <label className="mb-1 block text-[10px] font-semibold tracking-wider text-[#8C8479] uppercase">
                                                     Status Respon
                                                 </label>
                                                 <select
                                                     value={item.status}
                                                     onChange={(e) =>
-                                                        handleUpdateStatus(item, e.target.value)
+                                                        handleUpdateStatus(
+                                                            item,
+                                                            e.target.value,
+                                                        )
                                                     }
-                                                    className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:outline-hidden"
+                                                    className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-2.5 py-1.5 text-xs font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:outline-hidden"
                                                 >
-                                                    <option value="new">Menunggu Follow-Up</option>
-                                                    <option value="contacted">Sedang Dihubungi</option>
-                                                    <option value="completed">Deal / Selesai</option>
-                                                    <option value="cancelled">Dibatalkan</option>
+                                                    <option value="new">
+                                                        Menunggu Follow-Up
+                                                    </option>
+                                                    <option value="contacted">
+                                                        Sedang Dihubungi
+                                                    </option>
+                                                    <option value="completed">
+                                                        Deal / Selesai
+                                                    </option>
+                                                    <option value="cancelled">
+                                                        Dibatalkan
+                                                    </option>
                                                 </select>
                                             </div>
 
@@ -421,10 +454,12 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                                 <button
                                                     type="button"
                                                     onClick={() => {
-                                                        setEditingNoteInquiry(item);
+                                                        setEditingNoteInquiry(
+                                                            item,
+                                                        );
                                                         setNoteDraft('');
                                                     }}
-                                                    className="w-full py-1.5 px-2.5 text-xs font-medium text-[#4D4841] bg-[#FAF8F5] hover:bg-[#F0EBE1] border border-[#E0D8CB] rounded-lg transition-colors inline-flex items-center justify-center gap-1"
+                                                    className="inline-flex w-full items-center justify-center gap-1 rounded-lg border border-[#E0D8CB] bg-[#FAF8F5] px-2.5 py-1.5 text-xs font-medium text-[#4D4841] transition-colors hover:bg-[#F0EBE1]"
                                                 >
                                                     <FileEdit className="size-3 text-[#7A746B]" />
                                                     <span>Tambah Catatan</span>
@@ -434,8 +469,10 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                             {/* Delete Button */}
                                             <button
                                                 type="button"
-                                                onClick={() => setDeletingInquiry(item)}
-                                                className="w-full py-1 px-2.5 text-[11px] font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors inline-flex items-center justify-center gap-1"
+                                                onClick={() =>
+                                                    setDeletingInquiry(item)
+                                                }
+                                                className="inline-flex w-full items-center justify-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
                                             >
                                                 <Trash2 className="size-3" />
                                                 <span>Hapus Inquiry</span>
@@ -472,13 +509,16 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                                     key={idx}
                                     href={link.url || '#'}
                                     preserveScroll
-                                    className={`flex h-7 min-w-7 items-center justify-center rounded-md px-2 text-xs font-medium transition-colors ${link.active
-                                        ? 'bg-[#0E2A1E] text-white font-semibold'
-                                        : link.url
-                                            ? 'border border-[#D5CEC2] bg-white text-[#2C2925] hover:border-[#0E2A1E]'
-                                            : 'text-stone-300 pointer-events-none'
-                                        }`}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                    className={`flex h-7 min-w-7 items-center justify-center rounded-md px-2 text-xs font-medium transition-colors ${
+                                        link.active
+                                            ? 'bg-[#0E2A1E] font-semibold text-white'
+                                            : link.url
+                                              ? 'border border-[#D5CEC2] bg-white text-[#2C2925] hover:border-[#0E2A1E]'
+                                              : 'pointer-events-none text-stone-300'
+                                    }`}
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
                                 />
                             ))}
                         </div>
@@ -488,10 +528,10 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
 
             {/* Modal: Edit Admin Internal Note */}
             {editingNoteInquiry && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-                    <div className="bg-white rounded-xl border border-[#E7E2D8] max-w-md w-full p-5 shadow-2xl space-y-3">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+                    <div className="w-full max-w-md space-y-3 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xl">
                         <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-2.5">
-                            <h4 className="font-bold text-[#1C1A18] text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <h4 className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                 <FileEdit className="size-3.5 text-[#9E7E45]" />
                                 <span>Catatan Internal Follow-Up</span>
                             </h4>
@@ -505,19 +545,22 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                         </div>
 
                         <div>
-                            <p className="text-[11px] text-[#7A746B] mb-2">
+                            <p className="mb-2 text-[11px] text-[#7A746B]">
                                 Catat progres tindak lanjut untuk{' '}
                                 <strong className="text-[#1C1A18]">
                                     {editingNoteInquiry.name}
                                 </strong>
-                                {editingNoteInquiry.company_name ? ` (${editingNoteInquiry.company_name})` : ''}:
+                                {editingNoteInquiry.company_name
+                                    ? ` (${editingNoteInquiry.company_name})`
+                                    : ''}
+                                :
                             </p>
                             <textarea
                                 value={noteDraft}
                                 onChange={(e) => setNoteDraft(e.target.value)}
                                 rows={4}
                                 placeholder="Contoh: Sudah dikirim katalog PDF via WhatsApp. Menunggu approval anggaran direksi..."
-                                className="w-full text-xs p-2.5 rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
+                                className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] p-2.5 text-xs focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                             />
                         </div>
 
@@ -525,14 +568,14 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                             <button
                                 type="button"
                                 onClick={() => setEditingNoteInquiry(null)}
-                                className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#4D4841] hover:bg-stone-50"
+                                className="rounded-lg px-3 py-1.5 text-xs font-medium text-[#4D4841] hover:bg-stone-50"
                             >
                                 Batal
                             </button>
                             <button
                                 type="button"
                                 onClick={handleSaveNote}
-                                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0E2A1E] text-white hover:bg-[#153e2d] shadow-2xs"
+                                className="rounded-lg bg-[#0E2A1E] px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#153e2d]"
                             >
                                 Simpan Catatan
                             </button>
@@ -543,9 +586,9 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
 
             {/* Modal: Confirm Delete */}
             {deletingInquiry && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-                    <div className="bg-white rounded-xl border border-[#E7E2D8] max-w-sm w-full p-5 shadow-2xl space-y-3">
-                        <h4 className="font-bold text-[#1C1A18] text-sm">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+                    <div className="w-full max-w-sm space-y-3 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xl">
+                        <h4 className="text-sm font-bold text-[#1C1A18]">
                             Hapus Inquiry Klien?
                         </h4>
                         <p className="text-xs text-[#7A746B]">
@@ -559,14 +602,14 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                             <button
                                 type="button"
                                 onClick={() => setDeletingInquiry(null)}
-                                className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#4D4841] hover:bg-stone-50"
+                                className="rounded-lg px-3 py-1.5 text-xs font-medium text-[#4D4841] hover:bg-stone-50"
                             >
                                 Batal
                             </button>
                             <button
                                 type="button"
                                 onClick={handleDelete}
-                                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white hover:bg-red-700 shadow-2xs"
+                                className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-red-700"
                             >
                                 Hapus
                             </button>

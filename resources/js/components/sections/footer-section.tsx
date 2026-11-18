@@ -171,6 +171,19 @@ export function FooterSection({
                                         </a>
                                     </li>
                                 )}
+                                {linkedinUrl && (
+                                    <li>
+                                        LinkedIn:{' '}
+                                        <a
+                                            href={linkedinUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="transition-colors hover:text-white"
+                                        >
+                                            Galuh &amp; Co.
+                                        </a>
+                                    </li>
+                                )}
                             </ul>
                         </div>
 
@@ -179,7 +192,7 @@ export function FooterSection({
                             <h4 className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
                                 GALERI &amp; STUDIO
                             </h4>
-                            <p className="mt-4 text-xs leading-relaxed text-white/70 whitespace-pre-line">
+                            <p className="mt-4 text-xs leading-relaxed whitespace-pre-line text-white/70">
                                 {companyAddress}
                             </p>
                             <a
@@ -198,7 +211,7 @@ export function FooterSection({
                             <h4 className="text-[10px] font-bold tracking-[0.2em] text-[#C5A880] uppercase">
                                 JAM OPERASIONAL
                             </h4>
-                            <p className="mt-4 text-xs leading-relaxed text-white/70 whitespace-pre-line">
+                            <p className="mt-4 text-xs leading-relaxed whitespace-pre-line text-white/70">
                                 {operationalHours}
                             </p>
                         </div>

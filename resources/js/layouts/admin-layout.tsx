@@ -24,7 +24,7 @@ interface AdminLayoutProps extends PropsWithChildren {
 
 export function AdminLayout({
     title = 'Admin Panel',
-    subtitle,
+    subtitle: _subtitle,
     headerAction,
     children,
 }: AdminLayoutProps) {
@@ -99,7 +99,10 @@ export function AdminLayout({
                     <div className="flex flex-col">
                         {/* Brand Logo & Studio Tag */}
                         <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
-                            <Link href="/admin" className="flex items-center gap-2.5">
+                            <Link
+                                href="/admin"
+                                className="flex items-center gap-2.5"
+                            >
                                 <GaluhLogo
                                     variant="white"
                                     className="h-8 w-auto"
@@ -129,17 +132,19 @@ export function AdminLayout({
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            className={`group relative flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${isActive
-                                                ? 'bg-white/[0.12] text-white font-semibold'
-                                                : 'text-white/70 hover:bg-white/[0.06] hover:text-white'
-                                                }`}
+                                            className={`group relative flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                                                isActive
+                                                    ? 'bg-white/[0.12] font-semibold text-white'
+                                                    : 'text-white/70 hover:bg-white/[0.06] hover:text-white'
+                                            }`}
                                         >
                                             <div className="flex items-center gap-2.5">
                                                 <Icon
-                                                    className={`size-4 shrink-0 transition-colors ${isActive
-                                                        ? 'text-[#D4AF37]'
-                                                        : 'text-white/50 group-hover:text-white/80'
-                                                        }`}
+                                                    className={`size-4 shrink-0 transition-colors ${
+                                                        isActive
+                                                            ? 'text-[#D4AF37]'
+                                                            : 'text-white/50 group-hover:text-white/80'
+                                                    }`}
                                                 />
                                                 <span>{item.label}</span>
                                             </div>
@@ -155,7 +160,7 @@ export function AdminLayout({
                     </div>
 
                     {/* Bottom Sidebar: View Public Website & User Account */}
-                    <div className="border-t border-white/[0.08] p-3 space-y-2">
+                    <div className="space-y-2 border-t border-white/[0.08] p-3">
                         <a
                             href="/"
                             target="_blank"
@@ -170,9 +175,11 @@ export function AdminLayout({
                         </a>
 
                         <div className="flex items-center justify-between rounded-lg border border-white/[0.06] bg-[#071610] p-2.5">
-                            <div className="flex items-center gap-2.5 min-w-0 pr-1">
+                            <div className="flex min-w-0 items-center gap-2.5 pr-1">
                                 <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-[#C5A880]/40 bg-[#C5A880]/15 text-[11px] font-bold text-[#E6CFA8]">
-                                    {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+                                    {user?.name
+                                        ? user.name.charAt(0).toUpperCase()
+                                        : 'A'}
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate text-xs font-medium text-white">
@@ -220,7 +227,9 @@ export function AdminLayout({
                                     </div>
                                     <button
                                         type="button"
-                                        onClick={() => setMobileSidebarOpen(false)}
+                                        onClick={() =>
+                                            setMobileSidebarOpen(false)
+                                        }
                                         className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white"
                                     >
                                         <X className="size-4" />
@@ -234,11 +243,14 @@ export function AdminLayout({
                                             <Link
                                                 key={item.href}
                                                 href={item.href}
-                                                onClick={() => setMobileSidebarOpen(false)}
-                                                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${item.active
-                                                    ? 'bg-white/15 text-white font-semibold'
-                                                    : 'text-white/75 hover:bg-white/5'
-                                                    }`}
+                                                onClick={() =>
+                                                    setMobileSidebarOpen(false)
+                                                }
+                                                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
+                                                    item.active
+                                                        ? 'bg-white/15 font-semibold text-white'
+                                                        : 'text-white/75 hover:bg-white/5'
+                                                }`}
                                             >
                                                 <div className="flex items-center gap-2.5">
                                                     <Icon className="size-4 text-[#C5A880]" />
@@ -280,9 +292,13 @@ export function AdminLayout({
                             </button>
 
                             <div className="flex items-center gap-1.5 text-xs text-[#7A746B]">
-                                <span className="hidden sm:inline font-medium">Admin Studio</span>
-                                <ChevronRight className="hidden sm:inline size-3 text-[#AFA89D]" />
-                                <span className="font-semibold text-[#1C1A18]">{title}</span>
+                                <span className="hidden font-medium sm:inline">
+                                    Admin Studio
+                                </span>
+                                <ChevronRight className="hidden size-3 text-[#AFA89D] sm:inline" />
+                                <span className="font-semibold text-[#1C1A18]">
+                                    {title}
+                                </span>
                             </div>
                         </div>
 
@@ -306,16 +322,17 @@ export function AdminLayout({
                     {toastMessage && (
                         <div className="px-4 pt-4 sm:px-6 lg:px-8">
                             <div
-                                className={`flex items-center justify-between rounded-lg px-4 py-2.5 text-xs font-medium shadow-2xs border ${toastType === 'success'
-                                    ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-                                    : 'border-red-200 bg-red-50 text-red-900'
-                                    }`}
+                                className={`flex items-center justify-between rounded-lg border px-4 py-2.5 text-xs font-medium shadow-2xs ${
+                                    toastType === 'success'
+                                        ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+                                        : 'border-red-200 bg-red-50 text-red-900'
+                                }`}
                             >
                                 <div className="flex items-center gap-2">
                                     {toastType === 'success' ? (
-                                        <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                                        <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
                                     ) : (
-                                        <AlertCircle className="size-4 text-red-600 shrink-0" />
+                                        <AlertCircle className="size-4 shrink-0 text-red-600" />
                                     )}
                                     <span>{toastMessage}</span>
                                 </div>

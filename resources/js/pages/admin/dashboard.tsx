@@ -1,17 +1,13 @@
 import { Link } from '@inertiajs/react';
 import {
-    ArrowUpRight,
     Building2,
-    Calendar,
     ChevronRight,
-    ExternalLink,
     Gift,
     Inbox,
     MessageSquare,
     Package,
     Plus,
     Sliders,
-    TrendingUp,
 } from 'lucide-react';
 import { AdminLayout } from '@/layouts/admin-layout';
 import type { Inquiry } from '@/types';
@@ -31,7 +27,7 @@ interface DashboardProps {
 export default function AdminDashboard({
     stats,
     recentInquiries,
-    whatsappNumber,
+    whatsappNumber: _whatsappNumber,
 }: DashboardProps) {
     // Stat cards without rainbow AI boxes - quiet luxury atelier style
     const statCards = [
@@ -101,9 +97,14 @@ export default function AdminDashboard({
         }
     };
 
-    const formatIdr = (val: number | null | undefined) => {
+    const formatIdr = (val: string | number | null | undefined) => {
         if (!val) return 'Fleksibel';
-        return `Rp ${val.toLocaleString('id-ID')}`;
+        if (typeof val === 'number') {
+            return `Rp ${val.toLocaleString('id-ID')}`;
+        }
+        const numeric = Number(val.replace(/[^0-9]/g, ''));
+        if (isNaN(numeric) || numeric === 0) return val;
+        return `Rp ${numeric.toLocaleString('id-ID')}`;
     };
 
     const formatDate = (dateStr: string | null | undefined) => {
@@ -119,7 +120,10 @@ export default function AdminDashboard({
     };
 
     const getWhatsAppUrl = (inquiry: Inquiry) => {
-        let cleanNumber = (inquiry.whatsapp_number || '').replace(/[^0-9]/g, '');
+        let cleanNumber = (inquiry.whatsapp_number || '').replace(
+            /[^0-9]/g,
+            '',
+        );
         if (cleanNumber.startsWith('0')) {
             cleanNumber = '62' + cleanNumber.slice(1);
         }
@@ -138,18 +142,19 @@ export default function AdminDashboard({
                 {/* Header Action Bar */}
                 <div className="flex flex-col gap-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h2 className="text-base font-bold text-[#1C1A18] font-serif">
+                        <h2 className="font-serif text-base font-bold text-[#1C1A18]">
                             Atelier CMS &amp; Sales Command
                         </h2>
                         <p className="mt-0.5 text-xs text-[#7A746B]">
-                            Kelola koleksi hampers eksklusif, pantau permintaan korporat, dan kelola identitas brand.
+                            Kelola koleksi hampers eksklusif, pantau permintaan
+                            korporat, dan kelola identitas brand.
                         </p>
                     </div>
 
                     <div className="flex items-center gap-2">
                         <Link
                             href="/admin/products/create"
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E2A1E] px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#153e2d] transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E2A1E] px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#153e2d]"
                         >
                             <Plus className="size-3.5" />
                             <span>Tambah Hampers</span>
@@ -157,7 +162,7 @@ export default function AdminDashboard({
 
                         <Link
                             href="/admin/settings"
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3.5 py-2 text-xs font-medium text-[#2C2925] hover:border-[#0E2A1E] transition-colors shadow-2xs"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3.5 py-2 text-xs font-medium text-[#2C2925] shadow-2xs transition-colors hover:border-[#0E2A1E]"
                         >
                             <Sliders className="size-3.5 text-[#9E7E45]" />
                             <span>Pengaturan Situs</span>
@@ -178,7 +183,7 @@ export default function AdminDashboard({
                                     <span className="text-[11px] font-semibold tracking-wider text-[#827A6E] uppercase">
                                         {card.label}
                                     </span>
-                                    <Icon className="size-4 text-[#A8A196] group-hover:text-[#0E2A1E] transition-colors" />
+                                    <Icon className="size-4 text-[#A8A196] transition-colors group-hover:text-[#0E2A1E]" />
                                 </div>
 
                                 <div className="mt-3 flex items-baseline gap-2">
@@ -192,9 +197,11 @@ export default function AdminDashboard({
 
                                 <div className="mt-2.5 flex items-center gap-1.5 border-t border-[#F2EDE4] pt-2.5 text-[11px] text-[#6E675D]">
                                     <span
-                                        className={`size-1.5 rounded-full shrink-0 ${card.statusDot}`}
+                                        className={`size-1.5 shrink-0 rounded-full ${card.statusDot}`}
                                     />
-                                    <span className="truncate">{card.statusText}</span>
+                                    <span className="truncate">
+                                        {card.statusText}
+                                    </span>
                                 </div>
                             </div>
                         );
@@ -207,7 +214,7 @@ export default function AdminDashboard({
                     <div className="flex flex-col rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs lg:col-span-5">
                         <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-3.5">
                             <div>
-                                <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                     Distribusi Katalog
                                 </h3>
                                 <p className="text-[11px] text-[#7A746B]">
@@ -224,34 +231,41 @@ export default function AdminDashboard({
                         </div>
 
                         <div className="mt-4 flex-1 space-y-3.5">
-                            {Object.entries(stats.categoryCounts).map(([cat, count]) => {
-                                const percentage =
-                                    totalCategoryCount > 0
-                                        ? Math.round((count / totalCategoryCount) * 100)
-                                        : 0;
+                            {Object.entries(stats.categoryCounts).map(
+                                ([cat, count]) => {
+                                    const percentage =
+                                        totalCategoryCount > 0
+                                            ? Math.round(
+                                                  (count / totalCategoryCount) *
+                                                      100,
+                                              )
+                                            : 0;
 
-                                return (
-                                    <div key={cat} className="space-y-1.5">
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="font-medium text-[#2C2925]">
-                                                {cat}
-                                            </span>
-                                            <span className="font-semibold text-[#1C1A18] tabular-nums">
-                                                {count}{' '}
-                                                <span className="text-[10px] font-normal text-[#8C8479]">
-                                                    ({percentage}%)
+                                    return (
+                                        <div key={cat} className="space-y-1.5">
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="font-medium text-[#2C2925]">
+                                                    {cat}
                                                 </span>
-                                            </span>
+                                                <span className="font-semibold text-[#1C1A18] tabular-nums">
+                                                    {count}{' '}
+                                                    <span className="text-[10px] font-normal text-[#8C8479]">
+                                                        ({percentage}%)
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F0EBE1]">
+                                                <div
+                                                    className="h-full rounded-full bg-[#0E2A1E] transition-all duration-500"
+                                                    style={{
+                                                        width: `${percentage}%`,
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F0EBE1]">
-                                            <div
-                                                className="h-full rounded-full bg-[#0E2A1E] transition-all duration-500"
-                                                style={{ width: `${percentage}%` }}
-                                            />
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                },
+                            )}
                         </div>
 
                         <div className="mt-5 rounded-lg border border-[#EBE3D5] bg-[#FAF8F5] p-3.5 text-center">
@@ -272,7 +286,7 @@ export default function AdminDashboard({
                     <div className="flex flex-col rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs lg:col-span-7">
                         <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-3.5">
                             <div>
-                                <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                     Inquiries &amp; Leads Terbaru
                                 </h3>
                                 <p className="text-[11px] text-[#7A746B]">
@@ -283,19 +297,22 @@ export default function AdminDashboard({
                                 href="/admin/inquiries"
                                 className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0E2A1E] hover:underline"
                             >
-                                <span>Semua Leads ({stats.inquiriesTotal})</span>
+                                <span>
+                                    Semua Leads ({stats.inquiriesTotal})
+                                </span>
                                 <ChevronRight className="size-3" />
                             </Link>
                         </div>
 
                         {recentInquiries.length === 0 ? (
                             <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-                                <Inbox className="size-8 text-[#C0B9AD] stroke-1" />
+                                <Inbox className="size-8 stroke-1 text-[#C0B9AD]" />
                                 <p className="mt-2 text-xs font-medium text-[#4D4841]">
                                     Belum ada inquiry masuk
                                 </p>
                                 <p className="text-[11px] text-[#8C8479]">
-                                    Form konsultasi di landing page siap menerima leads klien.
+                                    Form konsultasi di landing page siap
+                                    menerima leads klien.
                                 </p>
                             </div>
                         ) : (
@@ -309,13 +326,15 @@ export default function AdminDashboard({
                                         >
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-semibold text-[#1C1A18] truncate">
+                                                    <span className="truncate font-semibold text-[#1C1A18]">
                                                         {inquiry.name}
                                                     </span>
                                                     {inquiry.company_name && (
-                                                        <span className="inline-flex items-center gap-1 rounded bg-[#F4EFE6] px-1.5 py-0.5 text-[10px] font-medium text-[#0E2A1E] shrink-0">
+                                                        <span className="inline-flex shrink-0 items-center gap-1 rounded bg-[#F4EFE6] px-1.5 py-0.5 text-[10px] font-medium text-[#0E2A1E]">
                                                             <Building2 className="size-2.5 text-[#9E7E45]" />
-                                                            {inquiry.company_name}
+                                                            {
+                                                                inquiry.company_name
+                                                            }
                                                         </span>
                                                     )}
                                                 </div>
@@ -326,13 +345,21 @@ export default function AdminDashboard({
                                                             : 'Kustom'}
                                                     </span>
                                                     <span>•</span>
-                                                    <span>{formatIdr(inquiry.budget_per_package)}</span>
+                                                    <span>
+                                                        {formatIdr(
+                                                            inquiry.budget_per_package,
+                                                        )}
+                                                    </span>
                                                     <span>•</span>
-                                                    <span>{formatDate(inquiry.created_at)}</span>
+                                                    <span>
+                                                        {formatDate(
+                                                            inquiry.created_at,
+                                                        )}
+                                                    </span>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-2 shrink-0">
+                                            <div className="flex shrink-0 items-center gap-2">
                                                 <span
                                                     className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-medium ${chip.badge}`}
                                                 >
@@ -343,11 +370,13 @@ export default function AdminDashboard({
                                                 </span>
 
                                                 <a
-                                                    href={getWhatsAppUrl(inquiry)}
+                                                    href={getWhatsAppUrl(
+                                                        inquiry,
+                                                    )}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     title="Chat via WhatsApp"
-                                                    className="inline-flex size-7 items-center justify-center rounded-lg border border-[#D5CEC2] bg-white text-[#25D366] hover:border-[#25D366] hover:bg-[#25D366]/5 transition-colors"
+                                                    className="inline-flex size-7 items-center justify-center rounded-lg border border-[#D5CEC2] bg-white text-[#25D366] transition-colors hover:border-[#25D366] hover:bg-[#25D366]/5"
                                                 >
                                                     <MessageSquare className="size-3.5" />
                                                 </a>

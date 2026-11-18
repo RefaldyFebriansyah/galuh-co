@@ -279,7 +279,7 @@ export function ProductsSection({
 
                                         {/* Category pill on bottom left */}
                                         <div className="absolute bottom-2.5 left-2.5">
-                                            <span className="rounded-full bg-white/90 px-2.5 py-0.5 font-serif text-[9px] text-[#8B6B38] italic backdrop-blur-xs shadow-2xs">
+                                            <span className="rounded-full bg-white/90 px-2.5 py-0.5 font-serif text-[9px] text-[#8B6B38] italic shadow-2xs backdrop-blur-xs">
                                                 {product.category}
                                             </span>
                                         </div>

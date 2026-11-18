@@ -29,9 +29,11 @@ export interface Inquiry {
     email: string;
     whatsapp_number: string;
     estimated_packages: string;
-    budget_per_package?: string | null;
+    budget_per_package?: string | number | null;
     needed_at?: string | null;
     notes?: string | null;
+    status?: 'new' | 'contacted' | 'completed' | 'cancelled';
+    admin_notes?: string | null;
     created_at?: string;
     updated_at?: string;
 }

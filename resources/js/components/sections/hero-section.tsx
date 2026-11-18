@@ -1,4 +1,4 @@
-import { Gift, Sparkles, Star } from 'lucide-react';
+import { Gift, Star } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
@@ -267,8 +267,13 @@ export function HeroSection({
 
                                     {/* Top Prestige Label */}
                                     <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-start sm:inset-x-4 sm:top-4">
-                                        <span className="inline-flex items-center rounded-full border border-[#D5CEC2] bg-[#FAF8F5]/95 px-3 py-1 text-[8.5px] font-bold tracking-[0.16em] text-[#0E2A1E] shadow-sm backdrop-blur-xs sm:px-3.5 sm:py-1 sm:text-[9.5px] uppercase">
-                                            {(heroBadge || 'Signature Atelier').replace(/^[✦*✨\s]+|[✦*✨\s]+$/g, '').trim()}
+                                        <span className="inline-flex items-center rounded-full border border-[#D5CEC2] bg-[#FAF8F5]/95 px-3 py-1 text-[8.5px] font-bold tracking-[0.16em] text-[#0E2A1E] uppercase shadow-sm backdrop-blur-xs sm:px-3.5 sm:py-1 sm:text-[9.5px]">
+                                            {(heroBadge || 'Signature Atelier')
+                                                .replace(
+                                                    /^[✦*✨\s]+|[✦*✨\s]+$/g,
+                                                    '',
+                                                )
+                                                .trim()}
                                         </span>
                                     </div>
 

@@ -1,15 +1,12 @@
 import { Link, useForm } from '@inertiajs/react';
 import {
     ArrowLeft,
-    Check,
     Image as ImageIcon,
     Plus,
     Save,
-    Trash2,
     UploadCloud,
     X,
     AlertCircle,
-    Info,
 } from 'lucide-react';
 import type { FormEventHandler } from 'react';
 import { useState, useRef } from 'react';
@@ -21,10 +18,7 @@ interface ProductFormProps {
     categories: ProductCategory[];
 }
 
-export default function ProductForm({
-    product,
-    categories,
-}: ProductFormProps) {
+export default function ProductForm({ product, categories }: ProductFormProps) {
     const isEdit = Boolean(product);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -92,7 +86,7 @@ export default function ProductForm({
             headerAction={
                 <Link
                     href="/admin/products"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3 py-1.5 text-xs font-medium text-[#4D4841] hover:border-[#0E2A1E] hover:text-[#0E2A1E] transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3 py-1.5 text-xs font-medium text-[#4D4841] transition-colors hover:border-[#0E2A1E] hover:text-[#0E2A1E]"
                 >
                     <ArrowLeft className="size-3.5" />
                     <span>Kembali</span>
@@ -104,9 +98,9 @@ export default function ProductForm({
                     {/* Left Column: Product Details (7 Cols) */}
                     <div className="space-y-5 lg:col-span-7">
                         {/* Section 1: Basic Information */}
-                        <div className="rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs space-y-4">
+                        <div className="space-y-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs">
                             <div className="border-b border-[#F0EBE1] pb-3">
-                                <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                     Informasi Dasar Produk
                                 </h3>
                                 <p className="text-[11px] text-[#7A746B]">
@@ -116,18 +110,21 @@ export default function ProductForm({
 
                             {/* Name */}
                             <div>
-                                <label className="block text-xs font-semibold text-[#2C2925] mb-1">
-                                    Nama Hampers <span className="text-red-500">*</span>
+                                <label className="mb-1 block text-xs font-semibold text-[#2C2925]">
+                                    Nama Hampers{' '}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('name', e.target.value)
+                                    }
                                     placeholder="Contoh: Seri Eksekutif Kantor"
                                     className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1C1A18] placeholder:text-[#8C8479] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                                 />
                                 {errors.name && (
-                                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                                    <p className="mt-1 flex items-center gap-1 text-xs text-red-600">
                                         <AlertCircle className="size-3" />
                                         <span>{errors.name}</span>
                                     </p>
@@ -135,15 +132,20 @@ export default function ProductForm({
                             </div>
 
                             {/* Category & Price Row */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                                 <div>
-                                    <label className="block text-xs font-semibold text-[#2C2925] mb-1">
-                                        Kategori <span className="text-red-500">*</span>
+                                    <label className="mb-1 block text-xs font-semibold text-[#2C2925]">
+                                        Kategori{' '}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         value={data.category}
                                         onChange={(e) =>
-                                            setData('category', e.target.value as ProductCategory)
+                                            setData(
+                                                'category',
+                                                e.target
+                                                    .value as ProductCategory,
+                                            )
                                         }
                                         className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-3 py-2 text-xs font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                                     >
@@ -154,62 +156,81 @@ export default function ProductForm({
                                         ))}
                                     </select>
                                     {errors.category && (
-                                        <p className="mt-1 text-xs text-red-600">{errors.category}</p>
+                                        <p className="mt-1 text-xs text-red-600">
+                                            {errors.category}
+                                        </p>
                                     )}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-semibold text-[#2C2925] mb-1">
-                                        Harga Mulai Dari (IDR) <span className="text-red-500">*</span>
+                                    <label className="mb-1 block text-xs font-semibold text-[#2C2925]">
+                                        Harga Mulai Dari (IDR){' '}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <div className="relative">
-                                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-medium text-[#7A746B]">
+                                        <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-xs font-medium text-[#7A746B]">
                                             Rp
                                         </span>
                                         <input
                                             type="number"
                                             value={data.price_from}
-                                            onChange={(e) => setData('price_from', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'price_from',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="550000"
-                                            className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] py-2 pr-3.5 pl-9 text-xs font-mono font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] py-2 pr-3.5 pl-9 font-mono text-xs font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                                         />
                                     </div>
                                     {errors.price_from && (
-                                        <p className="mt-1 text-xs text-red-600">{errors.price_from}</p>
+                                        <p className="mt-1 text-xs text-red-600">
+                                            {errors.price_from}
+                                        </p>
                                     )}
                                 </div>
                             </div>
 
                             {/* Short Description */}
                             <div>
-                                <label className="block text-xs font-semibold text-[#2C2925] mb-1">
-                                    Deskripsi Singkat <span className="text-red-500">*</span>
+                                <label className="mb-1 block text-xs font-semibold text-[#2C2925]">
+                                    Deskripsi Singkat{' '}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
                                     value={data.short_description}
-                                    onChange={(e) => setData('short_description', e.target.value)}
+                                    onChange={(e) =>
+                                        setData(
+                                            'short_description',
+                                            e.target.value,
+                                        )
+                                    }
                                     rows={2}
                                     placeholder="Contoh: Hardbox beludru emerald dengan tumbler premium, notebook kulit, dan madu murni."
                                     className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] p-3 text-xs text-[#1C1A18] placeholder:text-[#8C8479] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                                 />
                                 {errors.short_description && (
-                                    <p className="mt-1 text-xs text-red-600">{errors.short_description}</p>
+                                    <p className="mt-1 text-xs text-red-600">
+                                        {errors.short_description}
+                                    </p>
                                 )}
                             </div>
                         </div>
 
                         {/* Section 2: Items List Builder */}
-                        <div className="rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs space-y-4">
-                            <div className="border-b border-[#F0EBE1] pb-3 flex items-center justify-between">
+                        <div className="space-y-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs">
+                            <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-3">
                                 <div>
-                                    <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                    <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                         Isi Paket Hampers
                                     </h3>
                                     <p className="text-[11px] text-[#7A746B]">
-                                        Daftar butir isi yang ditampilkan pada kartu katalog
+                                        Daftar butir isi yang ditampilkan pada
+                                        kartu katalog
                                     </p>
                                 </div>
-                                <span className="text-xs font-mono text-[#8C8479]">
+                                <span className="font-mono text-xs text-[#8C8479]">
                                     {data.contents.length} Butir
                                 </span>
                             </div>
@@ -221,18 +242,20 @@ export default function ProductForm({
                                         key={index}
                                         className="flex items-center justify-between gap-2 rounded-lg border border-[#EAE5DC] bg-[#FAF8F5] px-3 py-2 text-xs"
                                     >
-                                        <div className="flex items-center gap-2 min-w-0">
+                                        <div className="flex min-w-0 items-center gap-2">
                                             <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-[#E0D8CB] text-[9px] font-bold text-[#4D4841]">
                                                 {index + 1}
                                             </span>
-                                            <span className="font-medium text-[#1C1A18] truncate">
+                                            <span className="truncate font-medium text-[#1C1A18]">
                                                 {item}
                                             </span>
                                         </div>
                                         <button
                                             type="button"
-                                            onClick={() => handleRemoveItem(index)}
-                                            className="text-stone-400 hover:text-red-600 transition-colors"
+                                            onClick={() =>
+                                                handleRemoveItem(index)
+                                            }
+                                            className="text-stone-400 transition-colors hover:text-red-600"
                                             title="Hapus butir ini"
                                         >
                                             <X className="size-3.5" />
@@ -246,7 +269,9 @@ export default function ProductForm({
                                 <input
                                     type="text"
                                     value={newItemText}
-                                    onChange={(e) => setNewItemText(e.target.value)}
+                                    onChange={(e) =>
+                                        setNewItemText(e.target.value)
+                                    }
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
                                             e.preventDefault();
@@ -259,14 +284,16 @@ export default function ProductForm({
                                 <button
                                     type="button"
                                     onClick={() => handleAddItem()}
-                                    className="inline-flex items-center gap-1 rounded-lg border border-[#0E2A1E] bg-[#0E2A1E] px-3 py-2 text-xs font-medium text-white hover:bg-[#153e2d] transition-colors"
+                                    className="inline-flex items-center gap-1 rounded-lg border border-[#0E2A1E] bg-[#0E2A1E] px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-[#153e2d]"
                                 >
                                     <Plus className="size-3.5" />
                                     <span>Tambah</span>
                                 </button>
                             </div>
                             {errors.contents && (
-                                <p className="text-xs text-red-600">{errors.contents}</p>
+                                <p className="text-xs text-red-600">
+                                    {errors.contents}
+                                </p>
                             )}
                         </div>
                     </div>
@@ -274,9 +301,9 @@ export default function ProductForm({
                     {/* Right Column: Photo Upload & Publishing Settings (5 Cols) */}
                     <div className="space-y-5 lg:col-span-5">
                         {/* Section 3: Photo Upload Frame */}
-                        <div className="rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs space-y-4">
+                        <div className="space-y-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs">
                             <div className="border-b border-[#F0EBE1] pb-3">
-                                <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                     Foto Katalog Hampers
                                 </h3>
                                 <p className="text-[11px] text-[#7A746B]">
@@ -285,7 +312,7 @@ export default function ProductForm({
                             </div>
 
                             {/* Preview Frame */}
-                            <div className="relative aspect-[4/3.2] overflow-hidden rounded-lg border border-[#E0D8CB] bg-[#FAF8F5] flex items-center justify-center">
+                            <div className="relative flex aspect-[4/3.2] items-center justify-center overflow-hidden rounded-lg border border-[#E0D8CB] bg-[#FAF8F5]">
                                 {imagePreview ? (
                                     <>
                                         <img
@@ -293,10 +320,12 @@ export default function ProductForm({
                                             alt="Preview Foto Hampers"
                                             className="size-full object-cover object-center"
                                         />
-                                        <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                        <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/30 opacity-0 transition-opacity hover:opacity-100">
                                             <button
                                                 type="button"
-                                                onClick={() => fileInputRef.current?.click()}
+                                                onClick={() =>
+                                                    fileInputRef.current?.click()
+                                                }
                                                 className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#1C1A18] shadow-md hover:bg-white"
                                             >
                                                 Ganti Foto
@@ -304,8 +333,8 @@ export default function ProductForm({
                                         </div>
                                     </>
                                 ) : (
-                                    <div className="text-center p-6">
-                                        <ImageIcon className="size-8 mx-auto text-[#A8A196] stroke-1" />
+                                    <div className="p-6 text-center">
+                                        <ImageIcon className="mx-auto size-8 stroke-1 text-[#A8A196]" />
                                         <p className="mt-2 text-xs font-medium text-[#4D4841]">
                                             Belum ada foto dipilih
                                         </p>
@@ -327,14 +356,20 @@ export default function ProductForm({
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-[#D5CEC2] bg-white py-2 px-3 text-xs font-medium text-[#2C2925] hover:border-[#0E2A1E] hover:bg-stone-50 transition-colors shadow-2xs"
+                                    onClick={() =>
+                                        fileInputRef.current?.click()
+                                    }
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#D5CEC2] bg-white px-3 py-2 text-xs font-medium text-[#2C2925] shadow-2xs transition-colors hover:border-[#0E2A1E] hover:bg-stone-50"
                                 >
                                     <UploadCloud className="size-3.5 text-[#0E2A1E]" />
-                                    <span>{imagePreview ? 'Pilih Foto Pengganti' : 'Pilih File Foto dari Komputer'}</span>
+                                    <span>
+                                        {imagePreview
+                                            ? 'Pilih Foto Pengganti'
+                                            : 'Pilih File Foto dari Komputer'}
+                                    </span>
                                 </button>
                                 {errors.image && (
-                                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                                    <p className="mt-1 flex items-center gap-1 text-xs text-red-600">
                                         <AlertCircle className="size-3" />
                                         <span>{errors.image}</span>
                                     </p>
@@ -343,31 +378,36 @@ export default function ProductForm({
                         </div>
 
                         {/* Section 4: Publishing Settings & Order */}
-                        <div className="rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs space-y-4">
+                        <div className="space-y-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs">
                             <div className="border-b border-[#F0EBE1] pb-3">
-                                <h3 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
                                     Pengaturan Tampilan
                                 </h3>
                                 <p className="text-[11px] text-[#7A746B]">
-                                    Status tayang dan posisi urutan di landing page
+                                    Status tayang dan posisi urutan di landing
+                                    page
                                 </p>
                             </div>
 
                             {/* Sort Order */}
                             <div>
-                                <label className="block text-xs font-semibold text-[#2C2925] mb-1">
+                                <label className="mb-1 block text-xs font-semibold text-[#2C2925]">
                                     Urutan Tampil (Sort Order)
                                 </label>
                                 <input
                                     type="number"
                                     value={data.sort_order}
                                     onChange={(e) =>
-                                        setData('sort_order', parseInt(e.target.value) || 0)
+                                        setData(
+                                            'sort_order',
+                                            parseInt(e.target.value) || 0,
+                                        )
                                     }
-                                    className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-3 py-2 text-xs font-mono font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
+                                    className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-3 py-2 font-mono text-xs font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
                                 />
                                 <p className="mt-1 text-[11px] text-[#8C8479]">
-                                    Semakin kecil angkanya, semakin awal tampil di halaman.
+                                    Semakin kecil angkanya, semakin awal tampil
+                                    di halaman.
                                 </p>
                             </div>
 
@@ -385,32 +425,44 @@ export default function ProductForm({
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => setData('is_active', !data.is_active)}
-                                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${data.is_active ? 'bg-[#0E2A1E]' : 'bg-stone-300'
-                                        }`}
+                                    onClick={() =>
+                                        setData('is_active', !data.is_active)
+                                    }
+                                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                                        data.is_active
+                                            ? 'bg-[#0E2A1E]'
+                                            : 'bg-stone-300'
+                                    }`}
                                 >
                                     <span
-                                        className={`pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${data.is_active ? 'translate-x-4' : 'translate-x-0'
-                                            }`}
+                                        className={`pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                                            data.is_active
+                                                ? 'translate-x-4'
+                                                : 'translate-x-0'
+                                        }`}
                                     />
                                 </button>
                             </div>
                         </div>
 
                         {/* Save Action Card */}
-                        <div className="rounded-xl border border-[#E7E2D8] bg-white p-4 shadow-2xs space-y-2.5">
+                        <div className="space-y-2.5 rounded-xl border border-[#E7E2D8] bg-white p-4 shadow-2xs">
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#0E2A1E] py-2.5 px-4 text-xs font-semibold text-white shadow-xs hover:bg-[#153e2d] transition-colors disabled:opacity-50"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#0E2A1E] px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#153e2d] disabled:opacity-50"
                             >
                                 <Save className="size-3.5" />
-                                <span>{processing ? 'Menyimpan...' : 'Simpan Produk Hampers'}</span>
+                                <span>
+                                    {processing
+                                        ? 'Menyimpan...'
+                                        : 'Simpan Produk Hampers'}
+                                </span>
                             </button>
 
                             <Link
                                 href="/admin/products"
-                                className="w-full inline-flex items-center justify-center rounded-lg border border-[#D5CEC2] py-2 px-4 text-xs font-medium text-[#4D4841] hover:bg-stone-50 transition-colors"
+                                className="inline-flex w-full items-center justify-center rounded-lg border border-[#D5CEC2] px-4 py-2 text-xs font-medium text-[#4D4841] transition-colors hover:bg-stone-50"
                             >
                                 Batal
                             </Link>

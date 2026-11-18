@@ -16,7 +16,9 @@ export function GaluhLogo({
     const isWhite = variant === 'light' || variant === 'white';
     const logoSrc =
         src ||
-        (isWhite ? '/images/galuh_logo_white.png' : '/images/galuh_logo_gold.png');
+        (isWhite
+            ? '/images/galuh_logo_white.png'
+            : '/images/galuh_logo_gold.png');
 
     return (
         <div className="inline-flex items-center gap-6 text-left sm:gap-7">
