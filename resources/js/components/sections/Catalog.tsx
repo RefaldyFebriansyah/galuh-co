@@ -1,13 +1,8 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import {
-    fadeInUp,
-    viewportOnce,
-    transitionFast,
-    buttonTap,
-} from '@/lib/motion';
+import { fadeInUp, viewportOnce, buttonTap } from '@/lib/motion';
 import type { Product, ProductCategory } from '@/types';
 
 export interface CatalogProps {
@@ -45,7 +40,11 @@ function getEditorialTag(product: Product, idx: number): string {
     return 'Signature';
 }
 
-function createOrderUrl(productName: string, whatsappNumber: string, price?: string): string {
+function createOrderUrl(
+    productName: string,
+    whatsappNumber: string,
+    price?: string,
+): string {
     const text = `Halo GALUH & CO., saya tertarik memesan hampers "${productName}"${price ? ` (${price})` : ''}. Mohon informasi detail isi paket dan ketersediaannya.`;
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
@@ -61,9 +60,18 @@ interface ProductCardProps {
  * Compact Boutique Card Design:
  * Scaled down proportionally to fit comfortable viewing heights without excessive page scrolling.
  */
-function ProductCard({ product, idx, whatsappNumber, className = '' }: ProductCardProps) {
+function ProductCard({
+    product,
+    idx,
+    whatsappNumber,
+    className = '',
+}: ProductCardProps) {
     const tagText = getEditorialTag(product, idx);
-    const whatsappOrderUrl = createOrderUrl(product.name, whatsappNumber, product.formatted_price);
+    const whatsappOrderUrl = createOrderUrl(
+        product.name,
+        whatsappNumber,
+        product.formatted_price,
+    );
 
     return (
         <motion.article
@@ -158,7 +166,7 @@ function ProductCard({ product, idx, whatsappNumber, className = '' }: ProductCa
     );
 }
 
-const horizontalSlideVariants = {
+const horizontalSlideVariants: Variants = {
     enter: (direction: number) => ({
         x: direction > 0 ? 100 : -100,
         opacity: 0,
@@ -168,7 +176,7 @@ const horizontalSlideVariants = {
         opacity: 1,
         transition: {
             duration: 0.42,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.16, 1, 0.3, 1] as const,
         },
     },
     exit: (direction: number) => ({
@@ -176,7 +184,7 @@ const horizontalSlideVariants = {
         opacity: 0,
         transition: {
             duration: 0.28,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.16, 1, 0.3, 1] as const,
         },
     }),
 };
@@ -325,7 +333,9 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                 <button
                                     key={cat.value}
                                     type="button"
-                                    onClick={() => handleCategoryChange(cat.value)}
+                                    onClick={() =>
+                                        handleCategoryChange(cat.value)
+                                    }
                                     className={`relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-4.5 sm:py-2 sm:text-xs ${
                                         isActive
                                             ? 'text-[#0E2A1E]'
@@ -361,7 +371,9 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                             <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-white/90 px-2.5 py-1 shadow-2xs backdrop-blur-md">
                                 <button
                                     type="button"
-                                    onClick={() => paginate(Math.max(0, currentPage - 1))}
+                                    onClick={() =>
+                                        paginate(Math.max(0, currentPage - 1))
+                                    }
                                     disabled={currentPage === 0}
                                     aria-label="Koleksi Sebelumnya"
                                     className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
@@ -373,7 +385,14 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                 </span>
                                 <button
                                     type="button"
-                                    onClick={() => paginate(Math.min(totalPages - 1, currentPage + 1))}
+                                    onClick={() =>
+                                        paginate(
+                                            Math.min(
+                                                totalPages - 1,
+                                                currentPage + 1,
+                                            ),
+                                        )
+                                    }
                                     disabled={currentPage === totalPages - 1}
                                     aria-label="Koleksi Selanjutnya"
                                     className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
@@ -385,7 +404,8 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                     )}
 
                     <AnimatePresence mode="wait" custom={direction}>
-                        {safeProducts.length === 0 || filteredProducts.length === 0 ? (
+                        {safeProducts.length === 0 ||
+                        filteredProducts.length === 0 ? (
                             <motion.div
                                 key="empty"
                                 initial={{ opacity: 0 }}
@@ -394,7 +414,8 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                 className="rounded-2xl border border-dashed border-[#EAE5DC] bg-white/40 p-10 text-center"
                             >
                                 <p className="font-serif text-sm text-[#8C877E]">
-                                    Belum ada koleksi yang ditampilkan untuk kategori ini.
+                                    Belum ada koleksi yang ditampilkan untuk
+                                    kategori ini.
                                 </p>
                             </motion.div>
                         ) : (
@@ -411,8 +432,12 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                 {totalPages > 1 && currentPage > 0 && (
                                     <button
                                         type="button"
-                                        onClick={() => paginate(Math.max(0, currentPage - 1))}
-                                        className="absolute -left-5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
+                                        onClick={() =>
+                                            paginate(
+                                                Math.max(0, currentPage - 1),
+                                            )
+                                        }
+                                        className="absolute top-1/2 -left-5 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
                                         aria-label="Geser ke Koleksi Sebelumnya"
                                     >
                                         <ChevronLeft className="size-5" />
@@ -425,23 +450,34 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                         <ProductCard
                                             key={product.id}
                                             product={product}
-                                            idx={currentPage * ITEMS_PER_PAGE + idx}
+                                            idx={
+                                                currentPage * ITEMS_PER_PAGE +
+                                                idx
+                                            }
                                             whatsappNumber={whatsappNumber}
                                         />
                                     ))}
                                 </div>
 
                                 {/* Floating Side Arrow: Right (Visible on desktop XL screens right next to grid) */}
-                                {totalPages > 1 && currentPage < totalPages - 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => paginate(Math.min(totalPages - 1, currentPage + 1))}
-                                        className="absolute -right-5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
-                                        aria-label="Geser ke Koleksi Selanjutnya"
-                                    >
-                                        <ChevronRight className="size-5" />
-                                    </button>
-                                )}
+                                {totalPages > 1 &&
+                                    currentPage < totalPages - 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                paginate(
+                                                    Math.min(
+                                                        totalPages - 1,
+                                                        currentPage + 1,
+                                                    ),
+                                                )
+                                            }
+                                            className="absolute top-1/2 -right-5 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
+                                            aria-label="Geser ke Koleksi Selanjutnya"
+                                        >
+                                            <ChevronRight className="size-5" />
+                                        </button>
+                                    )}
                             </motion.div>
                         )}
                     </AnimatePresence>
