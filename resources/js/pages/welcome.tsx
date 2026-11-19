@@ -47,6 +47,12 @@ export default function Welcome({
 
     const activeWa = settings?.whatsapp_number || whatsappNumber;
 
+    const safeProducts: Product[] = Array.isArray(products)
+        ? products
+        : products && typeof products === 'object'
+          ? Object.values(products)
+          : [];
+
     return (
         <MotionConfig reducedMotion="user">
             <Head title="GALUH & CO. — Hampers Premium & Corporate Gifting" />
@@ -79,7 +85,7 @@ export default function Welcome({
                 <AboutSection />
 
                 {/* 4. Koleksi Hampers (Database Products with Filter) */}
-                <Catalog products={products} whatsappNumber={activeWa} />
+                <Catalog products={safeProducts} whatsappNumber={activeWa} />
 
                 {/* 5. Kenapa Memilih Kami & Metrik Stats */}
                 <FeaturesSection />

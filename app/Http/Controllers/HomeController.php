@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,17 +15,20 @@ class HomeController extends Controller
      */
     public function index(): Response
     {
-        $products = Product::query()
-            ->active()
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
+        $products = Cache::remember('landing_page_active_products_v4', 3600, function () {
+            return Product::query()
+                ->active()
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get()
+                ->toArray();
+        });
 
         $settings = Setting::forLandingPage();
         $whatsappNumber = $settings['whatsapp_number'] ?? (string) config('services.whatsapp.number', '6281572414233');
 
         return Inertia::render('welcome', [
-            'products' => $products,
+            'products' => array_values($products),
             'whatsappNumber' => $whatsappNumber,
             'settings' => $settings,
         ]);

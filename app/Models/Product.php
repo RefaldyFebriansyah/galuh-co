@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
@@ -52,6 +53,20 @@ class Product extends Model
     protected $appends = [
         'formatted_price',
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::saved(function () {
+            Cache::forget('landing_page_active_products_v4');
+        });
+
+        static::deleted(function () {
+            Cache::forget('landing_page_active_products_v4');
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

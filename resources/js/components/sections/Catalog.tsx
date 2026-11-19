@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
     fadeInUp,
     viewportOnce,
@@ -29,19 +29,189 @@ const CATEGORIES: FilterTab[] = [
     { label: 'Bespoke Custom', value: 'Custom' },
 ];
 
+const ITEMS_PER_PAGE = 8;
+
+function getEditorialTag(product: Product, idx: number): string {
+    if (product.slug === 'seri-kencana-lebaran') return 'Best Seller';
+    if (product.slug === 'seri-rayyan-mubarak') return 'Edisi Spesial';
+    if (product.slug === 'seri-eksekutif-kantor') return 'VIP Executive';
+    if (product.slug === 'seri-sinergi-korporat') return 'Tech & Brew';
+    if (product.slug === 'seri-apresiasi-bisnis') return 'Pilihan B2B';
+    if (product.slug === 'seri-mahligai-seserahan') return 'Seserahan';
+    if (product.slug === 'seri-noel-luminary') return 'Festive Choice';
+    if (product.slug === 'seri-bespoke-royal-heritage') return 'Bespoke Custom';
+
+    if (idx === 0) return 'Kurasi Pilihan';
+    return 'Signature';
+}
+
+function createOrderUrl(productName: string, whatsappNumber: string, price?: string): string {
+    const text = `Halo GALUH & CO., saya tertarik memesan hampers "${productName}"${price ? ` (${price})` : ''}. Mohon informasi detail isi paket dan ketersediaannya.`;
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+
+interface ProductCardProps {
+    product: Product;
+    idx: number;
+    whatsappNumber: string;
+    className?: string;
+}
+
+/**
+ * Compact Boutique Card Design:
+ * Scaled down proportionally to fit comfortable viewing heights without excessive page scrolling.
+ */
+function ProductCard({ product, idx, whatsappNumber, className = '' }: ProductCardProps) {
+    const tagText = getEditorialTag(product, idx);
+    const whatsappOrderUrl = createOrderUrl(product.name, whatsappNumber, product.formatted_price);
+
+    return (
+        <motion.article
+            layout
+            whileHover={{
+                y: -4,
+                transition: {
+                    duration: 0.25,
+                    ease: [0.16, 1, 0.3, 1],
+                },
+            }}
+            className={`group flex flex-col overflow-hidden rounded-xl border border-[#EAE5DC] bg-white shadow-[0_3px_14px_-6px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-[0_8px_24px_-8px_rgba(20,54,40,0.12)] ${className}`}
+        >
+            {/* Photo Frame (Compact 4:3.2 Aspect Ratio) */}
+            <div className="relative aspect-[4/3.2] w-full overflow-hidden bg-[#F2EDE4]">
+                {product.image ? (
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        className="size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                    />
+                ) : (
+                    <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-4 text-center">
+                        <div className="flex size-10 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs">
+                            <span className="font-serif text-lg font-normal text-[#C5A880]">
+                                G
+                            </span>
+                        </div>
+                        <span className="mt-1.5 font-serif text-[10px] font-bold tracking-[0.2em] text-[#8C877E] uppercase">
+                            GALUH &amp; CO.
+                        </span>
+                    </div>
+                )}
+
+                {/* Top Badge: Editorial Pill */}
+                <div className="absolute top-2.5 left-2.5 flex items-center">
+                    <span className="rounded-full border border-black/10 bg-white/92 px-2.5 py-0.5 text-[8.5px] font-bold tracking-[0.12em] text-[#0E2A1E] uppercase shadow-2xs backdrop-blur-md">
+                        {tagText}
+                    </span>
+                </div>
+
+                {/* Category Overlay Bottom Left */}
+                <div className="absolute bottom-2.5 left-2.5">
+                    <span className="rounded-full bg-black/45 px-2 py-0.5 font-serif text-[9px] text-[#F5EFEB] italic shadow-2xs backdrop-blur-md">
+                        {product.category}
+                    </span>
+                </div>
+            </div>
+
+            {/* Editorial Content (Compact Padding & Typography) */}
+            <div className="flex flex-1 flex-col p-3.5 sm:p-4">
+                <div className="flex items-center justify-between text-[9px] font-bold tracking-[0.18em] text-[#9E7E45] uppercase">
+                    <span>{product.category}</span>
+                    <span>GALUH &amp; CO.</span>
+                </div>
+
+                <h3 className="mt-1 line-clamp-1 font-serif text-[15px] font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E]">
+                    {product.name}
+                </h3>
+
+                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-[#6E6962]">
+                    {product.short_description ||
+                        'Hampers premium dengan kemasan eksklusif dan kurasi isi berkualitas tinggi.'}
+                </p>
+
+                {/* Card Footer: Price & WhatsApp Order Button */}
+                <div className="mt-3.5 flex items-center justify-between border-t border-[#F0EBE1] pt-2.5">
+                    <div>
+                        <span className="block text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                            Mulai Dari
+                        </span>
+                        <span className="font-serif text-sm font-bold tracking-tight text-[#0E2A1E]">
+                            {product.formatted_price}
+                        </span>
+                    </div>
+
+                    <motion.a
+                        whileTap={buttonTap.tap}
+                        href={whatsappOrderUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/btn inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-3 py-1 text-[11px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white"
+                    >
+                        <WhatsAppIcon className="size-3 text-[#25D366] transition-colors group-hover/btn:text-white" />
+                        <span>Pesan</span>
+                        <ArrowUpRight className="size-2.5 text-[#9E7E45] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white" />
+                    </motion.a>
+                </div>
+            </div>
+        </motion.article>
+    );
+}
+
+const horizontalSlideVariants = {
+    enter: (direction: number) => ({
+        x: direction > 0 ? 100 : -100,
+        opacity: 0,
+    }),
+    center: {
+        x: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.42,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+    exit: (direction: number) => ({
+        x: direction > 0 ? -100 : 100,
+        opacity: 0,
+        transition: {
+            duration: 0.28,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    }),
+};
+
 export function Catalog({ products, whatsappNumber }: CatalogProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [direction, setDirection] = useState<number>(1);
+
+    const paginate = (newPage: number) => {
+        setDirection(newPage > currentPage ? 1 : -1);
+        setCurrentPage(newPage);
+    };
+
+    // Defensive normalization: guarantee an Array
+    const safeProducts = useMemo<Product[]>(() => {
+        if (Array.isArray(products)) {
+            return products;
+        }
+        if (products && typeof products === 'object') {
+            return Object.values(products);
+        }
+        return [];
+    }, [products]);
 
     const filteredProducts = useMemo(() => {
         if (selectedCategory === 'all') {
-            return products;
+            return safeProducts;
         }
 
         const normalize = (val: string) =>
             val.toLowerCase().replace(/[^a-z0-9]/g, '');
         const sel = normalize(selectedCategory);
 
-        return products.filter((p) => {
+        return safeProducts.filter((p) => {
             const cat = normalize(p.category || '');
             if (cat === sel) {
                 return true;
@@ -99,34 +269,28 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
 
             return false;
         });
-    }, [products, selectedCategory]);
+    }, [safeProducts, selectedCategory]);
 
-    const createOrderUrl = (productName: string, price?: string) => {
-        const text = `Halo GALUH & CO., saya tertarik memesan hampers "${productName}"${price ? ` (${price})` : ''}. Mohon informasi detail isi paket dan ketersediaannya.`;
-        return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+    // Reset page to 0 when category tab changes
+    const handleCategoryChange = (val: string) => {
+        setSelectedCategory(val);
+        setDirection(1);
+        setCurrentPage(0);
     };
 
-    const getEditorialTag = (product: Product, idx: number) => {
-        if (product.slug === 'seri-kencana-lebaran') return 'Best Seller';
-        if (product.slug === 'seri-rayyan-mubarak') return 'Edisi Spesial';
-        if (product.slug === 'seri-eksekutif-kantor') return 'VIP Executive';
-        if (product.slug === 'seri-sinergi-korporat') return 'Tech & Brew';
-        if (product.slug === 'seri-apresiasi-bisnis') return 'Pilihan B2B';
-        if (product.slug === 'seri-mahligai-seserahan') return 'Seserahan';
-        if (product.slug === 'seri-noel-luminary') return 'Festive Choice';
-        if (product.slug === 'seri-bespoke-royal-heritage')
-            return 'Bespoke Atelier';
-
-        if (idx === 0) return 'Kurasi Pilihan';
-        return 'Signature';
-    };
+    // Pagination calculations (Uniform for "Semua Koleksi" and every category)
+    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    const displayedProducts = useMemo(() => {
+        const start = currentPage * ITEMS_PER_PAGE;
+        return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredProducts, currentPage]);
 
     return (
         <section
             id="koleksi"
-            className="relative bg-[#FAF8F5] py-14 sm:py-20 lg:py-24"
+            className="relative bg-[#FAF8F5] py-12 sm:py-16 lg:py-20"
         >
-            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
                 {/* 1. Editorial Section Header */}
                 <motion.div
                     variants={fadeInUp}
@@ -135,18 +299,16 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                     viewport={viewportOnce}
                     className="mx-auto max-w-3xl text-center"
                 >
-                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
-                        <span>KATALOG ATELIER</span>
-                        <span className="size-1 rounded-full bg-[#C5A880]" />
-                        <span>EDISI 2024 / 2025</span>
+                    <div className="inline-flex items-center text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
+                        <span>KOLEKSI HAMPERS</span>
                     </div>
 
-                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] sm:text-4xl lg:text-5xl">
+                    <h2 className="mt-2.5 font-serif text-3xl font-normal tracking-tight text-[#1A1815] sm:text-4xl lg:text-5xl">
                         Koleksi Bingkisan{' '}
                         <span className="text-[#9E7E45] italic">Istimewa</span>
                     </h2>
 
-                    <p className="mt-3.5 text-sm leading-relaxed text-[#5C564C] sm:text-base">
+                    <p className="mt-2.5 text-xs leading-relaxed text-[#5C564C] sm:text-sm">
                         Setiap hampers dirancang khusus dengan bahan
                         berkualitas, presentasi elegan, dan kartu ucapan
                         berstempel wax untuk momen perayaan serta apresiasi
@@ -154,8 +316,8 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                     </p>
                 </motion.div>
 
-                {/* 2. Interactive Category Tabs with Framer Motion layoutId Active Indicator */}
-                <div className="mt-10 flex items-center justify-center">
+                {/* 2. Interactive Category Tabs */}
+                <div className="mt-8 flex items-center justify-center">
                     <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-[#E8E2D8] bg-[#F2EDE4]/70 p-1.5 backdrop-blur-xs">
                         {CATEGORIES.map((cat) => {
                             const isActive = selectedCategory === cat.value;
@@ -163,10 +325,8 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                 <button
                                     key={cat.value}
                                     type="button"
-                                    onClick={() =>
-                                        setSelectedCategory(cat.value)
-                                    }
-                                    className={`relative cursor-pointer rounded-full px-4 py-2 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-5 sm:text-xs ${
+                                    onClick={() => handleCategoryChange(cat.value)}
+                                    className={`relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-4.5 sm:py-2 sm:text-xs ${
                                         isActive
                                             ? 'text-[#0E2A1E]'
                                             : 'text-[#6E6962] hover:text-[#1A1815]'
@@ -192,138 +352,96 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                     </div>
                 </div>
 
-                {/* 3. Boutique Catalog Grid with Smooth Animated Transitions */}
-                <div className="mt-12">
-                    <AnimatePresence mode="wait">
-                        {filteredProducts.length === 0 ? (
+                {/* 3. Catalog Display Area: Compact Grid + Multi-Position Zero Effort Navigation */}
+                <div className="mt-8 overflow-hidden">
+                    {/* Top Bar Quick Navigation (Immediately Visible Without Scrolling) */}
+                    {totalPages > 1 && (
+                        <div className="mb-4 flex items-center justify-end">
+                            {/* Top Quick Arrows */}
+                            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-white/90 px-2.5 py-1 shadow-2xs backdrop-blur-md">
+                                <button
+                                    type="button"
+                                    onClick={() => paginate(Math.max(0, currentPage - 1))}
+                                    disabled={currentPage === 0}
+                                    aria-label="Koleksi Sebelumnya"
+                                    className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+                                >
+                                    <ChevronLeft className="size-3.5" />
+                                </button>
+                                <span className="px-2 font-serif text-[11px] font-semibold text-[#0E2A1E]">
+                                    {currentPage + 1} / {totalPages}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => paginate(Math.min(totalPages - 1, currentPage + 1))}
+                                    disabled={currentPage === totalPages - 1}
+                                    aria-label="Koleksi Selanjutnya"
+                                    className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+                                >
+                                    <ChevronRight className="size-3.5" />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    <AnimatePresence mode="wait" custom={direction}>
+                        {safeProducts.length === 0 || filteredProducts.length === 0 ? (
                             <motion.div
                                 key="empty"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="rounded-3xl border border-dashed border-[#EAE5DC] bg-white/40 p-12 text-center"
+                                className="rounded-2xl border border-dashed border-[#EAE5DC] bg-white/40 p-10 text-center"
                             >
                                 <p className="font-serif text-sm text-[#8C877E]">
-                                    Belum ada koleksi yang ditampilkan untuk
-                                    kategori ini.
+                                    Belum ada koleksi yang ditampilkan untuk kategori ini.
                                 </p>
                             </motion.div>
                         ) : (
                             <motion.div
-                                key={selectedCategory}
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -12 }}
-                                transition={transitionFast}
-                                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                                key={`${selectedCategory}-page-${currentPage}`}
+                                custom={direction}
+                                variants={horizontalSlideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                className="relative flex flex-col"
                             >
-                                {filteredProducts.map((product, idx) => {
-                                    const tagText = getEditorialTag(
-                                        product,
-                                        idx,
-                                    );
-                                    const whatsappOrderUrl = createOrderUrl(
-                                        product.name,
-                                        product.formatted_price,
-                                    );
+                                {/* Floating Side Arrow: Left (Visible on desktop XL screens right next to grid) */}
+                                {totalPages > 1 && currentPage > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => paginate(Math.max(0, currentPage - 1))}
+                                        className="absolute -left-5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
+                                        aria-label="Geser ke Koleksi Sebelumnya"
+                                    >
+                                        <ChevronLeft className="size-5" />
+                                    </button>
+                                )}
 
-                                    return (
-                                        <motion.article
+                                {/* Compact Grid: 4 Kolom x 2 Baris */}
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                    {displayedProducts.map((product, idx) => (
+                                        <ProductCard
                                             key={product.id}
-                                            layout
-                                            whileHover={{
-                                                y: -6,
-                                                transition: {
-                                                    duration: 0.3,
-                                                    ease: [0.16, 1, 0.3, 1],
-                                                },
-                                            }}
-                                            className="group flex flex-col overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/60 hover:shadow-[0_12px_32px_-10px_rgba(20,54,40,0.12)]"
-                                        >
-                                            {/* Photo Frame (High Aspect Ratio Boutique Catalog Style) */}
-                                            <div className="relative aspect-[4/4.3] w-full overflow-hidden bg-[#F2EDE4]">
-                                                {product.image ? (
-                                                    <img
-                                                        src={product.image}
-                                                        alt={product.name}
-                                                        loading="lazy"
-                                                        className="size-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-106"
-                                                    />
-                                                ) : (
-                                                    <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-6 text-center">
-                                                        <div className="flex size-14 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs">
-                                                            <span className="font-serif text-2xl font-normal text-[#C5A880]">
-                                                                G
-                                                            </span>
-                                                        </div>
-                                                        <span className="mt-2.5 font-serif text-[11px] font-bold tracking-[0.2em] text-[#8C877E] uppercase">
-                                                            GALUH &amp; CO.
-                                                        </span>
-                                                    </div>
-                                                )}
+                                            product={product}
+                                            idx={currentPage * ITEMS_PER_PAGE + idx}
+                                            whatsappNumber={whatsappNumber}
+                                        />
+                                    ))}
+                                </div>
 
-                                                {/* Top Badge: Editorial Pill */}
-                                                <div className="absolute top-3 left-3 flex items-center">
-                                                    <span className="rounded-full border border-black/10 bg-white/90 px-3 py-1 text-[9px] font-bold tracking-[0.14em] text-[#0E2A1E] uppercase shadow-2xs backdrop-blur-md">
-                                                        {tagText}
-                                                    </span>
-                                                </div>
-
-                                                {/* Category Overlay Bottom Left */}
-                                                <div className="absolute bottom-3 left-3">
-                                                    <span className="rounded-full bg-black/45 px-2.5 py-0.5 font-serif text-[10px] text-[#F5EFEB] italic shadow-2xs backdrop-blur-md">
-                                                        {product.category}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            {/* Editorial Content */}
-                                            <div className="flex flex-1 flex-col p-5">
-                                                <div className="flex items-center justify-between text-[10px] font-bold tracking-[0.18em] text-[#9E7E45] uppercase">
-                                                    <span>
-                                                        {product.category}
-                                                    </span>
-                                                    <span>ATELIER</span>
-                                                </div>
-
-                                                <h3 className="mt-1.5 font-serif text-lg font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E]">
-                                                    {product.name}
-                                                </h3>
-
-                                                <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#6E6962]">
-                                                    {product.short_description ||
-                                                        'Hampers premium dengan kemasan eksklusif dan kurasi isi berkualitas tinggi.'}
-                                                </p>
-
-                                                {/* Card Footer: Price & WhatsApp Order Button */}
-                                                <div className="mt-5 flex items-center justify-between border-t border-[#F0EBE1] pt-3.5">
-                                                    <div>
-                                                        <span className="block text-[9px] font-semibold tracking-wider text-[#8C877E] uppercase">
-                                                            Mulai Dari
-                                                        </span>
-                                                        <span className="font-serif text-base font-bold tracking-tight text-[#0E2A1E]">
-                                                            {
-                                                                product.formatted_price
-                                                            }
-                                                        </span>
-                                                    </div>
-
-                                                    <motion.a
-                                                        whileTap={buttonTap.tap}
-                                                        href={whatsappOrderUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="group/btn inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-3.5 py-1.5 text-xs font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white"
-                                                    >
-                                                        <WhatsAppIcon className="size-3.5 text-[#25D366] transition-colors group-hover/btn:text-white" />
-                                                        <span>Pesan</span>
-                                                        <ArrowUpRight className="size-3 text-[#9E7E45] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white" />
-                                                    </motion.a>
-                                                </div>
-                                            </div>
-                                        </motion.article>
-                                    );
-                                })}
+                                {/* Floating Side Arrow: Right (Visible on desktop XL screens right next to grid) */}
+                                {totalPages > 1 && currentPage < totalPages - 1 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => paginate(Math.min(totalPages - 1, currentPage + 1))}
+                                        className="absolute -right-5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
+                                        aria-label="Geser ke Koleksi Selanjutnya"
+                                    >
+                                        <ChevronRight className="size-5" />
+                                    </button>
+                                )}
                             </motion.div>
                         )}
                     </AnimatePresence>
