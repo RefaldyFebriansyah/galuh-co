@@ -71,6 +71,150 @@ function MagneticButton({
     );
 }
 
+/**
+ * Left Floating Hamper (Signature Artisanal Woven Rattan Hamper)
+ * Pure product cut-out without frame or card.
+ * High-craft levitation physics: smooth sine float, reactive mouse tilt, and breathing contact shadow.
+ */
+function FloatingHamperLeft({
+    onScrollToCatalog,
+    mouseSpringX,
+    mouseSpringY,
+}: {
+    onScrollToCatalog: () => void;
+    mouseSpringX: any;
+    mouseSpringY: any;
+}) {
+    // Parallax mouse depth tracking
+    const tiltX = useTransform(mouseSpringX, [-600, 600], [-16, 12]);
+    const tiltY = useTransform(mouseSpringY, [-450, 450], [-12, 12]);
+    const tiltRotate = useTransform(mouseSpringX, [-600, 600], [-5, 2]);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -70, scale: 0.88 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
+            className="pointer-events-none absolute top-[43%] -left-3 z-10 block w-28 -translate-y-1/2 opacity-90 transition-opacity sm:left-1 sm:w-36 sm:opacity-100 md:w-44 lg:left-3 lg:w-56 xl:left-8 xl:w-72 2xl:left-14 2xl:w-84"
+        >
+            <motion.div
+                animate={{
+                    y: [-16, 14, -16],
+                    rotate: [-3, 2, -3],
+                    x: [-4, 6, -4],
+                }}
+                transition={{
+                    duration: 7,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                }}
+                whileHover={{ scale: 1.05, y: -8 }}
+                onClick={onScrollToCatalog}
+                className="group pointer-events-auto relative cursor-pointer select-none"
+                title="Lihat Koleksi Artisan Rattan"
+            >
+                {/* Pure Product Cut-out without card or frame */}
+                <img
+                    src="/images/floating-hamper-rattan.png"
+                    alt="Signature Heritage Rattan Hamper GALUH & CO."
+                    className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
+                    loading="eager"
+                    draggable={false}
+                />
+
+                {/* Breathing 3D Ground Contact Shadow */}
+                <motion.div
+                    animate={{
+                        scaleX: [0.85, 1.08, 0.85],
+                        scaleY: [0.72, 1.04, 0.72],
+                        opacity: [0.2, 0.38, 0.2],
+                    }}
+                    transition={{
+                        duration: 7,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                    className="pointer-events-none mx-auto -mt-2 h-4 w-4/5 rounded-[100%] bg-gradient-to-r from-transparent via-[#2A2318]/28 to-transparent blur-md"
+                />
+            </motion.div>
+        </motion.div>
+    );
+}
+
+/**
+ * Right Floating Hamper (Executive Emerald & Gold Corporate Hamper)
+ * Pure product cut-out without frame or card.
+ * High-craft levitation physics: smooth sine float, reactive mouse tilt, and breathing contact shadow.
+ */
+function FloatingHamperRight({
+    onScrollToCatalog,
+    mouseSpringX,
+    mouseSpringY,
+}: {
+    onScrollToCatalog: () => void;
+    mouseSpringX: any;
+    mouseSpringY: any;
+}) {
+    // Parallax mouse depth tracking (counter-movement creates immersive 3D depth)
+    const tiltX = useTransform(mouseSpringX, [-600, 600], [12, -16]);
+    const tiltY = useTransform(mouseSpringY, [-450, 450], [12, -12]);
+    const tiltRotate = useTransform(mouseSpringX, [-600, 600], [2, -5]);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: 70, scale: 0.88 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
+            className="pointer-events-none absolute top-[51%] -right-3 z-10 block w-32 -translate-y-1/2 opacity-90 transition-opacity sm:right-1 sm:w-40 sm:opacity-100 md:w-48 lg:right-3 lg:w-60 xl:right-8 xl:w-76 2xl:right-14 2xl:w-88"
+        >
+            <motion.div
+                animate={{
+                    y: [14, -16, 14],
+                    rotate: [2.5, -2.5, 2.5],
+                    x: [5, -5, 5],
+                }}
+                transition={{
+                    duration: 7.6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: 0.8,
+                }}
+                whileHover={{ scale: 1.05, y: -8 }}
+                onClick={onScrollToCatalog}
+                className="group pointer-events-auto relative cursor-pointer select-none"
+                title="Lihat Koleksi Corporate Executive"
+            >
+                {/* Pure Product Cut-out without card or frame */}
+                <img
+                    src="/images/floating-hamper-emerald.png"
+                    alt="Emerald Executive Corporate Gifting GALUH & CO."
+                    className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
+                    loading="eager"
+                    draggable={false}
+                />
+
+                {/* Breathing 3D Ground Contact Shadow */}
+                <motion.div
+                    animate={{
+                        scaleX: [1.08, 0.85, 1.08],
+                        scaleY: [1.04, 0.72, 1.04],
+                        opacity: [0.38, 0.2, 0.38],
+                    }}
+                    transition={{
+                        duration: 7.6,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: 0.8,
+                    }}
+                    className="pointer-events-none mx-auto -mt-2 h-4 w-4/5 rounded-[100%] bg-gradient-to-r from-transparent via-[#2A2318]/28 to-transparent blur-md"
+                />
+            </motion.div>
+        </motion.div>
+    );
+}
+
 export function Hero({
     whatsappNumber = '6281572414233',
     heroBadge = 'Signature Atelier Hampers & Gift',
@@ -79,6 +223,27 @@ export function Hero({
 }: HeroProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
+
+    // Global cursor tracking across the hero section for 3D parallax depth
+    const mouseSectionX = useMotionValue(0);
+    const mouseSectionY = useMotionValue(0);
+    const smoothMouseX = useSpring(mouseSectionX, {
+        stiffness: 70,
+        damping: 24,
+    });
+    const smoothMouseY = useSpring(mouseSectionY, {
+        stiffness: 70,
+        damping: 24,
+    });
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+        if (!sectionRef.current) return;
+        const rect = sectionRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        mouseSectionX.set(e.clientX - centerX);
+        mouseSectionY.set(e.clientY - centerY);
+    };
 
     // Dynamic Editorial Keyword Transition (Continuous luxury cycle without cliché typewriter)
     useEffect(() => {
@@ -104,14 +269,36 @@ export function Hero({
         .replace(/^[✦*✨\s]+|[✦*✨\s]+$/g, '')
         .trim();
 
+    const handleScrollToCatalog = () => {
+        const el = document.getElementById('koleksi');
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <MotionConfig reducedMotion="user">
             <section
                 ref={sectionRef}
-                className="relative flex min-h-[100svh] flex-col justify-between pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
+                onMouseMove={handleMouseMove}
+                className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
             >
+                {/* 1. Left Floating Hamper (Artisanal Rattan) - Pure Product, No Card/Frame */}
+                <FloatingHamperLeft
+                    onScrollToCatalog={handleScrollToCatalog}
+                    mouseSpringX={smoothMouseX}
+                    mouseSpringY={smoothMouseY}
+                />
+
+                {/* 2. Right Floating Hamper (Executive Emerald) - Pure Product, No Card/Frame */}
+                <FloatingHamperRight
+                    onScrollToCatalog={handleScrollToCatalog}
+                    mouseSpringX={smoothMouseX}
+                    mouseSpringY={smoothMouseY}
+                />
+
                 {/* Center Editorial Hero Area - Perfectly Scaled to Always Fit Viewport */}
-                <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 text-center sm:px-8 lg:px-12">
+                <div className="relative z-20 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 text-center sm:px-6 lg:max-w-4xl lg:px-8">
                     <motion.div
                         style={{ y: parallaxTextY }}
                         variants={staggerContainer}
@@ -119,7 +306,7 @@ export function Hero({
                         animate="visible"
                         className="flex flex-col items-center space-y-3 sm:space-y-4 lg:space-y-4"
                     >
-                        {/* 1. Atelier Metadata Tag */}
+                        {/* Atelier Metadata Tag */}
                         <motion.div
                             variants={staggerItem}
                             className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2]/75 bg-white/70 px-3.5 py-1 text-[9.5px] font-semibold tracking-[0.2em] text-[#8C877E] uppercase shadow-2xs backdrop-blur-xs sm:px-4 sm:py-1.5 sm:text-[10.5px]"
@@ -131,7 +318,7 @@ export function Hero({
                             <span>{cleanKicker}</span>
                         </motion.div>
 
-                        {/* 2. Headline with High-Craft Serif Typography & Kinetic Target Glide */}
+                        {/* Headline with High-Craft Serif Typography & Kinetic Target Glide */}
                         <motion.h1
                             variants={staggerItem}
                             className="font-serif text-3xl leading-[1.2] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.85rem] xl:text-[3.35rem]"
@@ -173,7 +360,7 @@ export function Hero({
                             </span>
                         </motion.h1>
 
-                        {/* 3. Description */}
+                        {/* Description */}
                         <motion.p
                             variants={staggerItem}
                             className="max-w-xl text-xs leading-relaxed text-[#5C564C] sm:text-sm md:text-base lg:text-[15px]"
@@ -181,7 +368,7 @@ export function Hero({
                             {heroDescription}
                         </motion.p>
 
-                        {/* 4. Action Buttons */}
+                        {/* Action Buttons */}
                         <motion.div
                             variants={staggerItem}
                             className="flex flex-wrap items-center justify-center gap-3 pt-1 sm:gap-3.5 sm:pt-2"
@@ -209,7 +396,7 @@ export function Hero({
                             </MagneticButton>
                         </motion.div>
 
-                        {/* 5. Clean 3-Part Metric Strip */}
+                        {/* Clean 3-Part Metric Strip */}
                         <motion.div
                             variants={staggerItem}
                             className="grid w-full max-w-xl grid-cols-3 gap-3 border-t border-[#EAE5DC] pt-3 text-center sm:gap-6 sm:pt-4"
@@ -243,7 +430,7 @@ export function Hero({
                 </div>
 
                 {/* Atelier Silk Ribbon Running Marquee - Fits Viewport Naturally Without Cut-Off */}
-                <div className="mt-2 overflow-hidden border-y border-[#EAE3D6] bg-white/40 py-2 backdrop-blur-xs sm:mt-3 sm:py-2.5">
+                <div className="relative z-20 mt-2 overflow-hidden border-y border-[#EAE3D6] bg-white/40 py-2 backdrop-blur-xs sm:mt-3 sm:py-2.5">
                     <div className="relative flex overflow-hidden">
                         {/* Soft Edge Gradient Masks */}
                         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#FAF7F2] to-transparent sm:w-24" />
