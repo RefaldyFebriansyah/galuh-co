@@ -412,10 +412,11 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                         )
                                                     }
                                                     placeholder="Contoh: Ibu Rina Sastrowardoyo"
-                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${form.errors.name
-                                                        ? 'border-red-400'
-                                                        : 'border-[#EAE5DC]'
-                                                        }`}
+                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${
+                                                        form.errors.name
+                                                            ? 'border-red-400'
+                                                            : 'border-[#EAE5DC]'
+                                                    }`}
                                                 />
                                                 {form.errors.name && (
                                                     <p className="mt-1 text-[10px] text-red-600">
@@ -483,10 +484,11 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                         )
                                                     }
                                                     placeholder="rina@adhikencana.co.id"
-                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${form.errors.email
-                                                        ? 'border-red-400'
-                                                        : 'border-[#EAE5DC]'
-                                                        }`}
+                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${
+                                                        form.errors.email
+                                                            ? 'border-red-400'
+                                                            : 'border-[#EAE5DC]'
+                                                    }`}
                                                 />
                                                 {form.errors.email && (
                                                     <p className="mt-1 text-[10px] text-red-600">
@@ -506,11 +508,12 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                     </span>
                                                 </label>
                                                 <div
-                                                    className={`mt-1.5 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${form.errors
-                                                        .whatsapp_number
-                                                        ? 'border-red-400'
-                                                        : 'border-[#EAE5DC]'
-                                                        }`}
+                                                    className={`mt-1.5 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
+                                                        form.errors
+                                                            .whatsapp_number
+                                                            ? 'border-red-400'
+                                                            : 'border-[#EAE5DC]'
+                                                    }`}
                                                 >
                                                     <span className="inline-flex shrink-0 items-center border-r border-[#EAE5DC] bg-[#F2EDE4]/60 px-3 py-3 text-xs font-bold text-[#0E2A1E] select-none">
                                                         🇮🇩 +62
@@ -565,13 +568,13 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                 </div>
                                                 {form.errors
                                                     .whatsapp_number && (
-                                                        <p className="mt-1 text-[10px] text-red-600">
-                                                            {
-                                                                form.errors
-                                                                    .whatsapp_number
-                                                            }
-                                                        </p>
-                                                    )}
+                                                    <p className="mt-1 text-[10px] text-red-600">
+                                                        {
+                                                            form.errors
+                                                                .whatsapp_number
+                                                        }
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
 
