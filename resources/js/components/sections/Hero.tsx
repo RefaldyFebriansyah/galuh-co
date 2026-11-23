@@ -125,7 +125,7 @@ function FloatingHamperLeft({
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
-            className="pointer-events-none absolute top-[43%] -left-3 z-10 hidden md:block -translate-y-1/2 opacity-90 transition-opacity md:w-44 lg:left-3 lg:w-56 xl:left-8 xl:w-72 2xl:left-14 2xl:w-84"
+            className="pointer-events-none absolute top-[43%] -left-3 z-10 hidden -translate-y-1/2 opacity-90 transition-opacity md:block md:w-44 lg:left-3 lg:w-56 xl:left-8 xl:w-72 2xl:left-14 2xl:w-84"
         >
             <motion.div
                 animate={{
@@ -208,7 +208,7 @@ function FloatingHamperRight({
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
             style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
-            className="pointer-events-none absolute top-[51%] -right-3 z-10 hidden md:block -translate-y-1/2 opacity-90 transition-opacity md:w-48 lg:right-3 lg:w-60 xl:right-8 xl:w-76 2xl:right-14 2xl:w-88"
+            className="pointer-events-none absolute top-[51%] -right-3 z-10 hidden -translate-y-1/2 opacity-90 transition-opacity md:block md:w-48 lg:right-3 lg:w-60 xl:right-8 xl:w-76 2xl:right-14 2xl:w-88"
         >
             <motion.div
                 animate={{
@@ -341,22 +341,25 @@ export function Hero({
                 1. MOBILE HERO — Quiet Luxury Editorial Cover (< 768px)
                 Spacious, perfectly proportioned, zero clutter
             ======================================================== */}
-            <section className="relative flex md:hidden flex-col items-center pt-20 pb-8 px-5 text-center overflow-hidden bg-[#FAF7F2]">
+            <section className="relative flex flex-col items-center overflow-hidden bg-[#FAF7F2] px-5 pt-20 pb-8 text-center md:hidden">
                 {/* 1. Atelier Eyebrow Kicker */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2] bg-white/90 px-3.5 py-1 text-[10px] font-semibold tracking-[0.2em] text-[#7A5B24] uppercase shadow-2xs backdrop-blur-md">
-                    <span>✦ {activeEdition || 'EDISI RAMADAN & RAYA 1447 H'} ✦</span>
+                    <span>
+                        ✦ {activeEdition || 'EDISI RAMADAN & RAYA 1447 H'} ✦
+                    </span>
                 </div>
 
                 {/* 2. Command Headline & Calm Narrative */}
-                <h1 className="mt-4 font-serif text-[1.85rem] leading-[1.18] font-normal tracking-tight text-[#1A1815] max-w-sm">
-                    {heroTitle || 'Kriya Bingkisan untuk Momen yang Tak Diulang.'}
+                <h1 className="mt-4 max-w-sm font-serif text-[1.85rem] leading-[1.18] font-normal tracking-tight text-[#1A1815]">
+                    {heroTitle ||
+                        'Kriya Bingkisan untuk Momen yang Tak Diulang.'}
                 </h1>
-                <p className="mt-2.5 text-xs leading-relaxed text-[#5C564C] max-w-xs">
+                <p className="mt-2.5 max-w-xs text-xs leading-relaxed text-[#5C564C]">
                     {heroSubtitle || heroDescription}
                 </p>
 
                 {/* 3. Centerpiece Hamper Visual (Sculptural Luxury Frame) */}
-                <div className="relative w-full max-w-[340px] aspect-[4/3.8] overflow-hidden rounded-[2rem] my-5 shadow-[0_16px_36px_-10px_rgba(26,24,21,0.18)] border border-[#EAE5DC] bg-[#0E2A1E]">
+                <div className="relative my-5 aspect-[4/3.8] w-full max-w-[340px] overflow-hidden rounded-[2rem] border border-[#EAE5DC] bg-[#0E2A1E] shadow-[0_16px_36px_-10px_rgba(26,24,21,0.18)]">
                     <AnimatePresence mode="wait">
                         <motion.img
                             key={MOBILE_EDITIONS[selectedMobileEdition].image}
@@ -382,7 +385,7 @@ export function Hero({
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
                     {/* Overlay Badges */}
-                    <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between">
+                    <div className="absolute right-3.5 bottom-3 left-3.5 flex items-center justify-between">
                         <span className="rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-[#FAF0D7] uppercase backdrop-blur-md">
                             ✦ {MOBILE_EDITIONS[selectedMobileEdition].badge}
                         </span>
@@ -393,7 +396,7 @@ export function Hero({
                 </div>
 
                 {/* 4. Elegant Minimalist Pill Switcher */}
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full">
+                <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto py-1">
                     {MOBILE_EDITIONS.map((ed, idx) => {
                         const isActive = selectedMobileEdition === idx;
                         return (
@@ -439,7 +442,7 @@ export function Hero({
                 </div>
 
                 {/* 6. Clean Luxury Trust Strip Bar (Placed naturally below hero, spacious & prestigious) */}
-                <div className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2 rounded-2xl border border-[#EAE5DC] bg-white/70 py-3.5 px-2 text-center shadow-2xs backdrop-blur-xs">
+                <div className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2 rounded-2xl border border-[#EAE5DC] bg-white/70 px-2 py-3.5 text-center shadow-2xs backdrop-blur-xs">
                     <div>
                         <span className="font-serif text-lg font-bold tracking-tight text-[#1A1815]">
                             5,000+
@@ -473,7 +476,7 @@ export function Hero({
             <section
                 ref={sectionRef}
                 onMouseMove={handleMouseMove}
-                className="relative hidden md:flex min-h-[100svh] flex-col justify-between overflow-hidden pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
+                className="relative hidden min-h-[100svh] flex-col justify-between overflow-hidden pt-20 pb-2 sm:pt-24 sm:pb-3 md:flex lg:pt-22 lg:pb-3"
             >
                 {/* 1. Left Floating Hamper (Artisanal Rattan) - Pure Product, No Card/Frame */}
                 <FloatingHamperLeft
@@ -528,7 +531,11 @@ export function Hero({
                                     <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
                                         <AnimatePresence mode="wait">
                                             <motion.span
-                                                key={ROTATING_TARGETS[phraseIndex]}
+                                                key={
+                                                    ROTATING_TARGETS[
+                                                        phraseIndex
+                                                    ]
+                                                }
                                                 initial={{
                                                     y: 30,
                                                     opacity: 0,

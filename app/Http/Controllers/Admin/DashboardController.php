@@ -26,16 +26,22 @@ class DashboardController extends Controller
         $activeB2bNegotiations = WaLead::where('status', 'negosiasi_custom')->count();
 
         // Most popular package based on leads
-        $mostPopularPackage = WaLead::selectRaw('package_name, COUNT(*) as count')
+        $popularLead = WaLead::selectRaw('package_name, COUNT(*) as count')
             ->whereNotNull('package_name')
             ->groupBy('package_name')
             ->orderByDesc('count')
-            ->first()?->package_name ?? 'Seri Emerald Royal Nusantara';
+            ->first();
+
+        $mostPopularPackage = ($popularLead instanceof WaLead && $popularLead->package_name)
+            ? (string) $popularLead->package_name
+            : 'Seri Emerald Royal Nusantara';
 
         // Nearest confirmed delivery
         $nearestDeliveryOrder = ProductionOrder::where('target_delivery_date', '>=', Carbon::today())
             ->orderBy('target_delivery_date', 'asc')
             ->first();
+
+        $deliveryDate = $nearestDeliveryOrder?->target_delivery_date;
 
         $nearestDelivery = $nearestDeliveryOrder ? [
             'order_code' => $nearestDeliveryOrder->order_code,
@@ -43,8 +49,8 @@ class DashboardController extends Controller
             'company_name' => $nearestDeliveryOrder->company_name,
             'package_name' => $nearestDeliveryOrder->package_name,
             'quantity' => $nearestDeliveryOrder->quantity,
-            'date' => $nearestDeliveryOrder->target_delivery_date?->format('d M Y'),
-            'days_left' => Carbon::today()->diffInDays($nearestDeliveryOrder->target_delivery_date, false),
+            'date' => $deliveryDate?->format('d M Y'),
+            'days_left' => $deliveryDate ? Carbon::today()->diffInDays($deliveryDate, false) : 0,
         ] : null;
 
         // 2. Lead Source & Edition Interest Distribution

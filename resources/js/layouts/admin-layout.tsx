@@ -127,7 +127,8 @@ export function AdminLayout({
                         shortLabel: 'Dashboard',
                         href: '/admin/dashboard',
                         icon: LayoutDashboard,
-                        description: 'Ringkasan operasional dan katalog website',
+                        description:
+                            'Ringkasan operasional dan katalog website',
                     },
                 ],
             },
@@ -139,14 +140,16 @@ export function AdminLayout({
                         shortLabel: 'Katalog',
                         href: '/admin/katalog',
                         icon: Package,
-                        description: 'Kelola paket hampers, varian kemasan, dan foto produk',
+                        description:
+                            'Kelola paket hampers, varian kemasan, dan foto produk',
                     },
                     {
                         label: 'Konten Website',
                         shortLabel: 'Konten Web',
                         href: '/admin/cms-halaman',
                         icon: Palette,
-                        description: 'Edit banner hero musim aktif, filosofi, testimoni, dan FAQ',
+                        description:
+                            'Edit banner hero musim aktif, filosofi, testimoni, dan FAQ',
                     },
                 ],
             },
@@ -158,7 +161,8 @@ export function AdminLayout({
                         shortLabel: 'Inquiries',
                         href: '/admin/inquiries',
                         icon: FileText,
-                        description: 'Permintaan proposal penawaran corporate dari formulir web',
+                        description:
+                            'Permintaan proposal penawaran corporate dari formulir web',
                     },
                 ],
             },
@@ -170,18 +174,19 @@ export function AdminLayout({
                         shortLabel: 'Pengaturan',
                         href: '/admin/pengaturan',
                         icon: Settings,
-                        description: 'Nomor WhatsApp resmi, jam operasional, dan akun staf',
+                        description:
+                            'Nomor WhatsApp resmi, jam operasional, dan akun staf',
                     },
                 ],
             },
         ],
-        []
+        [],
     );
 
     // Flattened items for Cmd+K search
     const allNavItems = useMemo(
         () => navGroups.flatMap((g) => g.items),
-        [navGroups]
+        [navGroups],
     );
 
     const filteredQuickSearch = useMemo(() => {
@@ -191,7 +196,7 @@ export function AdminLayout({
             (item) =>
                 item.label.toLowerCase().includes(q) ||
                 item.description.toLowerCase().includes(q) ||
-                item.href.toLowerCase().includes(q)
+                item.href.toLowerCase().includes(q),
         );
     }, [allNavItems, searchQuery]);
 
@@ -219,7 +224,7 @@ export function AdminLayout({
                         sidebarCollapsed ? 'w-20' : 'w-64'
                     }`}
                 >
-                    <div className="flex flex-1 flex-col overflow-y-auto scrollbar-none">
+                    <div className="flex flex-1 scrollbar-none flex-col overflow-y-auto">
                         {/* Admin Brand Header */}
                         <div className="flex h-16 items-center justify-between border-b border-slate-800 px-4">
                             <Link
@@ -233,7 +238,7 @@ export function AdminLayout({
                                 />
                                 {!sidebarCollapsed && (
                                     <div className="flex items-center gap-2">
-                                        <span className="font-semibold text-sm tracking-wide text-white">
+                                        <span className="text-sm font-semibold tracking-wide text-white">
                                             GALUH &amp; CO.
                                         </span>
                                         <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
@@ -245,8 +250,14 @@ export function AdminLayout({
 
                             <button
                                 type="button"
-                                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                                title={sidebarCollapsed ? 'Perbesar Sidebar' : 'Ciutkan Sidebar'}
+                                onClick={() =>
+                                    setSidebarCollapsed(!sidebarCollapsed)
+                                }
+                                title={
+                                    sidebarCollapsed
+                                        ? 'Perbesar Sidebar'
+                                        : 'Ciutkan Sidebar'
+                                }
                                 className="hidden rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white lg:inline-flex"
                             >
                                 <Menu className="size-4" />
@@ -259,17 +270,21 @@ export function AdminLayout({
                                 type="button"
                                 onClick={() => setSearchModalOpen(true)}
                                 className={`flex w-full items-center justify-between rounded-lg border border-slate-800 bg-slate-800/60 px-3 py-2 text-xs text-slate-400 transition-colors hover:border-slate-700 hover:bg-slate-800 hover:text-slate-200 ${
-                                    sidebarCollapsed ? 'justify-center px-0' : ''
+                                    sidebarCollapsed
+                                        ? 'justify-center px-0'
+                                        : ''
                                 }`}
                             >
                                 <div className="flex items-center gap-2">
                                     <Search className="size-3.5 text-slate-400" />
                                     {!sidebarCollapsed && (
-                                        <span className="text-xs">Cari menu...</span>
+                                        <span className="text-xs">
+                                            Cari menu...
+                                        </span>
                                     )}
                                 </div>
                                 {!sidebarCollapsed && (
-                                    <kbd className="rounded border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] font-mono text-slate-400">
+                                    <kbd className="rounded border border-slate-700 bg-slate-900 px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
                                         ⌘K
                                     </kbd>
                                 )}
@@ -290,23 +305,31 @@ export function AdminLayout({
 
                                     {group.items.map((item) => {
                                         const Icon = item.icon;
-                                        const active = isCurrentActive(item.href);
+                                        const active = isCurrentActive(
+                                            item.href,
+                                        );
 
                                         return (
                                             <Link
                                                 key={item.href}
                                                 href={item.href}
-                                                title={sidebarCollapsed ? item.label : undefined}
+                                                title={
+                                                    sidebarCollapsed
+                                                        ? item.label
+                                                        : undefined
+                                                }
                                                 className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                                                     active
-                                                        ? 'bg-emerald-600 text-white shadow-xs font-semibold'
+                                                        ? 'bg-emerald-600 font-semibold text-white shadow-xs'
                                                         : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                                                 } ${sidebarCollapsed ? 'justify-center px-0 py-2.5' : ''}`}
                                             >
                                                 <div className="flex min-w-0 items-center gap-2.5">
                                                     <Icon
                                                         className={`size-4 shrink-0 ${
-                                                            active ? 'text-white' : 'text-slate-400'
+                                                            active
+                                                                ? 'text-white'
+                                                                : 'text-slate-400'
                                                         }`}
                                                     />
                                                     {!sidebarCollapsed && (
@@ -316,9 +339,10 @@ export function AdminLayout({
                                                     )}
                                                 </div>
 
-                                                {!sidebarCollapsed && active && (
-                                                    <span className="size-1.5 rounded-full bg-white" />
-                                                )}
+                                                {!sidebarCollapsed &&
+                                                    active && (
+                                                        <span className="size-1.5 rounded-full bg-white" />
+                                                    )}
                                             </Link>
                                         );
                                     })}
@@ -333,17 +357,21 @@ export function AdminLayout({
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors ${
+                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white ${
                                 sidebarCollapsed ? 'justify-center px-0' : ''
                             }`}
                             title="Buka Website Publik"
                         >
                             <span className="flex items-center gap-2">
                                 <ExternalLink className="size-3.5 text-emerald-400" />
-                                {!sidebarCollapsed && <span>Lihat Website</span>}
+                                {!sidebarCollapsed && (
+                                    <span>Lihat Website</span>
+                                )}
                             </span>
                             {!sidebarCollapsed && (
-                                <span className="text-[10px] text-slate-400">↗</span>
+                                <span className="text-[10px] text-slate-400">
+                                    ↗
+                                </span>
                             )}
                         </a>
 
@@ -354,14 +382,16 @@ export function AdminLayout({
                         >
                             <div className="flex min-w-0 items-center gap-2">
                                 <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-emerald-600 text-xs font-bold text-white">
-                                    {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+                                    {user?.name
+                                        ? user.name.charAt(0).toUpperCase()
+                                        : 'A'}
                                 </div>
                                 {!sidebarCollapsed && (
                                     <div className="min-w-0">
                                         <p className="truncate text-xs font-semibold text-white">
                                             {user?.name ?? 'Administrator'}
                                         </p>
-                                        <p className="truncate text-[10px] text-emerald-400 font-medium">
+                                        <p className="truncate text-[10px] font-medium text-emerald-400">
                                             Admin (Full Access)
                                         </p>
                                     </div>
@@ -373,7 +403,7 @@ export function AdminLayout({
                                     type="button"
                                     onClick={handleLogout}
                                     title="Keluar"
-                                    className="rounded p-1 text-slate-400 hover:bg-slate-700 hover:text-rose-400 transition-colors"
+                                    className="rounded p-1 text-slate-400 transition-colors hover:bg-slate-700 hover:text-rose-400"
                                 >
                                     <LogOut className="size-3.5" />
                                 </button>
@@ -447,7 +477,9 @@ export function AdminLayout({
                                 >
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="size-4 shrink-0" />
-                                        <span className="font-medium">{toastMessage}</span>
+                                        <span className="font-medium">
+                                            {toastMessage}
+                                        </span>
                                     </div>
                                     <button
                                         type="button"
@@ -479,14 +511,18 @@ export function AdminLayout({
                             initial={{ x: '-100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '-100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 25,
+                                stiffness: 220,
+                            }}
                             onClick={(e) => e.stopPropagation()}
                             className="flex h-full w-72 flex-col justify-between bg-slate-900 p-4 text-slate-200 shadow-2xl"
                         >
                             <div>
                                 <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                                     <div className="flex items-center gap-2">
-                                        <span className="font-semibold text-sm text-white">
+                                        <span className="text-sm font-semibold text-white">
                                             GALUH &amp; CO.
                                         </span>
                                         <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
@@ -495,7 +531,9 @@ export function AdminLayout({
                                     </div>
                                     <button
                                         type="button"
-                                        onClick={() => setMobileSidebarOpen(false)}
+                                        onClick={() =>
+                                            setMobileSidebarOpen(false)
+                                        }
                                         className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"
                                     >
                                         <X className="size-4" />
@@ -510,22 +548,30 @@ export function AdminLayout({
                                             </p>
                                             {group.items.map((item) => {
                                                 const Icon = item.icon;
-                                                const active = isCurrentActive(item.href);
+                                                const active = isCurrentActive(
+                                                    item.href,
+                                                );
 
                                                 return (
                                                     <Link
                                                         key={item.href}
                                                         href={item.href}
-                                                        onClick={() => setMobileSidebarOpen(false)}
+                                                        onClick={() =>
+                                                            setMobileSidebarOpen(
+                                                                false,
+                                                            )
+                                                        }
                                                         className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
                                                             active
-                                                                ? 'bg-emerald-600 text-white font-semibold'
+                                                                ? 'bg-emerald-600 font-semibold text-white'
                                                                 : 'text-slate-300 hover:bg-slate-800'
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-2.5">
                                                             <Icon className="size-4 text-slate-400" />
-                                                            <span>{item.label}</span>
+                                                            <span>
+                                                                {item.label}
+                                                            </span>
                                                         </div>
                                                         {active && (
                                                             <span className="size-1.5 rounded-full bg-white" />
@@ -568,16 +614,18 @@ export function AdminLayout({
                             className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
                         >
                             <div className="flex items-center border-b border-slate-200 px-4 py-3">
-                                <Search className="size-4 text-slate-400 mr-2.5 shrink-0" />
+                                <Search className="mr-2.5 size-4 shrink-0 text-slate-400" />
                                 <input
                                     type="text"
                                     value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
                                     placeholder="Ketik untuk mencari menu atau modul admin..."
                                     autoFocus
                                     className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
                                 />
-                                <kbd className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[10px] font-mono text-slate-500">
+                                <kbd className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">
                                     ESC
                                 </kbd>
                             </div>
@@ -585,7 +633,8 @@ export function AdminLayout({
                             <div className="max-h-80 overflow-y-auto p-2 text-xs">
                                 {filteredQuickSearch.length === 0 ? (
                                     <div className="p-6 text-center text-slate-400">
-                                        Tidak ditemukan hasil untuk "{searchQuery}".
+                                        Tidak ditemukan hasil untuk "
+                                        {searchQuery}".
                                     </div>
                                 ) : (
                                     <div className="space-y-1">
@@ -595,19 +644,25 @@ export function AdminLayout({
                                                 <Link
                                                     key={item.href}
                                                     href={item.href}
-                                                    onClick={() => setSearchModalOpen(false)}
-                                                    className="flex items-center justify-between rounded-lg p-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                                                    onClick={() =>
+                                                        setSearchModalOpen(
+                                                            false,
+                                                        )
+                                                    }
+                                                    className="flex items-center justify-between rounded-lg p-2.5 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="flex size-7 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
                                                             <Icon className="size-4" />
                                                         </div>
                                                         <div>
-                                                            <p className="font-semibold text-slate-900 text-xs">
+                                                            <p className="text-xs font-semibold text-slate-900">
                                                                 {item.label}
                                                             </p>
                                                             <p className="text-[11px] text-slate-500">
-                                                                {item.description}
+                                                                {
+                                                                    item.description
+                                                                }
                                                             </p>
                                                         </div>
                                                     </div>

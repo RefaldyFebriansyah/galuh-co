@@ -23,7 +23,11 @@ import {
 import { useState } from 'react';
 import { AdminLayout } from '@/layouts/admin-layout';
 
-type StageKey = 'persiapan_bahan' | 'cetak_grafir' | 'perakitan_wax' | 'siap_kirim';
+type StageKey =
+    | 'persiapan_bahan'
+    | 'cetak_grafir'
+    | 'perakitan_wax'
+    | 'siap_kirim';
 
 interface ProductionOrderItem {
     id: number;
@@ -68,7 +72,9 @@ export default function AdminProduksiIndex({
     filters,
 }: ProduksiProps) {
     const [searchVal, setSearchVal] = useState(filters.search || '');
-    const [selectedPriority, setSelectedPriority] = useState(filters.priority || '');
+    const [selectedPriority, setSelectedPriority] = useState(
+        filters.priority || '',
+    );
     const [modalOpen, setModalOpen] = useState(false);
 
     const form = useForm({
@@ -78,7 +84,9 @@ export default function AdminProduksiIndex({
         quantity: 50,
         greeting_card_text: '',
         engraving_names: [] as string[],
-        target_delivery_date: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+        target_delivery_date: new Date(Date.now() + 7 * 86400000)
+            .toISOString()
+            .split('T')[0],
         stage: 'persiapan_bahan' as StageKey,
         priority: 'normal' as 'normal' | 'high' | 'urgent',
         notes: '',
@@ -91,7 +99,10 @@ export default function AdminProduksiIndex({
         'siap_kirim',
     ];
 
-    const moveStage = (order: ProductionOrderItem, direction: 'prev' | 'next') => {
+    const moveStage = (
+        order: ProductionOrderItem,
+        direction: 'prev' | 'next',
+    ) => {
         const currentIdx = stageOrder.indexOf(order.stage);
         const nextIdx = direction === 'next' ? currentIdx + 1 : currentIdx - 1;
         if (nextIdx >= 0 && nextIdx < stageOrder.length) {
@@ -99,7 +110,7 @@ export default function AdminProduksiIndex({
             router.patch(
                 `/admin/produksi/${order.id}/update-stage`,
                 { stage: nextStage },
-                { preserveScroll: true }
+                { preserveScroll: true },
             );
         }
     };
@@ -111,13 +122,15 @@ export default function AdminProduksiIndex({
                 search: searchVal || undefined,
                 priority: selectedPriority || undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
     const handleDelete = (order: ProductionOrderItem) => {
         if (confirm(`Hapus pesanan produksi #${order.order_code}?`)) {
-            router.delete(`/admin/produksi/${order.id}`, { preserveScroll: true });
+            router.delete(`/admin/produksi/${order.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -168,7 +181,7 @@ export default function AdminProduksiIndex({
         >
             <div className="space-y-6">
                 {/* 1. Studio Operational Summary Strip */}
-                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
+                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
                         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
                             TOTAL ANTREAN
@@ -177,7 +190,9 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-[#0B291E]">
                                 {summary.total_orders}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Batch Pesanan</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Batch Pesanan
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -188,7 +203,9 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-[#0B291E]">
                                 {summary.total_boxes}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Kotak Hadiah</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Kotak Hadiah
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -199,7 +216,9 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-rose-700">
                                 {summary.urgent_count}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Mendekati Deadline</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Mendekati Deadline
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -210,7 +229,9 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {summary.ready_count}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Menunggu Kurir</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Menunggu Kurir
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -224,7 +245,9 @@ export default function AdminProduksiIndex({
                                 type="text"
                                 value={searchVal}
                                 onChange={(e) => setSearchVal(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleFilterApply()}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && handleFilterApply()
+                                }
                                 placeholder="Cari kode pesanan, nama klien, paket..."
                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:outline-hidden"
                             />
@@ -232,7 +255,9 @@ export default function AdminProduksiIndex({
 
                         <select
                             value={selectedPriority}
-                            onChange={(e) => setSelectedPriority(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedPriority(e.target.value)
+                            }
                             className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:outline-hidden"
                         >
                             <option value="">Semua Prioritas</option>
@@ -263,7 +288,7 @@ export default function AdminProduksiIndex({
                                 className="flex flex-col rounded-2xl border border-[#0B291E]/10 bg-[#FAF8F5] p-3.5 shadow-2xs"
                             >
                                 {/* Column Header */}
-                                <div className="border-b border-[#0B291E]/10 pb-3 px-1">
+                                <div className="border-b border-[#0B291E]/10 px-1 pb-3">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <span className="flex size-5 items-center justify-center rounded-full bg-[#0B291E] font-mono text-[10px] font-bold text-white">
@@ -273,26 +298,30 @@ export default function AdminProduksiIndex({
                                                 {col.title}
                                             </h3>
                                         </div>
-                                        <span className="rounded-full bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-[#B89352] border border-[#0B291E]/10">
+                                        <span className="rounded-full border border-[#0B291E]/10 bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-[#B89352]">
                                             {orders.length}
                                         </span>
                                     </div>
-                                    <p className="mt-1 text-[10.5px] text-[#0B291E]/50 line-clamp-1">
+                                    <p className="mt-1 line-clamp-1 text-[10.5px] text-[#0B291E]/50">
                                         {col.description}
                                     </p>
                                 </div>
 
                                 {/* Order Cards List */}
-                                <div className="mt-3 flex-1 space-y-3 overflow-y-auto max-h-[70vh] scrollbar-none pr-0.5">
+                                <div className="mt-3 max-h-[70vh] flex-1 scrollbar-none space-y-3 overflow-y-auto pr-0.5">
                                     {orders.length === 0 ? (
-                                        <div className="py-12 text-center text-xs text-[#0B291E]/40 border-2 border-dashed border-[#0B291E]/10 rounded-xl">
+                                        <div className="rounded-xl border-2 border-dashed border-[#0B291E]/10 py-12 text-center text-xs text-[#0B291E]/40">
                                             Tidak ada antrean
                                         </div>
                                     ) : (
                                         orders.map((order) => {
-                                            const pBadge = getPriorityBadge(order.priority);
+                                            const pBadge = getPriorityBadge(
+                                                order.priority,
+                                            );
                                             const isFirstStage = colIdx === 0;
-                                            const isLastStage = colIdx === stageOrder.length - 1;
+                                            const isLastStage =
+                                                colIdx ===
+                                                stageOrder.length - 1;
 
                                             return (
                                                 <div
@@ -317,20 +346,25 @@ export default function AdminProduksiIndex({
                                                             {order.client_name}
                                                         </h4>
                                                         {order.company_name && (
-                                                            <p className="text-[11px] text-[#0B291E]/60 truncate">
-                                                                {order.company_name}
+                                                            <p className="truncate text-[11px] text-[#0B291E]/60">
+                                                                {
+                                                                    order.company_name
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>
 
                                                     {/* Package & Quantity */}
-                                                    <div className="mt-2.5 rounded-lg bg-[#FAF8F5] p-2 border border-[#0B291E]/5 text-[11px]">
+                                                    <div className="mt-2.5 rounded-lg border border-[#0B291E]/5 bg-[#FAF8F5] p-2 text-[11px]">
                                                         <div className="font-medium text-[#0B291E]">
                                                             {order.package_name}
                                                         </div>
                                                         <div className="mt-0.5 flex items-center justify-between font-mono text-[10.5px] text-[#B89352]">
                                                             <span>Volume:</span>
-                                                            <span className="font-bold">{order.quantity} Box</span>
+                                                            <span className="font-bold">
+                                                                {order.quantity}{' '}
+                                                                Box
+                                                            </span>
                                                         </div>
                                                     </div>
 
@@ -338,16 +372,28 @@ export default function AdminProduksiIndex({
                                                     <div className="mt-2.5 flex items-center justify-between text-[10.5px] text-[#0B291E]/60">
                                                         <div className="flex items-center gap-1">
                                                             <Calendar className="size-3 text-[#B89352]" />
-                                                            <span>Kirim: {order.target_delivery_date}</span>
+                                                            <span>
+                                                                Kirim:{' '}
+                                                                {
+                                                                    order.target_delivery_date
+                                                                }
+                                                            </span>
                                                         </div>
                                                     </div>
 
                                                     {/* Stage Movement Controls */}
-                                                    <div className="mt-3 pt-2.5 border-t border-[#0B291E]/10 flex items-center justify-between">
+                                                    <div className="mt-3 flex items-center justify-between border-t border-[#0B291E]/10 pt-2.5">
                                                         <button
                                                             type="button"
-                                                            disabled={isFirstStage}
-                                                            onClick={() => moveStage(order, 'prev')}
+                                                            disabled={
+                                                                isFirstStage
+                                                            }
+                                                            onClick={() =>
+                                                                moveStage(
+                                                                    order,
+                                                                    'prev',
+                                                                )
+                                                            }
                                                             className="inline-flex items-center gap-1 rounded p-1 text-[10.5px] text-[#0B291E]/50 hover:bg-[#FAF8F5] hover:text-[#0B291E] disabled:opacity-20"
                                                             title="Kembali ke tahap sebelumnya"
                                                         >
@@ -357,8 +403,15 @@ export default function AdminProduksiIndex({
 
                                                         <button
                                                             type="button"
-                                                            disabled={isLastStage}
-                                                            onClick={() => moveStage(order, 'next')}
+                                                            disabled={
+                                                                isLastStage
+                                                            }
+                                                            onClick={() =>
+                                                                moveStage(
+                                                                    order,
+                                                                    'next',
+                                                                )
+                                                            }
                                                             className="inline-flex items-center gap-1 rounded bg-[#0B291E] px-2.5 py-1 text-[10.5px] font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-20"
                                                             title="Lanjut ke tahap berikutnya"
                                                         >
@@ -381,7 +434,7 @@ export default function AdminProduksiIndex({
             <AnimatePresence>
                 {modalOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
                         onClick={() => setModalOpen(false)}
                     >
                         <motion.div
@@ -404,7 +457,10 @@ export default function AdminProduksiIndex({
                                 </button>
                             </div>
 
-                            <form onSubmit={submitOrder} className="mt-4 space-y-3 text-xs">
+                            <form
+                                onSubmit={submitOrder}
+                                className="mt-4 space-y-3 text-xs"
+                            >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
                                         <label className="font-semibold text-[#0B291E]">
@@ -414,7 +470,12 @@ export default function AdminProduksiIndex({
                                             type="text"
                                             required
                                             value={form.data.client_name}
-                                            onChange={(e) => form.setData('client_name', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'client_name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Nama pemesan"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -426,7 +487,12 @@ export default function AdminProduksiIndex({
                                         <input
                                             type="text"
                                             value={form.data.company_name}
-                                            onChange={(e) => form.setData('company_name', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'company_name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="PT / Instansi"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -442,7 +508,12 @@ export default function AdminProduksiIndex({
                                             type="text"
                                             required
                                             value={form.data.package_name}
-                                            onChange={(e) => form.setData('package_name', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'package_name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
@@ -455,7 +526,12 @@ export default function AdminProduksiIndex({
                                             min="1"
                                             required
                                             value={form.data.quantity}
-                                            onChange={(e) => form.setData('quantity', Number(e.target.value))}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'quantity',
+                                                    Number(e.target.value),
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
                                     </div>
@@ -469,8 +545,15 @@ export default function AdminProduksiIndex({
                                         <input
                                             type="date"
                                             required
-                                            value={form.data.target_delivery_date}
-                                            onChange={(e) => form.setData('target_delivery_date', e.target.value)}
+                                            value={
+                                                form.data.target_delivery_date
+                                            }
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'target_delivery_date',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
                                     </div>
@@ -483,14 +566,23 @@ export default function AdminProduksiIndex({
                                             onChange={(e) =>
                                                 form.setData(
                                                     'priority',
-                                                    e.target.value as 'normal' | 'high' | 'urgent'
+                                                    e.target.value as
+                                                        | 'normal'
+                                                        | 'high'
+                                                        | 'urgent',
                                                 )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
-                                            <option value="normal">Normal</option>
-                                            <option value="high">Prioritas Tinggi</option>
-                                            <option value="urgent">Mendesak / Urgent</option>
+                                            <option value="normal">
+                                                Normal
+                                            </option>
+                                            <option value="high">
+                                                Prioritas Tinggi
+                                            </option>
+                                            <option value="urgent">
+                                                Mendesak / Urgent
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -502,13 +594,18 @@ export default function AdminProduksiIndex({
                                     <textarea
                                         rows={2}
                                         value={form.data.greeting_card_text}
-                                        onChange={(e) => form.setData('greeting_card_text', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'greeting_card_text',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Pesan kaligrafi pada kartu..."
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 pt-3 border-t border-[#0B291E]/10">
+                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setModalOpen(false)}

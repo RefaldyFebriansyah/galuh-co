@@ -43,11 +43,36 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
     )}`;
 
     const navLinks = [
-        { num: '01', desktopLabel: 'TENTANG', mobileLabel: 'Tentang Atelier', href: '#tentang' },
-        { num: '02', desktopLabel: 'KOLEKSI', mobileLabel: 'Koleksi Hampers', href: '#koleksi' },
-        { num: '03', desktopLabel: 'CARA PESAN', mobileLabel: 'Cara Pemesanan', href: '#cara-pesan' },
-        { num: '04', desktopLabel: 'CORPORATE B2B', mobileLabel: 'Corporate B2B Gifting', href: '#corporate' },
-        { num: '05', desktopLabel: 'FAQ', mobileLabel: 'Pertanyaan Umum (FAQ)', href: '#faq' },
+        {
+            num: '01',
+            desktopLabel: 'TENTANG',
+            mobileLabel: 'Tentang Atelier',
+            href: '#tentang',
+        },
+        {
+            num: '02',
+            desktopLabel: 'KOLEKSI',
+            mobileLabel: 'Koleksi Hampers',
+            href: '#koleksi',
+        },
+        {
+            num: '03',
+            desktopLabel: 'CARA PESAN',
+            mobileLabel: 'Cara Pemesanan',
+            href: '#cara-pesan',
+        },
+        {
+            num: '04',
+            desktopLabel: 'CORPORATE B2B',
+            mobileLabel: 'Corporate B2B Gifting',
+            href: '#corporate',
+        },
+        {
+            num: '05',
+            desktopLabel: 'FAQ',
+            mobileLabel: 'Pertanyaan Umum (FAQ)',
+            href: '#faq',
+        },
     ];
 
     const handleNavClick = (href: string) => {
@@ -77,12 +102,12 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
                 </a>
 
                 {/* Desktop Nav Links */}
-                <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
+                <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
                     {navLinks.map((link) => (
                         <a
                             key={link.href}
                             href={link.href}
-                            className="whitespace-nowrap text-xs font-semibold tracking-[0.14em] text-[#5C564C] transition-colors duration-200 hover:text-[#0E2A1E] py-1"
+                            className="py-1 text-xs font-semibold tracking-[0.14em] whitespace-nowrap text-[#5C564C] transition-colors duration-200 hover:text-[#0E2A1E]"
                         >
                             {link.desktopLabel}
                         </a>
@@ -90,13 +115,13 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
                 </nav>
 
                 {/* Right CTA Button (Desktop) */}
-                <div className="hidden items-center shrink-0 sm:flex">
+                <div className="hidden shrink-0 items-center sm:flex">
                     <motion.a
                         whileTap={buttonTap.tap}
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full bg-[#0E2A1E] px-5 py-2.5 text-xs font-bold tracking-[0.12em] text-white shadow-2xs transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md"
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0E2A1E] px-5 py-2.5 text-xs font-bold tracking-[0.12em] whitespace-nowrap text-white shadow-2xs transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md"
                     >
                         <WhatsAppIcon className="size-3.5 text-[#25D366]" />
                         <span>KONSULTASI HAMPERS</span>
@@ -173,7 +198,8 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
                                             {link.num}.
                                         </span>
                                         <span className="font-serif text-2xl font-normal tracking-wide text-white group-hover:text-[#C5A880]">
-                                            {link.mobileLabel || link.desktopLabel}
+                                            {link.mobileLabel ||
+                                                link.desktopLabel}
                                         </span>
                                     </div>
                                     <ArrowRight className="size-4 text-[#C5A880] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
@@ -185,7 +211,9 @@ export function Navbar({ whatsappNumber, logoSrc }: NavbarProps) {
                         <div className="space-y-4 border-t border-white/10 pt-5">
                             <div className="text-[11px] text-white/60">
                                 <p>Jl. Sukajadi No. 128, Bandung, Jawa Barat</p>
-                                <p className="mt-0.5">Senin - Sabtu: 08.00 - 20.00 WIB</p>
+                                <p className="mt-0.5">
+                                    Senin - Sabtu: 08.00 - 20.00 WIB
+                                </p>
                             </div>
                             <a
                                 href={whatsappUrl}

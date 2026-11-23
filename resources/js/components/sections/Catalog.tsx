@@ -2,7 +2,14 @@ import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { router } from '@inertiajs/react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
-import { ArrowUpRight, ChevronLeft, ChevronRight, X, MapPin, Loader2 } from 'lucide-react';
+import {
+    ArrowUpRight,
+    ChevronLeft,
+    ChevronRight,
+    X,
+    MapPin,
+    Loader2,
+} from 'lucide-react';
 import { fadeInUp, viewportOnce, buttonTap } from '@/lib/motion';
 import { trackWaLead } from '@/lib/wa-tracker';
 import { detectCurrentAddress } from '@/lib/geolocation';
@@ -98,9 +105,7 @@ function ProductCard({
                     decoding="async"
                     width={400}
                     height={320}
-                    onError={() =>
-                        setImgSrc('/images/product_bamboo_box.jpg')
-                    }
+                    onError={() => setImgSrc('/images/product_bamboo_box.jpg')}
                     className="size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                 />
 
@@ -122,28 +127,30 @@ function ProductCard({
             {/* Editorial Content (Compact Padding & Typography) */}
             <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4">
                 <div>
-                    <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-bold tracking-[0.16em] sm:tracking-[0.18em] text-[#7A5B24] uppercase">
+                    <div className="flex items-center justify-between text-[8px] font-bold tracking-[0.16em] text-[#7A5B24] uppercase sm:text-[9px] sm:tracking-[0.18em]">
                         <span>{product.category}</span>
-                        <span className="hidden sm:inline">GALUH &amp; CO.</span>
+                        <span className="hidden sm:inline">
+                            GALUH &amp; CO.
+                        </span>
                     </div>
 
-                    <h3 className="mt-1 line-clamp-1 font-serif text-[13px] sm:text-[15px] font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E]">
+                    <h3 className="mt-1 line-clamp-1 font-serif text-[13px] font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E] sm:text-[15px]">
                         {product.name}
                     </h3>
 
-                    <p className="mt-1 hidden sm:block line-clamp-2 text-[11px] leading-relaxed text-[#6E6962]">
+                    <p className="mt-1 line-clamp-2 hidden text-[11px] leading-relaxed text-[#6E6962] sm:block">
                         {product.short_description ||
                             'Hampers premium dengan kemasan eksklusif dan kurasi isi berkualitas tinggi.'}
                     </p>
                 </div>
 
                 {/* Card Footer: Price & WhatsApp Order Button */}
-                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between border-t border-[#F0EBE1] pt-2 sm:pt-2.5">
+                <div className="mt-2.5 flex items-center justify-between border-t border-[#F0EBE1] pt-2 sm:mt-3.5 sm:pt-2.5">
                     <div>
-                        <span className="block text-[7.5px] sm:text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                        <span className="block text-[7.5px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[8.5px]">
                             Mulai Dari
                         </span>
-                        <span className="font-serif text-xs sm:text-sm font-bold tracking-tight text-[#0E2A1E]">
+                        <span className="font-serif text-xs font-bold tracking-tight text-[#0E2A1E] sm:text-sm">
                             {product.formatted_price}
                         </span>
                     </div>
@@ -153,11 +160,11 @@ function ProductCard({
                         type="button"
                         onClick={() => onOrder(product)}
                         aria-label={`Pesan hampers ${product.name}`}
-                        className="group/btn inline-flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-[11px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white"
+                        className="group/btn inline-flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white sm:px-3 sm:py-1 sm:text-[11px]"
                     >
-                        <WhatsAppIcon className="size-2.5 sm:size-3 text-[#25D366] transition-colors group-hover/btn:text-white" />
+                        <WhatsAppIcon className="size-2.5 text-[#25D366] transition-colors group-hover/btn:text-white sm:size-3" />
                         <span>Pesan</span>
-                        <ArrowUpRight className="size-2 sm:size-2.5 text-[#7A5B24] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white" />
+                        <ArrowUpRight className="size-2 text-[#7A5B24] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white sm:size-2.5" />
                     </motion.button>
                 </div>
             </div>
@@ -210,7 +217,9 @@ export function Catalog({
     });
     const [isDetectingLocation, setIsDetectingLocation] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [personalErrors, setPersonalErrors] = useState<{ [key: string]: string }>({});
+    const [personalErrors, setPersonalErrors] = useState<{
+        [key: string]: string;
+    }>({});
 
     const handleDetectPersonalLocation = async () => {
         setIsDetectingLocation(true);
@@ -218,7 +227,9 @@ export function Catalog({
             const detected = await detectCurrentAddress();
             setPersonalForm((prev) => ({ ...prev, address: detected }));
         } catch (err: unknown) {
-            alert(err instanceof Error ? err.message : 'Gagal mendeteksi lokasi');
+            alert(
+                err instanceof Error ? err.message : 'Gagal mendeteksi lokasi',
+            );
         } finally {
             setIsDetectingLocation(false);
         }
@@ -229,14 +240,16 @@ export function Catalog({
         if (!orderProduct) return;
 
         const newErrors: { [key: string]: string } = {};
-        if (!personalForm.name.trim()) newErrors.name = 'Nama pemesan wajib diisi.';
+        if (!personalForm.name.trim())
+            newErrors.name = 'Nama pemesan wajib diisi.';
 
         // Strict Email validation (must contain @ and valid domain)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!personalForm.email.trim()) {
             newErrors.email = 'Alamat email wajib diisi.';
         } else if (!emailRegex.test(personalForm.email)) {
-            newErrors.email = 'Format email tidak valid. Pastikan menyertakan @ dan domain (contoh: nama@gmail.com).';
+            newErrors.email =
+                'Format email tidak valid. Pastikan menyertakan @ dan domain (contoh: nama@gmail.com).';
         }
 
         // WhatsApp number validation: digits only, no 08, min 9 digits, max 12 digits
@@ -244,7 +257,8 @@ export function Catalog({
         if (!rawPhone) {
             newErrors.whatsapp_number = 'Nomor WhatsApp wajib diisi.';
         } else if (rawPhone.length < 9) {
-            newErrors.whatsapp_number = 'Nomor WhatsApp minimal 9 digit setelah +62 (contoh: 81234567890).';
+            newErrors.whatsapp_number =
+                'Nomor WhatsApp minimal 9 digit setelah +62 (contoh: 81234567890).';
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -256,7 +270,10 @@ export function Catalog({
         setIsSubmitting(true);
 
         const fullWaNumber = `+62${rawPhone}`;
-        const cleanTargetNumber = (whatsappNumber || '6281572414233').replace(/\D/g, '');
+        const cleanTargetNumber = (whatsappNumber || '6281572414233').replace(
+            /\D/g,
+            '',
+        );
         const greetingLines = [
             'Halo Tim Concierge GALUH & CO., saya ingin memesan hampers personal:',
             '',
@@ -264,8 +281,12 @@ export function Catalog({
             `• Nama Pemesan: ${personalForm.name}`,
             `• No. WhatsApp: ${fullWaNumber}`,
             `• Email: ${personalForm.email}`,
-            personalForm.address ? `• Alamat Pengiriman: ${personalForm.address}` : null,
-            personalForm.notes ? `• Catatan / Kartu Ucapan: ${personalForm.notes}` : null,
+            personalForm.address
+                ? `• Alamat Pengiriman: ${personalForm.address}`
+                : null,
+            personalForm.notes
+                ? `• Catatan / Kartu Ucapan: ${personalForm.notes}`
+                : null,
             '',
             'Mohon informasi ketersediaan paket dan estimasi ongkos kirim. Terima kasih!',
         ].filter((line) => line !== null);
@@ -467,7 +488,9 @@ export function Catalog({
                         {activeEdition && (
                             <>
                                 <span className="size-1 rounded-full bg-[#C5A880]" />
-                                <span className="font-mono text-[10px] text-[#8C877E]">{activeEdition}</span>
+                                <span className="font-mono text-[10px] text-[#8C877E]">
+                                    {activeEdition}
+                                </span>
                             </>
                         )}
                     </div>
@@ -619,7 +642,9 @@ export function Catalog({
                                                 idx
                                             }
                                             whatsappNumber={whatsappNumber}
-                                            onOrder={(prod) => setOrderProduct(prod)}
+                                            onOrder={(prod) =>
+                                                setOrderProduct(prod)
+                                            }
                                         />
                                     ))}
                                 </div>
@@ -653,8 +678,12 @@ export function Catalog({
                                 type="button"
                                 onClick={() => {
                                     paginate(Math.max(0, currentPage - 1));
-                                    const el = document.getElementById('koleksi');
-                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                    const el =
+                                        document.getElementById('koleksi');
+                                    if (el)
+                                        el.scrollIntoView({
+                                            behavior: 'smooth',
+                                        });
                                 }}
                                 disabled={currentPage === 0}
                                 className="flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-white px-4 py-2 text-xs font-semibold text-[#0E2A1E] shadow-2xs transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
@@ -668,9 +697,18 @@ export function Catalog({
                             <button
                                 type="button"
                                 onClick={() => {
-                                    paginate(Math.min(totalPages - 1, currentPage + 1));
-                                    const el = document.getElementById('koleksi');
-                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                    paginate(
+                                        Math.min(
+                                            totalPages - 1,
+                                            currentPage + 1,
+                                        ),
+                                    );
+                                    const el =
+                                        document.getElementById('koleksi');
+                                    if (el)
+                                        el.scrollIntoView({
+                                            behavior: 'smooth',
+                                        });
                                 }}
                                 disabled={currentPage === totalPages - 1}
                                 className="flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-white px-4 py-2 text-xs font-semibold text-[#0E2A1E] shadow-2xs transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
@@ -686,13 +724,15 @@ export function Catalog({
             {/* Personal Order Modal */}
             <AnimatePresence>
                 {orderProduct && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6">
                         {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={() => !isSubmitting && setOrderProduct(null)}
+                            onClick={() =>
+                                !isSubmitting && setOrderProduct(null)
+                            }
                             className="fixed inset-0 bg-[#0E2A1E]/60 backdrop-blur-xs transition-opacity"
                         />
 
@@ -701,8 +741,11 @@ export function Catalog({
                             initial={{ opacity: 0, scale: 0.95, y: 16 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 16 }}
-                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                            className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white p-6 sm:p-8 shadow-2xl z-10 my-auto"
+                            transition={{
+                                duration: 0.25,
+                                ease: [0.16, 1, 0.3, 1],
+                            }}
+                            className="relative z-10 my-auto w-full max-w-lg overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white p-6 shadow-2xl sm:p-8"
                         >
                             {/* Close Button */}
                             <button
@@ -716,11 +759,14 @@ export function Catalog({
                             </button>
 
                             {/* Product Header */}
-                            <div className="flex items-center gap-3.5 border-b border-[#F0EBE1] pb-4 pr-8">
+                            <div className="flex items-center gap-3.5 border-b border-[#F0EBE1] pr-8 pb-4">
                                 <img
-                                    src={orderProduct.image || '/images/product_bamboo_box.jpg'}
+                                    src={
+                                        orderProduct.image ||
+                                        '/images/product_bamboo_box.jpg'
+                                    }
                                     alt={orderProduct.name}
-                                    className="size-14 rounded-xl object-cover border border-[#EAE5DC]"
+                                    className="size-14 rounded-xl border border-[#EAE5DC] object-cover"
                                 />
                                 <div className="min-w-0 flex-1">
                                     <span className="text-[9px] font-bold tracking-[0.18em] text-[#7A5B24] uppercase">
@@ -736,13 +782,17 @@ export function Catalog({
                             </div>
 
                             {/* Form */}
-                            <form onSubmit={handlePersonalSubmit} className="mt-4 space-y-3.5">
+                            <form
+                                onSubmit={handlePersonalSubmit}
+                                className="mt-4 space-y-3.5"
+                            >
                                 <div>
                                     <label
                                         htmlFor="personal-name"
                                         className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
                                     >
-                                        Nama Pemesan <span className="text-red-500">*</span>
+                                        Nama Pemesan{' '}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         id="personal-name"
@@ -750,13 +800,18 @@ export function Catalog({
                                         required
                                         value={personalForm.name}
                                         onChange={(e) =>
-                                            setPersonalForm((prev) => ({ ...prev, name: e.target.value }))
+                                            setPersonalForm((prev) => ({
+                                                ...prev,
+                                                name: e.target.value,
+                                            }))
                                         }
                                         placeholder="Nama lengkap Anda"
                                         className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
                                     />
                                     {personalErrors.name && (
-                                        <p className="mt-1 text-[10px] text-red-600">{personalErrors.name}</p>
+                                        <p className="mt-1 text-[10px] text-red-600">
+                                            {personalErrors.name}
+                                        </p>
                                     )}
                                 </div>
 
@@ -766,10 +821,13 @@ export function Catalog({
                                             htmlFor="personal-whatsapp"
                                             className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
                                         >
-                                            No. WhatsApp <span className="text-red-500">*</span>
+                                            No. WhatsApp{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </label>
                                         <div
-                                            className={`mt-1 flex items-center rounded-xl border bg-[#FAF8F5] overflow-hidden transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
+                                            className={`mt-1 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
                                                 personalErrors.whatsapp_number
                                                     ? 'border-red-400'
                                                     : 'border-[#EAE5DC]'
@@ -783,11 +841,19 @@ export function Catalog({
                                                 type="tel"
                                                 inputMode="numeric"
                                                 required
-                                                value={personalForm.whatsapp_number}
+                                                value={
+                                                    personalForm.whatsapp_number
+                                                }
                                                 onChange={(e) => {
-                                                    let val = e.target.value.replace(/\D/g, '');
-                                                    if (val.startsWith('62')) val = val.slice(2);
-                                                    if (val.startsWith('0')) val = val.slice(1);
+                                                    let val =
+                                                        e.target.value.replace(
+                                                            /\D/g,
+                                                            '',
+                                                        );
+                                                    if (val.startsWith('62'))
+                                                        val = val.slice(2);
+                                                    if (val.startsWith('0'))
+                                                        val = val.slice(1);
                                                     val = val.slice(0, 12);
                                                     setPersonalForm((prev) => ({
                                                         ...prev,
@@ -811,7 +877,10 @@ export function Catalog({
                                             htmlFor="personal-email"
                                             className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
                                         >
-                                            Email <span className="text-red-500">*</span>
+                                            Email{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </label>
                                         <input
                                             id="personal-email"
@@ -819,13 +888,18 @@ export function Catalog({
                                             required
                                             value={personalForm.email}
                                             onChange={(e) =>
-                                                setPersonalForm((prev) => ({ ...prev, email: e.target.value }))
+                                                setPersonalForm((prev) => ({
+                                                    ...prev,
+                                                    email: e.target.value,
+                                                }))
                                             }
                                             placeholder="email@anda.com"
                                             className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
                                         />
                                         {personalErrors.email && (
-                                            <p className="mt-1 text-[10px] text-red-600">{personalErrors.email}</p>
+                                            <p className="mt-1 text-[10px] text-red-600">
+                                                {personalErrors.email}
+                                            </p>
                                         )}
                                     </div>
                                 </div>
@@ -841,19 +915,25 @@ export function Catalog({
                                         </label>
                                         <button
                                             type="button"
-                                            onClick={handleDetectPersonalLocation}
+                                            onClick={
+                                                handleDetectPersonalLocation
+                                            }
                                             disabled={isDetectingLocation}
                                             className="inline-flex cursor-pointer items-center gap-1 text-[10px] font-semibold text-[#7A5B24] transition-colors hover:text-[#0E2A1E] hover:underline disabled:opacity-50"
                                         >
                                             {isDetectingLocation ? (
                                                 <>
                                                     <Loader2 className="size-3 animate-spin text-[#7A5B24]" />
-                                                    <span>Mendeteksi Lokasi...</span>
+                                                    <span>
+                                                        Mendeteksi Lokasi...
+                                                    </span>
                                                 </>
                                             ) : (
                                                 <>
                                                     <MapPin className="size-3 text-[#7A5B24]" />
-                                                    <span>Deteksi Alamat Otomatis</span>
+                                                    <span>
+                                                        Deteksi Alamat Otomatis
+                                                    </span>
                                                 </>
                                             )}
                                         </button>

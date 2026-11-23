@@ -56,12 +56,21 @@ export default function AdminKomponenIndex({
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<ComponentItem | null>(null);
     const [searchVal, setSearchVal] = useState(filters.search || '');
-    const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
-    const [selectedStock, setSelectedStock] = useState(filters.stock_status || '');
+    const [selectedCategory, setSelectedCategory] = useState(
+        filters.category || '',
+    );
+    const [selectedStock, setSelectedStock] = useState(
+        filters.stock_status || '',
+    );
 
     const form = useForm({
         name: '',
-        category: 'kudapan' as 'kudapan' | 'minuman' | 'merchandise' | 'kemasan' | 'aksesoris',
+        category: 'kudapan' as
+            | 'kudapan'
+            | 'minuman'
+            | 'merchandise'
+            | 'kemasan'
+            | 'aksesoris',
         sku: '',
         unit_cost: 45000,
         stock_status: 'in_stock' as 'in_stock' | 'low_stock' | 'out_of_stock',
@@ -112,18 +121,20 @@ export default function AdminKomponenIndex({
 
     const handleQuickStockChange = (
         item: ComponentItem,
-        status: 'in_stock' | 'low_stock' | 'out_of_stock'
+        status: 'in_stock' | 'low_stock' | 'out_of_stock',
     ) => {
         router.post(
             `/admin/komponen/${item.id}/update-stock`,
             { stock_status: status },
-            { preserveScroll: true }
+            { preserveScroll: true },
         );
     };
 
     const handleDelete = (item: ComponentItem) => {
         if (confirm(`Hapus komponen "${item.name}" dari katalog isian?`)) {
-            router.delete(`/admin/komponen/${item.id}`, { preserveScroll: true });
+            router.delete(`/admin/komponen/${item.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -135,7 +146,7 @@ export default function AdminKomponenIndex({
                 category: selectedCategory || undefined,
                 stock_status: selectedStock || undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -171,7 +182,7 @@ export default function AdminKomponenIndex({
         >
             <div className="space-y-6">
                 {/* 1. Quick Stock Status Strip */}
-                <div className="grid grid-cols-1 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
+                <div className="grid grid-cols-1 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
                         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-emerald-800 uppercase">
                             TERSEDIA (READY)
@@ -180,7 +191,9 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stockStats.in_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Komponen Siap Racik</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Komponen Siap Racik
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -191,7 +204,9 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-amber-700">
                                 {stockStats.low_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Perlu Restock Studio</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Perlu Restock Studio
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -202,7 +217,9 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-rose-800">
                                 {stockStats.out_of_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Jangan Rekomendasikan di WA</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Jangan Rekomendasikan di WA
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -216,7 +233,9 @@ export default function AdminKomponenIndex({
                                 type="text"
                                 value={searchVal}
                                 onChange={(e) => setSearchVal(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleFilterApply()}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && handleFilterApply()
+                                }
                                 placeholder="Cari nama komponen, SKU..."
                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:border-[#0B291E] focus:outline-hidden"
                             />
@@ -224,15 +243,27 @@ export default function AdminKomponenIndex({
 
                         <select
                             value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedCategory(e.target.value)
+                            }
                             className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                         >
                             <option value="">Semua Kategori</option>
-                            <option value="kudapan">Kudapan ({categoryStats.kudapan})</option>
-                            <option value="minuman">Minuman ({categoryStats.minuman})</option>
-                            <option value="merchandise">Merchandise ({categoryStats.merchandise})</option>
-                            <option value="kemasan">Kemasan ({categoryStats.kemasan})</option>
-                            <option value="aksesoris">Aksesoris ({categoryStats.aksesoris})</option>
+                            <option value="kudapan">
+                                Kudapan ({categoryStats.kudapan})
+                            </option>
+                            <option value="minuman">
+                                Minuman ({categoryStats.minuman})
+                            </option>
+                            <option value="merchandise">
+                                Merchandise ({categoryStats.merchandise})
+                            </option>
+                            <option value="kemasan">
+                                Kemasan ({categoryStats.kemasan})
+                            </option>
+                            <option value="aksesoris">
+                                Aksesoris ({categoryStats.aksesoris})
+                            </option>
                         </select>
 
                         <select
@@ -261,26 +292,38 @@ export default function AdminKomponenIndex({
                     <table className="w-full text-left text-xs">
                         <thead>
                             <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
-                                <th className="py-3 px-4">Nama Komponen &amp; SKU</th>
-                                <th className="py-3 px-4">Kategori</th>
-                                <th className="py-3 px-4">Estimasi Biaya Satuan</th>
-                                <th className="py-3 px-4">Ketersediaan Stok</th>
-                                <th className="py-3 px-4">Deskripsi / Catatan Studio</th>
-                                <th className="py-3 px-4 text-right">Aksi</th>
+                                <th className="px-4 py-3">
+                                    Nama Komponen &amp; SKU
+                                </th>
+                                <th className="px-4 py-3">Kategori</th>
+                                <th className="px-4 py-3">
+                                    Estimasi Biaya Satuan
+                                </th>
+                                <th className="px-4 py-3">Ketersediaan Stok</th>
+                                <th className="px-4 py-3">
+                                    Deskripsi / Catatan Studio
+                                </th>
+                                <th className="px-4 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
                             {components.length === 0 ? (
                                 <tr>
-                                    <td colSpan={6} className="py-12 text-center text-xs text-[#0B291E]/50">
+                                    <td
+                                        colSpan={6}
+                                        className="py-12 text-center text-xs text-[#0B291E]/50"
+                                    >
                                         Tidak ada komponen yang ditemukan.
                                     </td>
                                 </tr>
                             ) : (
                                 components.map((item) => (
-                                    <tr key={item.id} className="transition-colors hover:bg-[#F7F5F0]/50">
+                                    <tr
+                                        key={item.id}
+                                        className="transition-colors hover:bg-[#F7F5F0]/50"
+                                    >
                                         {/* Name & SKU */}
-                                        <td className="py-3.5 px-4">
+                                        <td className="px-4 py-3.5">
                                             <div className="flex items-center gap-2">
                                                 <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-[#0B291E]/10 bg-[#FAF8F5] text-[#0B291E]">
                                                     <Boxes className="size-3.5 text-[#B89352]" />
@@ -299,52 +342,67 @@ export default function AdminKomponenIndex({
                                         </td>
 
                                         {/* Category */}
-                                        <td className="py-3.5 px-4">
+                                        <td className="px-4 py-3.5">
                                             <span className="inline-block rounded-md border border-[#0B291E]/10 bg-[#F7F5F0] px-2 py-0.5 text-[10.5px] text-[#0B291E]">
-                                                {categoryLabels[item.category] || item.category}
+                                                {categoryLabels[
+                                                    item.category
+                                                ] || item.category}
                                             </span>
                                         </td>
 
                                         {/* Unit Cost */}
-                                        <td className="py-3.5 px-4 font-mono font-medium text-[#0B291E]">
+                                        <td className="px-4 py-3.5 font-mono font-medium text-[#0B291E]">
                                             {formatIdr(item.unit_cost)}
                                         </td>
 
                                         {/* Stock Status Dropdown */}
-                                        <td className="py-3.5 px-4">
+                                        <td className="px-4 py-3.5">
                                             <select
                                                 value={item.stock_status}
                                                 onChange={(e) =>
                                                     handleQuickStockChange(
                                                         item,
-                                                        e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock'
+                                                        e.target.value as
+                                                            | 'in_stock'
+                                                            | 'low_stock'
+                                                            | 'out_of_stock',
                                                     )
                                                 }
                                                 className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium focus:outline-hidden ${
-                                                    item.stock_status === 'in_stock'
+                                                    item.stock_status ===
+                                                    'in_stock'
                                                         ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-                                                        : item.stock_status === 'low_stock'
-                                                        ? 'border-amber-200 bg-amber-50 text-amber-800'
-                                                        : 'border-rose-200 bg-rose-50 text-rose-800'
+                                                        : item.stock_status ===
+                                                            'low_stock'
+                                                          ? 'border-amber-200 bg-amber-50 text-amber-800'
+                                                          : 'border-rose-200 bg-rose-50 text-rose-800'
                                                 }`}
                                             >
-                                                <option value="in_stock">Tersedia (Ready)</option>
-                                                <option value="low_stock">Menipis (Low)</option>
-                                                <option value="out_of_stock">Habis (Kosong)</option>
+                                                <option value="in_stock">
+                                                    Tersedia (Ready)
+                                                </option>
+                                                <option value="low_stock">
+                                                    Menipis (Low)
+                                                </option>
+                                                <option value="out_of_stock">
+                                                    Habis (Kosong)
+                                                </option>
                                             </select>
                                         </td>
 
                                         {/* Notes */}
-                                        <td className="py-3.5 px-4 text-[#0B291E]/60 max-w-xs truncate">
+                                        <td className="max-w-xs truncate px-4 py-3.5 text-[#0B291E]/60">
                                             {item.description || '-'}
                                         </td>
 
                                         {/* Actions */}
-                                        <td className="py-3.5 px-4 text-right">
+                                        <td className="px-4 py-3.5 text-right">
                                             <div className="flex items-center justify-end gap-1.5">
                                                 <button
                                                     type="button"
-                                                    onClick={() => openEditDrawer(item)}
+                                                    onClick={() =>
+                                                        openEditDrawer(item)
+                                                    }
                                                     className="rounded-md border border-[#0B291E]/15 bg-white p-1 text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]"
                                                     title="Edit Komponen"
                                                 >
@@ -352,7 +410,9 @@ export default function AdminKomponenIndex({
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleDelete(item)}
+                                                    onClick={() =>
+                                                        handleDelete(item)
+                                                    }
                                                     className="rounded-md p-1 text-rose-600 hover:bg-rose-50"
                                                     title="Hapus Komponen"
                                                 >
@@ -372,24 +432,31 @@ export default function AdminKomponenIndex({
             <AnimatePresence>
                 {drawerOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex justify-end bg-black/50"
                         onClick={() => setDrawerOpen(false)}
                     >
                         <motion.div
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 26,
+                                stiffness: 220,
+                            }}
                             onClick={(e) => e.stopPropagation()}
                             className="flex h-full w-full max-w-md flex-col justify-between bg-white shadow-2xl"
                         >
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
                                 <div>
                                     <h3 className="text-base font-semibold text-[#0B291E]">
-                                        {editingItem ? 'Edit Komponen Isian' : 'Tambah Komponen Baru'}
+                                        {editingItem
+                                            ? 'Edit Komponen Isian'
+                                            : 'Tambah Komponen Baru'}
                                     </h3>
                                     <p className="text-xs text-[#0B291E]/60">
-                                        Data isian hampers &amp; kemasan mix and match
+                                        Data isian hampers &amp; kemasan mix and
+                                        match
                                     </p>
                                 </div>
                                 <button
@@ -404,7 +471,7 @@ export default function AdminKomponenIndex({
                             <form
                                 id="compForm"
                                 onSubmit={handleSave}
-                                className="flex-1 space-y-4 overflow-y-auto p-6 text-xs scrollbar-none"
+                                className="flex-1 scrollbar-none space-y-4 overflow-y-auto p-6 text-xs"
                             >
                                 <div className="space-y-1">
                                     <label className="text-xs font-semibold text-[#0B291E]">
@@ -414,7 +481,9 @@ export default function AdminKomponenIndex({
                                         type="text"
                                         required
                                         value={form.data.name}
-                                        onChange={(e) => form.setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData('name', e.target.value)
+                                        }
                                         placeholder="Contoh: Nastar Wijsman Bulat 350g"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                     />
@@ -435,16 +504,26 @@ export default function AdminKomponenIndex({
                                                         | 'minuman'
                                                         | 'merchandise'
                                                         | 'kemasan'
-                                                        | 'aksesoris'
+                                                        | 'aksesoris',
                                                 )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         >
-                                            <option value="kudapan">Kudapan &amp; Kue Kering</option>
-                                            <option value="minuman">Kopi &amp; Teh Artisan</option>
-                                            <option value="merchandise">Tumbler &amp; Merchandise</option>
-                                            <option value="kemasan">Kemasan &amp; Hardbox</option>
-                                            <option value="aksesoris">Pita &amp; Wax Seal</option>
+                                            <option value="kudapan">
+                                                Kudapan &amp; Kue Kering
+                                            </option>
+                                            <option value="minuman">
+                                                Kopi &amp; Teh Artisan
+                                            </option>
+                                            <option value="merchandise">
+                                                Tumbler &amp; Merchandise
+                                            </option>
+                                            <option value="kemasan">
+                                                Kemasan &amp; Hardbox
+                                            </option>
+                                            <option value="aksesoris">
+                                                Pita &amp; Wax Seal
+                                            </option>
                                         </select>
                                     </div>
 
@@ -455,7 +534,12 @@ export default function AdminKomponenIndex({
                                         <input
                                             type="text"
                                             value={form.data.sku}
-                                            onChange={(e) => form.setData('sku', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'sku',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="KOMP-NST-01"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         />
@@ -471,7 +555,12 @@ export default function AdminKomponenIndex({
                                             type="number"
                                             required
                                             value={form.data.unit_cost}
-                                            onChange={(e) => form.setData('unit_cost', Number(e.target.value))}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'unit_cost',
+                                                    Number(e.target.value),
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         />
                                     </div>
@@ -485,14 +574,23 @@ export default function AdminKomponenIndex({
                                             onChange={(e) =>
                                                 form.setData(
                                                     'stock_status',
-                                                    e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock'
+                                                    e.target.value as
+                                                        | 'in_stock'
+                                                        | 'low_stock'
+                                                        | 'out_of_stock',
                                                 )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         >
-                                            <option value="in_stock">Tersedia (In Stock)</option>
-                                            <option value="low_stock">Menipis (Low Stock)</option>
-                                            <option value="out_of_stock">Habis (Out of Stock)</option>
+                                            <option value="in_stock">
+                                                Tersedia (In Stock)
+                                            </option>
+                                            <option value="low_stock">
+                                                Menipis (Low Stock)
+                                            </option>
+                                            <option value="out_of_stock">
+                                                Habis (Out of Stock)
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -504,7 +602,12 @@ export default function AdminKomponenIndex({
                                     <textarea
                                         rows={3}
                                         value={form.data.description}
-                                        onChange={(e) => form.setData('description', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'description',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Contoh: Kemasan toples kaca bersegel emas, tahan 3 bulan pada suhu ruang..."
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                     />
@@ -525,7 +628,9 @@ export default function AdminKomponenIndex({
                                     disabled={form.processing}
                                     className="rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
-                                    {form.processing ? 'Menyimpan...' : 'Simpan Komponen'}
+                                    {form.processing
+                                        ? 'Menyimpan...'
+                                        : 'Simpan Komponen'}
                                 </button>
                             </div>
                         </motion.div>

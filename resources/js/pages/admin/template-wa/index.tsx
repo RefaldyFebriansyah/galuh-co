@@ -19,7 +19,12 @@ import { AdminLayout } from '@/layouts/admin-layout';
 interface WaTemplateItem {
     id: number;
     title: string;
-    category: 'sambutan_awal' | 'kirim_pricelist' | 'desain_kartu' | 'info_pengiriman' | 'follow_up';
+    category:
+        | 'sambutan_awal'
+        | 'kirim_pricelist'
+        | 'desain_kartu'
+        | 'info_pengiriman'
+        | 'follow_up';
     content: string;
     variables?: string[] | null;
     is_active: boolean;
@@ -41,12 +46,15 @@ export default function AdminTemplateWaIndex({
     filters,
 }: TemplateWaProps) {
     const [searchVal, setSearchVal] = useState(filters.search || '');
-    const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
+    const [selectedCategory, setSelectedCategory] = useState(
+        filters.category || '',
+    );
     const [copiedId, setCopiedId] = useState<number | null>(null);
 
     // Modal Add / Edit
     const [modalOpen, setModalOpen] = useState(false);
-    const [editingTemplate, setEditingTemplate] = useState<WaTemplateItem | null>(null);
+    const [editingTemplate, setEditingTemplate] =
+        useState<WaTemplateItem | null>(null);
     const form = useForm({
         title: '',
         category: 'sambutan_awal' as WaTemplateItem['category'],
@@ -66,7 +74,8 @@ export default function AdminTemplateWaIndex({
         form.setData({
             title: '',
             category: 'sambutan_awal',
-            content: 'Halo Bapak/Ibu {nama_klien},\n\nTerima kasih telah menghubungi Galuh & Co.',
+            content:
+                'Halo Bapak/Ibu {nama_klien},\n\nTerima kasih telah menghubungi Galuh & Co.',
             variables: ['{nama_klien}', '{nama_paket}'],
             is_active: true,
         });
@@ -100,7 +109,9 @@ export default function AdminTemplateWaIndex({
 
     const handleDelete = (tmpl: WaTemplateItem) => {
         if (confirm(`Hapus template "${tmpl.title}"?`)) {
-            router.delete(`/admin/template-wa/${tmpl.id}`, { preserveScroll: true });
+            router.delete(`/admin/template-wa/${tmpl.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -108,10 +119,13 @@ export default function AdminTemplateWaIndex({
         router.get(
             '/admin/template-wa',
             {
-                category: catKey !== undefined ? catKey || undefined : selectedCategory || undefined,
+                category:
+                    catKey !== undefined
+                        ? catKey || undefined
+                        : selectedCategory || undefined,
                 search: searchVal || undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -145,8 +159,8 @@ export default function AdminTemplateWaIndex({
         >
             <div className="space-y-6">
                 {/* 1. Category Filter Tabs */}
-                <div className="flex border-b border-[#0B291E]/10 bg-white px-4 rounded-2xl shadow-2xs sm:px-6 overflow-x-auto scrollbar-none">
-                    <nav className="flex space-x-6 min-w-max">
+                <div className="flex scrollbar-none overflow-x-auto rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6">
+                    <nav className="flex min-w-max space-x-6">
                         <button
                             type="button"
                             onClick={() => {
@@ -154,14 +168,16 @@ export default function AdminTemplateWaIndex({
                                 handleFilterApply('');
                             }}
                             className={`relative py-4 text-xs font-semibold transition-colors ${
-                                !filters.category ? 'text-[#0B291E]' : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                !filters.category
+                                    ? 'text-[#0B291E]'
+                                    : 'text-[#0B291E]/50 hover:text-[#0B291E]'
                             }`}
                         >
                             <span>Semua Kategori</span>
                             {!filters.category && (
                                 <motion.div
                                     layoutId="template-tab-active"
-                                    className="absolute bottom-0 inset-x-0 h-0.5 bg-[#B89352]"
+                                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
                                 />
                             )}
                         </button>
@@ -177,14 +193,16 @@ export default function AdminTemplateWaIndex({
                                         handleFilterApply(k);
                                     }}
                                     className={`relative py-4 text-xs font-semibold transition-colors ${
-                                        isCurrent ? 'text-[#0B291E]' : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                        isCurrent
+                                            ? 'text-[#0B291E]'
+                                            : 'text-[#0B291E]/50 hover:text-[#0B291E]'
                                     }`}
                                 >
                                     <span>{label}</span>
                                     {isCurrent && (
                                         <motion.div
                                             layoutId="template-tab-active"
-                                            className="absolute bottom-0 inset-x-0 h-0.5 bg-[#B89352]"
+                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
                                         />
                                     )}
                                 </button>
@@ -201,7 +219,9 @@ export default function AdminTemplateWaIndex({
                             type="text"
                             value={searchVal}
                             onChange={(e) => setSearchVal(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleFilterApply()}
+                            onKeyDown={(e) =>
+                                e.key === 'Enter' && handleFilterApply()
+                            }
                             placeholder="Cari kata dalam template balasan..."
                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:outline-hidden"
                         />
@@ -218,7 +238,7 @@ export default function AdminTemplateWaIndex({
                 {/* 3. Templates Grid */}
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {templates.length === 0 ? (
-                        <div className="col-span-full py-16 text-center text-xs text-[#0B291E]/50 bg-white rounded-2xl border border-[#0B291E]/10">
+                        <div className="col-span-full rounded-2xl border border-[#0B291E]/10 bg-white py-16 text-center text-xs text-[#0B291E]/50">
                             Tidak ada template balasan WhatsApp yang sesuai.
                         </div>
                     ) : (
@@ -235,13 +255,16 @@ export default function AdminTemplateWaIndex({
                                                 {tmpl.title}
                                             </h4>
                                             <span className="font-mono text-[9px] font-bold text-[#B89352] uppercase">
-                                                {categories[tmpl.category] || tmpl.category}
+                                                {categories[tmpl.category] ||
+                                                    tmpl.category}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <button
                                                 type="button"
-                                                onClick={() => openEditModal(tmpl)}
+                                                onClick={() =>
+                                                    openEditModal(tmpl)
+                                                }
                                                 className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
                                                 title="Edit"
                                             >
@@ -249,8 +272,10 @@ export default function AdminTemplateWaIndex({
                                             </button>
                                             <button
                                                 type="button"
-                                                onClick={() => handleDelete(tmpl)}
-                                                className="p-1 text-rose-600 hover:bg-rose-50 rounded"
+                                                onClick={() =>
+                                                    handleDelete(tmpl)
+                                                }
+                                                className="rounded p-1 text-rose-600 hover:bg-rose-50"
                                                 title="Hapus"
                                             >
                                                 <Trash2 className="size-3.5" />
@@ -259,13 +284,13 @@ export default function AdminTemplateWaIndex({
                                     </div>
 
                                     {/* Content Preformatted */}
-                                    <pre className="mt-3 font-sans text-xs text-[#0B291E]/80 whitespace-pre-wrap leading-relaxed line-clamp-6 bg-[#FAF8F5] p-3 rounded-xl border border-[#0B291E]/5">
+                                    <pre className="mt-3 line-clamp-6 rounded-xl border border-[#0B291E]/5 bg-[#FAF8F5] p-3 font-sans text-xs leading-relaxed whitespace-pre-wrap text-[#0B291E]/80">
                                         {tmpl.content}
                                     </pre>
                                 </div>
 
                                 {/* Footer & 1-Click Copy */}
-                                <div className="mt-4 pt-3 border-t border-[#0B291E]/10 flex items-center justify-between">
+                                <div className="mt-4 flex items-center justify-between border-t border-[#0B291E]/10 pt-3">
                                     <span className="font-mono text-[9.5px] text-[#0B291E]/40">
                                         Variabel otomatis
                                     </span>
@@ -301,7 +326,7 @@ export default function AdminTemplateWaIndex({
             <AnimatePresence>
                 {modalOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
                         onClick={() => setModalOpen(false)}
                     >
                         <motion.div
@@ -313,7 +338,9 @@ export default function AdminTemplateWaIndex({
                         >
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
                                 <h3 className="text-base font-semibold text-[#0B291E]">
-                                    {editingTemplate ? 'Edit Template Balasan' : 'Tambah Template Balasan WhatsApp'}
+                                    {editingTemplate
+                                        ? 'Edit Template Balasan'
+                                        : 'Tambah Template Balasan WhatsApp'}
                                 </h3>
                                 <button
                                     type="button"
@@ -324,7 +351,10 @@ export default function AdminTemplateWaIndex({
                                 </button>
                             </div>
 
-                            <form onSubmit={submitTemplate} className="mt-4 space-y-4 text-xs">
+                            <form
+                                onSubmit={submitTemplate}
+                                className="mt-4 space-y-4 text-xs"
+                            >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
                                         <label className="font-semibold text-[#0B291E]">
@@ -334,7 +364,12 @@ export default function AdminTemplateWaIndex({
                                             type="text"
                                             required
                                             value={form.data.title}
-                                            onChange={(e) => form.setData('title', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'title',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Contoh: Sambutan Hangat Lead Baru"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -348,16 +383,19 @@ export default function AdminTemplateWaIndex({
                                             onChange={(e) =>
                                                 form.setData(
                                                     'category',
-                                                    e.target.value as WaTemplateItem['category']
+                                                    e.target
+                                                        .value as WaTemplateItem['category'],
                                                 )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
-                                            {Object.entries(categories).map(([k, label]) => (
-                                                <option key={k} value={k}>
-                                                    {label}
-                                                </option>
-                                            ))}
+                                            {Object.entries(categories).map(
+                                                ([k, label]) => (
+                                                    <option key={k} value={k}>
+                                                        {label}
+                                                    </option>
+                                                ),
+                                            )}
                                         </select>
                                     </div>
                                 </div>
@@ -372,7 +410,9 @@ export default function AdminTemplateWaIndex({
                                             <button
                                                 key={v}
                                                 type="button"
-                                                onClick={() => insertVariable(v)}
+                                                onClick={() =>
+                                                    insertVariable(v)
+                                                }
                                                 className="rounded-md border border-[#B89352]/40 bg-[#B89352]/10 px-2 py-0.5 font-mono text-[10.5px] text-[#8C6D32] hover:bg-[#B89352] hover:text-white"
                                             >
                                                 + {v}
@@ -389,13 +429,18 @@ export default function AdminTemplateWaIndex({
                                         rows={8}
                                         required
                                         value={form.data.content}
-                                        onChange={(e) => form.setData('content', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'content',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Tuliskan skrip balasan WhatsApp..."
                                         className="w-full rounded-xl border border-[#0B291E]/15 bg-[#FAF8F5] p-3 text-xs leading-relaxed focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 pt-3 border-t border-[#0B291E]/10">
+                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setModalOpen(false)}

@@ -78,7 +78,7 @@ export default function AdminDashboard({
 }: DashboardProps) {
     const totalLeadSourcesCount = lead_source_stats.reduce(
         (acc, curr) => acc + curr.count,
-        0
+        0,
     );
 
     const getStatusBadge = (status: string) => {
@@ -122,14 +122,14 @@ export default function AdminDashboard({
                         href="/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs transition-colors hover:bg-slate-50"
                     >
                         <ExternalLink className="size-3.5 text-slate-500" />
                         <span>Lihat Website</span>
                     </a>
                     <Link
                         href="/admin/katalog"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-emerald-700"
                     >
                         <Package className="size-3.5" />
                         <span>Kelola Katalog</span>
@@ -145,7 +145,7 @@ export default function AdminDashboard({
                     {/* Card 1: Inquiries */}
                     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                                 Inquiries Masuk
                             </span>
                             <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
@@ -168,7 +168,7 @@ export default function AdminDashboard({
                     {/* Card 2: Active Catalog Hampers */}
                     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                                 Katalog Hampers Aktif
                             </span>
                             <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
@@ -191,7 +191,7 @@ export default function AdminDashboard({
                     {/* Card 3: Most Popular Package */}
                     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                                 Paket Paling Diminati
                             </span>
                             <div className="flex size-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
@@ -199,7 +199,7 @@ export default function AdminDashboard({
                             </div>
                         </div>
                         <div className="mt-3">
-                            <h4 className="text-base font-bold text-slate-900 line-clamp-1">
+                            <h4 className="line-clamp-1 text-base font-bold text-slate-900">
                                 {kpis.most_popular_package}
                             </h4>
                             <p className="mt-1 text-xs text-slate-500">
@@ -211,7 +211,7 @@ export default function AdminDashboard({
                     {/* Card 4: WhatsApp Clicks This Week */}
                     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
                                 Interaksi WA Minggu Ini
                             </span>
                             <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
@@ -242,7 +242,8 @@ export default function AdminDashboard({
                                     Distribusi Sumber Lead Website
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    Bagian halaman yang paling banyak memicu percakapan WhatsApp
+                                    Bagian halaman yang paling banyak memicu
+                                    percakapan WhatsApp
                                 </p>
                             </div>
                             <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
@@ -254,7 +255,11 @@ export default function AdminDashboard({
                             {lead_source_stats.map((stat) => {
                                 const percentage =
                                     totalLeadSourcesCount > 0
-                                        ? Math.round((stat.count / totalLeadSourcesCount) * 100)
+                                        ? Math.round(
+                                              (stat.count /
+                                                  totalLeadSourcesCount) *
+                                                  100,
+                                          )
                                         : 0;
 
                                 return (
@@ -288,7 +293,7 @@ export default function AdminDashboard({
                     </div>
 
                     {/* Right: Quick Action Hub (1 Col) */}
-                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col justify-between">
+                    <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
                         <div>
                             <div className="border-b border-slate-100 pb-3">
                                 <h3 className="text-sm font-bold text-slate-900">
@@ -302,15 +307,19 @@ export default function AdminDashboard({
                             <div className="mt-4 space-y-2">
                                 <Link
                                     href="/admin/inquiries"
-                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 transition-colors hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900"
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className="flex size-7 items-center justify-center rounded-md bg-emerald-100 text-emerald-700">
                                             <FileText className="size-3.5" />
                                         </div>
                                         <div>
-                                            <span className="font-semibold block">Inquiries Website</span>
-                                            <span className="text-[11px] text-slate-500">Proposal corporate masuk</span>
+                                            <span className="block font-semibold">
+                                                Inquiries Website
+                                            </span>
+                                            <span className="text-[11px] text-slate-500">
+                                                Proposal corporate masuk
+                                            </span>
                                         </div>
                                     </div>
                                     <ArrowUpRight className="size-3.5 text-slate-400" />
@@ -318,15 +327,19 @@ export default function AdminDashboard({
 
                                 <Link
                                     href="/admin/katalog"
-                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 transition-colors hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900"
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className="flex size-7 items-center justify-center rounded-md bg-blue-100 text-blue-700">
                                             <Package className="size-3.5" />
                                         </div>
                                         <div>
-                                            <span className="font-semibold block">Katalog Hampers</span>
-                                            <span className="text-[11px] text-slate-500">Kelola paket &amp; foto</span>
+                                            <span className="block font-semibold">
+                                                Katalog Hampers
+                                            </span>
+                                            <span className="text-[11px] text-slate-500">
+                                                Kelola paket &amp; foto
+                                            </span>
                                         </div>
                                     </div>
                                     <ArrowUpRight className="size-3.5 text-slate-400" />
@@ -334,15 +347,19 @@ export default function AdminDashboard({
 
                                 <Link
                                     href="/admin/pengaturan"
-                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 transition-colors hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900"
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className="flex size-7 items-center justify-center rounded-md bg-amber-100 text-amber-700">
                                             <Settings className="size-3.5" />
                                         </div>
                                         <div>
-                                            <span className="font-semibold block">Pengaturan Sistem</span>
-                                            <span className="text-[11px] text-slate-500">Nomor WA &amp; akun staf</span>
+                                            <span className="block font-semibold">
+                                                Pengaturan Sistem
+                                            </span>
+                                            <span className="text-[11px] text-slate-500">
+                                                Nomor WA &amp; akun staf
+                                            </span>
                                         </div>
                                     </div>
                                     <ArrowUpRight className="size-3.5 text-slate-400" />
@@ -350,15 +367,19 @@ export default function AdminDashboard({
 
                                 <Link
                                     href="/admin/cms-halaman"
-                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 transition-colors hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900"
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className="flex size-7 items-center justify-center rounded-md bg-purple-100 text-purple-700">
                                             <Palette className="size-3.5" />
                                         </div>
                                         <div>
-                                            <span className="font-semibold block">Konten Website</span>
-                                            <span className="text-[11px] text-slate-500">Banner, testimoni &amp; FAQ</span>
+                                            <span className="block font-semibold">
+                                                Konten Website
+                                            </span>
+                                            <span className="text-[11px] text-slate-500">
+                                                Banner, testimoni &amp; FAQ
+                                            </span>
                                         </div>
                                     </div>
                                     <ArrowUpRight className="size-3.5 text-slate-400" />
@@ -366,7 +387,7 @@ export default function AdminDashboard({
                             </div>
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
                             <span>WhatsApp Resmi:</span>
                             <span className="font-mono font-semibold text-slate-800">
                                 +{whatsapp_concierge}
@@ -385,7 +406,8 @@ export default function AdminDashboard({
                                     Inquiries Website Terbaru
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    Permintaan proposal penawaran yang baru masuk dari website
+                                    Permintaan proposal penawaran yang baru
+                                    masuk dari website
                                 </p>
                             </div>
                             <Link
@@ -399,25 +421,37 @@ export default function AdminDashboard({
                         <div className="mt-4 divide-y divide-slate-100">
                             {recent_wa_leads.length === 0 ? (
                                 <div className="py-8 text-center text-xs text-slate-400">
-                                    Belum ada aktivitas konsultasi WhatsApp terbaru.
+                                    Belum ada aktivitas konsultasi WhatsApp
+                                    terbaru.
                                 </div>
                             ) : (
                                 recent_wa_leads.map((lead) => {
                                     const badge = getStatusBadge(lead.status);
-                                    const phoneNum = lead.wa_number || lead.whatsapp_number || '';
-                                    const cleanPhone = phoneNum.replace(/\D/g, '');
-                                    const clientName = lead.client_name || 'Bpk/Ibu';
+                                    const phoneNum =
+                                        lead.wa_number ||
+                                        lead.whatsapp_number ||
+                                        '';
+                                    const cleanPhone = phoneNum.replace(
+                                        /\D/g,
+                                        '',
+                                    );
+                                    const clientName =
+                                        lead.client_name || 'Bpk/Ibu';
                                     const directWa =
                                         lead.wa_link ||
                                         (cleanPhone
                                             ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-                                                `Halo ${clientName}, terima kasih telah menghubungi Concierge GALUH & CO.`
-                                            )}`
+                                                  `Halo ${clientName}, terima kasih telah menghubungi Concierge GALUH & CO.`,
+                                              )}`
                                             : '#');
-                                    const compName = lead.company_name || lead.client_company;
+                                    const compName =
+                                        lead.company_name ||
+                                        lead.client_company;
                                     const boxQty =
                                         lead.estimated_packages ||
-                                        (lead.quantity_estimate ? `${lead.quantity_estimate} box` : null);
+                                        (lead.quantity_estimate
+                                            ? `${lead.quantity_estimate} box`
+                                            : null);
 
                                     return (
                                         <div
@@ -427,7 +461,8 @@ export default function AdminDashboard({
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
                                                     <h4 className="truncate text-xs font-bold text-slate-900">
-                                                        {lead.client_name || 'Klien Concierge'}
+                                                        {lead.client_name ||
+                                                            'Klien Concierge'}
                                                     </h4>
                                                     {compName && (
                                                         <span className="truncate text-xs text-slate-400">
@@ -436,12 +471,15 @@ export default function AdminDashboard({
                                                     )}
                                                 </div>
                                                 <p className="mt-0.5 truncate text-xs text-slate-500">
-                                                    {lead.package_name ?? 'Konsultasi Kustom'}
-                                                    {boxQty ? ` • ${boxQty}` : ''}
+                                                    {lead.package_name ??
+                                                        'Konsultasi Kustom'}
+                                                    {boxQty
+                                                        ? ` • ${boxQty}`
+                                                        : ''}
                                                 </p>
                                             </div>
 
-                                            <div className="flex items-center gap-2 shrink-0">
+                                            <div className="flex shrink-0 items-center gap-2">
                                                 <span
                                                     className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${badge.bg}`}
                                                 >
@@ -451,7 +489,7 @@ export default function AdminDashboard({
                                                     href={directWa}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-800 transition-colors"
+                                                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs transition-colors hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800"
                                                     title="Follow up via WhatsApp"
                                                 >
                                                     <Send className="size-3 text-emerald-600" />
@@ -466,7 +504,7 @@ export default function AdminDashboard({
                     </div>
 
                     {/* Catalog & System Overview */}
-                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col justify-between">
+                    <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
                         <div>
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
@@ -474,7 +512,8 @@ export default function AdminDashboard({
                                         Status Katalog &amp; Website
                                     </h3>
                                     <p className="text-xs text-slate-500">
-                                        Distribusi kategori hampers dan integrasi WhatsApp
+                                        Distribusi kategori hampers dan
+                                        integrasi WhatsApp
                                     </p>
                                 </div>
                                 <Link
@@ -487,28 +526,32 @@ export default function AdminDashboard({
 
                             {/* Category Distribution */}
                             <div className="mt-4 space-y-3">
-                                <span className="text-xs font-semibold text-slate-700 block">
+                                <span className="block text-xs font-semibold text-slate-700">
                                     Kategori Paket Hampers:
                                 </span>
-                                {stats?.categoryCounts && Object.keys(stats.categoryCounts).length > 0 ? (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                        {Object.entries(stats.categoryCounts).map(([cat, count]) => (
+                                {stats?.categoryCounts &&
+                                Object.keys(stats.categoryCounts).length > 0 ? (
+                                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                                        {Object.entries(
+                                            stats.categoryCounts,
+                                        ).map(([cat, count]) => (
                                             <div
                                                 key={cat}
                                                 className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2 text-xs"
                                             >
-                                                <span className="font-medium text-slate-700 truncate">
+                                                <span className="truncate font-medium text-slate-700">
                                                     {cat}
                                                 </span>
-                                                <span className="font-bold text-slate-900 bg-white border border-slate-200 rounded-md px-2 py-0.5 text-[11px]">
+                                                <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-bold text-slate-900">
                                                     {count} paket
                                                 </span>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="text-xs text-slate-400 py-2">
-                                        {catalog_stats.active_hampers} paket aktif terdaftar di sistem.
+                                    <div className="py-2 text-xs text-slate-400">
+                                        {catalog_stats.active_hampers} paket
+                                        aktif terdaftar di sistem.
                                     </div>
                                 )}
                             </div>
@@ -516,22 +559,24 @@ export default function AdminDashboard({
                             {/* System Status Banner */}
                             <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50/60 p-3.5">
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                                    <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
                                     <span className="text-xs font-bold text-emerald-900">
                                         Concierge WhatsApp Siap Menerima Pesan
                                     </span>
                                 </div>
-                                <p className="mt-1 text-[11px] text-emerald-700 leading-relaxed">
-                                    Semua tombol konsultasi di halaman utama terhubung langsung ke nomor WhatsApp resmi +{whatsapp_concierge}.
+                                <p className="mt-1 text-[11px] leading-relaxed text-emerald-700">
+                                    Semua tombol konsultasi di halaman utama
+                                    terhubung langsung ke nomor WhatsApp resmi +
+                                    {whatsapp_concierge}.
                                 </p>
                             </div>
                         </div>
 
-                        <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
                             <span>Konfigurasi Concierge:</span>
                             <Link
                                 href="/admin/pengaturan"
-                                className="font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1"
+                                className="inline-flex items-center gap-1 font-semibold text-emerald-600 hover:text-emerald-700"
                             >
                                 <Settings className="size-3.5" />
                                 <span>Buka Pengaturan</span>

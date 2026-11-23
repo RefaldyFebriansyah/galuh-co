@@ -67,7 +67,9 @@ export default function AdminCmsIndex({
     testimonials,
     faqs,
 }: CmsProps) {
-    const [activeTab, setActiveTab] = useState<'hero' | 'pillars' | 'testimonials' | 'faqs'>('hero');
+    const [activeTab, setActiveTab] = useState<
+        'hero' | 'pillars' | 'testimonials' | 'faqs'
+    >('hero');
 
     // Tab 1: Hero Form
     const heroForm = useForm({
@@ -92,7 +94,11 @@ export default function AdminCmsIndex({
         ],
     });
 
-    const updatePillarField = (idx: number, field: keyof AboutPillar, val: string) => {
+    const updatePillarField = (
+        idx: number,
+        field: keyof AboutPillar,
+        val: string,
+    ) => {
         const next = [...pillarsForm.data.pillars];
         next[idx] = { ...next[idx], [field]: val };
         pillarsForm.setData('pillars', next);
@@ -105,7 +111,8 @@ export default function AdminCmsIndex({
 
     // Tab 3: Testimonial Modal State
     const [testimonialModalOpen, setTestimonialModalOpen] = useState(false);
-    const [editingTestimonial, setEditingTestimonial] = useState<TestimonialItem | null>(null);
+    const [editingTestimonial, setEditingTestimonial] =
+        useState<TestimonialItem | null>(null);
     const testimonialForm = useForm({
         name: '',
         role: '',
@@ -147,9 +154,12 @@ export default function AdminCmsIndex({
     const submitTestimonial = (e: React.FormEvent) => {
         e.preventDefault();
         if (editingTestimonial) {
-            testimonialForm.post(`/admin/cms-halaman/testimonials/${editingTestimonial.id}`, {
-                onSuccess: () => setTestimonialModalOpen(false),
-            });
+            testimonialForm.post(
+                `/admin/cms-halaman/testimonials/${editingTestimonial.id}`,
+                {
+                    onSuccess: () => setTestimonialModalOpen(false),
+                },
+            );
         } else {
             testimonialForm.post('/admin/cms-halaman/testimonials', {
                 onSuccess: () => setTestimonialModalOpen(false),
@@ -159,7 +169,9 @@ export default function AdminCmsIndex({
 
     const deleteTestimonial = (item: TestimonialItem) => {
         if (confirm(`Hapus ulasan dari "${item.name}"?`)) {
-            router.delete(`/admin/cms-halaman/testimonials/${item.id}`, { preserveScroll: true });
+            router.delete(`/admin/cms-halaman/testimonials/${item.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -169,7 +181,11 @@ export default function AdminCmsIndex({
     const faqForm = useForm({
         question: '',
         answer: '',
-        category: 'pemesanan' as 'pemesanan' | 'custom_branding' | 'pengiriman' | 'pembayaran',
+        category: 'pemesanan' as
+            | 'pemesanan'
+            | 'custom_branding'
+            | 'pengiriman'
+            | 'pembayaran',
         is_active: true,
     });
 
@@ -210,7 +226,9 @@ export default function AdminCmsIndex({
 
     const deleteFaq = (item: FaqItem) => {
         if (confirm(`Hapus pertanyaan FAQ "${item.question}"?`)) {
-            router.delete(`/admin/cms-halaman/faqs/${item.id}`, { preserveScroll: true });
+            router.delete(`/admin/cms-halaman/faqs/${item.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -221,13 +239,29 @@ export default function AdminCmsIndex({
         >
             <div className="space-y-6">
                 {/* 1. Atelier Nav Tabs Strip */}
-                <div className="flex border-b border-[#0B291E]/10 bg-white px-4 rounded-2xl shadow-2xs sm:px-6">
+                <div className="flex rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6">
                     <nav className="flex space-x-6">
                         {[
-                            { id: 'hero', label: 'Hero & Edisi Musiman', icon: Sparkles },
-                            { id: 'pillars', label: '3 Pilar Filosofi Kriya', icon: Palette },
-                            { id: 'testimonials', label: 'Testimoni Klien', icon: Star },
-                            { id: 'faqs', label: 'FAQ Accordion', icon: HelpCircle },
+                            {
+                                id: 'hero',
+                                label: 'Hero & Edisi Musiman',
+                                icon: Sparkles,
+                            },
+                            {
+                                id: 'pillars',
+                                label: '3 Pilar Filosofi Kriya',
+                                icon: Palette,
+                            },
+                            {
+                                id: 'testimonials',
+                                label: 'Testimoni Klien',
+                                icon: Star,
+                            },
+                            {
+                                id: 'faqs',
+                                label: 'FAQ Accordion',
+                                icon: HelpCircle,
+                            },
                         ].map((tab) => {
                             const Icon = tab.icon;
                             const isActive = activeTab === tab.id;
@@ -235,7 +269,9 @@ export default function AdminCmsIndex({
                                 <button
                                     key={tab.id}
                                     type="button"
-                                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                                    onClick={() =>
+                                        setActiveTab(tab.id as typeof activeTab)
+                                    }
                                     className={`relative flex items-center gap-2 py-4 text-xs font-semibold transition-colors ${
                                         isActive
                                             ? 'text-[#0B291E]'
@@ -244,14 +280,16 @@ export default function AdminCmsIndex({
                                 >
                                     <Icon
                                         className={`size-3.5 ${
-                                            isActive ? 'text-[#B89352]' : 'text-[#0B291E]/40'
+                                            isActive
+                                                ? 'text-[#B89352]'
+                                                : 'text-[#0B291E]/40'
                                         }`}
                                     />
                                     <span>{tab.label}</span>
                                     {isActive && (
                                         <motion.div
                                             layoutId="cms-tab-active"
-                                            className="absolute bottom-0 inset-x-0 h-0.5 bg-[#B89352]"
+                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
                                         />
                                     )}
                                 </button>
@@ -269,11 +307,15 @@ export default function AdminCmsIndex({
                                 Banner Hero &amp; Tema Musiman Aktif
                             </h3>
                             <p className="text-xs text-[#0B291E]/60">
-                                Mengatur tema utama website yang ditampilkan kepada pengunjung saat ini
+                                Mengatur tema utama website yang ditampilkan
+                                kepada pengunjung saat ini
                             </p>
                         </div>
 
-                        <form onSubmit={submitHero} className="mt-6 space-y-4 max-w-3xl text-xs">
+                        <form
+                            onSubmit={submitHero}
+                            className="mt-6 max-w-3xl space-y-4 text-xs"
+                        >
                             <div className="space-y-1">
                                 <label className="text-xs font-semibold text-[#0B291E]">
                                     Edisi Musiman Aktif (Seasonal Theme Badge)
@@ -282,12 +324,18 @@ export default function AdminCmsIndex({
                                     type="text"
                                     required
                                     value={heroForm.data.active_edition}
-                                    onChange={(e) => heroForm.setData('active_edition', e.target.value)}
+                                    onChange={(e) =>
+                                        heroForm.setData(
+                                            'active_edition',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="Contoh: Idul Fitri & Ramadan 1447 H / Natal & Tahun Baru"
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                 />
                                 <p className="text-[10.5px] text-[#0B291E]/50">
-                                    Ditampilkan pada badge mengkilap di bagian atas Hero dan kartu katalog
+                                    Ditampilkan pada badge mengkilap di bagian
+                                    atas Hero dan kartu katalog
                                 </p>
                             </div>
 
@@ -299,7 +347,12 @@ export default function AdminCmsIndex({
                                     type="text"
                                     required
                                     value={heroForm.data.hero_eyebrow}
-                                    onChange={(e) => heroForm.setData('hero_eyebrow', e.target.value)}
+                                    onChange={(e) =>
+                                        heroForm.setData(
+                                            'hero_eyebrow',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="GALUH & CO. • ATELIER BINGKISAN"
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                 />
@@ -313,7 +366,12 @@ export default function AdminCmsIndex({
                                     type="text"
                                     required
                                     value={heroForm.data.hero_title}
-                                    onChange={(e) => heroForm.setData('hero_title', e.target.value)}
+                                    onChange={(e) =>
+                                        heroForm.setData(
+                                            'hero_title',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="Kriya Bingkisan untuk Momen yang Tak Diulang."
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-sm text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                 />
@@ -327,7 +385,12 @@ export default function AdminCmsIndex({
                                     rows={3}
                                     required
                                     value={heroForm.data.hero_subtitle}
-                                    onChange={(e) => heroForm.setData('hero_subtitle', e.target.value)}
+                                    onChange={(e) =>
+                                        heroForm.setData(
+                                            'hero_subtitle',
+                                            e.target.value,
+                                        )
+                                    }
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                 />
                             </div>
@@ -339,7 +402,11 @@ export default function AdminCmsIndex({
                                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
                                     <Save className="size-3.5 text-[#B89352]" />
-                                    <span>{heroForm.processing ? 'Menyimpan...' : 'Simpan Perubahan Hero'}</span>
+                                    <span>
+                                        {heroForm.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Perubahan Hero'}
+                                    </span>
                                 </button>
                             </div>
                         </form>
@@ -354,11 +421,15 @@ export default function AdminCmsIndex({
                                 3 Pilar Filosofi Kriya Atelier
                             </h3>
                             <p className="text-xs text-[#0B291E]/60">
-                                Nilai keunggulan atelier yang ditampilkan pada bagian About di landing page
+                                Nilai keunggulan atelier yang ditampilkan pada
+                                bagian About di landing page
                             </p>
                         </div>
 
-                        <form onSubmit={submitPillars} className="mt-6 space-y-6 text-xs">
+                        <form
+                            onSubmit={submitPillars}
+                            className="mt-6 space-y-6 text-xs"
+                        >
                             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                                 {pillarsForm.data.pillars.map((pillar, idx) => (
                                     <div
@@ -367,7 +438,8 @@ export default function AdminCmsIndex({
                                     >
                                         <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-2">
                                             <span className="font-mono text-xs font-bold text-[#B89352]">
-                                                PILAR {pillar.num || `0${idx + 1}`}
+                                                PILAR{' '}
+                                                {pillar.num || `0${idx + 1}`}
                                             </span>
                                         </div>
 
@@ -379,7 +451,13 @@ export default function AdminCmsIndex({
                                                 type="text"
                                                 required
                                                 value={pillar.title}
-                                                onChange={(e) => updatePillarField(idx, 'title', e.target.value)}
+                                                onChange={(e) =>
+                                                    updatePillarField(
+                                                        idx,
+                                                        'title',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-white p-2 text-xs text-[#0B291E] focus:outline-hidden"
                                             />
                                         </div>
@@ -393,7 +471,11 @@ export default function AdminCmsIndex({
                                                 required
                                                 value={pillar.description}
                                                 onChange={(e) =>
-                                                    updatePillarField(idx, 'description', e.target.value)
+                                                    updatePillarField(
+                                                        idx,
+                                                        'description',
+                                                        e.target.value,
+                                                    )
                                                 }
                                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-white p-2 text-xs text-[#0B291E] focus:outline-hidden"
                                             />
@@ -407,7 +489,13 @@ export default function AdminCmsIndex({
                                                 type="text"
                                                 required
                                                 value={pillar.image}
-                                                onChange={(e) => updatePillarField(idx, 'image', e.target.value)}
+                                                onChange={(e) =>
+                                                    updatePillarField(
+                                                        idx,
+                                                        'image',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-white p-2 text-xs text-[#0B291E] focus:outline-hidden"
                                             />
                                         </div>
@@ -422,7 +510,11 @@ export default function AdminCmsIndex({
                                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
                                     <Save className="size-3.5 text-[#B89352]" />
-                                    <span>{pillarsForm.processing ? 'Menyimpan...' : 'Simpan 3 Pilar Kriya'}</span>
+                                    <span>
+                                        {pillarsForm.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan 3 Pilar Kriya'}
+                                    </span>
                                 </button>
                             </div>
                         </form>
@@ -438,7 +530,8 @@ export default function AdminCmsIndex({
                                     Daftar Testimoni Klien
                                 </h3>
                                 <p className="text-xs text-[#0B291E]/60">
-                                    Ulasan terverifikasi dari klien individu dan perusahaan
+                                    Ulasan terverifikasi dari klien individu dan
+                                    perusahaan
                                 </p>
                             </div>
                             <button
@@ -460,41 +553,53 @@ export default function AdminCmsIndex({
                                     <div>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-0.5 text-[#B89352]">
-                                                {Array.from({ length: t.rating }).map((_, i) => (
-                                                    <Star key={i} className="size-3 fill-[#B89352]" />
+                                                {Array.from({
+                                                    length: t.rating,
+                                                }).map((_, i) => (
+                                                    <Star
+                                                        key={i}
+                                                        className="size-3 fill-[#B89352]"
+                                                    />
                                                 ))}
                                             </div>
-                                            <span className="font-mono text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-mono text-[9px] font-bold text-emerald-700">
                                                 TERVERIFIKASI
                                             </span>
                                         </div>
 
-                                        <p className="mt-3 text-xs italic leading-relaxed text-[#0B291E]">
+                                        <p className="mt-3 text-xs leading-relaxed text-[#0B291E] italic">
                                             &ldquo;{t.quote}&rdquo;
                                         </p>
                                     </div>
 
-                                    <div className="mt-4 pt-3 border-t border-[#0B291E]/10 flex items-center justify-between">
+                                    <div className="mt-4 flex items-center justify-between border-t border-[#0B291E]/10 pt-3">
                                         <div>
                                             <h4 className="text-xs font-semibold text-[#0B291E]">
                                                 {t.name}
                                             </h4>
                                             <p className="text-[10.5px] text-[#0B291E]/60">
-                                                {t.role} {t.order_type ? `• ${t.order_type}` : ''}
+                                                {t.role}{' '}
+                                                {t.order_type
+                                                    ? `• ${t.order_type}`
+                                                    : ''}
                                             </p>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <button
                                                 type="button"
-                                                onClick={() => openEditTestimonial(t)}
+                                                onClick={() =>
+                                                    openEditTestimonial(t)
+                                                }
                                                 className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
                                             >
                                                 <Edit3 className="size-3.5" />
                                             </button>
                                             <button
                                                 type="button"
-                                                onClick={() => deleteTestimonial(t)}
-                                                className="p-1 text-rose-600 hover:bg-rose-50 rounded"
+                                                onClick={() =>
+                                                    deleteTestimonial(t)
+                                                }
+                                                className="rounded p-1 text-rose-600 hover:bg-rose-50"
                                             >
                                                 <Trash2 className="size-3.5" />
                                             </button>
@@ -515,7 +620,8 @@ export default function AdminCmsIndex({
                                     Pertanyaan Sering Diajukan (FAQ)
                                 </h3>
                                 <p className="text-xs text-[#0B291E]/60">
-                                    Accordion bantuan informasi pemesanan, kustomisasi grafir &amp; pengiriman
+                                    Accordion bantuan informasi pemesanan,
+                                    kustomisasi grafir &amp; pengiriman
                                 </p>
                             </div>
                             <button
@@ -536,19 +642,19 @@ export default function AdminCmsIndex({
                                 >
                                     <div className="space-y-1 pr-4">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-mono text-[9px] font-bold text-[#B89352] uppercase bg-[#FAF8F5] px-2 py-0.5 rounded-md border border-[#0B291E]/10">
+                                            <span className="rounded-md border border-[#0B291E]/10 bg-[#FAF8F5] px-2 py-0.5 font-mono text-[9px] font-bold text-[#B89352] uppercase">
                                                 {f.category}
                                             </span>
                                             <h4 className="text-sm font-semibold text-[#0B291E]">
                                                 {f.question}
                                             </h4>
                                         </div>
-                                        <p className="text-xs text-[#0B291E]/70 leading-relaxed">
+                                        <p className="text-xs leading-relaxed text-[#0B291E]/70">
                                             {f.answer}
                                         </p>
                                     </div>
 
-                                    <div className="flex items-center gap-1.5 shrink-0">
+                                    <div className="flex shrink-0 items-center gap-1.5">
                                         <button
                                             type="button"
                                             onClick={() => openEditFaq(f)}
@@ -559,7 +665,7 @@ export default function AdminCmsIndex({
                                         <button
                                             type="button"
                                             onClick={() => deleteFaq(f)}
-                                            className="p-1 text-rose-600 hover:bg-rose-50 rounded"
+                                            className="rounded p-1 text-rose-600 hover:bg-rose-50"
                                         >
                                             <Trash2 className="size-3.5" />
                                         </button>
@@ -575,7 +681,7 @@ export default function AdminCmsIndex({
             <AnimatePresence>
                 {testimonialModalOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
                         onClick={() => setTestimonialModalOpen(false)}
                     >
                         <motion.div
@@ -587,18 +693,25 @@ export default function AdminCmsIndex({
                         >
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
                                 <h3 className="text-base font-semibold text-[#0B291E]">
-                                    {editingTestimonial ? 'Edit Testimoni Klien' : 'Tambah Testimoni Klien'}
+                                    {editingTestimonial
+                                        ? 'Edit Testimoni Klien'
+                                        : 'Tambah Testimoni Klien'}
                                 </h3>
                                 <button
                                     type="button"
-                                    onClick={() => setTestimonialModalOpen(false)}
+                                    onClick={() =>
+                                        setTestimonialModalOpen(false)
+                                    }
                                     className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
                                 >
                                     <X className="size-4" />
                                 </button>
                             </div>
 
-                            <form onSubmit={submitTestimonial} className="mt-4 space-y-3 text-xs">
+                            <form
+                                onSubmit={submitTestimonial}
+                                className="mt-4 space-y-3 text-xs"
+                            >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
                                         <label className="font-semibold text-[#0B291E]">
@@ -608,7 +721,12 @@ export default function AdminCmsIndex({
                                             type="text"
                                             required
                                             value={testimonialForm.data.name}
-                                            onChange={(e) => testimonialForm.setData('name', e.target.value)}
+                                            onChange={(e) =>
+                                                testimonialForm.setData(
+                                                    'name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Contoh: Clara Widjaja"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -621,7 +739,12 @@ export default function AdminCmsIndex({
                                             type="text"
                                             required
                                             value={testimonialForm.data.role}
-                                            onChange={(e) => testimonialForm.setData('role', e.target.value)}
+                                            onChange={(e) =>
+                                                testimonialForm.setData(
+                                                    'role',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Contoh: Corporate VIP Gifting"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -635,8 +758,15 @@ export default function AdminCmsIndex({
                                         </label>
                                         <input
                                             type="text"
-                                            value={testimonialForm.data.order_type}
-                                            onChange={(e) => testimonialForm.setData('order_type', e.target.value)}
+                                            value={
+                                                testimonialForm.data.order_type
+                                            }
+                                            onChange={(e) =>
+                                                testimonialForm.setData(
+                                                    'order_type',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="Contoh: Emerald Hardbox & Engraved Tumbler"
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
@@ -648,13 +778,22 @@ export default function AdminCmsIndex({
                                         <select
                                             value={testimonialForm.data.rating}
                                             onChange={(e) =>
-                                                testimonialForm.setData('rating', Number(e.target.value))
+                                                testimonialForm.setData(
+                                                    'rating',
+                                                    Number(e.target.value),
+                                                )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
-                                            <option value={5}>5 Bintang (Sempurna)</option>
-                                            <option value={4}>4 Bintang (Sangat Baik)</option>
-                                            <option value={3}>3 Bintang (Cukup)</option>
+                                            <option value={5}>
+                                                5 Bintang (Sempurna)
+                                            </option>
+                                            <option value={4}>
+                                                4 Bintang (Sangat Baik)
+                                            </option>
+                                            <option value={3}>
+                                                3 Bintang (Cukup)
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -667,16 +806,23 @@ export default function AdminCmsIndex({
                                         rows={3}
                                         required
                                         value={testimonialForm.data.quote}
-                                        onChange={(e) => testimonialForm.setData('quote', e.target.value)}
+                                        onChange={(e) =>
+                                            testimonialForm.setData(
+                                                'quote',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Tuliskan pengalaman klien merangkai hampers..."
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 pt-3 border-t border-[#0B291E]/10">
+                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
                                     <button
                                         type="button"
-                                        onClick={() => setTestimonialModalOpen(false)}
+                                        onClick={() =>
+                                            setTestimonialModalOpen(false)
+                                        }
                                         className="rounded-lg border px-3 py-1.5 text-xs text-[#0B291E]"
                                     >
                                         Batal
@@ -699,7 +845,7 @@ export default function AdminCmsIndex({
             <AnimatePresence>
                 {faqModalOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
                         onClick={() => setFaqModalOpen(false)}
                     >
                         <motion.div
@@ -711,7 +857,9 @@ export default function AdminCmsIndex({
                         >
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
                                 <h3 className="text-base font-semibold text-[#0B291E]">
-                                    {editingFaq ? 'Edit Pertanyaan FAQ' : 'Tambah Pertanyaan FAQ'}
+                                    {editingFaq
+                                        ? 'Edit Pertanyaan FAQ'
+                                        : 'Tambah Pertanyaan FAQ'}
                                 </h3>
                                 <button
                                     type="button"
@@ -722,7 +870,10 @@ export default function AdminCmsIndex({
                                 </button>
                             </div>
 
-                            <form onSubmit={submitFaq} className="mt-4 space-y-3 text-xs">
+                            <form
+                                onSubmit={submitFaq}
+                                className="mt-4 space-y-3 text-xs"
+                            >
                                 <div className="space-y-1">
                                     <label className="font-semibold text-[#0B291E]">
                                         Kategori Topik
@@ -736,15 +887,23 @@ export default function AdminCmsIndex({
                                                     | 'pemesanan'
                                                     | 'custom_branding'
                                                     | 'pengiriman'
-                                                    | 'pembayaran'
+                                                    | 'pembayaran',
                                             )
                                         }
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     >
-                                        <option value="pemesanan">Pemesanan &amp; Konsultasi WA</option>
-                                        <option value="custom_branding">Kustomisasi Logo &amp; Grafir</option>
-                                        <option value="pengiriman">Pengiriman Seluruh Nusantara</option>
-                                        <option value="pembayaran">Faktur Resmi &amp; Pembayaran B2B</option>
+                                        <option value="pemesanan">
+                                            Pemesanan &amp; Konsultasi WA
+                                        </option>
+                                        <option value="custom_branding">
+                                            Kustomisasi Logo &amp; Grafir
+                                        </option>
+                                        <option value="pengiriman">
+                                            Pengiriman Seluruh Nusantara
+                                        </option>
+                                        <option value="pembayaran">
+                                            Faktur Resmi &amp; Pembayaran B2B
+                                        </option>
                                     </select>
                                 </div>
 
@@ -756,7 +915,12 @@ export default function AdminCmsIndex({
                                         type="text"
                                         required
                                         value={faqForm.data.question}
-                                        onChange={(e) => faqForm.setData('question', e.target.value)}
+                                        onChange={(e) =>
+                                            faqForm.setData(
+                                                'question',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Contoh: Berapa batas waktu pemesanan untuk hampers Lebaran?"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
@@ -770,13 +934,18 @@ export default function AdminCmsIndex({
                                         rows={4}
                                         required
                                         value={faqForm.data.answer}
-                                        onChange={(e) => faqForm.setData('answer', e.target.value)}
+                                        onChange={(e) =>
+                                            faqForm.setData(
+                                                'answer',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Jelaskan secara ramah dan profesional..."
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 pt-3 border-t border-[#0B291E]/10">
+                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setFaqModalOpen(false)}

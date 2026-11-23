@@ -105,7 +105,7 @@ export function AboutSection({ pillars }: AboutSectionProps = {}) {
                             />
 
                             {/* Sculptural Photo Container — Compact 4/3 aspect on mobile, stretches to match right column height on desktop */}
-                            <div className="relative flex w-full flex-1 flex-col justify-end overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-[#0E2A1E] shadow-[0_16px_40px_-12px_rgba(11,41,30,0.20)] aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-0">
+                            <div className="relative flex aspect-[4/3] w-full flex-1 flex-col justify-end overflow-hidden rounded-2xl bg-[#0E2A1E] shadow-[0_16px_40px_-12px_rgba(11,41,30,0.20)] sm:aspect-[16/10] sm:rounded-[2.5rem] lg:aspect-auto lg:h-full lg:min-h-0">
                                 <AnimatePresence mode="wait">
                                     <motion.img
                                         key={activePillar.image}
@@ -208,28 +208,36 @@ export function AboutSection({ pillars }: AboutSectionProps = {}) {
                                     delay: 0.2,
                                     ease: EASE_CUBIC,
                                 }}
-                                className="space-y-3.5 text-xs sm:text-sm leading-relaxed text-[#0B291E]/75 sm:text-[15px]"
+                                className="space-y-3.5 text-xs leading-relaxed text-[#0B291E]/75 sm:text-sm sm:text-[15px]"
                             >
                                 <p className="block lg:hidden">
-                                    GALUH &amp; CO. merangkai hantaran artisanal berbalut hardbox zamrud dan anyaman bambu kriya. Dari butter Wijsman autentik hingga grafir nama personal, setiap bingkisan kami siapkan dengan standar atelier terbaik untuk perayaan keluarga dan representasi prestisius korporat.
+                                    GALUH &amp; CO. merangkai hantaran artisanal
+                                    berbalut hardbox zamrud dan anyaman bambu
+                                    kriya. Dari butter Wijsman autentik hingga
+                                    grafir nama personal, setiap bingkisan kami
+                                    siapkan dengan standar atelier terbaik untuk
+                                    perayaan keluarga dan representasi
+                                    prestisius korporat.
                                 </p>
-                                <div className="hidden lg:block space-y-3.5">
+                                <div className="hidden space-y-3.5 lg:block">
                                     <p>
-                                        GALUH &amp; CO. lahir dari keyakinan bahwa
-                                        bingkisan terbaik bukan sekadar benda di
-                                        dalam wadah, melainkan bahasa ketulusan yang
-                                        merajut ikatan emosional dan apresiasi
-                                        berkelas. Kami mendedikasikan ketelitian
-                                        kriya pada setiap lembar pita, lipatan
-                                        linen, dan segel lilin wax.
+                                        GALUH &amp; CO. lahir dari keyakinan
+                                        bahwa bingkisan terbaik bukan sekadar
+                                        benda di dalam wadah, melainkan bahasa
+                                        ketulusan yang merajut ikatan emosional
+                                        dan apresiasi berkelas. Kami
+                                        mendedikasikan ketelitian kriya pada
+                                        setiap lembar pita, lipatan linen, dan
+                                        segel lilin wax.
                                     </p>
                                     <p>
                                         Mulai dari bahan kudapan butter Wijsman
-                                        autentik, kopi single-origin, hingga tumbler
-                                        termal yang digrafir nama personal—setiap
-                                        pesanan dikerjakan dengan standar atelier
-                                        terbaik untuk perayaan keluarga maupun
-                                        representasi resmi korporat.
+                                        autentik, kopi single-origin, hingga
+                                        tumbler termal yang digrafir nama
+                                        personal—setiap pesanan dikerjakan
+                                        dengan standar atelier terbaik untuk
+                                        perayaan keluarga maupun representasi
+                                        resmi korporat.
                                     </p>
                                 </div>
                             </motion.div>
@@ -238,7 +246,8 @@ export function AboutSection({ pillars }: AboutSectionProps = {}) {
                             <div className="pt-2">
                                 <div className="divide-y divide-[#0B291E]/15 border-t border-b border-[#0B291E]/15">
                                     {activePillars.map((pillar, idx) => {
-                                        const isActive = safeActiveIndex === idx;
+                                        const isActive =
+                                            safeActiveIndex === idx;
 
                                         return (
                                             <div

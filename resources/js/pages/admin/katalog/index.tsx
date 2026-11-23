@@ -67,9 +67,15 @@ export default function AdminKatalogIndex({
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingHamper, setEditingHamper] = useState<HamperItem | null>(null);
     const [searchVal, setSearchVal] = useState(filters.search || '');
-    const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
-    const [selectedPackaging, setSelectedPackaging] = useState(filters.packaging || '');
-    const [selectedVisibility, setSelectedVisibility] = useState(filters.visibility || '');
+    const [selectedCategory, setSelectedCategory] = useState(
+        filters.category || '',
+    );
+    const [selectedPackaging, setSelectedPackaging] = useState(
+        filters.packaging || '',
+    );
+    const [selectedVisibility, setSelectedVisibility] = useState(
+        filters.visibility || '',
+    );
 
     // Form for Slide-Over Drawer
     const form = useForm({
@@ -135,20 +141,33 @@ export default function AdminKatalogIndex({
     };
 
     const handleToggleHero = (hamper: HamperItem) => {
-        router.post(`/admin/katalog/${hamper.id}/toggle-hero`, {}, { preserveScroll: true });
+        router.post(
+            `/admin/katalog/${hamper.id}/toggle-hero`,
+            {},
+            { preserveScroll: true },
+        );
     };
 
-    const handleToggleVisibility = (hamper: HamperItem, nextStatus: 'published' | 'draft' | 'sold_out') => {
+    const handleToggleVisibility = (
+        hamper: HamperItem,
+        nextStatus: 'published' | 'draft' | 'sold_out',
+    ) => {
         router.post(
             `/admin/katalog/${hamper.id}/toggle-visibility`,
             { visibility: nextStatus },
-            { preserveScroll: true }
+            { preserveScroll: true },
         );
     };
 
     const handleDelete = (hamper: HamperItem) => {
-        if (confirm(`Yakin ingin menghapus paket "${hamper.name}" dari katalog?`)) {
-            router.delete(`/admin/katalog/${hamper.id}`, { preserveScroll: true });
+        if (
+            confirm(
+                `Yakin ingin menghapus paket "${hamper.name}" dari katalog?`,
+            )
+        ) {
+            router.delete(`/admin/katalog/${hamper.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -161,7 +180,7 @@ export default function AdminKatalogIndex({
                 packaging: selectedPackaging || undefined,
                 visibility: selectedVisibility || undefined,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -202,7 +221,7 @@ export default function AdminKatalogIndex({
         >
             <div className="space-y-6">
                 {/* 1. Stats KPI Strip */}
-                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
+                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
                         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
                             TOTAL KATALOG
@@ -211,7 +230,9 @@ export default function AdminKatalogIndex({
                             <span className="text-2xl font-semibold text-[#0B291E]">
                                 {stats.total}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Paket</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Paket
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -222,7 +243,9 @@ export default function AdminKatalogIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stats.published}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Aktif</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Aktif
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -233,7 +256,9 @@ export default function AdminKatalogIndex({
                             <span className="text-2xl font-semibold text-[#B89352]">
                                 {stats.featured_hero}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Sorotan</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Sorotan
+                            </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
@@ -244,7 +269,9 @@ export default function AdminKatalogIndex({
                             <span className="text-2xl font-semibold text-rose-800">
                                 {stats.sold_out}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">Habis</span>
+                            <span className="text-xs text-[#0B291E]/50">
+                                Habis
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -258,7 +285,9 @@ export default function AdminKatalogIndex({
                                 type="text"
                                 value={searchVal}
                                 onChange={(e) => setSearchVal(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleFilterApply()}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && handleFilterApply()
+                                }
                                 placeholder="Cari paket hampers..."
                                 className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:border-[#0B291E] focus:outline-hidden"
                             />
@@ -283,21 +312,27 @@ export default function AdminKatalogIndex({
                         {/* Packaging Filter */}
                         <select
                             value={selectedPackaging}
-                            onChange={(e) => setSelectedPackaging(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedPackaging(e.target.value)
+                            }
                             className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                         >
                             <option value="">Semua Kemasan</option>
-                            {Object.entries(packagingTypes).map(([key, label]) => (
-                                <option key={key} value={key}>
-                                    {label}
-                                </option>
-                            ))}
+                            {Object.entries(packagingTypes).map(
+                                ([key, label]) => (
+                                    <option key={key} value={key}>
+                                        {label}
+                                    </option>
+                                ),
+                            )}
                         </select>
 
                         {/* Visibility Filter */}
                         <select
                             value={selectedVisibility}
-                            onChange={(e) => setSelectedVisibility(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedVisibility(e.target.value)
+                            }
                             className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                         >
                             <option value="">Semua Status</option>
@@ -321,30 +356,44 @@ export default function AdminKatalogIndex({
                     <table className="w-full text-left text-xs">
                         <thead>
                             <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
-                                <th className="py-3 px-4">Paket Hampers</th>
-                                <th className="py-3 px-4">Kategori &amp; Kemasan</th>
-                                <th className="py-3 px-4">Mulai Harga</th>
-                                <th className="py-3 px-4 text-center">Hero Highlight</th>
-                                <th className="py-3 px-4">Status Tayang</th>
-                                <th className="py-3 px-4 text-right">Aksi</th>
+                                <th className="px-4 py-3">Paket Hampers</th>
+                                <th className="px-4 py-3">
+                                    Kategori &amp; Kemasan
+                                </th>
+                                <th className="px-4 py-3">Mulai Harga</th>
+                                <th className="px-4 py-3 text-center">
+                                    Hero Highlight
+                                </th>
+                                <th className="px-4 py-3">Status Tayang</th>
+                                <th className="px-4 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
                             {hampers.length === 0 ? (
                                 <tr>
-                                    <td colSpan={6} className="py-12 text-center text-xs text-[#0B291E]/50">
-                                        Tidak ada paket hampers yang sesuai dengan filter.
+                                    <td
+                                        colSpan={6}
+                                        className="py-12 text-center text-xs text-[#0B291E]/50"
+                                    >
+                                        Tidak ada paket hampers yang sesuai
+                                        dengan filter.
                                     </td>
                                 </tr>
                             ) : (
                                 hampers.map((h) => (
-                                    <tr key={h.id} className="transition-colors hover:bg-[#F7F5F0]/50">
+                                    <tr
+                                        key={h.id}
+                                        className="transition-colors hover:bg-[#F7F5F0]/50"
+                                    >
                                         {/* Product Photo & Name */}
-                                        <td className="py-3 px-4">
+                                        <td className="px-4 py-3">
                                             <div className="flex items-center gap-3">
                                                 <div className="size-11 shrink-0 overflow-hidden rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5]">
                                                     <img
-                                                        src={h.image || '/images/product_emerald_box.jpg'}
+                                                        src={
+                                                            h.image ||
+                                                            '/images/product_emerald_box.jpg'
+                                                        }
                                                         alt={h.name}
                                                         className="h-full w-full object-cover"
                                                     />
@@ -353,12 +402,13 @@ export default function AdminKatalogIndex({
                                                     <h4 className="text-sm font-semibold text-[#0B291E]">
                                                         {h.name}
                                                     </h4>
-                                                    <p className="text-[11px] text-[#0B291E]/60 line-clamp-1">
+                                                    <p className="line-clamp-1 text-[11px] text-[#0B291E]/60">
                                                         {h.short_description}
                                                     </p>
                                                     {h.is_halal && (
                                                         <span className="mt-0.5 inline-flex items-center gap-1 font-mono text-[9px] font-semibold text-emerald-800">
-                                                            <CheckCircle2 className="size-2.5" /> Halal Certified
+                                                            <CheckCircle2 className="size-2.5" />{' '}
+                                                            Halal Certified
                                                         </span>
                                                     )}
                                                 </div>
@@ -366,31 +416,43 @@ export default function AdminKatalogIndex({
                                         </td>
 
                                         {/* Category & Packaging */}
-                                        <td className="py-3 px-4">
+                                        <td className="px-4 py-3">
                                             <div className="space-y-1">
                                                 <span className="inline-block rounded-md border border-[#0B291E]/10 bg-[#F7F5F0] px-2 py-0.5 text-[10.5px] font-medium text-[#0B291E]">
                                                     {h.category}
                                                 </span>
                                                 <p className="text-[11px] text-[#0B291E]/60">
-                                                    {packagingTypes[h.packaging || ''] || h.packaging || 'Hardbox Emerald'}
+                                                    {packagingTypes[
+                                                        h.packaging || ''
+                                                    ] ||
+                                                        h.packaging ||
+                                                        'Hardbox Emerald'}
                                                 </p>
                                             </div>
                                         </td>
 
                                         {/* Price */}
-                                        <td className="py-3 px-4">
+                                        <td className="px-4 py-3">
                                             <span className="font-mono text-xs font-semibold text-[#0B291E]">
                                                 {formatIdr(h.price_from)}
                                             </span>
-                                            <span className="block text-[10px] text-[#0B291E]/50">Mulai dari</span>
+                                            <span className="block text-[10px] text-[#0B291E]/50">
+                                                Mulai dari
+                                            </span>
                                         </td>
 
                                         {/* Toggle Hero Highlight */}
-                                        <td className="py-3 px-4 text-center">
+                                        <td className="px-4 py-3 text-center">
                                             <button
                                                 type="button"
-                                                onClick={() => handleToggleHero(h)}
-                                                title={h.is_featured_hero ? 'Lepas dari Hero' : 'Tampilkan di Hero'}
+                                                onClick={() =>
+                                                    handleToggleHero(h)
+                                                }
+                                                title={
+                                                    h.is_featured_hero
+                                                        ? 'Lepas dari Hero'
+                                                        : 'Tampilkan di Hero'
+                                                }
                                                 className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors ${
                                                     h.is_featured_hero
                                                         ? 'border border-[#B89352]/40 bg-[#B89352]/15 text-[#8C6D32]'
@@ -398,47 +460,65 @@ export default function AdminKatalogIndex({
                                                 }`}
                                             >
                                                 <Sparkles className="size-3" />
-                                                <span>{h.is_featured_hero ? 'Hero Active' : 'Off'}</span>
+                                                <span>
+                                                    {h.is_featured_hero
+                                                        ? 'Hero Active'
+                                                        : 'Off'}
+                                                </span>
                                             </button>
                                         </td>
 
                                         {/* Visibility Status */}
-                                        <td className="py-3 px-4">
+                                        <td className="px-4 py-3">
                                             <select
                                                 value={h.visibility}
                                                 onChange={(e) =>
                                                     handleToggleVisibility(
                                                         h,
-                                                        e.target.value as 'published' | 'draft' | 'sold_out'
+                                                        e.target.value as
+                                                            | 'published'
+                                                            | 'draft'
+                                                            | 'sold_out',
                                                     )
                                                 }
                                                 className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium focus:outline-hidden ${
                                                     h.visibility === 'published'
                                                         ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-                                                        : h.visibility === 'sold_out'
-                                                        ? 'border-rose-200 bg-rose-50 text-rose-800'
-                                                        : 'border-stone-200 bg-stone-100 text-stone-600'
+                                                        : h.visibility ===
+                                                            'sold_out'
+                                                          ? 'border-rose-200 bg-rose-50 text-rose-800'
+                                                          : 'border-stone-200 bg-stone-100 text-stone-600'
                                                 }`}
                                             >
-                                                <option value="published">Tayang di Web</option>
-                                                <option value="draft">Draft</option>
-                                                <option value="sold_out">Sold Out</option>
+                                                <option value="published">
+                                                    Tayang di Web
+                                                </option>
+                                                <option value="draft">
+                                                    Draft
+                                                </option>
+                                                <option value="sold_out">
+                                                    Sold Out
+                                                </option>
                                             </select>
                                         </td>
 
                                         {/* Actions */}
-                                        <td className="py-3 px-4 text-right">
+                                        <td className="px-4 py-3 text-right">
                                             <div className="flex items-center justify-end gap-1.5">
                                                 <button
                                                     type="button"
-                                                    onClick={() => openEditDrawer(h)}
+                                                    onClick={() =>
+                                                        openEditDrawer(h)
+                                                    }
                                                     className="rounded-md border border-[#0B291E]/15 bg-white px-2.5 py-1 text-xs font-medium text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleDelete(h)}
+                                                    onClick={() =>
+                                                        handleDelete(h)
+                                                    }
                                                     className="rounded-md p-1 text-rose-600 hover:bg-rose-50"
                                                     title="Hapus Paket"
                                                 >
@@ -458,14 +538,18 @@ export default function AdminKatalogIndex({
             <AnimatePresence>
                 {drawerOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex justify-end bg-black/50"
                         onClick={() => setDrawerOpen(false)}
                     >
                         <motion.div
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 26,
+                                stiffness: 220,
+                            }}
                             onClick={(e) => e.stopPropagation()}
                             className="flex h-full w-full max-w-xl flex-col justify-between bg-white shadow-2xl"
                         >
@@ -473,10 +557,13 @@ export default function AdminKatalogIndex({
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
                                 <div>
                                     <h3 className="text-base font-semibold text-[#0B291E]">
-                                        {editingHamper ? 'Edit Paket Hampers' : 'Tambah Paket Hampers Baru'}
+                                        {editingHamper
+                                            ? 'Edit Paket Hampers'
+                                            : 'Tambah Paket Hampers Baru'}
                                     </h3>
                                     <p className="text-xs text-[#0B291E]/60">
-                                        Informasi detail paket untuk katalog publik &amp; konsultasi WA
+                                        Informasi detail paket untuk katalog
+                                        publik &amp; konsultasi WA
                                     </p>
                                 </div>
                                 <button
@@ -492,7 +579,7 @@ export default function AdminKatalogIndex({
                             <form
                                 id="hamperForm"
                                 onSubmit={handleSave}
-                                className="flex-1 space-y-4 overflow-y-auto p-6 text-xs scrollbar-none"
+                                className="flex-1 scrollbar-none space-y-4 overflow-y-auto p-6 text-xs"
                             >
                                 {/* Name */}
                                 <div className="space-y-1">
@@ -503,7 +590,9 @@ export default function AdminKatalogIndex({
                                         type="text"
                                         required
                                         value={form.data.name}
-                                        onChange={(e) => form.setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData('name', e.target.value)
+                                        }
                                         placeholder="Contoh: Seri Emerald Royal Nusantara"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                     />
@@ -517,7 +606,12 @@ export default function AdminKatalogIndex({
                                         </label>
                                         <select
                                             value={form.data.category}
-                                            onChange={(e) => form.setData('category', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'category',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         >
                                             {categories.map((c) => (
@@ -535,14 +629,21 @@ export default function AdminKatalogIndex({
                                         </label>
                                         <select
                                             value={form.data.packaging}
-                                            onChange={(e) => form.setData('packaging', e.target.value)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'packaging',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         >
-                                            {Object.entries(packagingTypes).map(([k, v]) => (
-                                                <option key={k} value={k}>
-                                                    {v}
-                                                </option>
-                                            ))}
+                                            {Object.entries(packagingTypes).map(
+                                                ([k, v]) => (
+                                                    <option key={k} value={k}>
+                                                        {v}
+                                                    </option>
+                                                ),
+                                            )}
                                         </select>
                                     </div>
                                 </div>
@@ -557,7 +658,12 @@ export default function AdminKatalogIndex({
                                             type="number"
                                             required
                                             value={form.data.price_from}
-                                            onChange={(e) => form.setData('price_from', Number(e.target.value))}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'price_from',
+                                                    Number(e.target.value),
+                                                )
+                                            }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         />
                                     </div>
@@ -572,14 +678,23 @@ export default function AdminKatalogIndex({
                                             onChange={(e) =>
                                                 form.setData(
                                                     'visibility',
-                                                    e.target.value as 'published' | 'draft' | 'sold_out'
+                                                    e.target.value as
+                                                        | 'published'
+                                                        | 'draft'
+                                                        | 'sold_out',
                                                 )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                         >
-                                            <option value="published">Tayang di Web</option>
-                                            <option value="draft">Draft (Disembunyikan)</option>
-                                            <option value="sold_out">Sold Out (Tampilkan Label Habis)</option>
+                                            <option value="published">
+                                                Tayang di Web
+                                            </option>
+                                            <option value="draft">
+                                                Draft (Disembunyikan)
+                                            </option>
+                                            <option value="sold_out">
+                                                Sold Out (Tampilkan Label Habis)
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -593,7 +708,12 @@ export default function AdminKatalogIndex({
                                         rows={2}
                                         required
                                         value={form.data.short_description}
-                                        onChange={(e) => form.setData('short_description', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'short_description',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Kombinasi elegan nastar Wijsman dan teh artisan dalam hardbox zamrud..."
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                     />
@@ -610,10 +730,14 @@ export default function AdminKatalogIndex({
                                                 key={idx}
                                                 className="flex items-center justify-between rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] px-3 py-1.5"
                                             >
-                                                <span className="text-xs text-[#0B291E]">{item}</span>
+                                                <span className="text-xs text-[#0B291E]">
+                                                    {item}
+                                                </span>
                                                 <button
                                                     type="button"
-                                                    onClick={() => removeBullet(idx)}
+                                                    onClick={() =>
+                                                        removeBullet(idx)
+                                                    }
                                                     className="text-rose-500 hover:text-rose-700"
                                                 >
                                                     <X className="size-3.5" />
@@ -626,7 +750,9 @@ export default function AdminKatalogIndex({
                                         <input
                                             type="text"
                                             value={newBullet}
-                                            onChange={(e) => setNewBullet(e.target.value)}
+                                            onChange={(e) =>
+                                                setNewBullet(e.target.value)
+                                            }
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
                                                     e.preventDefault();
@@ -654,7 +780,12 @@ export default function AdminKatalogIndex({
                                     <input
                                         type="text"
                                         value={form.data.image}
-                                        onChange={(e) => form.setData('image', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'image',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="/images/product_emerald_box.jpg"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
                                     />
@@ -662,11 +793,16 @@ export default function AdminKatalogIndex({
 
                                 {/* Toggles */}
                                 <div className="grid grid-cols-2 gap-4 pt-2">
-                                    <label className="flex items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3 cursor-pointer">
+                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3">
                                         <input
                                             type="checkbox"
                                             checked={form.data.is_halal}
-                                            onChange={(e) => form.setData('is_halal', e.target.checked)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'is_halal',
+                                                    e.target.checked,
+                                                )
+                                            }
                                             className="rounded border-[#0B291E]/30 text-[#0B291E] focus:ring-0"
                                         />
                                         <div>
@@ -679,11 +815,16 @@ export default function AdminKatalogIndex({
                                         </div>
                                     </label>
 
-                                    <label className="flex items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3 cursor-pointer">
+                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3">
                                         <input
                                             type="checkbox"
                                             checked={form.data.is_featured_hero}
-                                            onChange={(e) => form.setData('is_featured_hero', e.target.checked)}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    'is_featured_hero',
+                                                    e.target.checked,
+                                                )
+                                            }
                                             className="rounded border-[#0B291E]/30 text-[#0B291E] focus:ring-0"
                                         />
                                         <div>
@@ -713,7 +854,9 @@ export default function AdminKatalogIndex({
                                     disabled={form.processing}
                                     className="rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
-                                    {form.processing ? 'Menyimpan...' : 'Simpan Paket'}
+                                    {form.processing
+                                        ? 'Menyimpan...'
+                                        : 'Simpan Paket'}
                                 </button>
                             </div>
                         </motion.div>

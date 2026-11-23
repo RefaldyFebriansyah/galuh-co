@@ -3,10 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string $client_name
+ * @property string|null $company_name
+ * @property string $wa_number
+ * @property string|null $address
+ * @property string $source
+ * @property string|null $package_name
+ * @property string|null $estimated_packages
+ * @property string|null $budget_range
+ * @property string|null $greeting_card_message
+ * @property string|null $engraving_name
+ * @property Carbon|null $delivery_date
+ * @property string $status
+ * @property string|null $notes
+ * @property Carbon|null $last_follow_up_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read string $wa_link
+ * @property-read string $status_label
+ */
 #[Fillable([
     'client_name',
     'company_name',
@@ -25,8 +46,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 ])]
 class WaLead extends Model
 {
-    use HasFactory;
-
     /**
      * The accessors to append to the model's array form.
      *
@@ -82,6 +101,8 @@ class WaLead extends Model
 
     /**
      * Related production orders.
+     *
+     * @return HasMany<ProductionOrder, $this>
      */
     public function productionOrders(): HasMany
     {

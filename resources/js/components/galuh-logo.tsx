@@ -21,11 +21,11 @@ export function GaluhLogo({
             : '/images/galuh_logo_gold.png');
 
     return (
-        <div className="inline-flex items-center gap-2.5 text-left shrink-0 sm:gap-3">
+        <div className="inline-flex shrink-0 items-center gap-2.5 text-left sm:gap-3">
             <img
                 src={logoSrc}
                 alt="GALUH & CO. Hampers & Gift"
-                className={`object-contain shrink-0 ${className}`}
+                className={`shrink-0 object-contain ${className}`}
                 loading="eager"
                 decoding="async"
                 width={44}
@@ -33,10 +33,10 @@ export function GaluhLogo({
             />
             {showText && (
                 <div
-                    className={`flex flex-col text-left whitespace-nowrap shrink-0 ${textClassName}`}
+                    className={`flex shrink-0 flex-col text-left whitespace-nowrap ${textClassName}`}
                 >
                     <span
-                        className={`font-serif text-base font-bold tracking-[0.16em] uppercase whitespace-nowrap md:text-lg ${
+                        className={`font-serif text-base font-bold tracking-[0.16em] whitespace-nowrap uppercase md:text-lg ${
                             isWhite ? 'text-white' : 'text-[#1A1815]'
                         }`}
                     >
@@ -44,7 +44,7 @@ export function GaluhLogo({
                     </span>
                     <div className="flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
                         <span className="h-px w-2.5 bg-[#C5A880]/60" />
-                        <span className="text-[7.5px] font-bold tracking-[0.22em] text-[#C5A880] uppercase whitespace-nowrap md:text-[8px]">
+                        <span className="text-[7.5px] font-bold tracking-[0.22em] whitespace-nowrap text-[#C5A880] uppercase md:text-[8px]">
                             HAMPERS &amp; GIFT
                         </span>
                         <span className="h-px w-2.5 bg-[#C5A880]/60" />

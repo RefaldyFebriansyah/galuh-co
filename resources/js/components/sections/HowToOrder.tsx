@@ -135,7 +135,7 @@ export function HowToOrder() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={viewportOnce}
-                        className="space-y-4 pl-12 md:space-y-0 md:pl-0 md:grid md:grid-cols-4 md:gap-5"
+                        className="space-y-4 pl-12 md:grid md:grid-cols-4 md:gap-5 md:space-y-0 md:pl-0"
                     >
                         {steps.map((step, idx) => {
                             const Icon = step.icon;
@@ -150,33 +150,33 @@ export function HowToOrder() {
                                             ease: [0.16, 1, 0.3, 1],
                                         },
                                     }}
-                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-4.5 sm:p-5 shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-md"
+                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-4.5 shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-md sm:p-5"
                                 >
                                     {/* Mobile Indicator Dot positioned on the line */}
-                                    <div className="absolute -left-[3.25rem] top-5 flex size-7 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-[11px] font-bold text-[#0E2A1E] shadow-2xs md:hidden">
+                                    <div className="absolute top-5 -left-[3.25rem] flex size-7 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-[11px] font-bold text-[#0E2A1E] shadow-2xs md:hidden">
                                         {step.number}
                                     </div>
 
                                     <div>
                                         <div className="flex items-center justify-between">
-                                            <span className="hidden font-serif text-2xl font-bold text-[#1A1815] transition-colors group-hover:text-[#7A5B24] md:block sm:text-3xl">
+                                            <span className="hidden font-serif text-2xl font-bold text-[#1A1815] transition-colors group-hover:text-[#7A5B24] sm:text-3xl md:block">
                                                 {step.number}
                                             </span>
-                                            <span className="flex size-8 sm:size-9 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110">
+                                            <span className="flex size-8 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110 sm:size-9">
                                                 <Icon className="size-4 sm:size-4.5" />
                                             </span>
                                         </div>
 
-                                        <h3 className="mt-2 font-serif text-sm sm:text-base font-bold text-[#1A1815] md:mt-4">
+                                        <h3 className="mt-2 font-serif text-sm font-bold text-[#1A1815] sm:text-base md:mt-4">
                                             {step.title}
                                         </h3>
 
-                                        <p className="mt-1 sm:mt-2 text-xs leading-relaxed text-[#6E6962]">
+                                        <p className="mt-1 text-xs leading-relaxed text-[#6E6962] sm:mt-2">
                                             {step.description}
                                         </p>
                                     </div>
 
-                                    <div className="mt-3.5 sm:mt-5 flex items-center gap-1.5 border-t border-[#F0EBE1] pt-2.5 sm:pt-3 text-[9.5px] sm:text-[10px] font-bold tracking-wider text-[#7A5B24] uppercase">
+                                    <div className="mt-3.5 flex items-center gap-1.5 border-t border-[#F0EBE1] pt-2.5 text-[9.5px] font-bold tracking-wider text-[#7A5B24] uppercase sm:mt-5 sm:pt-3 sm:text-[10px]">
                                         <span>TAHAP {idx + 1}</span>
                                         <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
                                     </div>

@@ -69,12 +69,12 @@ export function TestimonialsSection({
     const activeReviews: ReviewItem[] =
         testimonials && Array.isArray(testimonials) && testimonials.length > 0
             ? testimonials.map((t) => ({
-                quote: t.quote,
-                name: t.name,
-                role: t.role,
-                orderType: t.orderType || 'Koleksi Signature Hampers',
-                rating: t.rating || 5,
-            }))
+                  quote: t.quote,
+                  name: t.name,
+                  role: t.role,
+                  orderType: t.orderType || 'Koleksi Signature Hampers',
+                  rating: t.rating || 5,
+              }))
             : REVIEWS;
 
     const scrollToCard = (index: number) => {
@@ -243,10 +243,11 @@ export function TestimonialsSection({
                             type="button"
                             onClick={() => scrollToCard(idx)}
                             aria-label={`Buka ulasan testimoni nomor ${idx + 1}`}
-                            className={`h-2 rounded-full transition-all duration-300 ${activeIdx === idx
+                            className={`h-2 rounded-full transition-all duration-300 ${
+                                activeIdx === idx
                                     ? 'w-8 bg-[#0B291E]'
                                     : 'w-2 bg-[#D8D2C7] hover:bg-[#7A5B24]'
-                                }`}
+                            }`}
                         />
                     ))}
                 </div>

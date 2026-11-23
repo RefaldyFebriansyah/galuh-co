@@ -5,7 +5,13 @@
  */
 
 interface TrackWaLeadPayload {
-    source: 'hero_customizer' | 'catalog_corporate' | 'catalog_personal' | 'floating_wa' | 'festive_banner' | string;
+    source:
+        | 'hero_customizer'
+        | 'catalog_corporate'
+        | 'catalog_personal'
+        | 'floating_wa'
+        | 'festive_banner'
+        | string;
     package_name?: string;
     client_name?: string;
     company_name?: string;
@@ -19,7 +25,11 @@ interface TrackWaLeadPayload {
 export function trackWaLead(payload: TrackWaLeadPayload): void {
     try {
         const csrfToken =
-            (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '';
+            (
+                document.querySelector(
+                    'meta[name="csrf-token"]',
+                ) as HTMLMetaElement
+            )?.content || '';
 
         const bodyData = JSON.stringify(payload);
 

@@ -162,11 +162,11 @@ export function FeaturesSection() {
                                         ease: [0.16, 1, 0.3, 1],
                                     },
                                 }}
-                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-3.5 sm:p-5 shadow-2xs transition-shadow duration-300 hover:shadow-md"
+                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-3.5 shadow-2xs transition-shadow duration-300 hover:shadow-md sm:p-5"
                             >
                                 <div>
                                     <span
-                                        className={`flex size-8 sm:size-10 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110 ${feature.iconBg}`}
+                                        className={`flex size-8 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110 sm:size-10 ${feature.iconBg}`}
                                     >
                                         <Icon className="size-4 sm:size-5" />
                                     </span>
@@ -177,8 +177,12 @@ export function FeaturesSection() {
                                 </div>
 
                                 <p className="mt-2 text-[10px] leading-relaxed text-[#8C877E] sm:mt-2.5 sm:text-[11px]">
-                                    <span className="block sm:hidden">{feature.shortDescription}</span>
-                                    <span className="hidden sm:block">{feature.description}</span>
+                                    <span className="block sm:hidden">
+                                        {feature.shortDescription}
+                                    </span>
+                                    <span className="hidden sm:block">
+                                        {feature.description}
+                                    </span>
                                 </p>
                             </motion.div>
                         );
@@ -191,9 +195,9 @@ export function FeaturesSection() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
-                    className="mt-8 overflow-hidden rounded-2xl bg-[#0E2A1E] px-4 py-5 sm:mt-10 sm:px-6 sm:py-7 text-white shadow-xl"
+                    className="mt-8 overflow-hidden rounded-2xl bg-[#0E2A1E] px-4 py-5 text-white shadow-xl sm:mt-10 sm:px-6 sm:py-7"
                 >
-                    <div className="grid grid-cols-3 gap-2 text-center divide-x divide-white/10 sm:gap-6">
+                    <div className="grid grid-cols-3 gap-2 divide-x divide-white/10 text-center sm:gap-6">
                         {stats.map((stat, idx) => (
                             <div key={idx} className="px-1 sm:px-4">
                                 <span className="font-serif text-xl font-normal tracking-tight text-white sm:text-3xl md:text-4xl">

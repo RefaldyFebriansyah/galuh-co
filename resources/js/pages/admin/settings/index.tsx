@@ -48,26 +48,36 @@ interface Props {
 }
 
 export default function AdminSettingsIndex({ settings, team }: Props) {
-    const [activeTab, setActiveTab] = useState<'concierge' | 'team' | 'branding' | 'social'>('concierge');
+    const [activeTab, setActiveTab] = useState<
+        'concierge' | 'team' | 'branding' | 'social'
+    >('concierge');
 
     // Branding files preview
-    const currentLogoGold = settings.branding?.logo_gold?.value || '/images/galuh_logo_gold.png';
-    const currentLogoWhite = settings.branding?.logo_white?.value || '/images/galuh_logo_white.png';
+    const currentLogoGold =
+        settings.branding?.logo_gold?.value || '/images/galuh_logo_gold.png';
+    const currentLogoWhite =
+        settings.branding?.logo_white?.value || '/images/galuh_logo_white.png';
     const [goldLogoPreview, setGoldLogoPreview] = useState<string | null>(null);
-    const [whiteLogoPreview, setWhiteLogoPreview] = useState<string | null>(null);
+    const [whiteLogoPreview, setWhiteLogoPreview] = useState<string | null>(
+        null,
+    );
     const goldInputRef = useRef<HTMLInputElement>(null);
     const whiteInputRef = useRef<HTMLInputElement>(null);
 
     // Main settings form
     const form = useForm({
         // Concierge & Contact
-        whatsapp_number: settings.contact?.whatsapp_number?.value || '6281572414233',
-        whatsapp_backup_number: settings.contact?.whatsapp_backup_number?.value || '6281298765432',
+        whatsapp_number:
+            settings.contact?.whatsapp_number?.value || '6281572414233',
+        whatsapp_backup_number:
+            settings.contact?.whatsapp_backup_number?.value || '6281298765432',
         whatsapp_default_message:
             settings.contact?.whatsapp_default_message?.value ||
             'Halo Concierge GALUH & CO., saya ingin konsultasi kurasi bingkisan eksklusif.',
-        contact_phone: settings.contact?.contact_phone?.value || '+62 815-7241-4233',
-        contact_email: settings.contact?.contact_email?.value || 'concierge@galuh.co',
+        contact_phone:
+            settings.contact?.contact_phone?.value || '+62 815-7241-4233',
+        contact_email:
+            settings.contact?.contact_email?.value || 'concierge@galuh.co',
         company_address:
             settings.contact?.company_address?.value ||
             'Jl. Sukajadi No. 128, Pasteur, Bandung, Jawa Barat 40162',
@@ -80,9 +90,15 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
         logo_white_file: null as File | null,
 
         // Social
-        instagram_url: settings.social?.instagram_url?.value || 'https://instagram.com/galuh.co',
-        tiktok_url: settings.social?.tiktok_url?.value || 'https://tiktok.com/@galuh.co',
-        linkedin_url: settings.social?.linkedin_url?.value || 'https://linkedin.com/company/galuh-co',
+        instagram_url:
+            settings.social?.instagram_url?.value ||
+            'https://instagram.com/galuh.co',
+        tiktok_url:
+            settings.social?.tiktok_url?.value ||
+            'https://tiktok.com/@galuh.co',
+        linkedin_url:
+            settings.social?.linkedin_url?.value ||
+            'https://linkedin.com/company/galuh-co',
     });
 
     const submitSettings = (e: React.FormEvent) => {
@@ -140,7 +156,9 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
 
     const handleDeleteUser = (u: TeamUser) => {
         if (confirm(`Hapus akses akun "${u.name}"?`)) {
-            router.delete(`/admin/pengaturan/users/${u.id}`, { preserveScroll: true });
+            router.delete(`/admin/pengaturan/users/${u.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -158,13 +176,29 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
         >
             <div className="space-y-6">
                 {/* 1. Atelier Nav Tabs */}
-                <div className="flex border-b border-[#0B291E]/10 bg-white px-4 rounded-2xl shadow-2xs sm:px-6">
+                <div className="flex rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6">
                     <nav className="flex space-x-6">
                         {[
-                            { id: 'concierge', label: 'Concierge & Kontak WA', icon: MessageCircle },
-                            { id: 'team', label: 'Tim Admin & Hak Akses', icon: Users },
-                            { id: 'branding', label: 'Identitas Logo Brand', icon: ImageIcon },
-                            { id: 'social', label: 'Tautan Media Sosial', icon: Share2 },
+                            {
+                                id: 'concierge',
+                                label: 'Concierge & Kontak WA',
+                                icon: MessageCircle,
+                            },
+                            {
+                                id: 'team',
+                                label: 'Tim Admin & Hak Akses',
+                                icon: Users,
+                            },
+                            {
+                                id: 'branding',
+                                label: 'Identitas Logo Brand',
+                                icon: ImageIcon,
+                            },
+                            {
+                                id: 'social',
+                                label: 'Tautan Media Sosial',
+                                icon: Share2,
+                            },
                         ].map((tab) => {
                             const Icon = tab.icon;
                             const isActive = activeTab === tab.id;
@@ -172,7 +206,9 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <button
                                     key={tab.id}
                                     type="button"
-                                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                                    onClick={() =>
+                                        setActiveTab(tab.id as typeof activeTab)
+                                    }
                                     className={`relative flex items-center gap-2 py-4 text-xs font-semibold transition-colors ${
                                         isActive
                                             ? 'text-[#0B291E]'
@@ -181,14 +217,16 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 >
                                     <Icon
                                         className={`size-3.5 ${
-                                            isActive ? 'text-[#B89352]' : 'text-[#0B291E]/40'
+                                            isActive
+                                                ? 'text-[#B89352]'
+                                                : 'text-[#0B291E]/40'
                                         }`}
                                     />
                                     <span>{tab.label}</span>
                                     {isActive && (
                                         <motion.div
                                             layoutId="settings-tab-active"
-                                            className="absolute bottom-0 inset-x-0 h-0.5 bg-[#B89352]"
+                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
                                         />
                                     )}
                                 </button>
@@ -206,11 +244,16 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 Nomor WhatsApp Resmi Concierge
                             </h3>
                             <p className="text-xs text-[#0B291E]/60">
-                                Seluruh tombol &ldquo;Konsultasi WhatsApp&rdquo; di katalog, hero customizer, dan corporate gifting diarahkan ke nomor ini
+                                Seluruh tombol &ldquo;Konsultasi WhatsApp&rdquo;
+                                di katalog, hero customizer, dan corporate
+                                gifting diarahkan ke nomor ini
                             </p>
                         </div>
 
-                        <form onSubmit={submitSettings} className="mt-6 space-y-4 max-w-3xl text-xs">
+                        <form
+                            onSubmit={submitSettings}
+                            className="mt-6 max-w-3xl space-y-4 text-xs"
+                        >
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
                                     <label className="font-semibold text-[#0B291E]">
@@ -220,12 +263,18 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         type="text"
                                         required
                                         value={form.data.whatsapp_number}
-                                        onChange={(e) => form.setData('whatsapp_number', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'whatsapp_number',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="6281572414233"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 font-mono text-xs focus:outline-hidden"
                                     />
                                     <p className="text-[10px] text-[#0B291E]/50">
-                                        Nomor penerima utama semua chat konsultasi website
+                                        Nomor penerima utama semua chat
+                                        konsultasi website
                                     </p>
                                 </div>
 
@@ -236,12 +285,18 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     <input
                                         type="text"
                                         value={form.data.whatsapp_backup_number}
-                                        onChange={(e) => form.setData('whatsapp_backup_number', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'whatsapp_backup_number',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="6281298765432"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 font-mono text-xs focus:outline-hidden"
                                     />
                                     <p className="text-[10px] text-[#0B291E]/50">
-                                        Nomor alternatif saat peak season Idul Fitri / Akhir Tahun
+                                        Nomor alternatif saat peak season Idul
+                                        Fitri / Akhir Tahun
                                     </p>
                                 </div>
                             </div>
@@ -253,12 +308,17 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <textarea
                                     rows={2}
                                     value={form.data.whatsapp_default_message}
-                                    onChange={(e) => form.setData('whatsapp_default_message', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'whatsapp_default_message',
+                                            e.target.value,
+                                        )
+                                    }
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
+                            <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
                                 <div className="space-y-1">
                                     <label className="font-semibold text-[#0B291E]">
                                         Jam Operasional Studio &amp; Layanan WA
@@ -266,7 +326,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     <input
                                         type="text"
                                         value={form.data.operational_hours}
-                                        onChange={(e) => form.setData('operational_hours', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'operational_hours',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Senin - Sabtu: 08.30 - 18.00 WIB"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                     />
@@ -279,7 +344,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     <input
                                         type="email"
                                         value={form.data.contact_email}
-                                        onChange={(e) => form.setData('contact_email', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'contact_email',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="concierge@galuh.co"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                     />
@@ -293,7 +363,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <textarea
                                     rows={2}
                                     value={form.data.company_address}
-                                    onChange={(e) => form.setData('company_address', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'company_address',
+                                            e.target.value,
+                                        )
+                                    }
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                 />
                             </div>
@@ -305,7 +380,11 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
                                     <Save className="size-3.5 text-[#B89352]" />
-                                    <span>{form.processing ? 'Menyimpan...' : 'Simpan Pengaturan Concierge'}</span>
+                                    <span>
+                                        {form.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Pengaturan Concierge'}
+                                    </span>
                                 </button>
                             </div>
                         </form>
@@ -321,7 +400,8 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     Tim Admin &amp; Hak Akses Staf
                                 </h3>
                                 <p className="text-xs text-[#0B291E]/60">
-                                    Akun operasional studio: Super Admin, Admin CS WhatsApp, dan Tim Produksi
+                                    Akun operasional studio: Super Admin, Admin
+                                    CS WhatsApp, dan Tim Produksi
                                 </p>
                             </div>
                             <button
@@ -338,11 +418,21 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                             <table className="w-full text-left text-xs">
                                 <thead>
                                     <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
-                                        <th className="py-3 px-4">Nama Staf &amp; Avatar</th>
-                                        <th className="py-3 px-4">Email Login</th>
-                                        <th className="py-3 px-4">Peran / Hak Akses</th>
-                                        <th className="py-3 px-4">No. WhatsApp</th>
-                                        <th className="py-3 px-4 text-right">Aksi</th>
+                                        <th className="px-4 py-3">
+                                            Nama Staf &amp; Avatar
+                                        </th>
+                                        <th className="px-4 py-3">
+                                            Email Login
+                                        </th>
+                                        <th className="px-4 py-3">
+                                            Peran / Hak Akses
+                                        </th>
+                                        <th className="px-4 py-3">
+                                            No. WhatsApp
+                                        </th>
+                                        <th className="px-4 py-3 text-right">
+                                            Aksi
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
@@ -350,23 +440,26 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         const rBadge = getRoleBadge(u.role);
 
                                         return (
-                                            <tr key={u.id} className="transition-colors hover:bg-[#F7F5F0]/50">
-                                                <td className="py-3.5 px-4">
+                                            <tr
+                                                key={u.id}
+                                                className="transition-colors hover:bg-[#F7F5F0]/50"
+                                            >
+                                                <td className="px-4 py-3.5">
                                                     <div className="flex items-center gap-3">
                                                         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] font-bold text-[#0B291E]">
                                                             {u.name.charAt(0)}
                                                         </div>
-                                                        <span className="font-semibold text-sm text-[#0B291E]">
+                                                        <span className="text-sm font-semibold text-[#0B291E]">
                                                             {u.name}
                                                         </span>
                                                     </div>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 font-mono text-xs text-[#0B291E]/80">
+                                                <td className="px-4 py-3.5 font-mono text-xs text-[#0B291E]/80">
                                                     {u.email}
                                                 </td>
 
-                                                <td className="py-3.5 px-4">
+                                                <td className="px-4 py-3.5">
                                                     <span
                                                         className={`rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold ${rBadge.bg}`}
                                                     >
@@ -374,15 +467,19 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                                     </span>
                                                 </td>
 
-                                                <td className="py-3.5 px-4 font-mono text-xs text-[#0B291E]/70">
-                                                    {u.phone_number ? `+${u.phone_number}` : '-'}
+                                                <td className="px-4 py-3.5 font-mono text-xs text-[#0B291E]/70">
+                                                    {u.phone_number
+                                                        ? `+${u.phone_number}`
+                                                        : '-'}
                                                 </td>
 
-                                                <td className="py-3.5 px-4 text-right">
+                                                <td className="px-4 py-3.5 text-right">
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => openEditUser(u)}
+                                                            onClick={() =>
+                                                                openEditUser(u)
+                                                            }
                                                             className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
                                                             title="Edit Akun"
                                                         >
@@ -390,8 +487,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleDeleteUser(u)}
-                                                            className="p-1 text-rose-600 hover:bg-rose-50 rounded"
+                                                            onClick={() =>
+                                                                handleDeleteUser(
+                                                                    u,
+                                                                )
+                                                            }
+                                                            className="rounded p-1 text-rose-600 hover:bg-rose-50"
                                                             title="Hapus Akun"
                                                         >
                                                             <Trash2 className="size-3.5" />
@@ -415,20 +516,27 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 Identitas Brand &amp; Aset Logo
                             </h3>
                             <p className="text-xs text-[#0B291E]/60">
-                                Logo resmi Galuh &amp; Co. dalam format Gold dan White untuk header website &amp; surat penawaran
+                                Logo resmi Galuh &amp; Co. dalam format Gold dan
+                                White untuk header website &amp; surat penawaran
                             </p>
                         </div>
 
-                        <form onSubmit={submitSettings} className="mt-6 space-y-6 max-w-3xl text-xs">
+                        <form
+                            onSubmit={submitSettings}
+                            className="mt-6 max-w-3xl space-y-6 text-xs"
+                        >
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 {/* Gold Logo */}
                                 <div className="space-y-2 rounded-xl border border-[#0B291E]/10 bg-[#FAF8F5] p-4">
-                                    <span className="font-semibold text-xs text-[#0B291E]">
+                                    <span className="text-xs font-semibold text-[#0B291E]">
                                         Logo Brand (Emas / Gelap)
                                     </span>
                                     <div className="flex h-24 items-center justify-center rounded-lg border border-[#0B291E]/10 bg-white p-4">
                                         <img
-                                            src={goldLogoPreview || currentLogoGold}
+                                            src={
+                                                goldLogoPreview ||
+                                                currentLogoGold
+                                            }
                                             alt="Logo Gold"
                                             className="h-10 w-auto object-contain"
                                         />
@@ -440,8 +548,13 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         onChange={(e) => {
                                             const f = e.target.files?.[0];
                                             if (f) {
-                                                form.setData('logo_gold_file', f);
-                                                setGoldLogoPreview(URL.createObjectURL(f));
+                                                form.setData(
+                                                    'logo_gold_file',
+                                                    f,
+                                                );
+                                                setGoldLogoPreview(
+                                                    URL.createObjectURL(f),
+                                                );
                                             }
                                         }}
                                         className="w-full text-xs"
@@ -450,12 +563,15 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
 
                                 {/* White Logo */}
                                 <div className="space-y-2 rounded-xl border border-[#0B291E]/10 bg-[#0B291E] p-4 text-white">
-                                    <span className="font-semibold text-xs text-[#FAF8F5]">
+                                    <span className="text-xs font-semibold text-[#FAF8F5]">
                                         Logo Brand (Putih / Kontras)
                                     </span>
                                     <div className="flex h-24 items-center justify-center rounded-lg border border-white/10 bg-[#071D15] p-4">
                                         <img
-                                            src={whiteLogoPreview || currentLogoWhite}
+                                            src={
+                                                whiteLogoPreview ||
+                                                currentLogoWhite
+                                            }
                                             alt="Logo White"
                                             className="h-10 w-auto object-contain"
                                         />
@@ -467,8 +583,13 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         onChange={(e) => {
                                             const f = e.target.files?.[0];
                                             if (f) {
-                                                form.setData('logo_white_file', f);
-                                                setWhiteLogoPreview(URL.createObjectURL(f));
+                                                form.setData(
+                                                    'logo_white_file',
+                                                    f,
+                                                );
+                                                setWhiteLogoPreview(
+                                                    URL.createObjectURL(f),
+                                                );
                                             }
                                         }}
                                         className="w-full text-xs text-white/70"
@@ -483,7 +604,11 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
                                     <Save className="size-3.5 text-[#B89352]" />
-                                    <span>{form.processing ? 'Menyimpan...' : 'Simpan Logo Brand'}</span>
+                                    <span>
+                                        {form.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Logo Brand'}
+                                    </span>
                                 </button>
                             </div>
                         </form>
@@ -498,11 +623,15 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 Tautan Media Sosial Resmi
                             </h3>
                             <p className="text-xs text-[#0B291E]/60">
-                                Akun Instagram, TikTok, dan LinkedIn yang dicantumkan pada footer website
+                                Akun Instagram, TikTok, dan LinkedIn yang
+                                dicantumkan pada footer website
                             </p>
                         </div>
 
-                        <form onSubmit={submitSettings} className="mt-6 space-y-4 max-w-2xl text-xs">
+                        <form
+                            onSubmit={submitSettings}
+                            className="mt-6 max-w-2xl space-y-4 text-xs"
+                        >
                             <div className="space-y-1">
                                 <label className="font-semibold text-[#0B291E]">
                                     Instagram URL
@@ -510,7 +639,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <input
                                     type="url"
                                     value={form.data.instagram_url}
-                                    onChange={(e) => form.setData('instagram_url', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'instagram_url',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://instagram.com/galuh.co"
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                 />
@@ -523,7 +657,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <input
                                     type="url"
                                     value={form.data.tiktok_url}
-                                    onChange={(e) => form.setData('tiktok_url', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'tiktok_url',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://tiktok.com/@galuh.co"
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                 />
@@ -536,7 +675,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 <input
                                     type="text"
                                     value={form.data.linkedin_url}
-                                    onChange={(e) => form.setData('linkedin_url', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'linkedin_url',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://linkedin.com/company/galuh-co"
                                     className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2.5 text-xs focus:outline-hidden"
                                 />
@@ -549,7 +693,11 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
                                 >
                                     <Save className="size-3.5 text-[#B89352]" />
-                                    <span>{form.processing ? 'Menyimpan...' : 'Simpan Media Sosial'}</span>
+                                    <span>
+                                        {form.processing
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Media Sosial'}
+                                    </span>
                                 </button>
                             </div>
                         </form>
@@ -561,7 +709,7 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
             <AnimatePresence>
                 {userModalOpen && (
                     <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-2xs"
+                        className="backdrop-blur-2xs fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
                         onClick={() => setUserModalOpen(false)}
                     >
                         <motion.div
@@ -573,7 +721,9 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                         >
                             <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
                                 <h3 className="text-base font-semibold text-[#0B291E]">
-                                    {editingUser ? 'Edit Akun Staf' : 'Tambah Anggota Tim Baru'}
+                                    {editingUser
+                                        ? 'Edit Akun Staf'
+                                        : 'Tambah Anggota Tim Baru'}
                                 </h3>
                                 <button
                                     type="button"
@@ -584,7 +734,10 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                 </button>
                             </div>
 
-                            <form onSubmit={submitUser} className="mt-4 space-y-3 text-xs">
+                            <form
+                                onSubmit={submitUser}
+                                className="mt-4 space-y-3 text-xs"
+                            >
                                 <div className="space-y-1">
                                     <label className="font-semibold text-[#0B291E]">
                                         Nama Lengkap
@@ -593,7 +746,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         type="text"
                                         required
                                         value={userForm.data.name}
-                                        onChange={(e) => userForm.setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            userForm.setData(
+                                                'name',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Nama staf"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
@@ -607,7 +765,12 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         type="email"
                                         required
                                         value={userForm.data.email}
-                                        onChange={(e) => userForm.setData('email', e.target.value)}
+                                        onChange={(e) =>
+                                            userForm.setData(
+                                                'email',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="staf@galuh.co"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
@@ -621,11 +784,16 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         <select
                                             value={userForm.data.role}
                                             onChange={(e) =>
-                                                userForm.setData('role', e.target.value)
+                                                userForm.setData(
+                                                    'role',
+                                                    e.target.value,
+                                                )
                                             }
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
-                                            <option value="admin">Administrator (Full Access)</option>
+                                            <option value="admin">
+                                                Administrator (Full Access)
+                                            </option>
                                         </select>
                                     </div>
 
@@ -635,8 +803,15 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
                                         </label>
                                         <input
                                             type="text"
-                                            value={userForm.data.phone_number || ''}
-                                            onChange={(e) => userForm.setData('phone_number', e.target.value)}
+                                            value={
+                                                userForm.data.phone_number || ''
+                                            }
+                                            onChange={(e) =>
+                                                userForm.setData(
+                                                    'phone_number',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="628..."
                                             className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
@@ -645,19 +820,26 @@ export default function AdminSettingsIndex({ settings, team }: Props) {
 
                                 <div className="space-y-1">
                                     <label className="font-semibold text-[#0B291E]">
-                                        {editingUser ? 'Password Baru (Kosongkan jika tidak diubah)' : 'Password'}
+                                        {editingUser
+                                            ? 'Password Baru (Kosongkan jika tidak diubah)'
+                                            : 'Password'}
                                     </label>
                                     <input
                                         type="password"
                                         required={!editingUser}
                                         value={userForm.data.password}
-                                        onChange={(e) => userForm.setData('password', e.target.value)}
+                                        onChange={(e) =>
+                                            userForm.setData(
+                                                'password',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Minimal 6 karakter"
                                         className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 pt-3 border-t border-[#0B291E]/10">
+                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setUserModalOpen(false)}

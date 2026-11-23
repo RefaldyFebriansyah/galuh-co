@@ -17,8 +17,7 @@ export interface FaqSectionProps {
 
 const DEFAULT_FAQS: FaqItem[] = [
     {
-        question:
-            '1. Berapa minimum pemesanan untuk hampers custom corporate?',
+        question: '1. Berapa minimum pemesanan untuk hampers custom corporate?',
         answer: 'Untuk hampers custom dengan logo korporat, minimal pemesanan mulai dari 20 paket. Kami juga menyediakan fasilitas pembuatan sampel mock-up sebelum produksi massal agar Anda dapat meninjau kualitas secara langsung.',
     },
     {
@@ -50,8 +49,7 @@ const DEFAULT_FAQS: FaqItem[] = [
         answer: 'Setiap paket kami lindungi dengan bubble wrap berlapis, pelindung sudut hardbox, dan kardus luar tersegel rapat. Kami juga menyertakan garansi penggantian penuh jika terjadi kerusakan akibat pengiriman kurir ekspedisi.',
     },
     {
-        question:
-            '8. Apakah GALUH & CO. dapat menerbitkan Faktur Pajak resmi?',
+        question: '8. Apakah GALUH & CO. dapat menerbitkan Faktur Pajak resmi?',
         answer: 'Ya, sebagai entitas berbadan hukum resmi, kami menyediakan dokumen legalitas lengkap mencakup Invoice resmi, Kwitansi, e-Faktur Pajak PPN, dan perjanjian kerja sama pengadaan (PKS).',
     },
 ];

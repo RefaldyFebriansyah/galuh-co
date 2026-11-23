@@ -9,12 +9,20 @@ import type { Product } from '@/types';
 // Code-splitting below-the-fold sections via React.lazy to reduce TBT and initial bundle size
 const AboutSection = lazy(() => import('@/components/sections/about-section'));
 const Catalog = lazy(() => import('@/components/sections/Catalog'));
-const FeaturesSection = lazy(() => import('@/components/sections/features-section'));
+const FeaturesSection = lazy(
+    () => import('@/components/sections/features-section'),
+);
 const HowToOrder = lazy(() => import('@/components/sections/HowToOrder'));
-const CorporateGifting = lazy(() => import('@/components/sections/CorporateGifting'));
-const TestimonialsSection = lazy(() => import('@/components/sections/testimonials-section'));
+const CorporateGifting = lazy(
+    () => import('@/components/sections/CorporateGifting'),
+);
+const TestimonialsSection = lazy(
+    () => import('@/components/sections/testimonials-section'),
+);
 const FaqSection = lazy(() => import('@/components/sections/faq-section'));
-const FooterSection = lazy(() => import('@/components/sections/footer-section'));
+const FooterSection = lazy(
+    () => import('@/components/sections/footer-section'),
+);
 const FloatingWhatsApp = lazy(() => import('@/components/floating-whatsapp'));
 
 interface WelcomeProps {
@@ -102,12 +110,20 @@ export default function Welcome({
 
                     {/* Below-the-fold sections lazily loaded in isolated Suspense boundaries */}
                     {/* 3. Tentang Brand (3 Pilar Filosofi Kriya dari CMS) */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <AboutSection pillars={settings?.about_pillars} />
                     </Suspense>
 
                     {/* 4. Koleksi Hampers (Database Products with Filter) */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <Catalog
                             products={safeProducts}
                             whatsappNumber={activeWa}
@@ -116,33 +132,57 @@ export default function Welcome({
                     </Suspense>
 
                     {/* 5. Kenapa Memilih Kami & Metrik Stats */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <FeaturesSection />
                     </Suspense>
 
                     {/* 6. Cara Pesan 4 Langkah */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <HowToOrder />
                     </Suspense>
 
                     {/* 7. Corporate Gifting & Inquiry Form */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <CorporateGifting whatsappNumber={activeWa} />
                     </Suspense>
 
                     {/* 8. Testimoni Pelanggan (Dari Database Testimonial CMS) */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <TestimonialsSection testimonials={testimonials} />
                     </Suspense>
 
                     {/* 9. FAQ Accordion (Dari Database FAQ CMS) */}
-                    <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                    <Suspense
+                        fallback={
+                            <div className="min-h-[300px]" aria-hidden="true" />
+                        }
+                    >
                         <FaqSection whatsappNumber={activeWa} faqs={faqs} />
                     </Suspense>
                 </main>
 
                 {/* 10. CTA Penutup & Footer (Semantic Landmark <footer>) */}
-                <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                <Suspense
+                    fallback={
+                        <div className="min-h-[300px]" aria-hidden="true" />
+                    }
+                >
                     <FooterSection
                         whatsappNumber={activeWa}
                         logoSrc={settings?.logo_white}
