@@ -1,20 +1,24 @@
-import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
+import { AnimatePresence, motion } from 'motion/react';
 import {
-    Search,
     Building2,
+    Calendar,
+    CheckCircle2,
+    Clock,
+    Copy,
+    Edit3,
+    ExternalLink,
+    FileText,
+    Inbox,
     Mail,
     Phone,
-    Calendar,
-    Package,
-    Coins,
-    MessageSquare,
-    ExternalLink,
+    Search,
+    Send,
     Trash2,
-    FileEdit,
     X,
 } from 'lucide-react';
+import { useState } from 'react';
+import { AdminLayout } from '@/layouts/admin-layout';
 
 interface Inquiry {
     id: number;
@@ -22,8 +26,8 @@ interface Inquiry {
     company_name: string | null;
     email: string;
     whatsapp_number: string;
-    estimated_packages: number | null;
-    budget_per_package: number | null;
+    estimated_packages: string | number | null;
+    budget_per_package: string | number | null;
     needed_at: string | null;
     notes: string | null;
     status: 'new' | 'contacted' | 'completed' | 'cancelled';
@@ -52,10 +56,17 @@ interface Props {
         search?: string;
         status?: string;
     };
+    statusCounts: {
+        total: number;
+        new: number;
+        contacted: number;
+        completed: number;
+        cancelled: number;
+    };
     whatsappNumber: string;
 }
 
-const STATUS_MAP: Record<
+const STATUS_CONFIG: Record<
     string,
     { label: string; badge: string; dot: string }
 > = {
@@ -70,33 +81,39 @@ const STATUS_MAP: Record<
         dot: 'bg-sky-500',
     },
     completed: {
-        label: 'Deal / Selesai',
+        label: 'Deal / Masuk Produksi',
         badge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        dot: 'bg-emerald-500',
+        dot: 'bg-emerald-600',
     },
     cancelled: {
         label: 'Dibatalkan',
-        badge: 'bg-stone-100 text-stone-600 border-stone-200',
-        dot: 'bg-stone-400',
+        badge: 'bg-slate-100 text-slate-600 border-slate-200',
+        dot: 'bg-slate-400',
     },
 };
 
-export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
+export default function AdminInquiriesIndex({
+    inquiries,
+    filters,
+    statusCounts,
+    whatsappNumber,
+}: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
-    const [editingNoteInquiry, setEditingNoteInquiry] =
-        useState<Inquiry | null>(null);
+
+    // Edit Notes Modal State
+    const [editingNoteInquiry, setEditingNoteInquiry] = useState<Inquiry | null>(null);
     const [noteDraft, setNoteDraft] = useState('');
-    const [deletingInquiry, setDeletingInquiry] = useState<Inquiry | null>(
-        null,
-    );
+
+    // Delete Modal State
+    const [deletingInquiry, setDeletingInquiry] = useState<Inquiry | null>(null);
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
             '/admin/inquiries',
-            { search, status: statusFilter },
-            { preserveState: true, replace: true },
+            { search: search.trim() || undefined, status: statusFilter === 'all' ? undefined : statusFilter },
+            { preserveState: true, replace: true }
         );
     };
 
@@ -104,8 +121,8 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
         setStatusFilter(newStatus);
         router.get(
             '/admin/inquiries',
-            { search, status: newStatus },
-            { preserveState: true, replace: true },
+            { search: search.trim() || undefined, status: newStatus === 'all' ? undefined : newStatus },
+            { preserveState: true, replace: true }
         );
     };
 
@@ -118,7 +135,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
             },
             {
                 preserveScroll: true,
-            },
+            }
         );
     };
 
@@ -137,7 +154,7 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
                     setEditingNoteInquiry(null);
                     setNoteDraft('');
                 },
-            },
+            }
         );
     };
 
@@ -148,9 +165,11 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
         });
     };
 
-    const formatIdr = (val: number | null) => {
+    const formatIdr = (val: string | number | null) => {
         if (!val) return 'Fleksibel';
-        return `Rp ${val.toLocaleString('id-ID')}`;
+        const num = typeof val === 'string' ? parseFloat(val.replace(/\D/g, '')) : val;
+        if (isNaN(num) || num === 0) return 'Fleksibel';
+        return `Rp ${num.toLocaleString('id-ID')}`;
     };
 
     const formatDate = (dateStr: string | null) => {
@@ -166,457 +185,499 @@ export default function AdminInquiriesIndex({ inquiries, filters }: Props) {
         }
     };
 
-    const getWhatsAppChatUrl = (inquiry: Inquiry) => {
-        let cleanNumber = (inquiry.whatsapp_number || '').replace(
-            /[^0-9]/g,
-            '',
-        );
-        if (cleanNumber.startsWith('0')) {
-            cleanNumber = '62' + cleanNumber.slice(1);
+    const getCleanPhone = (phoneStr: string) => {
+        let clean = (phoneStr || '').replace(/\D/g, '');
+        if (clean.startsWith('0')) {
+            clean = '62' + clean.slice(1);
         }
-        const greeting = `Halo Kak ${inquiry.name}${inquiry.company_name ? ` dari *${inquiry.company_name}*` : ''}, salam hangat dari GALUH & CO. Hampers.\n\nKami telah menerima permintaan konsultasi hampers Anda:\n• Estimasi Jumlah: ${inquiry.estimated_packages ? `${inquiry.estimated_packages} pax` : 'Sesuai kebutuhan'}\n• Budget per Paket: ${formatIdr(inquiry.budget_per_package)}\n• Tanggal Dibutuhkan: ${formatDate(inquiry.needed_at)}\n\nApakah kami dapat mengirimkan katalog PDF resmi dan mendiskusikan opsi kustomisasi pita atau kartu logo perusahaan? Terima kasih.`;
-        return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(greeting)}`;
+        return clean;
     };
 
     return (
         <AdminLayout
-            title="Kelola Inquiries & Leads Klien"
-            subtitle="Pantau permintaan hampers korporat dan tindaklanjuti via WhatsApp"
+            title="Inquiries Website"
+            subtitle="Daftar permintaan proposal penawaran corporate yang masuk melalui formulir landing page"
+            headerAction={
+                whatsappNumber ? (
+                    <div className="flex items-center gap-2">
+                        <a
+                            href={`https://wa.me/${whatsappNumber}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                        >
+                            <ExternalLink className="size-3.5" />
+                            <span>WhatsApp Web</span>
+                        </a>
+                    </div>
+                ) : null
+            }
         >
-            <Head title="Inquiries & Leads — Galuh & Co. CMS Studio" />
+            <Head title="Inquiries Website — Galuh & Co." />
 
-            <div className="space-y-4">
-                {/* Search & Status Filter Bar */}
-                <div className="flex flex-col gap-3 rounded-xl border border-[#E7E2D8] bg-white p-3.5 shadow-2xs md:flex-row md:items-center md:justify-between">
-                    {/* Search Field */}
-                    <form
-                        onSubmit={handleSearchSubmit}
-                        className="relative max-w-md flex-1"
-                    >
-                        <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#8C8479]" />
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Cari nama, perusahaan, nomor WA, atau email..."
-                            className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] py-2 pr-8 pl-9 text-xs text-[#1C1A18] placeholder:text-[#8C8479] focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
-                        />
-                        {search && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSearch('');
-                                    router.get(
-                                        '/admin/inquiries',
-                                        { search: '', status: statusFilter },
-                                        { preserveState: true, replace: true },
-                                    );
-                                }}
-                                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-stone-400 hover:text-stone-700"
-                            >
-                                <X className="size-3" />
-                            </button>
-                        )}
-                    </form>
-
-                    {/* Filter Segmented Pills */}
-                    <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
-                        <span className="mr-1 shrink-0 text-[10px] font-semibold tracking-wider text-[#8C8479] uppercase">
-                            Status:
+            <div className="space-y-6">
+                {/* 1. Metric Stat Cards */}
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+                    {/* Total */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                            Total Inquiries
                         </span>
-                        {[
-                            { key: 'all', label: 'Semua' },
-                            { key: 'new', label: 'Menunggu' },
-                            { key: 'contacted', label: 'Dihubungi' },
-                            { key: 'completed', label: 'Deal' },
-                            { key: 'cancelled', label: 'Batal' },
-                        ].map((tab) => (
-                            <button
-                                key={tab.key}
-                                type="button"
-                                onClick={() =>
-                                    handleStatusFilterChange(tab.key)
-                                }
-                                className={`rounded-md px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
-                                    statusFilter === tab.key
-                                        ? 'bg-[#0E2A1E] font-semibold text-white'
-                                        : 'bg-[#FAF8F5] text-[#4D4841] hover:bg-[#F0EBE1]'
-                                }`}
-                            >
-                                {tab.label}
-                            </button>
-                        ))}
+                        <div className="mt-2 flex items-baseline gap-2">
+                            <span className="text-2xl font-bold text-slate-900">
+                                {statusCounts.total}
+                            </span>
+                            <span className="text-xs text-slate-400">Data</span>
+                        </div>
+                    </div>
+
+                    {/* New */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="text-[10px] font-bold tracking-wider text-amber-700 uppercase">
+                            Perlu Follow-Up
+                        </span>
+                        <div className="mt-2 flex items-baseline gap-2">
+                            <span className="text-2xl font-bold text-amber-700">
+                                {statusCounts.new}
+                            </span>
+                            <span className="text-xs text-amber-600/70">Baru</span>
+                        </div>
+                    </div>
+
+                    {/* Contacted */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="text-[10px] font-bold tracking-wider text-sky-700 uppercase">
+                            Sedang Dihubungi
+                        </span>
+                        <div className="mt-2 flex items-baseline gap-2">
+                            <span className="text-2xl font-bold text-sky-800">
+                                {statusCounts.contacted}
+                            </span>
+                            <span className="text-xs text-sky-600/70">Proses</span>
+                        </div>
+                    </div>
+
+                    {/* Completed */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="text-[10px] font-bold tracking-wider text-emerald-700 uppercase">
+                            Deal / Produksi
+                        </span>
+                        <div className="mt-2 flex items-baseline gap-2">
+                            <span className="text-2xl font-bold text-emerald-800">
+                                {statusCounts.completed}
+                            </span>
+                            <span className="text-xs text-emerald-600/70">Deal</span>
+                        </div>
+                    </div>
+
+                    {/* Cancelled */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                            Dibatalkan
+                        </span>
+                        <div className="mt-2 flex items-baseline gap-2">
+                            <span className="text-2xl font-bold text-slate-600">
+                                {statusCounts.cancelled}
+                            </span>
+                            <span className="text-xs text-slate-400">Batal</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Inquiry Cards Stream */}
-                {inquiries.data.length === 0 ? (
-                    <div className="rounded-xl border border-[#E7E2D8] bg-white p-12 text-center shadow-2xs">
-                        <MessageSquare className="mx-auto size-8 stroke-1 text-[#C0B9AD]" />
-                        <h3 className="mt-2 text-xs font-bold text-[#1C1A18]">
-                            Tidak ada inquiries ditemukan
-                        </h3>
-                        <p className="mt-1 text-[11px] text-[#7A746B]">
-                            Belum ada formulir inquiry yang cocok dengan filter
-                            yang dipilih.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-3.5">
-                        {inquiries.data.map((item) => {
-                            const statusInfo =
-                                STATUS_MAP[item.status] || STATUS_MAP.new;
-
-                            return (
-                                <div
-                                    key={item.id}
-                                    className="rounded-xl border border-[#E7E2D8] bg-white p-4 shadow-2xs transition-all hover:border-[#D0C7B7] sm:p-5"
+                {/* 2. Search & Status Filter Tabs Bar */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+                        {/* Search Form */}
+                        <form onSubmit={handleSearchSubmit} className="relative min-w-[240px] flex-1 max-w-md">
+                            <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-slate-400" />
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Cari nama klien, instansi, email, atau no. WA..."
+                                className="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pr-8 pl-8 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:outline-hidden"
+                            />
+                            {search && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSearch('');
+                                        router.get(
+                                            '/admin/inquiries',
+                                            { status: statusFilter === 'all' ? undefined : statusFilter },
+                                            { preserveState: true }
+                                        );
+                                    }}
+                                    className="absolute top-1/2 right-2.5 -translate-y-1/2 text-slate-400 hover:text-slate-700"
                                 >
-                                    <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
-                                        {/* Left Side: Client Data & Requirements */}
-                                        <div className="min-w-0 flex-1 space-y-3">
-                                            {/* Header Row: Name, Company, Status, Timestamp */}
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                <h3 className="text-sm font-bold text-[#1C1A18]">
-                                                    {item.name}
-                                                </h3>
+                                    <X className="size-3" />
+                                </button>
+                            )}
+                        </form>
 
-                                                {item.company_name && (
-                                                    <span className="inline-flex items-center gap-1 rounded-md border border-[#E0D8CB] bg-[#FAF8F5] px-2 py-0.5 text-[11px] font-medium text-[#0E2A1E]">
-                                                        <Building2 className="size-3 text-[#9E7E45]" />
-                                                        {item.company_name}
-                                                    </span>
-                                                )}
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <span>Menampilkan {inquiries.total} permintaan</span>
+                        </div>
+                    </div>
 
-                                                <span
-                                                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[10px] font-medium ${statusInfo.badge}`}
-                                                >
-                                                    <span
-                                                        className={`size-1.5 rounded-full ${statusInfo.dot}`}
-                                                    />
-                                                    {statusInfo.label}
-                                                </span>
-
-                                                <span className="ml-auto font-mono text-[11px] text-[#8C8479] lg:ml-0">
-                                                    {formatDate(
-                                                        item.created_at,
-                                                    )}
-                                                </span>
-                                            </div>
-
-                                            {/* Contact Details */}
-                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#4D4841]">
-                                                <a
-                                                    href={`mailto:${item.email}`}
-                                                    className="flex items-center gap-1.5 transition-colors hover:text-[#0E2A1E]"
-                                                >
-                                                    <Mail className="size-3 text-[#8C8479]" />
-                                                    <span>{item.email}</span>
-                                                </a>
-                                                <a
-                                                    href={`tel:${item.whatsapp_number}`}
-                                                    className="flex items-center gap-1.5 font-mono transition-colors hover:text-[#0E2A1E]"
-                                                >
-                                                    <Phone className="size-3 text-[#8C8479]" />
-                                                    <span>
-                                                        {item.whatsapp_number}
-                                                    </span>
-                                                </a>
-                                            </div>
-
-                                            {/* Inquiry Specification Grid */}
-                                            <div className="grid grid-cols-2 gap-2 rounded-lg border border-[#EAE5DC] bg-[#FAF8F5] p-2.5 text-xs sm:grid-cols-3">
-                                                <div>
-                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
-                                                        Estimasi Jumlah
-                                                    </span>
-                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18]">
-                                                        <Package className="size-3 text-[#0E2A1E]" />
-                                                        {item.estimated_packages
-                                                            ? `${item.estimated_packages} Paket`
-                                                            : 'Konsultasi'}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
-                                                        Budget per Paket
-                                                    </span>
-                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18] tabular-nums">
-                                                        <Coins className="size-3 text-[#9E7E45]" />
-                                                        {formatIdr(
-                                                            item.budget_per_package,
-                                                        )}
-                                                    </span>
-                                                </div>
-                                                <div className="col-span-2 sm:col-span-1">
-                                                    <span className="block text-[10px] font-semibold text-[#8C8479] uppercase">
-                                                        Target Pengiriman
-                                                    </span>
-                                                    <span className="mt-0.5 flex items-center gap-1 font-semibold text-[#1C1A18]">
-                                                        <Calendar className="size-3 text-[#0E2A1E]" />
-                                                        {formatDate(
-                                                            item.needed_at,
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            {/* Client Message */}
-                                            {item.notes && (
-                                                <div className="rounded-r-lg border-l-2 border-[#C5A880] bg-[#FAF8F5]/80 py-1 pl-3 text-xs text-[#2C2925]">
-                                                    <span className="mb-0.5 block text-[10px] font-bold text-[#8C8479] uppercase">
-                                                        Pesan Klien:
-                                                    </span>
-                                                    <p className="leading-relaxed whitespace-pre-line">
-                                                        {item.notes}
-                                                    </p>
-                                                </div>
-                                            )}
-
-                                            {/* Internal Admin Follow-up Note */}
-                                            {item.admin_notes && (
-                                                <div className="rounded-lg border border-[#E8DEC8] bg-[#FFFDF9] p-2.5 text-xs text-[#4D4841]">
-                                                    <div className="mb-1 flex items-center justify-between font-semibold">
-                                                        <span className="flex items-center gap-1 text-[11px] text-[#876822]">
-                                                            <FileEdit className="size-3" />
-                                                            Catatan Internal
-                                                            Admin
-                                                        </span>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setEditingNoteInquiry(
-                                                                    item,
-                                                                );
-                                                                setNoteDraft(
-                                                                    item.admin_notes ||
-                                                                        '',
-                                                                );
-                                                            }}
-                                                            className="text-[10px] text-[#876822] underline hover:text-[#523e12]"
-                                                        >
-                                                            Ubah Catatan
-                                                        </button>
-                                                    </div>
-                                                    <p className="text-[11px] leading-relaxed whitespace-pre-line">
-                                                        {item.admin_notes}
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Right Side: Operational Action Group */}
-                                        <div className="flex shrink-0 flex-col gap-2 border-t border-[#F0EBE1] pt-3 lg:w-56 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-4">
-                                            {/* 1-Click WhatsApp Button */}
-                                            <a
-                                                href={getWhatsAppChatUrl(item)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-2 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#20ba5a]"
-                                            >
-                                                <MessageSquare className="size-3.5 fill-white" />
-                                                <span>Chat WhatsApp</span>
-                                                <ExternalLink className="size-3 opacity-70" />
-                                            </a>
-
-                                            {/* Status Selector Dropdown */}
-                                            <div>
-                                                <label className="mb-1 block text-[10px] font-semibold tracking-wider text-[#8C8479] uppercase">
-                                                    Status Respon
-                                                </label>
-                                                <select
-                                                    value={item.status}
-                                                    onChange={(e) =>
-                                                        handleUpdateStatus(
-                                                            item,
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] px-2.5 py-1.5 text-xs font-medium text-[#1C1A18] focus:border-[#0E2A1E] focus:outline-hidden"
-                                                >
-                                                    <option value="new">
-                                                        Menunggu Follow-Up
-                                                    </option>
-                                                    <option value="contacted">
-                                                        Sedang Dihubungi
-                                                    </option>
-                                                    <option value="completed">
-                                                        Deal / Selesai
-                                                    </option>
-                                                    <option value="cancelled">
-                                                        Dibatalkan
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            {/* Add/Edit Note Button */}
-                                            {!item.admin_notes && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setEditingNoteInquiry(
-                                                            item,
-                                                        );
-                                                        setNoteDraft('');
-                                                    }}
-                                                    className="inline-flex w-full items-center justify-center gap-1 rounded-lg border border-[#E0D8CB] bg-[#FAF8F5] px-2.5 py-1.5 text-xs font-medium text-[#4D4841] transition-colors hover:bg-[#F0EBE1]"
-                                                >
-                                                    <FileEdit className="size-3 text-[#7A746B]" />
-                                                    <span>Tambah Catatan</span>
-                                                </button>
-                                            )}
-
-                                            {/* Delete Button */}
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    setDeletingInquiry(item)
-                                                }
-                                                className="inline-flex w-full items-center justify-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
-                                            >
-                                                <Trash2 className="size-3" />
-                                                <span>Hapus Inquiry</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                    {/* Filter Tabs */}
+                    <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2">
+                        {[
+                            { key: 'all', label: 'Semua Inquiries', count: statusCounts.total },
+                            { key: 'new', label: 'Menunggu Follow-Up', count: statusCounts.new },
+                            { key: 'contacted', label: 'Sedang Dihubungi', count: statusCounts.contacted },
+                            { key: 'completed', label: 'Deal / Masuk Produksi', count: statusCounts.completed },
+                            { key: 'cancelled', label: 'Dibatalkan', count: statusCounts.cancelled },
+                        ].map((tab) => {
+                            const active = statusFilter === tab.key;
+                            return (
+                                <button
+                                    key={tab.key}
+                                    type="button"
+                                    onClick={() => handleStatusFilterChange(tab.key)}
+                                    className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                                        active
+                                            ? 'bg-slate-900 text-white shadow-2xs font-semibold'
+                                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'
+                                    }`}
+                                >
+                                    <span>{tab.label}</span>
+                                    <span
+                                        className={`rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
+                                            active
+                                                ? 'bg-emerald-600 text-white font-bold'
+                                                : 'bg-slate-100 text-slate-600'
+                                        }`}
+                                    >
+                                        {tab.count}
+                                    </span>
+                                </button>
                             );
                         })}
                     </div>
-                )}
+                </div>
 
-                {/* Pagination */}
-                {inquiries.links.length > 3 && (
-                    <div className="flex items-center justify-between rounded-xl border border-[#E7E2D8] bg-white px-4 py-3 text-xs shadow-2xs">
-                        <div className="text-[#7A746B]">
-                            Menampilkan{' '}
-                            <span className="font-semibold text-[#1C1A18]">
-                                {inquiries.from || 0}
-                            </span>{' '}
-                            -{' '}
-                            <span className="font-semibold text-[#1C1A18]">
-                                {inquiries.to || 0}
-                            </span>{' '}
-                            dari{' '}
-                            <span className="font-semibold text-[#1C1A18]">
-                                {inquiries.total}
-                            </span>{' '}
-                            inquiries
-                        </div>
-                        <div className="flex items-center gap-1">
-                            {inquiries.links.map((link, idx) => (
-                                <Link
-                                    key={idx}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    className={`flex h-7 min-w-7 items-center justify-center rounded-md px-2 text-xs font-medium transition-colors ${
-                                        link.active
-                                            ? 'bg-[#0E2A1E] font-semibold text-white'
-                                            : link.url
-                                              ? 'border border-[#D5CEC2] bg-white text-[#2C2925] hover:border-[#0E2A1E]'
-                                              : 'pointer-events-none text-stone-300'
-                                    }`}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
-                        </div>
+                {/* 3. Inquiries Master Table */}
+                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs">
+                            <thead>
+                                <tr className="border-b border-slate-200 bg-slate-50 text-[10px] font-bold tracking-wider text-slate-600 uppercase">
+                                    <th className="py-3 px-4">Klien &amp; Instansi</th>
+                                    <th className="py-3 px-4">Kontak (WhatsApp / Email)</th>
+                                    <th className="py-3 px-4">Kebutuhan Hampers</th>
+                                    <th className="py-3 px-4">Catatan Klien &amp; Internal</th>
+                                    <th className="py-3 px-4">Status</th>
+                                    <th className="py-3 px-4 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-slate-800">
+                                {inquiries.data.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={6} className="py-14 text-center">
+                                            <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 mb-3">
+                                                <Inbox className="size-6" />
+                                            </div>
+                                            <h4 className="text-sm font-semibold text-slate-900">
+                                                Tidak Ada Permintaan Ditemukan
+                                            </h4>
+                                            <p className="mt-1 text-xs text-slate-500">
+                                                Coba ubah kata kunci pencarian atau ganti filter status.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    inquiries.data.map((item) => {
+                                        const statusCfg = STATUS_CONFIG[item.status] || STATUS_CONFIG.new;
+                                        const cleanPhone = getCleanPhone(item.whatsapp_number);
+
+                                        return (
+                                            <tr key={item.id} className="transition-colors hover:bg-slate-50/80">
+                                                {/* Client Name & Company */}
+                                                <td className="py-3.5 px-4">
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-bold text-xs text-slate-700">
+                                                            {item.name ? item.name.charAt(0).toUpperCase() : 'K'}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <h4 className="text-xs font-bold text-slate-900">
+                                                                {item.name}
+                                                            </h4>
+                                                            {item.company_name ? (
+                                                                <span className="inline-flex items-center gap-1 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-700 mt-0.5">
+                                                                    <Building2 className="size-2.5 text-slate-500" />
+                                                                    <span>{item.company_name}</span>
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-[10px] text-slate-400 block mt-0.5">
+                                                                    Pesanan Personal
+                                                                </span>
+                                                            )}
+                                                            <span className="block text-[10px] text-slate-400 mt-0.5">
+                                                                Tgl: {formatDate(item.created_at)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* WhatsApp & Email */}
+                                                <td className="py-3.5 px-4">
+                                                    <div className="space-y-1">
+                                                        <a
+                                                            href={`https://wa.me/${cleanPhone}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-emerald-700 hover:text-emerald-900 hover:underline"
+                                                            title="Buka Chat WhatsApp"
+                                                        >
+                                                            <Phone className="size-3 text-emerald-600" />
+                                                            <span>+{cleanPhone}</span>
+                                                        </a>
+                                                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                                                            <Mail className="size-3 text-slate-400 shrink-0" />
+                                                            <span className="truncate max-w-[150px]">{item.email}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Requirements */}
+                                                <td className="py-3.5 px-4">
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <span className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] font-bold text-slate-800">
+                                                                {item.estimated_packages ? `${item.estimated_packages} Box` : 'Kustom'}
+                                                            </span>
+                                                            <span className="text-[11px] font-medium text-slate-600">
+                                                                {formatIdr(item.budget_per_package)}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1 text-[10.5px] text-slate-500">
+                                                            <Calendar className="size-3 text-slate-400" />
+                                                            <span>Target: {formatDate(item.needed_at)}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Notes */}
+                                                <td className="py-3.5 px-4 max-w-[220px]">
+                                                    <div className="space-y-1.5">
+                                                        {item.notes ? (
+                                                            <p className="line-clamp-2 text-[11px] text-slate-600 italic">
+                                                                "{item.notes}"
+                                                            </p>
+                                                        ) : (
+                                                            <span className="text-[10px] text-slate-400">
+                                                                Tanpa catatan khusus
+                                                            </span>
+                                                        )}
+                                                        {item.admin_notes && (
+                                                            <div className="rounded border border-amber-200 bg-amber-50 p-1.5 text-[10.5px] text-amber-900">
+                                                                <span className="font-semibold block text-[9px] uppercase tracking-wider text-amber-700">
+                                                                    Catatan Admin:
+                                                                </span>
+                                                                <p className="line-clamp-2">{item.admin_notes}</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </td>
+
+                                                {/* Status Selector */}
+                                                <td className="py-3.5 px-4">
+                                                    <select
+                                                        value={item.status}
+                                                        onChange={(e) => handleUpdateStatus(item, e.target.value)}
+                                                        className={`rounded-lg border px-2.5 py-1 text-[11px] font-semibold focus:outline-hidden transition-colors ${statusCfg.badge}`}
+                                                    >
+                                                        <option value="new">Menunggu Follow-Up</option>
+                                                        <option value="contacted">Sedang Dihubungi</option>
+                                                        <option value="completed">Deal / Masuk Produksi</option>
+                                                        <option value="cancelled">Dibatalkan</option>
+                                                    </select>
+                                                </td>
+
+                                                {/* Actions */}
+                                                <td className="py-3.5 px-4 text-right">
+                                                    <div className="flex items-center justify-end gap-1.5">
+                                                        {/* Direct Chat WhatsApp */}
+                                                        <a
+                                                            href={`https://wa.me/${cleanPhone}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-800 transition-colors"
+                                                            title="Chat Klien via WhatsApp"
+                                                        >
+                                                            <Phone className="size-3 text-emerald-600" />
+                                                            <span>Chat WA</span>
+                                                        </a>
+
+                                                        {/* Edit Notes */}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setEditingNoteInquiry(item);
+                                                                setNoteDraft(item.admin_notes || '');
+                                                            }}
+                                                            className="rounded-lg border border-slate-200 bg-white p-1 text-slate-600 hover:border-slate-300 hover:text-slate-900"
+                                                            title="Catatan Internal"
+                                                        >
+                                                            <Edit3 className="size-3.5" />
+                                                        </button>
+
+                                                        {/* Delete */}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setDeletingInquiry(item)}
+                                                            className="rounded-lg p-1 text-rose-600 hover:bg-rose-50"
+                                                            title="Hapus Permintaan"
+                                                        >
+                                                            <Trash2 className="size-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
+                            </tbody>
+                        </table>
                     </div>
-                )}
+
+                    {/* Pagination */}
+                    {inquiries.last_page > 1 && (
+                        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600">
+                            <div>
+                                Menampilkan {inquiries.from ?? 0} - {inquiries.to ?? 0} dari {inquiries.total} data
+                            </div>
+                            <div className="flex items-center gap-1">
+                                {inquiries.links.map((link, idx) => (
+                                    <Link
+                                        key={idx}
+                                        href={link.url || '#'}
+                                        preserveScroll
+                                        className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                                            link.active
+                                                ? 'bg-slate-900 text-white font-bold'
+                                                : link.url
+                                                ? 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                                                : 'text-slate-300 cursor-not-allowed'
+                                        }`}
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Modal: Edit Admin Internal Note */}
-            {editingNoteInquiry && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-                    <div className="w-full max-w-md space-y-3 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xl">
-                        <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-2.5">
-                            <h4 className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
-                                <FileEdit className="size-3.5 text-[#9E7E45]" />
-                                <span>Catatan Internal Follow-Up</span>
+            {/* Edit Internal Notes Modal */}
+            <AnimatePresence>
+                {editingNoteInquiry && (
+                    <div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+                        onClick={() => setEditingNoteInquiry(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.96, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.96, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl"
+                        >
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                <div>
+                                    <h4 className="text-sm font-bold text-slate-900">
+                                        Catatan Internal Klien
+                                    </h4>
+                                    <p className="text-xs text-slate-500">
+                                        Klien: {editingNoteInquiry.name}
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingNoteInquiry(null)}
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                                >
+                                    <X className="size-4" />
+                                </button>
+                            </div>
+
+                            <div className="mt-4 space-y-2 text-xs">
+                                <label className="font-semibold text-slate-700">
+                                    Catatan Tambahan (Internal Admin)
+                                </label>
+                                <textarea
+                                    rows={4}
+                                    value={noteDraft}
+                                    onChange={(e) => setNoteDraft(e.target.value)}
+                                    placeholder="Contoh: Klien minta diskon 10%, butuh faktur pajak, logo format .AI sudah diterima..."
+                                    className="w-full rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-900 focus:border-emerald-600 focus:bg-white focus:outline-hidden"
+                                />
+                            </div>
+
+                            <div className="mt-5 flex items-center justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingNoteInquiry(null)}
+                                    className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleSaveNote}
+                                    className="rounded-lg bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700"
+                                >
+                                    Simpan Catatan
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {deletingInquiry && (
+                    <div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+                        onClick={() => setDeletingInquiry(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.96, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.96, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full max-w-sm rounded-xl border border-rose-200 bg-white p-6 shadow-xl"
+                        >
+                            <h4 className="text-sm font-bold text-slate-900">
+                                Hapus Permintaan Klien?
                             </h4>
-                            <button
-                                type="button"
-                                onClick={() => setEditingNoteInquiry(null)}
-                                className="text-stone-400 hover:text-stone-600"
-                            >
-                                <X className="size-3.5" />
-                            </button>
-                        </div>
-
-                        <div>
-                            <p className="mb-2 text-[11px] text-[#7A746B]">
-                                Catat progres tindak lanjut untuk{' '}
-                                <strong className="text-[#1C1A18]">
-                                    {editingNoteInquiry.name}
-                                </strong>
-                                {editingNoteInquiry.company_name
-                                    ? ` (${editingNoteInquiry.company_name})`
-                                    : ''}
-                                :
+                            <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                                Apakah Anda yakin ingin menghapus permintaan dari{' '}
+                                <strong className="text-slate-900">{deletingInquiry.name}</strong>? Tindakan ini
+                                tidak dapat dibatalkan.
                             </p>
-                            <textarea
-                                value={noteDraft}
-                                onChange={(e) => setNoteDraft(e.target.value)}
-                                rows={4}
-                                placeholder="Contoh: Sudah dikirim katalog PDF via WhatsApp. Menunggu approval anggaran direksi..."
-                                className="w-full rounded-lg border border-[#D5CEC2] bg-[#FAF8F5] p-2.5 text-xs focus:border-[#0E2A1E] focus:bg-white focus:outline-hidden"
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-end gap-2 pt-1">
-                            <button
-                                type="button"
-                                onClick={() => setEditingNoteInquiry(null)}
-                                className="rounded-lg px-3 py-1.5 text-xs font-medium text-[#4D4841] hover:bg-stone-50"
-                            >
-                                Batal
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleSaveNote}
-                                className="rounded-lg bg-[#0E2A1E] px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#153e2d]"
-                            >
-                                Simpan Catatan
-                            </button>
-                        </div>
+                            <div className="mt-5 flex items-center justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setDeletingInquiry(null)}
+                                    className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleDelete}
+                                    className="rounded-lg bg-rose-600 px-4 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-rose-700"
+                                >
+                                    Hapus Permanen
+                                </button>
+                            </div>
+                        </motion.div>
                     </div>
-                </div>
-            )}
-
-            {/* Modal: Confirm Delete */}
-            {deletingInquiry && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
-                    <div className="w-full max-w-sm space-y-3 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xl">
-                        <h4 className="text-sm font-bold text-[#1C1A18]">
-                            Hapus Inquiry Klien?
-                        </h4>
-                        <p className="text-xs text-[#7A746B]">
-                            Apakah Anda yakin ingin menghapus inquiry dari{' '}
-                            <strong className="text-[#1C1A18]">
-                                {deletingInquiry.name}
-                            </strong>
-                            ? Tindakan ini tidak dapat dibatalkan.
-                        </p>
-                        <div className="flex items-center justify-end gap-2 pt-2">
-                            <button
-                                type="button"
-                                onClick={() => setDeletingInquiry(null)}
-                                className="rounded-lg px-3 py-1.5 text-xs font-medium text-[#4D4841] hover:bg-stone-50"
-                            >
-                                Batal
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleDelete}
-                                className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-red-700"
-                            >
-                                Hapus
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+                )}
+            </AnimatePresence>
         </AdminLayout>
     );
 }

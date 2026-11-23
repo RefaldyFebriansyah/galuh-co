@@ -27,12 +27,13 @@ class CorporateInquiryNotification extends Mailable implements ShouldQueue
      */
     public function envelope(): Envelope
     {
+        $type = $this->inquiry->order_type === 'personal' ? 'Pesanan Personal' : 'Penawaran Corporate';
         $sender = $this->inquiry->company_name
             ? "{$this->inquiry->name} ({$this->inquiry->company_name})"
             : $this->inquiry->name;
 
         return new Envelope(
-            subject: "Permintaan Penawaran Corporate Baru — {$sender}",
+            subject: "{$type} Baru — {$sender}",
         );
     }
 
@@ -42,7 +43,7 @@ class CorporateInquiryNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.corporate-inquiry',
+            view: 'mail.corporate-inquiry',
             with: [
                 'inquiry' => $this->inquiry,
             ],

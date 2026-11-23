@@ -33,10 +33,15 @@ use Illuminate\Support\Facades\Cache;
     'name',
     'slug',
     'category',
+    'packaging',
+    'is_halal',
+    'is_featured_hero',
+    'visibility',
     'short_description',
     'contents',
     'price_from',
     'image',
+    'images',
     'sort_order',
     'is_active',
 ])]
@@ -77,9 +82,12 @@ class Product extends Model
     {
         return [
             'contents' => 'array',
+            'images' => 'array',
             'price_from' => 'integer',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
+            'is_halal' => 'boolean',
+            'is_featured_hero' => 'boolean',
         ];
     }
 

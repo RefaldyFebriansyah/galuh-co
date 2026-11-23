@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
+import { trackWaLead } from '@/lib/wa-tracker';
 
 interface FloatingWhatsAppProps {
     whatsappNumber: string;
@@ -9,6 +10,13 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya tertarik bertanya mengenai koleksi hampers premium.',
     )}`;
+
+    const handleClick = () => {
+        trackWaLead({
+            source: 'floating_wa',
+            notes: 'Klik dari tombol WhatsApp mengambang (floating button)',
+        });
+    };
 
     return (
         <aside
@@ -65,6 +73,8 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Hubungi Konsultan GALUH & CO. via WhatsApp"
+                        onClick={handleClick}
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         className="group relative flex items-center gap-2.5 overflow-hidden rounded-full bg-[#25D366] px-5 py-3.5 text-xs font-semibold text-white shadow-[0_10px_25px_rgba(37,211,102,0.35)] transition-all duration-300 hover:bg-[#20ba5a] hover:shadow-[0_12px_32px_rgba(37,211,102,0.48)]"
@@ -110,3 +120,5 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
         </aside>
     );
 }
+
+export default FloatingWhatsApp;

@@ -19,7 +19,13 @@ export default function AdminLogin() {
         <>
             <Head title="Masuk ke Panel Admin — GALUH & CO." />
 
-            <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#071911] px-4 py-12 selection:bg-[#C5A880] selection:text-[#0E2A1E]">
+            <div
+                className="relative flex min-h-screen flex-col items-center justify-center bg-[#071911] px-4 py-12 font-sans selection:bg-[#C5A880] selection:text-[#0E2A1E]"
+                style={{
+                    fontFamily:
+                        "'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                }}
+            >
                 {/* Subtle Luxury Mesh Ambient Overlay */}
                 <div
                     className="pointer-events-none absolute -top-40 -left-40 size-[450px] rounded-full bg-[#C5A880]/10 blur-[120px]"
@@ -40,7 +46,7 @@ export default function AdminLogin() {
                                 textClassName="text-white"
                             />
                         </div>
-                        <h1 className="mt-3 font-serif text-xl font-bold tracking-tight text-white">
+                        <h1 className="mt-3 text-xl font-bold tracking-tight text-white">
                             Atelier CMS &amp; Command Studio
                         </h1>
                         <p className="mt-1 text-xs text-white/60">

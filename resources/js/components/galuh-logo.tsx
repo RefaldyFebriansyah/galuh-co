@@ -21,30 +21,33 @@ export function GaluhLogo({
             : '/images/galuh_logo_gold.png');
 
     return (
-        <div className="inline-flex items-center gap-6 text-left sm:gap-7">
+        <div className="inline-flex items-center gap-2.5 text-left shrink-0 sm:gap-3">
             <img
                 src={logoSrc}
                 alt="GALUH & CO. Hampers & Gift"
-                className={`object-contain ${className}`}
+                className={`object-contain shrink-0 ${className}`}
                 loading="eager"
+                decoding="async"
+                width={44}
+                height={44}
             />
             {showText && (
                 <div
-                    className={`flex flex-col pl-1 text-left sm:pl-2 ${textClassName}`}
+                    className={`flex flex-col text-left whitespace-nowrap shrink-0 ${textClassName}`}
                 >
                     <span
-                        className={`font-serif text-base font-bold tracking-[0.16em] uppercase md:text-lg ${
+                        className={`font-serif text-base font-bold tracking-[0.16em] uppercase whitespace-nowrap md:text-lg ${
                             isWhite ? 'text-white' : 'text-[#1A1815]'
                         }`}
                     >
-                        GALUH &amp; CO
+                        GALUH &amp; CO.
                     </span>
-                    <div className="flex items-center gap-1.5 pt-0.5">
-                        <span className="h-px w-3 bg-[#C5A880]/60" />
-                        <span className="text-[7.5px] font-bold tracking-[0.22em] text-[#C5A880] uppercase md:text-[8.5px]">
+                    <div className="flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
+                        <span className="h-px w-2.5 bg-[#C5A880]/60" />
+                        <span className="text-[7.5px] font-bold tracking-[0.22em] text-[#C5A880] uppercase whitespace-nowrap md:text-[8px]">
                             HAMPERS &amp; GIFT
                         </span>
-                        <span className="h-px w-3 bg-[#C5A880]/60" />
+                        <span className="h-px w-2.5 bg-[#C5A880]/60" />
                     </div>
                 </div>
             )}

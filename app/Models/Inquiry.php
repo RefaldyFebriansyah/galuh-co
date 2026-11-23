@@ -28,11 +28,13 @@ use Illuminate\Support\Carbon;
     'company_name',
     'email',
     'whatsapp_number',
+    'address',
     'estimated_packages',
     'budget_per_package',
     'needed_at',
     'notes',
     'status',
+    'order_type',
     'admin_notes',
 ])]
 class Inquiry extends Model

@@ -1,13 +1,17 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
+import { router } from '@inertiajs/react';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, X, MapPin, Loader2 } from 'lucide-react';
 import { fadeInUp, viewportOnce, buttonTap } from '@/lib/motion';
+import { trackWaLead } from '@/lib/wa-tracker';
+import { detectCurrentAddress } from '@/lib/geolocation';
 import type { Product, ProductCategory } from '@/types';
 
 export interface CatalogProps {
     products: Product[];
     whatsappNumber: string;
+    activeEdition?: string;
 }
 
 interface FilterTab {
@@ -53,6 +57,7 @@ interface ProductCardProps {
     product: Product;
     idx: number;
     whatsappNumber: string;
+    onOrder: (product: Product) => void;
     className?: string;
 }
 
@@ -64,14 +69,13 @@ function ProductCard({
     product,
     idx,
     whatsappNumber,
+    onOrder,
     className = '',
 }: ProductCardProps) {
-    const tagText = getEditorialTag(product, idx);
-    const whatsappOrderUrl = createOrderUrl(
-        product.name,
-        whatsappNumber,
-        product.formatted_price,
+    const [imgSrc, setImgSrc] = useState(
+        product.image || '/images/product_bamboo_box.jpg',
     );
+    const tagText = getEditorialTag(product, idx);
 
     return (
         <motion.article
@@ -87,25 +91,18 @@ function ProductCard({
         >
             {/* Photo Frame (Compact 4:3.2 Aspect Ratio) */}
             <div className="relative aspect-[4/3.2] w-full overflow-hidden bg-[#F2EDE4]">
-                {product.image ? (
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        className="size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                    />
-                ) : (
-                    <div className="flex size-full flex-col items-center justify-center bg-gradient-to-b from-[#F7F2EB] to-[#EFE8DC] p-4 text-center">
-                        <div className="flex size-10 items-center justify-center rounded-full border border-[#D5CEC2]/70 bg-white/80 shadow-2xs">
-                            <span className="font-serif text-lg font-normal text-[#C5A880]">
-                                G
-                            </span>
-                        </div>
-                        <span className="mt-1.5 font-serif text-[10px] font-bold tracking-[0.2em] text-[#8C877E] uppercase">
-                            GALUH &amp; CO.
-                        </span>
-                    </div>
-                )}
+                <img
+                    src={imgSrc}
+                    alt={product.name}
+                    loading="lazy"
+                    decoding="async"
+                    width={400}
+                    height={320}
+                    onError={() =>
+                        setImgSrc('/images/product_bamboo_box.jpg')
+                    }
+                    className="size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                />
 
                 {/* Top Badge: Editorial Pill */}
                 <div className="absolute top-2.5 left-2.5 flex items-center">
@@ -123,43 +120,45 @@ function ProductCard({
             </div>
 
             {/* Editorial Content (Compact Padding & Typography) */}
-            <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-                <div className="flex items-center justify-between text-[9px] font-bold tracking-[0.18em] text-[#9E7E45] uppercase">
-                    <span>{product.category}</span>
-                    <span>GALUH &amp; CO.</span>
+            <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4">
+                <div>
+                    <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-bold tracking-[0.16em] sm:tracking-[0.18em] text-[#7A5B24] uppercase">
+                        <span>{product.category}</span>
+                        <span className="hidden sm:inline">GALUH &amp; CO.</span>
+                    </div>
+
+                    <h3 className="mt-1 line-clamp-1 font-serif text-[13px] sm:text-[15px] font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E]">
+                        {product.name}
+                    </h3>
+
+                    <p className="mt-1 hidden sm:block line-clamp-2 text-[11px] leading-relaxed text-[#6E6962]">
+                        {product.short_description ||
+                            'Hampers premium dengan kemasan eksklusif dan kurasi isi berkualitas tinggi.'}
+                    </p>
                 </div>
 
-                <h3 className="mt-1 line-clamp-1 font-serif text-[15px] font-normal text-[#1A1815] transition-colors duration-200 group-hover:text-[#0E2A1E]">
-                    {product.name}
-                </h3>
-
-                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-[#6E6962]">
-                    {product.short_description ||
-                        'Hampers premium dengan kemasan eksklusif dan kurasi isi berkualitas tinggi.'}
-                </p>
-
                 {/* Card Footer: Price & WhatsApp Order Button */}
-                <div className="mt-3.5 flex items-center justify-between border-t border-[#F0EBE1] pt-2.5">
+                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between border-t border-[#F0EBE1] pt-2 sm:pt-2.5">
                     <div>
-                        <span className="block text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                        <span className="block text-[7.5px] sm:text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase">
                             Mulai Dari
                         </span>
-                        <span className="font-serif text-sm font-bold tracking-tight text-[#0E2A1E]">
+                        <span className="font-serif text-xs sm:text-sm font-bold tracking-tight text-[#0E2A1E]">
                             {product.formatted_price}
                         </span>
                     </div>
 
-                    <motion.a
+                    <motion.button
                         whileTap={buttonTap.tap}
-                        href={whatsappOrderUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/btn inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-3 py-1 text-[11px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white"
+                        type="button"
+                        onClick={() => onOrder(product)}
+                        aria-label={`Pesan hampers ${product.name}`}
+                        className="group/btn inline-flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-[11px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white"
                     >
-                        <WhatsAppIcon className="size-3 text-[#25D366] transition-colors group-hover/btn:text-white" />
+                        <WhatsAppIcon className="size-2.5 sm:size-3 text-[#25D366] transition-colors group-hover/btn:text-white" />
                         <span>Pesan</span>
-                        <ArrowUpRight className="size-2.5 text-[#9E7E45] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white" />
-                    </motion.a>
+                        <ArrowUpRight className="size-2 sm:size-2.5 text-[#7A5B24] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-white" />
+                    </motion.button>
                 </div>
             </div>
         </motion.article>
@@ -189,14 +188,166 @@ const horizontalSlideVariants: Variants = {
     }),
 };
 
-export function Catalog({ products, whatsappNumber }: CatalogProps) {
+export function Catalog({
+    products,
+    whatsappNumber,
+    activeEdition,
+}: CatalogProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [direction, setDirection] = useState<number>(1);
+    const [mobileCardIndex, setMobileCardIndex] = useState<number>(0);
+    const mobileTrackRef = useRef<HTMLDivElement>(null);
+
+    // Personal Order Modal State
+    const [orderProduct, setOrderProduct] = useState<Product | null>(null);
+    const [personalForm, setPersonalForm] = useState({
+        name: '',
+        email: '',
+        whatsapp_number: '',
+        address: '',
+        notes: '',
+    });
+    const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [personalErrors, setPersonalErrors] = useState<{ [key: string]: string }>({});
+
+    const handleDetectPersonalLocation = async () => {
+        setIsDetectingLocation(true);
+        try {
+            const detected = await detectCurrentAddress();
+            setPersonalForm((prev) => ({ ...prev, address: detected }));
+        } catch (err: unknown) {
+            alert(err instanceof Error ? err.message : 'Gagal mendeteksi lokasi');
+        } finally {
+            setIsDetectingLocation(false);
+        }
+    };
+
+    const handlePersonalSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!orderProduct) return;
+
+        const newErrors: { [key: string]: string } = {};
+        if (!personalForm.name.trim()) newErrors.name = 'Nama pemesan wajib diisi.';
+
+        // Strict Email validation (must contain @ and valid domain)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!personalForm.email.trim()) {
+            newErrors.email = 'Alamat email wajib diisi.';
+        } else if (!emailRegex.test(personalForm.email)) {
+            newErrors.email = 'Format email tidak valid. Pastikan menyertakan @ dan domain (contoh: nama@gmail.com).';
+        }
+
+        // WhatsApp number validation: digits only, no 08, min 9 digits, max 12 digits
+        const rawPhone = personalForm.whatsapp_number.replace(/\D/g, '');
+        if (!rawPhone) {
+            newErrors.whatsapp_number = 'Nomor WhatsApp wajib diisi.';
+        } else if (rawPhone.length < 9) {
+            newErrors.whatsapp_number = 'Nomor WhatsApp minimal 9 digit setelah +62 (contoh: 81234567890).';
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setPersonalErrors(newErrors);
+            return;
+        }
+
+        setPersonalErrors({});
+        setIsSubmitting(true);
+
+        const fullWaNumber = `+62${rawPhone}`;
+        const cleanTargetNumber = (whatsappNumber || '6281572414233').replace(/\D/g, '');
+        const greetingLines = [
+            'Halo Tim Concierge GALUH & CO., saya ingin memesan hampers personal:',
+            '',
+            `• Paket Pilihan: ${orderProduct.name}${orderProduct.formatted_price ? ` (${orderProduct.formatted_price})` : ''}`,
+            `• Nama Pemesan: ${personalForm.name}`,
+            `• No. WhatsApp: ${fullWaNumber}`,
+            `• Email: ${personalForm.email}`,
+            personalForm.address ? `• Alamat Pengiriman: ${personalForm.address}` : null,
+            personalForm.notes ? `• Catatan / Kartu Ucapan: ${personalForm.notes}` : null,
+            '',
+            'Mohon informasi ketersediaan paket dan estimasi ongkos kirim. Terima kasih!',
+        ].filter((line) => line !== null);
+
+        const waUrl = `https://wa.me/${cleanTargetNumber}?text=${encodeURIComponent(greetingLines.join('\n'))}`;
+
+        // 1. Silent lead tracking
+        trackWaLead({
+            source: 'catalog_personal',
+            client_name: personalForm.name,
+            wa_number: fullWaNumber,
+            package_name: orderProduct.name,
+            notes: `Pesanan: ${orderProduct.name} | Alamat: ${personalForm.address || '-'} | Catatan: ${personalForm.notes || '-'}`,
+        });
+
+        // 2. Submit form to backend asynchronously (persists to inquiries & wa_leads, sends email to refaldi.febriansyah@gmail.com)
+        router.post(
+            '/inquiry',
+            {
+                name: personalForm.name,
+                email: personalForm.email,
+                whatsapp_number: fullWaNumber,
+                address: personalForm.address,
+                order_type: 'personal',
+                estimated_packages: '1 paket',
+                notes: `Pesanan: ${orderProduct.name} | Catatan: ${personalForm.notes || '-'}`,
+            },
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setIsSubmitting(false);
+                    setOrderProduct(null);
+                    setPersonalForm({
+                        name: '',
+                        email: '',
+                        whatsapp_number: '',
+                        address: '',
+                        notes: '',
+                    });
+                },
+            },
+        );
+
+        // 3. Open WhatsApp
+        const opened = window.open(waUrl, '_blank');
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+            window.location.href = waUrl;
+        }
+    };
 
     const paginate = (newPage: number) => {
         setDirection(newPage > currentPage ? 1 : -1);
         setCurrentPage(newPage);
+    };
+
+    const handleMobileArrow = (dir: 'prev' | 'next') => {
+        if (!mobileTrackRef.current) return;
+        const container = mobileTrackRef.current;
+        const cardWidth = container.offsetWidth * 0.82 + 16;
+        const maxIdx = displayedProducts.length - 1;
+        const targetIdx =
+            dir === 'next'
+                ? Math.min(maxIdx, mobileCardIndex + 1)
+                : Math.max(0, mobileCardIndex - 1);
+
+        container.scrollTo({
+            left: targetIdx * cardWidth,
+            behavior: 'smooth',
+        });
+        setMobileCardIndex(targetIdx);
+    };
+
+    const handleMobileScroll = () => {
+        if (!mobileTrackRef.current) return;
+        const container = mobileTrackRef.current;
+        const cardWidth = container.offsetWidth * 0.82 + 16;
+        if (cardWidth > 0) {
+            const active = Math.round(container.scrollLeft / cardWidth);
+            setMobileCardIndex(
+                Math.min(Math.max(0, active), displayedProducts.length - 1),
+            );
+        }
     };
 
     // Defensive normalization: guarantee an Array
@@ -284,6 +435,10 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
         setSelectedCategory(val);
         setDirection(1);
         setCurrentPage(0);
+        setMobileCardIndex(0);
+        if (mobileTrackRef.current) {
+            mobileTrackRef.current.scrollTo({ left: 0 });
+        }
     };
 
     // Pagination calculations (Uniform for "Semua Koleksi" and every category)
@@ -307,13 +462,19 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                     viewport={viewportOnce}
                     className="mx-auto max-w-3xl text-center"
                 >
-                    <div className="inline-flex items-center text-[11px] font-semibold tracking-[0.2em] text-[#9E7E45] uppercase">
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#7A5B24] uppercase">
                         <span>KOLEKSI HAMPERS</span>
+                        {activeEdition && (
+                            <>
+                                <span className="size-1 rounded-full bg-[#C5A880]" />
+                                <span className="font-mono text-[10px] text-[#8C877E]">{activeEdition}</span>
+                            </>
+                        )}
                     </div>
 
                     <h2 className="mt-2.5 font-serif text-3xl font-normal tracking-tight text-[#1A1815] sm:text-4xl lg:text-5xl">
                         Koleksi Bingkisan{' '}
-                        <span className="text-[#9E7E45] italic">Istimewa</span>
+                        <span className="text-[#7A5B24] italic">Istimewa</span>
                     </h2>
 
                     <p className="mt-2.5 text-xs leading-relaxed text-[#5C564C] sm:text-sm">
@@ -336,6 +497,7 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                     onClick={() =>
                                         handleCategoryChange(cat.value)
                                     }
+                                    aria-pressed={isActive}
                                     className={`relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-4.5 sm:py-2 sm:text-xs ${
                                         isActive
                                             ? 'text-[#0E2A1E]'
@@ -364,10 +526,12 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
 
                 {/* 3. Catalog Display Area: Compact Grid + Multi-Position Zero Effort Navigation */}
                 <div className="mt-8 overflow-hidden">
-                    {/* Top Bar Quick Navigation (Immediately Visible Without Scrolling) */}
+                    {/* Top Bar Quick Navigation */}
                     {totalPages > 1 && (
-                        <div className="mb-4 flex items-center justify-end">
-                            {/* Top Quick Arrows */}
+                        <div className="mb-4 flex items-center justify-between">
+                            <span className="font-mono text-[10px] text-[#8C877E] uppercase">
+                                {filteredProducts.length} Koleksi Pilihan
+                            </span>
                             <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D5CEC2] bg-white/90 px-2.5 py-1 shadow-2xs backdrop-blur-md">
                                 <button
                                     type="button"
@@ -375,7 +539,7 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                         paginate(Math.max(0, currentPage - 1))
                                     }
                                     disabled={currentPage === 0}
-                                    aria-label="Koleksi Sebelumnya"
+                                    aria-label="Koleksi halaman sebelumnya"
                                     className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
                                 >
                                     <ChevronLeft className="size-3.5" />
@@ -394,7 +558,7 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                         )
                                     }
                                     disabled={currentPage === totalPages - 1}
-                                    aria-label="Koleksi Selanjutnya"
+                                    aria-label="Koleksi halaman selanjutnya"
                                     className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#0E2A1E] transition-all hover:bg-[#FAF7F2] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
                                 >
                                     <ChevronRight className="size-3.5" />
@@ -438,14 +602,14 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                             )
                                         }
                                         className="absolute top-1/2 -left-5 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
-                                        aria-label="Geser ke Koleksi Sebelumnya"
+                                        aria-label="Koleksi halaman sebelumnya"
                                     >
                                         <ChevronLeft className="size-5" />
                                     </button>
                                 )}
 
-                                {/* Compact Grid: 4 Kolom x 2 Baris */}
-                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {/* Boutique Grid: 2 Columns on Mobile (< 768px), 3-4 Columns on Desktop */}
+                                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
                                     {displayedProducts.map((product, idx) => (
                                         <ProductCard
                                             key={product.id}
@@ -455,6 +619,7 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                                 idx
                                             }
                                             whatsappNumber={whatsappNumber}
+                                            onOrder={(prod) => setOrderProduct(prod)}
                                         />
                                     ))}
                                 </div>
@@ -473,7 +638,7 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                                                 )
                                             }
                                             className="absolute top-1/2 -right-5 z-20 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#D5CEC2] bg-white/95 p-2.5 text-[#0E2A1E] shadow-lg backdrop-blur-md transition-all hover:scale-108 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white active:scale-95 xl:flex"
-                                            aria-label="Geser ke Koleksi Selanjutnya"
+                                            aria-label="Koleksi halaman selanjutnya"
                                         >
                                             <ChevronRight className="size-5" />
                                         </button>
@@ -481,11 +646,278 @@ export function Catalog({ products, whatsappNumber }: CatalogProps) {
                             </motion.div>
                         )}
                     </AnimatePresence>
+                    {/* Bottom Pagination for Easy Mobile Navigation */}
+                    {totalPages > 1 && (
+                        <div className="mt-8 flex items-center justify-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    paginate(Math.max(0, currentPage - 1));
+                                    const el = document.getElementById('koleksi');
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                disabled={currentPage === 0}
+                                className="flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-white px-4 py-2 text-xs font-semibold text-[#0E2A1E] shadow-2xs transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                <ChevronLeft className="size-3.5" />
+                                <span>Sebelumnya</span>
+                            </button>
+                            <span className="font-serif text-xs font-semibold text-[#7A5B24]">
+                                Halaman {currentPage + 1} dari {totalPages}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    paginate(Math.min(totalPages - 1, currentPage + 1));
+                                    const el = document.getElementById('koleksi');
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                disabled={currentPage === totalPages - 1}
+                                className="flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-white px-4 py-2 text-xs font-semibold text-[#0E2A1E] shadow-2xs transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                <span>Selanjutnya</span>
+                                <ChevronRight className="size-3.5" />
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
+
+            {/* Personal Order Modal */}
+            <AnimatePresence>
+                {orderProduct && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => !isSubmitting && setOrderProduct(null)}
+                            className="fixed inset-0 bg-[#0E2A1E]/60 backdrop-blur-xs transition-opacity"
+                        />
+
+                        {/* Modal Box */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 16 }}
+                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#EAE5DC] bg-white p-6 sm:p-8 shadow-2xl z-10 my-auto"
+                        >
+                            {/* Close Button */}
+                            <button
+                                type="button"
+                                onClick={() => setOrderProduct(null)}
+                                disabled={isSubmitting}
+                                aria-label="Tutup formulir pemesanan personal"
+                                className="absolute top-4 right-4 flex size-8 cursor-pointer items-center justify-center rounded-full border border-[#EAE5DC] bg-[#FAF8F5] text-[#0E2A1E] transition-colors hover:bg-white hover:text-black"
+                            >
+                                <X className="size-4" />
+                            </button>
+
+                            {/* Product Header */}
+                            <div className="flex items-center gap-3.5 border-b border-[#F0EBE1] pb-4 pr-8">
+                                <img
+                                    src={orderProduct.image || '/images/product_bamboo_box.jpg'}
+                                    alt={orderProduct.name}
+                                    className="size-14 rounded-xl object-cover border border-[#EAE5DC]"
+                                />
+                                <div className="min-w-0 flex-1">
+                                    <span className="text-[9px] font-bold tracking-[0.18em] text-[#7A5B24] uppercase">
+                                        Pemesanan Personal
+                                    </span>
+                                    <h3 className="truncate font-serif text-base font-bold text-[#0E2A1E]">
+                                        {orderProduct.name}
+                                    </h3>
+                                    <p className="font-serif text-xs font-semibold text-[#7A5B24]">
+                                        {orderProduct.formatted_price}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Form */}
+                            <form onSubmit={handlePersonalSubmit} className="mt-4 space-y-3.5">
+                                <div>
+                                    <label
+                                        htmlFor="personal-name"
+                                        className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
+                                    >
+                                        Nama Pemesan <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="personal-name"
+                                        type="text"
+                                        required
+                                        value={personalForm.name}
+                                        onChange={(e) =>
+                                            setPersonalForm((prev) => ({ ...prev, name: e.target.value }))
+                                        }
+                                        placeholder="Nama lengkap Anda"
+                                        className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                    />
+                                    {personalErrors.name && (
+                                        <p className="mt-1 text-[10px] text-red-600">{personalErrors.name}</p>
+                                    )}
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+                                    <div>
+                                        <label
+                                            htmlFor="personal-whatsapp"
+                                            className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
+                                        >
+                                            No. WhatsApp <span className="text-red-500">*</span>
+                                        </label>
+                                        <div
+                                            className={`mt-1 flex items-center rounded-xl border bg-[#FAF8F5] overflow-hidden transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
+                                                personalErrors.whatsapp_number
+                                                    ? 'border-red-400'
+                                                    : 'border-[#EAE5DC]'
+                                            }`}
+                                        >
+                                            <span className="inline-flex shrink-0 items-center border-r border-[#EAE5DC] bg-[#F2EDE4]/60 px-2.5 py-2 text-xs font-bold text-[#0E2A1E] select-none">
+                                                🇮🇩 +62
+                                            </span>
+                                            <input
+                                                id="personal-whatsapp"
+                                                type="tel"
+                                                inputMode="numeric"
+                                                required
+                                                value={personalForm.whatsapp_number}
+                                                onChange={(e) => {
+                                                    let val = e.target.value.replace(/\D/g, '');
+                                                    if (val.startsWith('62')) val = val.slice(2);
+                                                    if (val.startsWith('0')) val = val.slice(1);
+                                                    val = val.slice(0, 12);
+                                                    setPersonalForm((prev) => ({
+                                                        ...prev,
+                                                        whatsapp_number: val,
+                                                    }));
+                                                }}
+                                                placeholder="812-3456-7890"
+                                                maxLength={12}
+                                                className="w-full bg-transparent px-3 py-2 text-xs text-[#1A1815] focus:outline-hidden"
+                                            />
+                                        </div>
+                                        {personalErrors.whatsapp_number && (
+                                            <p className="mt-1 text-[10px] text-red-600">
+                                                {personalErrors.whatsapp_number}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            htmlFor="personal-email"
+                                            className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
+                                        >
+                                            Email <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            id="personal-email"
+                                            type="email"
+                                            required
+                                            value={personalForm.email}
+                                            onChange={(e) =>
+                                                setPersonalForm((prev) => ({ ...prev, email: e.target.value }))
+                                            }
+                                            placeholder="email@anda.com"
+                                            className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                        />
+                                        {personalErrors.email && (
+                                            <p className="mt-1 text-[10px] text-red-600">{personalErrors.email}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Address with Auto-Detection */}
+                                <div>
+                                    <div className="flex items-center justify-between">
+                                        <label
+                                            htmlFor="personal-address"
+                                            className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
+                                        >
+                                            Alamat Pengiriman
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handleDetectPersonalLocation}
+                                            disabled={isDetectingLocation}
+                                            className="inline-flex cursor-pointer items-center gap-1 text-[10px] font-semibold text-[#7A5B24] transition-colors hover:text-[#0E2A1E] hover:underline disabled:opacity-50"
+                                        >
+                                            {isDetectingLocation ? (
+                                                <>
+                                                    <Loader2 className="size-3 animate-spin text-[#7A5B24]" />
+                                                    <span>Mendeteksi Lokasi...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <MapPin className="size-3 text-[#7A5B24]" />
+                                                    <span>Deteksi Alamat Otomatis</span>
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <textarea
+                                        id="personal-address"
+                                        rows={2}
+                                        value={personalForm.address}
+                                        onChange={(e) =>
+                                            setPersonalForm((prev) => ({
+                                                ...prev,
+                                                address: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Alamat jalan, nomor rumah, kelurahan, kota (atau klik 'Deteksi Alamat Otomatis')"
+                                        className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                    />
+                                </div>
+
+                                {/* Notes / Greeting card */}
+                                <div>
+                                    <label
+                                        htmlFor="personal-notes"
+                                        className="block text-[10px] font-bold tracking-[0.16em] text-[#1A1815] uppercase"
+                                    >
+                                        Nama Penerima / Pesan Kartu Ucapan
+                                    </label>
+                                    <textarea
+                                        id="personal-notes"
+                                        rows={2}
+                                        value={personalForm.notes}
+                                        onChange={(e) =>
+                                            setPersonalForm((prev) => ({
+                                                ...prev,
+                                                notes: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Penerima: Bapak Budi (Tolong sertakan kartu: Selamat Hari Raya Idul Fitri...)"
+                                        className="mt-1 w-full rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden"
+                                    />
+                                </div>
+
+                                <motion.button
+                                    whileTap={buttonTap.tap}
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#0E2A1E] py-3 text-xs font-bold tracking-[0.12em] text-white shadow-sm transition-all duration-300 hover:bg-[#163d2c] disabled:opacity-60"
+                                >
+                                    <WhatsAppIcon className="size-4 text-[#25D366]" />
+                                    <span>
+                                        {isSubmitting
+                                            ? 'MENGHUBUNGKAN...'
+                                            : 'LANJUT PESAN VIA WHATSAPP'}
+                                    </span>
+                                </motion.button>
+                            </form>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
 
 // Re-export for compatibility with ProductsSection naming
 export const ProductsSection = Catalog;
+export default Catalog;

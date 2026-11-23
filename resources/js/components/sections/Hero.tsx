@@ -17,12 +17,41 @@ export interface HeroProps {
     heroBadge?: string;
     heroTitlePrefix?: string;
     heroDescription?: string;
+    activeEdition?: string;
+    heroEyebrow?: string;
+    heroTitle?: string;
+    heroSubtitle?: string;
+    heroTagline?: string;
 }
 
 const ROTATING_TARGETS = [
     'Personal & Perusahaan',
     'Mitra Perusahaan',
     'Momen Istimewa',
+];
+
+const MOBILE_EDITIONS = [
+    {
+        id: 'raya',
+        label: 'Idul Fitri',
+        badge: 'Edisi Ramadan & Raya 1447 H',
+        image: '/images/product_bamboo_box.jpg',
+        title: 'Kriya Bingkisan Hangat Hari Raya',
+    },
+    {
+        id: 'corporate',
+        label: 'Corporate B2B',
+        badge: 'Executive Gifting & Monogram',
+        image: '/images/product_emerald_box.jpg',
+        title: 'Apresiasi Prestisius Kemitraan Bisnis',
+    },
+    {
+        id: 'festive',
+        label: 'Natal & Tahun Baru',
+        badge: 'Festive Season & Luminary',
+        image: '/images/product_rattan_box.jpg',
+        title: 'Kemewahan Momen Akhir Tahun',
+    },
 ];
 
 /**
@@ -96,7 +125,7 @@ function FloatingHamperLeft({
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
-            className="pointer-events-none absolute top-[43%] -left-3 z-10 block w-28 -translate-y-1/2 opacity-90 transition-opacity sm:left-1 sm:w-36 sm:opacity-100 md:w-44 lg:left-3 lg:w-56 xl:left-8 xl:w-72 2xl:left-14 2xl:w-84"
+            className="pointer-events-none absolute top-[43%] -left-3 z-10 hidden md:block -translate-y-1/2 opacity-90 transition-opacity md:w-44 lg:left-3 lg:w-56 xl:left-8 xl:w-72 2xl:left-14 2xl:w-84"
         >
             <motion.div
                 animate={{
@@ -111,6 +140,14 @@ function FloatingHamperLeft({
                 }}
                 whileHover={{ scale: 1.05, y: -8 }}
                 onClick={onScrollToCatalog}
+                role="button"
+                tabIndex={0}
+                aria-label="Lihat Koleksi Artisan Rattan di Katalog"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        onScrollToCatalog();
+                    }
+                }}
                 className="group pointer-events-auto relative cursor-pointer select-none"
                 title="Lihat Koleksi Artisan Rattan"
             >
@@ -120,6 +157,10 @@ function FloatingHamperLeft({
                     alt="Signature Heritage Rattan Hamper GALUH & CO."
                     className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
                     loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
+                    width={480}
+                    height={480}
                     draggable={false}
                 />
 
@@ -167,7 +208,7 @@ function FloatingHamperRight({
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
             style={{ x: tiltX, y: tiltY, rotate: tiltRotate }}
-            className="pointer-events-none absolute top-[51%] -right-3 z-10 block w-32 -translate-y-1/2 opacity-90 transition-opacity sm:right-1 sm:w-40 sm:opacity-100 md:w-48 lg:right-3 lg:w-60 xl:right-8 xl:w-76 2xl:right-14 2xl:w-88"
+            className="pointer-events-none absolute top-[51%] -right-3 z-10 hidden md:block -translate-y-1/2 opacity-90 transition-opacity md:w-48 lg:right-3 lg:w-60 xl:right-8 xl:w-76 2xl:right-14 2xl:w-88"
         >
             <motion.div
                 animate={{
@@ -183,6 +224,14 @@ function FloatingHamperRight({
                 }}
                 whileHover={{ scale: 1.05, y: -8 }}
                 onClick={onScrollToCatalog}
+                role="button"
+                tabIndex={0}
+                aria-label="Lihat Koleksi Corporate Executive di Katalog"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        onScrollToCatalog();
+                    }
+                }}
                 className="group pointer-events-auto relative cursor-pointer select-none"
                 title="Lihat Koleksi Corporate Executive"
             >
@@ -192,6 +241,10 @@ function FloatingHamperRight({
                     alt="Emerald Executive Corporate Gifting GALUH & CO."
                     className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
                     loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
+                    width={480}
+                    height={480}
                     draggable={false}
                 />
 
@@ -220,9 +273,15 @@ export function Hero({
     heroBadge = 'Signature Atelier Hampers & Gift',
     heroTitlePrefix = 'Hampers Eksklusif',
     heroDescription = 'Pilihan hampers premium dan hadiah perusahaan dengan kemasan eksklusif. Siap melengkapi setiap momen istimewa Anda dengan mudah dan berkelas.',
+    activeEdition,
+    heroEyebrow,
+    heroTitle,
+    heroSubtitle,
+    heroTagline,
 }: HeroProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
+    const [selectedMobileEdition, setSelectedMobileEdition] = useState(0);
 
     // Global cursor tracking across the hero section for 3D parallax depth
     const mouseSectionX = useMotionValue(0);
@@ -278,10 +337,143 @@ export function Hero({
 
     return (
         <MotionConfig reducedMotion="user">
+            {/* ========================================================
+                1. MOBILE HERO — Quiet Luxury Editorial Cover (< 768px)
+                Spacious, perfectly proportioned, zero clutter
+            ======================================================== */}
+            <section className="relative flex md:hidden flex-col items-center pt-20 pb-8 px-5 text-center overflow-hidden bg-[#FAF7F2]">
+                {/* 1. Atelier Eyebrow Kicker */}
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2] bg-white/90 px-3.5 py-1 text-[10px] font-semibold tracking-[0.2em] text-[#7A5B24] uppercase shadow-2xs backdrop-blur-md">
+                    <span>✦ {activeEdition || 'EDISI RAMADAN & RAYA 1447 H'} ✦</span>
+                </div>
+
+                {/* 2. Command Headline & Calm Narrative */}
+                <h1 className="mt-4 font-serif text-[1.85rem] leading-[1.18] font-normal tracking-tight text-[#1A1815] max-w-sm">
+                    {heroTitle || 'Kriya Bingkisan untuk Momen yang Tak Diulang.'}
+                </h1>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#5C564C] max-w-xs">
+                    {heroSubtitle || heroDescription}
+                </p>
+
+                {/* 3. Centerpiece Hamper Visual (Sculptural Luxury Frame) */}
+                <div className="relative w-full max-w-[340px] aspect-[4/3.8] overflow-hidden rounded-[2rem] my-5 shadow-[0_16px_36px_-10px_rgba(26,24,21,0.18)] border border-[#EAE5DC] bg-[#0E2A1E]">
+                    <AnimatePresence mode="wait">
+                        <motion.img
+                            key={MOBILE_EDITIONS[selectedMobileEdition].image}
+                            src={MOBILE_EDITIONS[selectedMobileEdition].image}
+                            alt={MOBILE_EDITIONS[selectedMobileEdition].title}
+                            initial={{ opacity: 0, scale: 1.05 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{
+                                duration: 0.45,
+                                ease: [0.16, 1, 0.3, 1],
+                            }}
+                            className="size-full object-cover"
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="sync"
+                            width={480}
+                            height={450}
+                        />
+                    </AnimatePresence>
+
+                    {/* Ambient Dark Gradient Vignette for Text Legibility */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                    {/* Overlay Badges */}
+                    <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between">
+                        <span className="rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-[#FAF0D7] uppercase backdrop-blur-md">
+                            ✦ {MOBILE_EDITIONS[selectedMobileEdition].badge}
+                        </span>
+                        <span className="font-serif text-[11px] text-white/90 italic drop-shadow-sm">
+                            Galuh &amp; Co.
+                        </span>
+                    </div>
+                </div>
+
+                {/* 4. Elegant Minimalist Pill Switcher */}
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 max-w-full">
+                    {MOBILE_EDITIONS.map((ed, idx) => {
+                        const isActive = selectedMobileEdition === idx;
+                        return (
+                            <button
+                                key={ed.id}
+                                type="button"
+                                onClick={() => setSelectedMobileEdition(idx)}
+                                aria-pressed={isActive}
+                                className={`rounded-full px-3.5 py-1 text-[10.5px] font-semibold tracking-wider transition-all active:scale-95 ${
+                                    isActive
+                                        ? 'bg-[#0E2A1E] text-white shadow-xs'
+                                        : 'border border-[#D5CEC2] bg-white text-[#5C564C]'
+                                }`}
+                            >
+                                <span>{ed.label}</span>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* 5. Primary CTA & WhatsApp Link */}
+                <div className="mt-5 w-full max-w-xs space-y-2.5">
+                    <button
+                        type="button"
+                        onClick={handleScrollToCatalog}
+                        aria-label="Jelajahi Koleksi Hampers"
+                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#0E2A1E] py-3.5 text-xs font-bold tracking-[0.14em] text-white shadow-md transition-transform active:scale-98"
+                    >
+                        <span>JELAJAHI KOLEKSI</span>
+                        <ArrowRight className="size-3.5 text-[#C5A880]" />
+                    </button>
+
+                    <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Konsultasi Hampers via WhatsApp"
+                        className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D5CEC2] bg-white py-2.5 text-[11px] font-bold tracking-[0.12em] text-[#0E2A1E] shadow-2xs transition-all active:scale-98"
+                    >
+                        <WhatsAppIcon className="size-3.5 text-[#25D366]" />
+                        <span>KONSULTASI HAMPERS VIA WA</span>
+                    </a>
+                </div>
+
+                {/* 6. Clean Luxury Trust Strip Bar (Placed naturally below hero, spacious & prestigious) */}
+                <div className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2 rounded-2xl border border-[#EAE5DC] bg-white/70 py-3.5 px-2 text-center shadow-2xs backdrop-blur-xs">
+                    <div>
+                        <span className="font-serif text-lg font-bold tracking-tight text-[#1A1815]">
+                            5,000+
+                        </span>
+                        <p className="mt-0.5 text-[8px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                            Hampers Terkirim
+                        </p>
+                    </div>
+                    <div className="border-l border-[#EAE5DC] pl-2">
+                        <span className="font-serif text-lg font-bold tracking-tight text-[#0E2A1E]">
+                            100+
+                        </span>
+                        <p className="mt-0.5 text-[8px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                            Mitra Korporat
+                        </p>
+                    </div>
+                    <div className="border-l border-[#EAE5DC] pl-2">
+                        <span className="font-serif text-lg font-bold tracking-tight text-[#7A5B24]">
+                            4.9 / 5.0
+                        </span>
+                        <p className="mt-0.5 text-[8px] font-semibold tracking-wider text-[#8C877E] uppercase">
+                            Ulasan Klien
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ========================================================
+                2. DESKTOP HERO — Unaltered Kinetic Lookbook & 3D Floating Hampers (md: & lg:)
+            ======================================================== */}
             <section
                 ref={sectionRef}
                 onMouseMove={handleMouseMove}
-                className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
+                className="relative hidden md:flex min-h-[100svh] flex-col justify-between overflow-hidden pt-20 pb-2 sm:pt-24 sm:pb-3 lg:pt-22 lg:pb-3"
             >
                 {/* 1. Left Floating Hamper (Artisanal Rattan) - Pure Product, No Card/Frame */}
                 <FloatingHamperLeft
@@ -311,11 +503,11 @@ export function Hero({
                             variants={staggerItem}
                             className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2]/75 bg-white/70 px-3.5 py-1 text-[9.5px] font-semibold tracking-[0.2em] text-[#8C877E] uppercase shadow-2xs backdrop-blur-xs sm:px-4 sm:py-1.5 sm:text-[10.5px]"
                         >
-                            <span className="font-bold text-[#9E7E45]">
-                                ATELIER GALUH &amp; CO.
+                            <span className="font-bold text-[#7A5B24]">
+                                {heroEyebrow || 'ATELIER GALUH & CO.'}
                             </span>
                             <span className="size-1 rounded-full bg-[#C5A880]" />
-                            <span>{cleanKicker}</span>
+                            <span>{activeEdition || cleanKicker}</span>
                         </motion.div>
 
                         {/* Headline with High-Craft Serif Typography & Kinetic Target Glide */}
@@ -323,41 +515,47 @@ export function Hero({
                             variants={staggerItem}
                             className="font-serif text-3xl leading-[1.2] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.85rem] xl:text-[3.35rem]"
                         >
-                            <span className="block">
-                                {heroTitlePrefix || 'Hampers Eksklusif'}{' '}
-                                <span className="font-normal text-[#9E7E45] italic">
-                                    untuk
-                                </span>
-                            </span>
-                            <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
-                                <AnimatePresence mode="wait">
-                                    <motion.span
-                                        key={ROTATING_TARGETS[phraseIndex]}
-                                        initial={{
-                                            y: 30,
-                                            opacity: 0,
-                                            filter: 'blur(5px)',
-                                        }}
-                                        animate={{
-                                            y: 0,
-                                            opacity: 1,
-                                            filter: 'blur(0px)',
-                                        }}
-                                        exit={{
-                                            y: -30,
-                                            opacity: 0,
-                                            filter: 'blur(5px)',
-                                        }}
-                                        transition={{
-                                            duration: 0.55,
-                                            ease: [0.16, 1, 0.3, 1],
-                                        }}
-                                        className="inline-block bg-gradient-to-r from-[#9E7E45] via-[#C5A880] to-[#8C6D37] bg-clip-text font-normal text-transparent italic"
-                                    >
-                                        {ROTATING_TARGETS[phraseIndex]}
-                                    </motion.span>
-                                </AnimatePresence>
-                            </span>
+                            {heroTitle ? (
+                                <span className="block">{heroTitle}</span>
+                            ) : (
+                                <>
+                                    <span className="block">
+                                        {heroTitlePrefix || 'Hampers Eksklusif'}{' '}
+                                        <span className="font-normal text-[#7A5B24] italic">
+                                            untuk
+                                        </span>
+                                    </span>
+                                    <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
+                                        <AnimatePresence mode="wait">
+                                            <motion.span
+                                                key={ROTATING_TARGETS[phraseIndex]}
+                                                initial={{
+                                                    y: 30,
+                                                    opacity: 0,
+                                                    filter: 'blur(5px)',
+                                                }}
+                                                animate={{
+                                                    y: 0,
+                                                    opacity: 1,
+                                                    filter: 'blur(0px)',
+                                                }}
+                                                exit={{
+                                                    y: -30,
+                                                    opacity: 0,
+                                                    filter: 'blur(5px)',
+                                                }}
+                                                transition={{
+                                                    duration: 0.55,
+                                                    ease: [0.16, 1, 0.3, 1],
+                                                }}
+                                                className="inline-block bg-gradient-to-r from-[#7A5B24] via-[#8C6D37] to-[#5C4215] bg-clip-text font-normal text-transparent italic"
+                                            >
+                                                {ROTATING_TARGETS[phraseIndex]}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                    </span>
+                                </>
+                            )}
                         </motion.h1>
 
                         {/* Description */}
@@ -365,8 +563,18 @@ export function Hero({
                             variants={staggerItem}
                             className="max-w-xl text-xs leading-relaxed text-[#5C564C] sm:text-sm md:text-base lg:text-[15px]"
                         >
-                            {heroDescription}
+                            {heroSubtitle || heroDescription}
                         </motion.p>
+
+                        {/* Optional Atelier Tagline from CMS */}
+                        {heroTagline && (
+                            <motion.p
+                                variants={staggerItem}
+                                className="font-serif text-xs text-[#7A5B24] italic sm:text-[13px]"
+                            >
+                                “{heroTagline}”
+                            </motion.p>
+                        )}
 
                         {/* Action Buttons */}
                         <motion.div
@@ -376,6 +584,7 @@ export function Hero({
                             <MagneticButton>
                                 <a
                                     href="#koleksi"
+                                    aria-label="Jelajahi Koleksi Hampers"
                                     className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#0E2A1E] px-6 py-3 text-[11px] font-bold tracking-[0.14em] text-white shadow-sm transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md sm:px-7 sm:py-3.5 sm:text-xs"
                                 >
                                     <span>JELAJAHI KOLEKSI</span>
@@ -388,6 +597,7 @@ export function Hero({
                                     href={whatsappUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label="Konsultasi Hampers via WhatsApp"
                                     className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#D5CEC2] bg-white px-5 py-3 text-[11px] font-bold tracking-[0.12em] text-[#0E2A1E] shadow-2xs transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#FAF8F5] sm:px-6.5 sm:py-3.5 sm:text-xs"
                                 >
                                     <WhatsAppIcon className="size-4 text-[#25D366]" />
@@ -480,3 +690,4 @@ export function Hero({
 }
 
 export const HeroSection = Hero;
+export default Hero;

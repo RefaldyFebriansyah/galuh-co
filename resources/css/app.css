@@ -9,9 +9,10 @@
 
 @theme {
     --font-sans:
-        'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui,
-        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+        'Inter', 'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif,
+        system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
     --font-serif:
         'Cormorant Garamond', 'Playfair Display', Georgia, Cambria,
@@ -199,5 +200,14 @@
         box-shadow:
             0 20px 40px -15px rgba(20, 54, 40, 0.08),
             0 0 1px rgba(20, 54, 40, 0.1);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }

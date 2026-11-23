@@ -1,391 +1,542 @@
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import {
-    Building2,
-    ChevronRight,
+    ArrowUpRight,
+    Calendar,
+    CheckCircle2,
+    Clock,
+    ExternalLink,
+    FileText,
     Gift,
-    Inbox,
     MessageSquare,
     Package,
+    Palette,
     Plus,
-    Sliders,
+    Send,
+    Settings,
+    Sparkles,
+    TrendingUp,
 } from 'lucide-react';
 import { AdminLayout } from '@/layouts/admin-layout';
-import type { Inquiry } from '@/types';
+
+interface LeadSourceStat {
+    source: string;
+    key: string;
+    count: number;
+    color: string;
+}
+
+interface WaLeadItem {
+    id: number;
+    client_name: string;
+    client_company?: string | null;
+    company_name?: string | null;
+    whatsapp_number?: string | null;
+    wa_number?: string | null;
+    source: string;
+    package_name?: string | null;
+    quantity_estimate?: number | null;
+    estimated_packages?: string | null;
+    status: string;
+    status_label?: string;
+    notes?: string | null;
+    created_at: string;
+    wa_link?: string;
+}
 
 interface DashboardProps {
-    stats: {
+    kpis: {
+        wa_clicks_this_week: number;
+        active_b2b_negotiations: number;
+        most_popular_package: string;
+        nearest_delivery?: unknown;
+    };
+    lead_source_stats: LeadSourceStat[];
+    recent_wa_leads: WaLeadItem[];
+    catalog_stats: {
+        total_hampers: number;
+        active_hampers: number;
+        total_inquiries: number;
+        deal_orders_count: number;
+    };
+    whatsapp_concierge: string;
+    stats?: {
         productsTotal: number;
         productsActive: number;
         categoryCounts: Record<string, number>;
         inquiriesTotal: number;
         inquiriesNew: number;
     };
-    recentInquiries: Inquiry[];
-    whatsappNumber: string;
 }
 
 export default function AdminDashboard({
+    kpis,
+    lead_source_stats,
+    recent_wa_leads,
+    catalog_stats,
+    whatsapp_concierge,
     stats,
-    recentInquiries,
-    whatsappNumber: _whatsappNumber,
 }: DashboardProps) {
-    // Stat cards without rainbow AI boxes - quiet luxury atelier style
-    const statCards = [
-        {
-            label: 'Total Katalog',
-            value: stats.productsTotal,
-            unit: 'Hampers',
-            statusDot: 'bg-emerald-500',
-            statusText: `${stats.productsActive} produk aktif di website`,
-            icon: Gift,
-        },
-        {
-            label: 'Produk Aktif',
-            value: stats.productsActive,
-            unit: 'Tayang',
-            statusDot: 'bg-emerald-500',
-            statusText: 'Ditampilkan ke pengunjung',
-            icon: Package,
-        },
-        {
-            label: 'Leads & Inquiry',
-            value: stats.inquiriesTotal,
-            unit: 'Permintaan',
-            statusDot: 'bg-stone-400',
-            statusText: 'Total formulir masuk',
-            icon: Inbox,
-        },
-        {
-            label: 'Perlu Respon Segera',
-            value: stats.inquiriesNew,
-            unit: 'Menunggu',
-            statusDot: stats.inquiriesNew > 0 ? 'bg-amber-500' : 'bg-stone-300',
-            statusText:
-                stats.inquiriesNew > 0
-                    ? `${stats.inquiriesNew} leads belum dihubungi`
-                    : 'Semua leads sudah ditindaklanjuti',
-            icon: MessageSquare,
-        },
-    ];
+    const totalLeadSourcesCount = lead_source_stats.reduce(
+        (acc, curr) => acc + curr.count,
+        0
+    );
 
-    const getStatusChip = (status: string | undefined) => {
+    const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'completed':
+            case 'deal':
+            case 'deal_produksi':
                 return {
                     label: 'Deal / Selesai',
-                    dot: 'bg-emerald-500',
-                    badge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                    bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
                 };
-            case 'contacted':
+            case 'negosiasi_custom':
                 return {
-                    label: 'Dihubungi',
-                    dot: 'bg-sky-500',
-                    badge: 'bg-sky-50 text-sky-800 border-sky-200',
+                    label: 'Negosiasi',
+                    bg: 'bg-purple-50 text-purple-700 border-purple-200',
                 };
-            case 'cancelled':
+            case 'kirim_katalog':
                 return {
-                    label: 'Dibatalkan',
-                    dot: 'bg-stone-400',
-                    badge: 'bg-stone-100 text-stone-600 border-stone-200',
+                    label: 'Kirim Katalog',
+                    bg: 'bg-sky-50 text-sky-700 border-sky-200',
+                };
+            case 'batal':
+                return {
+                    label: 'Batal',
+                    bg: 'bg-slate-100 text-slate-600 border-slate-200',
                 };
             default:
                 return {
-                    label: 'Menunggu',
-                    dot: 'bg-amber-500',
-                    badge: 'bg-amber-50 text-amber-800 border-amber-200',
+                    label: 'Chat Baru',
+                    bg: 'bg-amber-50 text-amber-800 border-amber-200',
                 };
         }
     };
 
-    const formatIdr = (val: string | number | null | undefined) => {
-        if (!val) return 'Fleksibel';
-        if (typeof val === 'number') {
-            return `Rp ${val.toLocaleString('id-ID')}`;
-        }
-        const numeric = Number(val.replace(/[^0-9]/g, ''));
-        if (isNaN(numeric) || numeric === 0) return val;
-        return `Rp ${numeric.toLocaleString('id-ID')}`;
-    };
-
-    const formatDate = (dateStr: string | null | undefined) => {
-        if (!dateStr) return '-';
-        try {
-            return new Date(dateStr).toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'short',
-            });
-        } catch {
-            return dateStr;
-        }
-    };
-
-    const getWhatsAppUrl = (inquiry: Inquiry) => {
-        let cleanNumber = (inquiry.whatsapp_number || '').replace(
-            /[^0-9]/g,
-            '',
-        );
-        if (cleanNumber.startsWith('0')) {
-            cleanNumber = '62' + cleanNumber.slice(1);
-        }
-        const greeting = `Halo Kak ${inquiry.name}${inquiry.company_name ? ` dari *${inquiry.company_name}*` : ''}, salam dari GALUH & CO. Hampers. Kami ingin mengonfirmasi permintaan konsultasi hampers Anda.`;
-        return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(greeting)}`;
-    };
-
-    const totalCategoryCount = Object.values(stats.categoryCounts).reduce(
-        (a, b) => a + b,
-        0,
-    );
-
     return (
-        <AdminLayout title="Dashboard Studio">
+        <AdminLayout
+            title="Dashboard Operasional"
+            subtitle="Ringkasan katalog hampers, inquiries masuk, dan performa interaksi website"
+            headerAction={
+                <div className="flex items-center gap-2">
+                    <a
+                        href="/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors"
+                    >
+                        <ExternalLink className="size-3.5 text-slate-500" />
+                        <span>Lihat Website</span>
+                    </a>
+                    <Link
+                        href="/admin/katalog"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                    >
+                        <Package className="size-3.5" />
+                        <span>Kelola Katalog</span>
+                    </Link>
+                </div>
+            }
+        >
+            <Head title="Dashboard — Admin Galuh & Co." />
+
             <div className="space-y-6">
-                {/* Header Action Bar */}
-                <div className="flex flex-col gap-4 rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h2 className="font-serif text-base font-bold text-[#1C1A18]">
-                            Atelier CMS &amp; Sales Command
-                        </h2>
-                        <p className="mt-0.5 text-xs text-[#7A746B]">
-                            Kelola koleksi hampers eksklusif, pantau permintaan
-                            korporat, dan kelola identitas brand.
+                {/* 1. Standard Admin KPI Metric Cards (Grid 4 Cols) */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {/* Card 1: Inquiries */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Inquiries Masuk
+                            </span>
+                            <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                                <FileText className="size-4.5" />
+                            </div>
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                            <span className="text-3xl font-bold tracking-tight text-slate-900">
+                                {catalog_stats.total_inquiries}
+                            </span>
+                            <span className="text-xs text-slate-500">
+                                Permintaan
+                            </span>
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500">
+                            Proposal corporate dari website
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <Link
-                            href="/admin/products/create"
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E2A1E] px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#153e2d]"
-                        >
-                            <Plus className="size-3.5" />
-                            <span>Tambah Hampers</span>
-                        </Link>
+                    {/* Card 2: Active Catalog Hampers */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Katalog Hampers Aktif
+                            </span>
+                            <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                                <Package className="size-4.5" />
+                            </div>
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                            <span className="text-3xl font-bold tracking-tight text-slate-900">
+                                {catalog_stats.active_hampers}
+                            </span>
+                            <span className="text-xs text-slate-500">
+                                Dari {catalog_stats.total_hampers} Paket
+                            </span>
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500">
+                            Paket tayang di landing page
+                        </p>
+                    </div>
 
-                        <Link
-                            href="/admin/settings"
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3.5 py-2 text-xs font-medium text-[#2C2925] shadow-2xs transition-colors hover:border-[#0E2A1E]"
-                        >
-                            <Sliders className="size-3.5 text-[#9E7E45]" />
-                            <span>Pengaturan Situs</span>
-                        </Link>
+                    {/* Card 3: Most Popular Package */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Paket Paling Diminati
+                            </span>
+                            <div className="flex size-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+                                <Sparkles className="size-4.5" />
+                            </div>
+                        </div>
+                        <div className="mt-3">
+                            <h4 className="text-base font-bold text-slate-900 line-clamp-1">
+                                {kpis.most_popular_package}
+                            </h4>
+                            <p className="mt-1 text-xs text-slate-500">
+                                Paling sering ditanyakan di WhatsApp
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card 4: WhatsApp Clicks This Week */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Interaksi WA Minggu Ini
+                            </span>
+                            <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                                <MessageSquare className="size-4.5" />
+                            </div>
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                            <span className="text-3xl font-bold tracking-tight text-slate-900">
+                                {kpis.wa_clicks_this_week}
+                            </span>
+                            <span className="text-xs text-slate-500">
+                                Interaksi
+                            </span>
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500">
+                            Klik konsultasi WhatsApp dari web
+                        </p>
                     </div>
                 </div>
 
-                {/* 4 Metric Cards */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {statCards.map((card) => {
-                        const Icon = card.icon;
-                        return (
-                            <div
-                                key={card.label}
-                                className="group rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs transition-all hover:border-[#D0C7B7]"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[11px] font-semibold tracking-wider text-[#827A6E] uppercase">
-                                        {card.label}
-                                    </span>
-                                    <Icon className="size-4 text-[#A8A196] transition-colors group-hover:text-[#0E2A1E]" />
-                                </div>
-
-                                <div className="mt-3 flex items-baseline gap-2">
-                                    <span className="font-sans text-3xl font-bold tracking-tight text-[#1C1A18] tabular-nums">
-                                        {card.value}
-                                    </span>
-                                    <span className="text-xs font-medium text-[#8C8479]">
-                                        {card.unit}
-                                    </span>
-                                </div>
-
-                                <div className="mt-2.5 flex items-center gap-1.5 border-t border-[#F2EDE4] pt-2.5 text-[11px] text-[#6E675D]">
-                                    <span
-                                        className={`size-1.5 shrink-0 rounded-full ${card.statusDot}`}
-                                    />
-                                    <span className="truncate">
-                                        {card.statusText}
-                                    </span>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                {/* Main 2-Column Content Grid */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-                    {/* Left: Category Breakdown (5 Cols) */}
-                    <div className="flex flex-col rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs lg:col-span-5">
-                        <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-3.5">
+                {/* 2. Middle Row: Lead Source Analytics & Quick Actions */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {/* Left: Lead Sources Distribution (2 Cols) */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs lg:col-span-2">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                             <div>
-                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
-                                    Distribusi Katalog
+                                <h3 className="text-sm font-bold text-slate-900">
+                                    Distribusi Sumber Lead Website
                                 </h3>
-                                <p className="text-[11px] text-[#7A746B]">
-                                    Sebaran hampers aktif per kategori
+                                <p className="text-xs text-slate-500">
+                                    Bagian halaman yang paling banyak memicu percakapan WhatsApp
                                 </p>
                             </div>
-                            <Link
-                                href="/admin/products"
-                                className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0E2A1E] hover:underline"
-                            >
-                                <span>Lihat Semua</span>
-                                <ChevronRight className="size-3" />
-                            </Link>
+                            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                                Total {totalLeadSourcesCount} Interaksi
+                            </span>
                         </div>
 
-                        <div className="mt-4 flex-1 space-y-3.5">
-                            {Object.entries(stats.categoryCounts).map(
-                                ([cat, count]) => {
-                                    const percentage =
-                                        totalCategoryCount > 0
-                                            ? Math.round(
-                                                  (count / totalCategoryCount) *
-                                                      100,
-                                              )
-                                            : 0;
+                        <div className="mt-5 space-y-4">
+                            {lead_source_stats.map((stat) => {
+                                const percentage =
+                                    totalLeadSourcesCount > 0
+                                        ? Math.round((stat.count / totalLeadSourcesCount) * 100)
+                                        : 0;
 
-                                    return (
-                                        <div key={cat} className="space-y-1.5">
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="font-medium text-[#2C2925]">
-                                                    {cat}
+                                return (
+                                    <div key={stat.key} className="space-y-1.5">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="font-medium text-slate-700">
+                                                {stat.source}
+                                            </span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400">
+                                                    {stat.count} leads
                                                 </span>
-                                                <span className="font-semibold text-[#1C1A18] tabular-nums">
-                                                    {count}{' '}
-                                                    <span className="text-[10px] font-normal text-[#8C8479]">
-                                                        ({percentage}%)
-                                                    </span>
+                                                <span className="font-bold text-slate-900">
+                                                    {percentage}%
                                                 </span>
-                                            </div>
-                                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F0EBE1]">
-                                                <div
-                                                    className="h-full rounded-full bg-[#0E2A1E] transition-all duration-500"
-                                                    style={{
-                                                        width: `${percentage}%`,
-                                                    }}
-                                                />
                                             </div>
                                         </div>
-                                    );
-                                },
-                            )}
-                        </div>
-
-                        <div className="mt-5 rounded-lg border border-[#EBE3D5] bg-[#FAF8F5] p-3.5 text-center">
-                            <p className="text-[11px] text-[#6E675D]">
-                                Butuh menambah varian edisi spesial baru?
-                            </p>
-                            <Link
-                                href="/admin/products/create"
-                                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[#0E2A1E] hover:underline"
-                            >
-                                <Plus className="size-3" />
-                                <span>Tambah Hampers Baru Sekarang</span>
-                            </Link>
+                                        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                                            <div
+                                                className="h-full rounded-full transition-all duration-300"
+                                                style={{
+                                                    width: `${Math.max(percentage, 4)}%`,
+                                                    backgroundColor: stat.color,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
-                    {/* Right: Recent Inquiries (7 Cols) */}
-                    <div className="flex flex-col rounded-xl border border-[#E7E2D8] bg-white p-5 shadow-2xs lg:col-span-7">
-                        <div className="flex items-center justify-between border-b border-[#F0EBE1] pb-3.5">
-                            <div>
-                                <h3 className="text-xs font-bold tracking-wider text-[#1C1A18] uppercase">
-                                    Inquiries &amp; Leads Terbaru
+                    {/* Right: Quick Action Hub (1 Col) */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col justify-between">
+                        <div>
+                            <div className="border-b border-slate-100 pb-3">
+                                <h3 className="text-sm font-bold text-slate-900">
+                                    Pusat Aksi Cepat
                                 </h3>
-                                <p className="text-[11px] text-[#7A746B]">
-                                    Permintaan konsultasi hampers korporat
+                                <p className="text-xs text-slate-500">
+                                    Pintasan navigasi modul backoffice
+                                </p>
+                            </div>
+
+                            <div className="mt-4 space-y-2">
+                                <Link
+                                    href="/admin/inquiries"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="flex size-7 items-center justify-center rounded-md bg-emerald-100 text-emerald-700">
+                                            <FileText className="size-3.5" />
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold block">Inquiries Website</span>
+                                            <span className="text-[11px] text-slate-500">Proposal corporate masuk</span>
+                                        </div>
+                                    </div>
+                                    <ArrowUpRight className="size-3.5 text-slate-400" />
+                                </Link>
+
+                                <Link
+                                    href="/admin/katalog"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="flex size-7 items-center justify-center rounded-md bg-blue-100 text-blue-700">
+                                            <Package className="size-3.5" />
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold block">Katalog Hampers</span>
+                                            <span className="text-[11px] text-slate-500">Kelola paket &amp; foto</span>
+                                        </div>
+                                    </div>
+                                    <ArrowUpRight className="size-3.5 text-slate-400" />
+                                </Link>
+
+                                <Link
+                                    href="/admin/pengaturan"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="flex size-7 items-center justify-center rounded-md bg-amber-100 text-amber-700">
+                                            <Settings className="size-3.5" />
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold block">Pengaturan Sistem</span>
+                                            <span className="text-[11px] text-slate-500">Nomor WA &amp; akun staf</span>
+                                        </div>
+                                    </div>
+                                    <ArrowUpRight className="size-3.5 text-slate-400" />
+                                </Link>
+
+                                <Link
+                                    href="/admin/cms-halaman"
+                                    className="flex items-center justify-between rounded-lg border border-slate-200 p-2.5 text-xs text-slate-700 hover:border-emerald-500 hover:bg-emerald-50/40 hover:text-emerald-900 transition-colors"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="flex size-7 items-center justify-center rounded-md bg-purple-100 text-purple-700">
+                                            <Palette className="size-3.5" />
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold block">Konten Website</span>
+                                            <span className="text-[11px] text-slate-500">Banner, testimoni &amp; FAQ</span>
+                                        </div>
+                                    </div>
+                                    <ArrowUpRight className="size-3.5 text-slate-400" />
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span>WhatsApp Resmi:</span>
+                            <span className="font-mono font-semibold text-slate-800">
+                                +{whatsapp_concierge}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Bottom Row: Recent Inquiries & Catalog Breakdown */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    {/* Recent Inquiries List */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-900">
+                                    Inquiries Website Terbaru
+                                </h3>
+                                <p className="text-xs text-slate-500">
+                                    Permintaan proposal penawaran yang baru masuk dari website
                                 </p>
                             </div>
                             <Link
                                 href="/admin/inquiries"
-                                className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0E2A1E] hover:underline"
+                                className="text-xs font-semibold text-emerald-600 hover:text-emerald-700"
                             >
-                                <span>
-                                    Semua Leads ({stats.inquiriesTotal})
-                                </span>
-                                <ChevronRight className="size-3" />
+                                Lihat Semua →
                             </Link>
                         </div>
 
-                        {recentInquiries.length === 0 ? (
-                            <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-                                <Inbox className="size-8 stroke-1 text-[#C0B9AD]" />
-                                <p className="mt-2 text-xs font-medium text-[#4D4841]">
-                                    Belum ada inquiry masuk
-                                </p>
-                                <p className="text-[11px] text-[#8C8479]">
-                                    Form konsultasi di landing page siap
-                                    menerima leads klien.
-                                </p>
-                            </div>
-                        ) : (
-                            <div className="mt-3 divide-y divide-[#F2EDE4]">
-                                {recentInquiries.slice(0, 5).map((inquiry) => {
-                                    const chip = getStatusChip(inquiry.status);
+                        <div className="mt-4 divide-y divide-slate-100">
+                            {recent_wa_leads.length === 0 ? (
+                                <div className="py-8 text-center text-xs text-slate-400">
+                                    Belum ada aktivitas konsultasi WhatsApp terbaru.
+                                </div>
+                            ) : (
+                                recent_wa_leads.map((lead) => {
+                                    const badge = getStatusBadge(lead.status);
+                                    const phoneNum = lead.wa_number || lead.whatsapp_number || '';
+                                    const cleanPhone = phoneNum.replace(/\D/g, '');
+                                    const clientName = lead.client_name || 'Bpk/Ibu';
+                                    const directWa =
+                                        lead.wa_link ||
+                                        (cleanPhone
+                                            ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+                                                `Halo ${clientName}, terima kasih telah menghubungi Concierge GALUH & CO.`
+                                            )}`
+                                            : '#');
+                                    const compName = lead.company_name || lead.client_company;
+                                    const boxQty =
+                                        lead.estimated_packages ||
+                                        (lead.quantity_estimate ? `${lead.quantity_estimate} box` : null);
+
                                     return (
                                         <div
-                                            key={inquiry.id}
-                                            className="flex items-center justify-between gap-3 py-3 text-xs"
+                                            key={lead.id}
+                                            className="flex flex-col justify-between gap-3 py-3.5 sm:flex-row sm:items-center"
                                         >
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="truncate font-semibold text-[#1C1A18]">
-                                                        {inquiry.name}
-                                                    </span>
-                                                    {inquiry.company_name && (
-                                                        <span className="inline-flex shrink-0 items-center gap-1 rounded bg-[#F4EFE6] px-1.5 py-0.5 text-[10px] font-medium text-[#0E2A1E]">
-                                                            <Building2 className="size-2.5 text-[#9E7E45]" />
-                                                            {
-                                                                inquiry.company_name
-                                                            }
+                                                    <h4 className="truncate text-xs font-bold text-slate-900">
+                                                        {lead.client_name || 'Klien Concierge'}
+                                                    </h4>
+                                                    {compName && (
+                                                        <span className="truncate text-xs text-slate-400">
+                                                            • {compName}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[#7A746B]">
-                                                    <span>
-                                                        {inquiry.estimated_packages
-                                                            ? `${inquiry.estimated_packages} pax`
-                                                            : 'Kustom'}
-                                                    </span>
-                                                    <span>•</span>
-                                                    <span>
-                                                        {formatIdr(
-                                                            inquiry.budget_per_package,
-                                                        )}
-                                                    </span>
-                                                    <span>•</span>
-                                                    <span>
-                                                        {formatDate(
-                                                            inquiry.created_at,
-                                                        )}
-                                                    </span>
-                                                </div>
+                                                <p className="mt-0.5 truncate text-xs text-slate-500">
+                                                    {lead.package_name ?? 'Konsultasi Kustom'}
+                                                    {boxQty ? ` • ${boxQty}` : ''}
+                                                </p>
                                             </div>
 
-                                            <div className="flex shrink-0 items-center gap-2">
+                                            <div className="flex items-center gap-2 shrink-0">
                                                 <span
-                                                    className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-medium ${chip.badge}`}
+                                                    className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${badge.bg}`}
                                                 >
-                                                    <span
-                                                        className={`size-1.5 rounded-full ${chip.dot}`}
-                                                    />
-                                                    {chip.label}
+                                                    {badge.label}
                                                 </span>
-
                                                 <a
-                                                    href={getWhatsAppUrl(
-                                                        inquiry,
-                                                    )}
+                                                    href={directWa}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    title="Chat via WhatsApp"
-                                                    className="inline-flex size-7 items-center justify-center rounded-lg border border-[#D5CEC2] bg-white text-[#25D366] transition-colors hover:border-[#25D366] hover:bg-[#25D366]/5"
+                                                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-800 transition-colors"
+                                                    title="Follow up via WhatsApp"
                                                 >
-                                                    <MessageSquare className="size-3.5" />
+                                                    <Send className="size-3 text-emerald-600" />
+                                                    <span>Follow Up</span>
                                                 </a>
                                             </div>
                                         </div>
                                     );
-                                })}
+                                })
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Catalog & System Overview */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col justify-between">
+                        <div>
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h3 className="text-sm font-bold text-slate-900">
+                                        Status Katalog &amp; Website
+                                    </h3>
+                                    <p className="text-xs text-slate-500">
+                                        Distribusi kategori hampers dan integrasi WhatsApp
+                                    </p>
+                                </div>
+                                <Link
+                                    href="/admin/katalog"
+                                    className="text-xs font-semibold text-emerald-600 hover:text-emerald-700"
+                                >
+                                    Kelola Katalog →
+                                </Link>
                             </div>
-                        )}
+
+                            {/* Category Distribution */}
+                            <div className="mt-4 space-y-3">
+                                <span className="text-xs font-semibold text-slate-700 block">
+                                    Kategori Paket Hampers:
+                                </span>
+                                {stats?.categoryCounts && Object.keys(stats.categoryCounts).length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        {Object.entries(stats.categoryCounts).map(([cat, count]) => (
+                                            <div
+                                                key={cat}
+                                                className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2 text-xs"
+                                            >
+                                                <span className="font-medium text-slate-700 truncate">
+                                                    {cat}
+                                                </span>
+                                                <span className="font-bold text-slate-900 bg-white border border-slate-200 rounded-md px-2 py-0.5 text-[11px]">
+                                                    {count} paket
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-xs text-slate-400 py-2">
+                                        {catalog_stats.active_hampers} paket aktif terdaftar di sistem.
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* System Status Banner */}
+                            <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50/60 p-3.5">
+                                <div className="flex items-center gap-2">
+                                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
+                                    <span className="text-xs font-bold text-emerald-900">
+                                        Concierge WhatsApp Siap Menerima Pesan
+                                    </span>
+                                </div>
+                                <p className="mt-1 text-[11px] text-emerald-700 leading-relaxed">
+                                    Semua tombol konsultasi di halaman utama terhubung langsung ke nomor WhatsApp resmi +{whatsapp_concierge}.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span>Konfigurasi Concierge:</span>
+                            <Link
+                                href="/admin/pengaturan"
+                                className="font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1"
+                            >
+                                <Settings className="size-3.5" />
+                                <span>Buka Pengaturan</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+﻿import { Head, Link, router } from '@inertiajs/react';
 import {
     Edit3,
     ExternalLink,
@@ -186,7 +186,7 @@ export default function ProductsIndex({
                                 • Total {products.total} Koleksi
                             </span>
                         </div>
-                        <h2 className="mt-1 font-serif text-2xl font-bold text-[#1A1815]">
+                        <h2 className="mt-1 text-2xl font-bold text-[#1A1815]">
                             Katalog Hampers Galuh &amp; Co.
                         </h2>
                         <p className="mt-0.5 text-xs text-[#6E6962]">
@@ -213,7 +213,7 @@ export default function ProductsIndex({
                             Total Koleksi
                         </span>
                         <div className="mt-1 flex items-baseline gap-2">
-                            <span className="font-serif text-2xl font-bold text-[#1A1815]">
+                            <span className="text-2xl font-bold text-[#1A1815]">
                                 {products.total}
                             </span>
                             <span className="text-[11px] text-[#6E6962]">
@@ -228,7 +228,7 @@ export default function ProductsIndex({
                             Tayang di Website
                         </span>
                         <div className="mt-1 flex items-baseline gap-2">
-                            <span className="font-serif text-2xl font-bold text-emerald-800">
+                            <span className="text-2xl font-bold text-emerald-800">
                                 {activeCount}
                             </span>
                             <span className="text-[11px] text-[#6E6962]">
@@ -243,7 +243,7 @@ export default function ProductsIndex({
                             Draft / Disimpan
                         </span>
                         <div className="mt-1 flex items-baseline gap-2">
-                            <span className="font-serif text-2xl font-bold text-[#5C564C]">
+                            <span className="text-2xl font-bold text-[#5C564C]">
                                 {draftCount}
                             </span>
                             <span className="text-[11px] text-[#6E6962]">
@@ -257,7 +257,7 @@ export default function ProductsIndex({
                             Kategori Tersedia
                         </span>
                         <div className="mt-1 flex items-baseline gap-2">
-                            <span className="font-serif text-2xl font-bold text-[#1A1815]">
+                            <span className="text-2xl font-bold text-[#1A1815]">
                                 {categories.length}
                             </span>
                             <span className="text-[11px] text-[#6E6962]">
@@ -358,7 +358,7 @@ export default function ProductsIndex({
                             <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-[#EAE5DC] bg-[#FAF8F5] text-[#8C877E]">
                                 <Package className="size-6 text-[#C5A880]" />
                             </div>
-                            <h3 className="font-serif text-base font-bold text-[#1A1815]">
+                            <h3 className="text-base font-bold text-[#1A1815]">
                                 Tidak Ada Hampers Ditemukan
                             </h3>
                             <p className="mx-auto max-w-sm text-xs text-[#6E6962]">
@@ -860,7 +860,7 @@ export default function ProductsIndex({
                             </div>
 
                             <div>
-                                <h3 className="font-serif text-lg font-bold text-[#1A1815]">
+                                <h3 className="text-lg font-bold text-[#1A1815]">
                                     Hapus Produk Hampers?
                                 </h3>
                                 <p className="mt-1.5 text-xs leading-relaxed text-[#6E6962]">

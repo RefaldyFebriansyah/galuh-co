@@ -34,8 +34,19 @@ class Setting extends Model
     {
         return Cache::remember("setting_{$key}", 3600, function () use ($key, $default) {
             $setting = static::where('key', $key)->first();
+            if (! $setting) {
+                return $default;
+            }
 
-            return $setting->value ?? $default;
+            $val = $setting->value;
+            if ($setting->type === 'array' || (is_string($val) && (str_starts_with(trim($val), '[') || str_starts_with(trim($val), '{')))) {
+                $decoded = json_decode($val, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return $decoded;
+                }
+            }
+
+            return $val ?? $default;
         });
     }
 
@@ -103,6 +114,15 @@ class Setting extends Model
         return Cache::remember('landing_page_settings', 3600, function () {
             $settings = static::all()->pluck('value', 'key');
 
+            $aboutPillarsRaw = $settings->get('about_pillars');
+            $aboutPillars = null;
+            if ($aboutPillarsRaw) {
+                $decoded = is_string($aboutPillarsRaw) ? json_decode($aboutPillarsRaw, true) : $aboutPillarsRaw;
+                if (is_array($decoded)) {
+                    $aboutPillars = $decoded;
+                }
+            }
+
             return [
                 'whatsapp_number' => $settings->get('whatsapp_number', (string) config('services.whatsapp.number', '6281572414233')),
                 'contact_email' => $settings->get('contact_email', 'halo@galuh.co'),
@@ -117,6 +137,12 @@ class Setting extends Model
                 'hero_badge' => $settings->get('hero_badge', '✦ ATELIER HAMPERS & KADO KORPORAT ✦'),
                 'hero_title_prefix' => $settings->get('hero_title_prefix', 'Hampers Eksklusif'),
                 'hero_description' => $settings->get('hero_description', 'Pilihan hampers premium dan hadiah perusahaan dengan kemasan eksklusif. Siap melengkapi setiap momen istimewa Anda dengan mudah dan berkelas.'),
+                'active_edition' => $settings->get('active_edition', 'Idul Fitri & Ramadan 1447 H'),
+                'hero_eyebrow' => $settings->get('hero_eyebrow', 'GALUH & CO. • ATELIER BINGKISAN'),
+                'hero_title' => $settings->get('hero_title', 'Kriya Bingkisan untuk Momen yang Tak Diulang.'),
+                'hero_subtitle' => $settings->get('hero_subtitle', 'Kurasi hantaran mewah berbalut hardbox zamrud dan anyaman bambu artisanal untuk representasi prestisius keluarga dan korporat.'),
+                'hero_tagline' => $settings->get('hero_tagline', 'Sentuhan Ketulusan di Setiap Kotak Hadiah'),
+                'about_pillars' => $aboutPillars,
             ];
         });
     }

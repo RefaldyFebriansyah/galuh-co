@@ -1,19 +1,33 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { AnimatePresence, motion } from 'motion/react';
 import {
+    ArrowRight,
+    Award,
+    Bookmark,
+    Calendar,
     CheckCircle2,
+    ChevronDown,
     ChevronRight,
+    Command,
     ExternalLink,
-    Gift,
-    Inbox,
+    FileText,
+    Layers,
     LayoutDashboard,
     LogOut,
     Menu,
-    Sliders,
+    MessageSquare,
+    Package,
+    Palette,
+    Plus,
+    Search,
+    Settings,
+    Shield,
+    Sparkles,
+    UserCheck,
     X,
-    AlertCircle,
 } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GaluhLogo } from '@/components/galuh-logo';
 
 interface AdminLayoutProps extends PropsWithChildren {
@@ -22,15 +36,37 @@ interface AdminLayoutProps extends PropsWithChildren {
     headerAction?: ReactNode;
 }
 
+interface NavItem {
+    label: string;
+    shortLabel?: string;
+    href: string;
+    icon: typeof LayoutDashboard;
+    description: string;
+    badge?: string;
+}
+
+interface NavGroup {
+    domain: string;
+    items: NavItem[];
+}
+
 export function AdminLayout({
-    title = 'Admin Panel',
-    subtitle: _subtitle,
+    title = 'Dashboard',
+    subtitle,
     headerAction,
     children,
 }: AdminLayoutProps) {
     const { url } = usePage();
     const pageProps = usePage().props as {
-        auth?: { user?: { name: string; email: string } };
+        auth?: {
+            user?: {
+                id: number;
+                name: string;
+                email: string;
+                role?: string;
+                phone_number?: string;
+            };
+        };
         flash?: { success?: string; error?: string };
     };
 
@@ -38,6 +74,9 @@ export function AdminLayout({
     const flash = pageProps.flash;
 
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [searchModalOpen, setSearchModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
@@ -51,301 +90,376 @@ export function AdminLayout({
         if (flash?.success) {
             setToastMessage(flash.success);
             setToastType('success');
-            const timer = setTimeout(() => setToastMessage(null), 4500);
+            const timer = setTimeout(() => setToastMessage(null), 4000);
             return () => clearTimeout(timer);
         }
         if (flash?.error) {
             setToastMessage(flash.error);
             setToastType('error');
-            const timer = setTimeout(() => setToastMessage(null), 5500);
+            const timer = setTimeout(() => setToastMessage(null), 5000);
             return () => clearTimeout(timer);
         }
     }, [flash]);
 
-    const navItems = [
-        {
-            label: 'Dashboard',
-            href: '/admin',
-            active: url === '/admin' || url === '/admin/dashboard',
-            icon: LayoutDashboard,
-        },
-        {
-            label: 'Katalog Hampers',
-            href: '/admin/products',
-            active: url.startsWith('/admin/products'),
-            icon: Gift,
-        },
-        {
-            label: 'Inquiry & Leads',
-            href: '/admin/inquiries',
-            active: url.startsWith('/admin/inquiries'),
-            icon: Inbox,
-        },
-        {
-            label: 'Pengaturan Situs',
-            href: '/admin/settings',
-            active: url.startsWith('/admin/settings'),
-            icon: Sliders,
-        },
-    ];
+    // Global Cmd+K / Ctrl+K keyboard shortcut
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setSearchModalOpen((prev) => !prev);
+            } else if (e.key === 'Escape') {
+                setSearchModalOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    // Clean, standard Admin Navigation Groups
+    const navGroups: NavGroup[] = useMemo(
+        () => [
+            {
+                domain: 'MENU UTAMA',
+                items: [
+                    {
+                        label: 'Dashboard',
+                        shortLabel: 'Dashboard',
+                        href: '/admin/dashboard',
+                        icon: LayoutDashboard,
+                        description: 'Ringkasan operasional dan katalog website',
+                    },
+                ],
+            },
+            {
+                domain: 'KATALOG & WEBSITE',
+                items: [
+                    {
+                        label: 'Katalog Hampers',
+                        shortLabel: 'Katalog',
+                        href: '/admin/katalog',
+                        icon: Package,
+                        description: 'Kelola paket hampers, varian kemasan, dan foto produk',
+                    },
+                    {
+                        label: 'Konten Website',
+                        shortLabel: 'Konten Web',
+                        href: '/admin/cms-halaman',
+                        icon: Palette,
+                        description: 'Edit banner hero musim aktif, filosofi, testimoni, dan FAQ',
+                    },
+                ],
+            },
+            {
+                domain: 'PESAN & INQUIRIES',
+                items: [
+                    {
+                        label: 'Inquiries Website',
+                        shortLabel: 'Inquiries',
+                        href: '/admin/inquiries',
+                        icon: FileText,
+                        description: 'Permintaan proposal penawaran corporate dari formulir web',
+                    },
+                ],
+            },
+            {
+                domain: 'PENGATURAN',
+                items: [
+                    {
+                        label: 'Pengaturan Sistem',
+                        shortLabel: 'Pengaturan',
+                        href: '/admin/pengaturan',
+                        icon: Settings,
+                        description: 'Nomor WhatsApp resmi, jam operasional, dan akun staf',
+                    },
+                ],
+            },
+        ],
+        []
+    );
+
+    // Flattened items for Cmd+K search
+    const allNavItems = useMemo(
+        () => navGroups.flatMap((g) => g.items),
+        [navGroups]
+    );
+
+    const filteredQuickSearch = useMemo(() => {
+        if (!searchQuery.trim()) return allNavItems;
+        const q = searchQuery.toLowerCase();
+        return allNavItems.filter(
+            (item) =>
+                item.label.toLowerCase().includes(q) ||
+                item.description.toLowerCase().includes(q) ||
+                item.href.toLowerCase().includes(q)
+        );
+    }, [allNavItems, searchQuery]);
+
+    const isCurrentActive = (href: string) => {
+        if (href === '/admin/dashboard') {
+            return url === '/admin' || url === '/admin/dashboard';
+        }
+        return url.startsWith(href);
+    };
 
     return (
         <>
-            <Head title={`${title} — Galuh & Co. CMS Studio`} />
+            <Head title={`${title} — Galuh & Co. Admin Panel`} />
 
-            <div className="flex min-h-screen bg-[#F8F7F4] text-[#1C1A18] antialiased">
-                {/* 1. Desktop Fixed Sidebar */}
-                <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col justify-between border-r border-[#1B3628] bg-[#0A1F16] text-[#E8ECE9] lg:flex">
-                    <div className="flex flex-col">
-                        {/* Brand Logo & Studio Tag */}
-                        <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
+            <div
+                className="flex min-h-screen bg-slate-50 font-sans text-slate-900 antialiased selection:bg-emerald-500/20 selection:text-emerald-900"
+                style={{
+                    fontFamily:
+                        "'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                }}
+            >
+                {/* 1. Desktop Fixed Admin Sidebar */}
+                <aside
+                    className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-slate-800 bg-slate-900 text-slate-200 transition-all duration-200 lg:flex ${
+                        sidebarCollapsed ? 'w-20' : 'w-64'
+                    }`}
+                >
+                    <div className="flex flex-1 flex-col overflow-y-auto scrollbar-none">
+                        {/* Admin Brand Header */}
+                        <div className="flex h-16 items-center justify-between border-b border-slate-800 px-4">
                             <Link
-                                href="/admin"
-                                className="flex items-center gap-2.5"
+                                href="/admin/dashboard"
+                                className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
                             >
                                 <GaluhLogo
                                     variant="white"
-                                    className="h-8 w-auto"
+                                    className="h-7 w-auto shrink-0"
                                     showText={false}
                                 />
-                                <div className="flex flex-col">
-                                    <span className="font-serif text-sm font-semibold tracking-wider text-white">
-                                        GALUH &amp; CO.
-                                    </span>
-                                    <span className="text-[9px] font-semibold tracking-[0.2em] text-[#C5A880] uppercase">
-                                        STUDIO CMS
-                                    </span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        {/* Navigation Section */}
-                        <div className="px-3 py-5">
-                            <p className="px-3 text-[10px] font-semibold tracking-[0.16em] text-[#A69986] uppercase">
-                                Navigasi Studio
-                            </p>
-                            <nav className="mt-2 space-y-1">
-                                {navItems.map((item) => {
-                                    const Icon = item.icon;
-                                    const isActive = item.active;
-                                    return (
-                                        <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className={`group relative flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                                                isActive
-                                                    ? 'bg-white/[0.12] font-semibold text-white'
-                                                    : 'text-white/70 hover:bg-white/[0.06] hover:text-white'
-                                            }`}
-                                        >
-                                            <div className="flex items-center gap-2.5">
-                                                <Icon
-                                                    className={`size-4 shrink-0 transition-colors ${
-                                                        isActive
-                                                            ? 'text-[#D4AF37]'
-                                                            : 'text-white/50 group-hover:text-white/80'
-                                                    }`}
-                                                />
-                                                <span>{item.label}</span>
-                                            </div>
-
-                                            {isActive && (
-                                                <span className="h-4 w-1 rounded-full bg-[#D4AF37]" />
-                                            )}
-                                        </Link>
-                                    );
-                                })}
-                            </nav>
-                        </div>
-                    </div>
-
-                    {/* Bottom Sidebar: View Public Website & User Account */}
-                    <div className="space-y-2 border-t border-white/[0.08] p-3">
-                        <a
-                            href="/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/80 transition-colors hover:bg-white/[0.08] hover:text-white"
-                        >
-                            <span className="flex items-center gap-2">
-                                <ExternalLink className="size-3.5 text-[#C5A880]" />
-                                <span>Lihat Halaman Toko</span>
-                            </span>
-                            <span className="text-[10px] text-white/40">↗</span>
-                        </a>
-
-                        <div className="flex items-center justify-between rounded-lg border border-white/[0.06] bg-[#071610] p-2.5">
-                            <div className="flex min-w-0 items-center gap-2.5 pr-1">
-                                <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-[#C5A880]/40 bg-[#C5A880]/15 text-[11px] font-bold text-[#E6CFA8]">
-                                    {user?.name
-                                        ? user.name.charAt(0).toUpperCase()
-                                        : 'A'}
-                                </div>
-                                <div className="min-w-0">
-                                    <p className="truncate text-xs font-medium text-white">
-                                        {user?.name ?? 'Admin'}
-                                    </p>
-                                    <p className="truncate text-[10px] text-white/50">
-                                        {user?.email ?? 'admin@galuh.co'}
-                                    </p>
-                                </div>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                title="Keluar dari Admin"
-                                aria-label="Logout"
-                                className="flex size-7 shrink-0 items-center justify-center rounded-md text-white/50 transition-colors hover:bg-red-500/20 hover:text-red-300"
-                            >
-                                <LogOut className="size-3.5" />
-                            </button>
-                        </div>
-                    </div>
-                </aside>
-
-                {/* 2. Mobile Off-Canvas Drawer */}
-                {mobileSidebarOpen && (
-                    <div
-                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs lg:hidden"
-                        onClick={() => setMobileSidebarOpen(false)}
-                    >
-                        <div
-                            className="flex h-full w-72 flex-col justify-between bg-[#0A1F16] p-4 text-white shadow-2xl"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <div>
-                                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                                {!sidebarCollapsed && (
                                     <div className="flex items-center gap-2">
-                                        <GaluhLogo
-                                            variant="white"
-                                            className="h-7 w-auto"
-                                            showText={false}
-                                        />
-                                        <span className="font-serif text-sm font-bold text-white">
+                                        <span className="font-semibold text-sm tracking-wide text-white">
                                             GALUH &amp; CO.
                                         </span>
+                                        <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+                                            Admin
+                                        </span>
                                     </div>
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setMobileSidebarOpen(false)
-                                        }
-                                        className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white"
-                                    >
-                                        <X className="size-4" />
-                                    </button>
-                                </div>
+                                )}
+                            </Link>
 
-                                <nav className="mt-4 space-y-1">
-                                    {navItems.map((item) => {
+                            <button
+                                type="button"
+                                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                                title={sidebarCollapsed ? 'Perbesar Sidebar' : 'Ciutkan Sidebar'}
+                                className="hidden rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white lg:inline-flex"
+                            >
+                                <Menu className="size-4" />
+                            </button>
+                        </div>
+
+                        {/* Search Trigger Button */}
+                        <div className="px-3 pt-3 pb-2">
+                            <button
+                                type="button"
+                                onClick={() => setSearchModalOpen(true)}
+                                className={`flex w-full items-center justify-between rounded-lg border border-slate-800 bg-slate-800/60 px-3 py-2 text-xs text-slate-400 transition-colors hover:border-slate-700 hover:bg-slate-800 hover:text-slate-200 ${
+                                    sidebarCollapsed ? 'justify-center px-0' : ''
+                                }`}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <Search className="size-3.5 text-slate-400" />
+                                    {!sidebarCollapsed && (
+                                        <span className="text-xs">Cari menu...</span>
+                                    )}
+                                </div>
+                                {!sidebarCollapsed && (
+                                    <kbd className="rounded border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] font-mono text-slate-400">
+                                        ⌘K
+                                    </kbd>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Navigation Groups */}
+                        <nav className="space-y-5 px-3 py-2">
+                            {navGroups.map((group, groupIdx) => (
+                                <div key={groupIdx} className="space-y-1">
+                                    {!sidebarCollapsed ? (
+                                        <p className="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                                            {group.domain}
+                                        </p>
+                                    ) : (
+                                        <div className="my-2 border-t border-slate-800" />
+                                    )}
+
+                                    {group.items.map((item) => {
                                         const Icon = item.icon;
+                                        const active = isCurrentActive(item.href);
+
                                         return (
                                             <Link
                                                 key={item.href}
                                                 href={item.href}
-                                                onClick={() =>
-                                                    setMobileSidebarOpen(false)
-                                                }
-                                                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
-                                                    item.active
-                                                        ? 'bg-white/15 font-semibold text-white'
-                                                        : 'text-white/75 hover:bg-white/5'
-                                                }`}
+                                                title={sidebarCollapsed ? item.label : undefined}
+                                                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                                                    active
+                                                        ? 'bg-emerald-600 text-white shadow-xs font-semibold'
+                                                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                                                } ${sidebarCollapsed ? 'justify-center px-0 py-2.5' : ''}`}
                                             >
-                                                <div className="flex items-center gap-2.5">
-                                                    <Icon className="size-4 text-[#C5A880]" />
-                                                    <span>{item.label}</span>
+                                                <div className="flex min-w-0 items-center gap-2.5">
+                                                    <Icon
+                                                        className={`size-4 shrink-0 ${
+                                                            active ? 'text-white' : 'text-slate-400'
+                                                        }`}
+                                                    />
+                                                    {!sidebarCollapsed && (
+                                                        <span className="truncate">
+                                                            {item.label}
+                                                        </span>
+                                                    )}
                                                 </div>
+
+                                                {!sidebarCollapsed && active && (
+                                                    <span className="size-1.5 rounded-full bg-white" />
+                                                )}
                                             </Link>
                                         );
                                     })}
-                                </nav>
+                                </div>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* Bottom User Bar */}
+                    <div className="space-y-2 border-t border-slate-800 p-3">
+                        <a
+                            href="/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors ${
+                                sidebarCollapsed ? 'justify-center px-0' : ''
+                            }`}
+                            title="Buka Website Publik"
+                        >
+                            <span className="flex items-center gap-2">
+                                <ExternalLink className="size-3.5 text-emerald-400" />
+                                {!sidebarCollapsed && <span>Lihat Website</span>}
+                            </span>
+                            {!sidebarCollapsed && (
+                                <span className="text-[10px] text-slate-400">↗</span>
+                            )}
+                        </a>
+
+                        <div
+                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/80 p-2 ${
+                                sidebarCollapsed ? 'justify-center' : ''
+                            }`}
+                        >
+                            <div className="flex min-w-0 items-center gap-2">
+                                <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-emerald-600 text-xs font-bold text-white">
+                                    {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+                                </div>
+                                {!sidebarCollapsed && (
+                                    <div className="min-w-0">
+                                        <p className="truncate text-xs font-semibold text-white">
+                                            {user?.name ?? 'Administrator'}
+                                        </p>
+                                        <p className="truncate text-[10px] text-emerald-400 font-medium">
+                                            Admin (Full Access)
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="border-t border-white/10 pt-3">
+                            {!sidebarCollapsed && (
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 py-2 text-xs font-medium text-red-300"
+                                    title="Keluar"
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-700 hover:text-rose-400 transition-colors"
                                 >
                                     <LogOut className="size-3.5" />
-                                    <span>Keluar dari Admin</span>
                                 </button>
-                            </div>
+                            )}
                         </div>
                     </div>
-                )}
+                </aside>
 
-                {/* 3. Main Body Container (Offset by sidebar width on desktop) */}
-                <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
-                    {/* Top Navigation Bar */}
-                    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E7E2D8] bg-[#F8F7F4]/90 px-4 backdrop-blur-md sm:px-6 lg:px-8">
-                        {/* Mobile Toggle + Breadcrumbs */}
+                {/* 2. Main Viewport Area */}
+                <div
+                    className={`flex min-h-screen flex-1 flex-col transition-all duration-200 ${
+                        sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'
+                    }`}
+                >
+                    {/* Top Header Navbar */}
+                    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6">
                         <div className="flex items-center gap-3">
+                            {/* Mobile Hamburger Toggle */}
                             <button
                                 type="button"
                                 onClick={() => setMobileSidebarOpen(true)}
-                                className="flex size-8 items-center justify-center rounded-lg border border-[#DCD5C9] bg-white text-[#2B2723] hover:bg-[#F2EDE4] lg:hidden"
-                                aria-label="Buka menu navigasi"
+                                className="rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 lg:hidden"
                             >
-                                <Menu className="size-4" />
+                                <Menu className="size-5" />
                             </button>
 
-                            <div className="flex items-center gap-1.5 text-xs text-[#7A746B]">
-                                <span className="hidden font-medium sm:inline">
-                                    Admin Studio
-                                </span>
-                                <ChevronRight className="hidden size-3 text-[#AFA89D] sm:inline" />
-                                <span className="font-semibold text-[#1C1A18]">
+                            {/* Page Header Titles */}
+                            <div>
+                                <h1 className="text-base font-bold text-slate-900 sm:text-lg">
                                     {title}
-                                </span>
+                                </h1>
+                                {subtitle && (
+                                    <p className="hidden text-xs text-slate-500 sm:block">
+                                        {subtitle}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
-                        {/* Topbar Actions */}
-                        <div className="flex items-center gap-2.5">
+                        {/* Topbar Right Actions */}
+                        <div className="flex items-center gap-3">
                             {headerAction}
 
                             <a
                                 href="/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hidden items-center gap-1.5 rounded-lg border border-[#D5CEC2] bg-white px-3 py-1.5 text-xs font-medium text-[#2C2925] shadow-2xs transition-colors hover:border-[#0E2A1E] hover:text-[#0E2A1E] sm:inline-flex"
+                                className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 sm:inline-flex"
                             >
-                                <ExternalLink className="size-3 text-[#9E7E45]" />
-                                <span>Preview Web</span>
+                                <ExternalLink className="size-3.5 text-slate-400" />
+                                <span>Lihat Website</span>
                             </a>
                         </div>
                     </header>
 
-                    {/* Toast Notification Alert */}
-                    {toastMessage && (
-                        <div className="px-4 pt-4 sm:px-6 lg:px-8">
-                            <div
-                                className={`flex items-center justify-between rounded-lg border px-4 py-2.5 text-xs font-medium shadow-2xs ${
-                                    toastType === 'success'
-                                        ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-                                        : 'border-red-200 bg-red-50 text-red-900'
-                                }`}
+                    {/* Toast Notification Banner */}
+                    <AnimatePresence>
+                        {toastMessage && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="sticky top-16 z-20 px-4 pt-3 sm:px-6"
                             >
-                                <div className="flex items-center gap-2">
-                                    {toastType === 'success' ? (
-                                        <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
-                                    ) : (
-                                        <AlertCircle className="size-4 shrink-0 text-red-600" />
-                                    )}
-                                    <span>{toastMessage}</span>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => setToastMessage(null)}
-                                    className="ml-3 text-stone-400 hover:text-stone-700"
+                                <div
+                                    className={`flex items-center justify-between rounded-lg border p-3 text-xs shadow-xs ${
+                                        toastType === 'success'
+                                            ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                                            : 'border-rose-200 bg-rose-50 text-rose-800'
+                                    }`}
                                 >
-                                    <X className="size-3.5" />
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 className="size-4 shrink-0" />
+                                        <span className="font-medium">{toastMessage}</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setToastMessage(null)}
+                                        className="text-slate-400 hover:text-slate-700"
+                                    >
+                                        <X className="size-3.5" />
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     {/* Page Content Canvas */}
                     <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
@@ -353,6 +467,163 @@ export function AdminLayout({
                     </main>
                 </div>
             </div>
+
+            {/* Mobile Sidebar Drawer */}
+            <AnimatePresence>
+                {mobileSidebarOpen && (
+                    <div
+                        className="fixed inset-0 z-50 flex bg-black/60 backdrop-blur-xs lg:hidden"
+                        onClick={() => setMobileSidebarOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ x: '-100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex h-full w-72 flex-col justify-between bg-slate-900 p-4 text-slate-200 shadow-2xl"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-semibold text-sm text-white">
+                                            GALUH &amp; CO.
+                                        </span>
+                                        <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+                                            Admin
+                                        </span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setMobileSidebarOpen(false)}
+                                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"
+                                    >
+                                        <X className="size-4" />
+                                    </button>
+                                </div>
+
+                                <nav className="mt-4 space-y-4">
+                                    {navGroups.map((group, gIdx) => (
+                                        <div key={gIdx} className="space-y-1">
+                                            <p className="px-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                                                {group.domain}
+                                            </p>
+                                            {group.items.map((item) => {
+                                                const Icon = item.icon;
+                                                const active = isCurrentActive(item.href);
+
+                                                return (
+                                                    <Link
+                                                        key={item.href}
+                                                        href={item.href}
+                                                        onClick={() => setMobileSidebarOpen(false)}
+                                                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
+                                                            active
+                                                                ? 'bg-emerald-600 text-white font-semibold'
+                                                                : 'text-slate-300 hover:bg-slate-800'
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-center gap-2.5">
+                                                            <Icon className="size-4 text-slate-400" />
+                                                            <span>{item.label}</span>
+                                                        </div>
+                                                        {active && (
+                                                            <span className="size-1.5 rounded-full bg-white" />
+                                                        )}
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
+                                    ))}
+                                </nav>
+                            </div>
+
+                            <div className="border-t border-slate-800 pt-3">
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-medium text-rose-300"
+                                >
+                                    <LogOut className="size-3.5" />
+                                    <span>Keluar dari Admin</span>
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            {/* Quick Cmd+K Search Modal */}
+            <AnimatePresence>
+                {searchModalOpen && (
+                    <div
+                        className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 pt-20 backdrop-blur-xs"
+                        onClick={() => setSearchModalOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.96, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.96, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
+                        >
+                            <div className="flex items-center border-b border-slate-200 px-4 py-3">
+                                <Search className="size-4 text-slate-400 mr-2.5 shrink-0" />
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Ketik untuk mencari menu atau modul admin..."
+                                    autoFocus
+                                    className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
+                                />
+                                <kbd className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[10px] font-mono text-slate-500">
+                                    ESC
+                                </kbd>
+                            </div>
+
+                            <div className="max-h-80 overflow-y-auto p-2 text-xs">
+                                {filteredQuickSearch.length === 0 ? (
+                                    <div className="p-6 text-center text-slate-400">
+                                        Tidak ditemukan hasil untuk "{searchQuery}".
+                                    </div>
+                                ) : (
+                                    <div className="space-y-1">
+                                        {filteredQuickSearch.map((item) => {
+                                            const Icon = item.icon;
+                                            return (
+                                                <Link
+                                                    key={item.href}
+                                                    href={item.href}
+                                                    onClick={() => setSearchModalOpen(false)}
+                                                    className="flex items-center justify-between rounded-lg p-2.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="flex size-7 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
+                                                            <Icon className="size-4" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-slate-900 text-xs">
+                                                                {item.label}
+                                                            </p>
+                                                            <p className="text-[11px] text-slate-500">
+                                                                {item.description}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <span className="font-mono text-[10px] text-slate-400">
+                                                        {item.href}
+                                                    </span>
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </>
     );
 }

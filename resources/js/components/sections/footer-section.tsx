@@ -88,6 +88,7 @@ export function FooterSection({
                                     href={whatsappUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label="Konsultasi Hampers via WhatsApp Sekarang"
                                     className="inline-flex items-center gap-2.5 rounded-full bg-[#FAF0D7] px-7 py-3.5 text-xs font-bold tracking-wider text-[#0E2A1E] shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#FFF5DE]"
                                 >
                                     <WhatsAppIcon className="size-4.5 text-[#25D366]" />
@@ -129,6 +130,7 @@ export function FooterSection({
                                     Email:{' '}
                                     <a
                                         href={`mailto:${contactEmail}`}
+                                        aria-label={`Kirim email ke ${contactEmail}`}
                                         className="transition-colors hover:text-white"
                                     >
                                         {contactEmail}
@@ -140,6 +142,7 @@ export function FooterSection({
                                         href={whatsappUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="Hubungi WhatsApp resmi GALUH & CO."
                                         className="transition-colors hover:text-white"
                                     >
                                         {contactPhone}
@@ -152,6 +155,7 @@ export function FooterSection({
                                             href={instagramUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Kunjungi akun Instagram resmi @galuh.co"
                                             className="transition-colors hover:text-white"
                                         >
                                             @galuh.co
@@ -165,6 +169,7 @@ export function FooterSection({
                                             href={tiktokUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Kunjungi akun TikTok resmi @galuh.co"
                                             className="transition-colors hover:text-white"
                                         >
                                             @galuh.co
@@ -178,6 +183,7 @@ export function FooterSection({
                                             href={linkedinUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label="Kunjungi profil LinkedIn Galuh & Co."
                                             className="transition-colors hover:text-white"
                                         >
                                             Galuh &amp; Co.
@@ -199,6 +205,7 @@ export function FooterSection({
                                 href={`https://maps.google.com/?q=${encodeURIComponent(companyAddress)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label="Buka lokasi studio Galuh & Co. di Google Maps"
                                 className="mt-2 inline-flex items-center gap-1 text-[11px] text-[#C5A880] hover:underline"
                             >
                                 <span>Buka di Google Maps</span>
@@ -239,3 +246,4 @@ export function FooterSection({
 }
 
 export { FooterSection as Footer };
+export default FooterSection;
