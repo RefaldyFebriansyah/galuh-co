@@ -168,19 +168,19 @@ export function TestimonialsSection({
                     </button>
                 </div>
 
-                {/* 2. Multi-Card Luxury Carousel Track (3 cards on desktop, 2 on tablet, 1 on mobile) */}
+                {/* 2. Multi-Card Luxury Carousel Track (Peek on mobile, 2 on tablet, 3 on desktop) */}
                 <div className="relative mt-4">
                     <div
                         ref={containerRef}
                         onScroll={handleScroll}
-                        className="flex snap-x snap-mandatory scrollbar-none gap-6 overflow-x-auto scroll-smooth pb-4"
+                        className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto scroll-smooth px-1 pb-4 sm:gap-6"
                     >
                         {activeReviews.map((rev, idx) => (
                             <div
                                 key={idx}
-                                className="w-full shrink-0 snap-start md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                                className="w-[85vw] max-w-[330px] shrink-0 snap-start sm:w-[75vw] sm:max-w-none md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                             >
-                                <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-[#EAE3D6] bg-white p-7 shadow-[0_12px_32px_-10px_rgba(11,41,30,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#B89352]/50 hover:shadow-[0_20px_40px_-12px_rgba(11,41,30,0.12)] sm:p-8">
+                                <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[1.75rem] border border-[#EAE3D6] bg-white p-5 shadow-[0_12px_32px_-10px_rgba(11,41,30,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#B89352]/50 hover:shadow-[0_20px_40px_-12px_rgba(11,41,30,0.12)] sm:rounded-[2rem] sm:p-8">
                                     {/* Ambient Gold Quote Watermark */}
                                     <div
                                         aria-hidden="true"

@@ -48,7 +48,7 @@ export function FooterSection({
                                 ease: [0.16, 1, 0.3, 1],
                             },
                         }}
-                        className="group relative overflow-hidden rounded-3xl border border-[#C5A880]/25 bg-gradient-to-b from-[#0E2F21] to-[#0A2218] p-8 text-center shadow-2xl transition-all duration-500 hover:border-[#C5A880]/50 hover:shadow-[0_30px_70px_rgba(10,34,24,0.35)] md:p-12 lg:p-14"
+                        className="group relative overflow-hidden rounded-3xl border border-[#C5A880]/25 bg-gradient-to-b from-[#0E2F21] to-[#0A2218] p-6 text-center shadow-2xl transition-all duration-500 hover:border-[#C5A880]/50 hover:shadow-[0_30px_70px_rgba(10,34,24,0.35)] sm:p-8 md:p-12 lg:p-14"
                     >
                         {/* Subtle Ambient Glow that expands on hover */}
                         <div
@@ -89,7 +89,7 @@ export function FooterSection({
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label="Konsultasi Hampers via WhatsApp Sekarang"
-                                    className="inline-flex items-center gap-2.5 rounded-full bg-[#FAF0D7] px-7 py-3.5 text-xs font-bold tracking-wider text-[#0E2A1E] shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#FFF5DE]"
+                                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-[#FAF0D7] px-6 py-3.5 text-xs font-bold tracking-wider text-[#0E2A1E] shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#FFF5DE] sm:w-auto sm:px-7"
                                 >
                                     <WhatsAppIcon className="size-4.5 text-[#25D366]" />
                                     <span>KONSULTASI WHATSAPP SEKARANG</span>

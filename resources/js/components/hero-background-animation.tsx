@@ -53,6 +53,11 @@ export function HeroBackgroundAnimation() {
     const smoothMouseY = useSpring(mouseY, { damping: 25, stiffness: 60 });
 
     useEffect(() => {
+        // Skip 3D canvas calculations on mobile (< 768px) to achieve 0ms TBT and 80+ Lighthouse score
+        if (typeof window !== 'undefined' && window.innerWidth < 768) {
+            return;
+        }
+
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -108,8 +113,9 @@ export function HeroBackgroundAnimation() {
 
         window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-        // GALUH & CO. Defined Brand Emerald Green Palette
-        const LEAF_COUNT = 52;
+        // GALUH & CO. Defined Brand Emerald Green Palette (Adaptive count: 18 on mobile, 48 on desktop)
+        const isMobile = width < 640;
+        const LEAF_COUNT = isMobile ? 18 : 48;
         const emeraldVariants = [
             { base: '#143628', highlight: '#285A46' }, // Deep Emerald (Brand Primary)
             { base: '#0D251B', highlight: '#1C4535' }, // Dark Emerald (Brand Deep)
@@ -445,15 +451,50 @@ export function HeroBackgroundAnimation() {
                 ctx.restore();
             });
 
-            animationFrameId = requestAnimationFrame(render);
+            if (!document.hidden) {
+                animationFrameId = requestAnimationFrame(render);
+            }
         };
 
-        render();
+        // Defer 3D canvas loop slightly so initial DOM paint & hydration have 0ms blocking time
+        let startTimer: ReturnType<typeof setTimeout> | null = null;
+        const startAnimation = () => {
+            if (!document.hidden) {
+                animationFrameId = requestAnimationFrame(render);
+            }
+        };
+
+        if ('requestIdleCallback' in window) {
+            (
+                window as unknown as {
+                    requestIdleCallback: (
+                        cb: () => void,
+                        opts?: { timeout: number },
+                    ) => void;
+                }
+            ).requestIdleCallback(startAnimation, { timeout: 250 });
+        } else {
+            startTimer = setTimeout(startAnimation, 120);
+        }
+
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                cancelAnimationFrame(animationFrameId);
+            } else {
+                animationFrameId = requestAnimationFrame(render);
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         return () => {
+            if (startTimer) clearTimeout(startTimer);
             cancelAnimationFrame(animationFrameId);
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener(
+                'visibilitychange',
+                handleVisibilityChange,
+            );
         };
     }, [mouseX, mouseY]);
 
@@ -509,10 +550,10 @@ export function HeroBackgroundAnimation() {
                 }}
             />
 
-            {/* 4. The 3D Atelier Perspective Canvas (52 falling botanical emerald leaves) */}
+            {/* 4. The 3D Atelier Perspective Canvas (Rendered on tablet & desktop >= 768px) */}
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 size-full mix-blend-normal"
+                className="absolute inset-0 hidden size-full mix-blend-normal md:block"
             />
         </div>
     );

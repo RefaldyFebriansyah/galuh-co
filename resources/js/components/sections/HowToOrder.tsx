@@ -122,8 +122,8 @@ export function HowToOrder() {
 
                 {/* 2. Responsive Step Deck: Clean Vertical Flow on Mobile (< 768px), 4-Col Grid on Desktop (>= 768px) */}
                 <div className="relative mt-8 md:mt-10">
-                    {/* Mobile Left Progress Line (< md:) */}
-                    <div className="absolute top-6 bottom-6 left-6 w-[2px] bg-[#E2DACD] md:hidden">
+                    {/* Mobile Left Progress Line: Mathematically Centered at 14px (< md:) */}
+                    <div className="absolute top-4 bottom-4 left-[13px] w-[2px] bg-[#E2DACD] md:hidden">
                         <motion.div
                             style={{ scaleY: progress }}
                             className="size-full origin-top bg-gradient-to-b from-[#C5A880] to-[#0E2A1E]"
@@ -135,7 +135,7 @@ export function HowToOrder() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={viewportOnce}
-                        className="space-y-4 pl-12 md:grid md:grid-cols-4 md:gap-5 md:space-y-0 md:pl-0"
+                        className="space-y-4.5 pl-10 md:grid md:grid-cols-4 md:gap-5 md:space-y-0 md:pl-0"
                     >
                         {steps.map((step, idx) => {
                             const Icon = step.icon;
@@ -150,10 +150,10 @@ export function HowToOrder() {
                                             ease: [0.16, 1, 0.3, 1],
                                         },
                                     }}
-                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-4.5 shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-md sm:p-5"
+                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-4 shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-md sm:p-5"
                                 >
-                                    {/* Mobile Indicator Dot positioned on the line */}
-                                    <div className="absolute top-5 -left-[3.25rem] flex size-7 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-[11px] font-bold text-[#0E2A1E] shadow-2xs md:hidden">
+                                    {/* Mobile Indicator Dot centered exactly on the vertical line (x=14px) */}
+                                    <div className="absolute top-4 -left-10 flex size-7 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-[11px] font-bold text-[#0E2A1E] shadow-2xs md:hidden">
                                         {step.number}
                                     </div>
 
@@ -167,7 +167,7 @@ export function HowToOrder() {
                                             </span>
                                         </div>
 
-                                        <h3 className="mt-2 font-serif text-sm font-bold text-[#1A1815] sm:text-base md:mt-4">
+                                        <h3 className="mt-1 font-serif text-sm font-bold text-[#1A1815] sm:text-base md:mt-4">
                                             {step.title}
                                         </h3>
 
@@ -176,7 +176,7 @@ export function HowToOrder() {
                                         </p>
                                     </div>
 
-                                    <div className="mt-3.5 flex items-center gap-1.5 border-t border-[#F0EBE1] pt-2.5 text-[9.5px] font-bold tracking-wider text-[#7A5B24] uppercase sm:mt-5 sm:pt-3 sm:text-[10px]">
+                                    <div className="mt-3 flex items-center gap-1.5 border-t border-[#F0EBE1] pt-2 text-[9.5px] font-bold tracking-wider text-[#7A5B24] uppercase sm:mt-5 sm:pt-3 sm:text-[10px]">
                                         <span>TAHAP {idx + 1}</span>
                                         <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
                                     </div>

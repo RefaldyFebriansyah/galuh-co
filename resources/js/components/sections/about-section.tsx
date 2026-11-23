@@ -94,6 +94,19 @@ export function AboutSection({ pillars }: AboutSectionProps = {}) {
             className="relative overflow-hidden border-t border-[#0B291E]/10 bg-[#FAF8F5] py-10 sm:py-16 lg:py-28"
         >
             <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
+                {/* Mobile Section Header (< lg:) for Instant Editorial Clarity */}
+                <div className="mb-6 space-y-2 lg:hidden">
+                    <div className="inline-flex items-center text-[10.5px] font-semibold tracking-[0.24em] text-[#7A5B24] uppercase">
+                        <span>TENTANG GALUH &amp; CO.</span>
+                    </div>
+                    <h2 className="font-serif text-2xl leading-snug font-normal tracking-tight text-[#0B291E] sm:text-3xl">
+                        <span>Menghadirkan Kehangatan</span>{' '}
+                        <span className="block text-[#7A5B24] italic">
+                            di Setiap Kotak Hadiah
+                        </span>
+                    </h2>
+                </div>
+
                 <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-12 lg:gap-14 xl:gap-20">
                     {/* Left Column — Architectural Photo Stage matching right column height */}
                     <div className="relative flex flex-col lg:col-span-5 lg:h-full">
@@ -161,8 +174,8 @@ export function AboutSection({ pillars }: AboutSectionProps = {}) {
                         </motion.div>
 
                         <div className="relative z-10 space-y-6">
-                            {/* Masked Line Reveal on Eyebrow & Headline */}
-                            <div className="space-y-2">
+                            {/* Masked Line Reveal on Eyebrow & Headline (Desktop) */}
+                            <div className="hidden space-y-2 lg:block">
                                 <div className="overflow-hidden">
                                     <motion.div
                                         initial={{ y: '100%' }}

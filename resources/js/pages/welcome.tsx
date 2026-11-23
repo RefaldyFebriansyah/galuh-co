@@ -1,12 +1,16 @@
 import { Head } from '@inertiajs/react';
 import React, { Suspense, lazy, useEffect } from 'react';
 import { MotionConfig } from 'motion/react';
-import { HeroBackgroundAnimation } from '@/components/hero-background-animation';
 import { Hero } from '@/components/sections/Hero';
 import { Navbar } from '@/components/sections/navbar';
 import type { Product } from '@/types';
 
-// Code-splitting below-the-fold sections via React.lazy to reduce TBT and initial bundle size
+// Code-splitting non-critical components via React.lazy to minimize TBT and initial bundle size
+const HeroBackgroundAnimation = lazy(() =>
+    import('@/components/hero-background-animation').then((mod) => ({
+        default: mod.HeroBackgroundAnimation,
+    })),
+);
 const AboutSection = lazy(() => import('@/components/sections/about-section'));
 const Catalog = lazy(() => import('@/components/sections/Catalog'));
 const FeaturesSection = lazy(
@@ -78,12 +82,6 @@ export default function Welcome({
             <Head title="GALUH & CO. — Hampers Premium & Corporate Gifting" />
 
             <div className="relative min-h-screen bg-[#FAF7F2] font-sans text-[#1A1815] selection:bg-[#7A5B24] selection:text-white">
-                {/* Subtle Luxury Paper Grain Texture Overlay (Quiet Luxury Invitation Paper) */}
-                <div
-                    className="paper-texture pointer-events-none fixed inset-0 z-30 opacity-[0.03] mix-blend-multiply"
-                    aria-hidden="true"
-                />
-
                 {/* Fixed Top Luxury Sticky Header (Eagerly loaded for immediate paint) */}
                 <Navbar
                     whatsappNumber={activeWa}
@@ -94,7 +92,9 @@ export default function Welcome({
                 <main id="main-content">
                     {/* 1 & 2. Continuous Hero Area with 3D Background (Eagerly loaded for instant LCP < 2.5s) */}
                     <div className="relative overflow-hidden bg-[#FAF7F2]">
-                        <HeroBackgroundAnimation />
+                        <Suspense fallback={null}>
+                            <HeroBackgroundAnimation />
+                        </Suspense>
                         <Hero
                             whatsappNumber={activeWa}
                             heroBadge={settings?.hero_badge}

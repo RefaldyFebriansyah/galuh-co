@@ -125,7 +125,7 @@ function ProductCard({
             </div>
 
             {/* Editorial Content (Compact Padding & Typography) */}
-            <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4">
+            <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
                 <div>
                     <div className="flex items-center justify-between text-[8px] font-bold tracking-[0.16em] text-[#7A5B24] uppercase sm:text-[9px] sm:tracking-[0.18em]">
                         <span>{product.category}</span>
@@ -160,7 +160,7 @@ function ProductCard({
                         type="button"
                         onClick={() => onOrder(product)}
                         aria-label={`Pesan hampers ${product.name}`}
-                        className="group/btn inline-flex cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white sm:px-3 sm:py-1 sm:text-[11px]"
+                        className="group/btn inline-flex min-h-[32px] cursor-pointer items-center gap-1 rounded-full border border-[#D5CEC2] bg-[#FAF8F5] px-2.5 py-1 text-[10.5px] font-semibold text-[#0E2A1E] transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#0E2A1E] hover:text-white sm:min-h-0 sm:px-3 sm:py-1 sm:text-[11px]"
                     >
                         <WhatsAppIcon className="size-2.5 text-[#25D366] transition-colors group-hover/btn:text-white sm:size-3" />
                         <span>Pesan</span>
@@ -509,8 +509,8 @@ export function Catalog({
                 </motion.div>
 
                 {/* 2. Interactive Category Tabs */}
-                <div className="mt-8 flex items-center justify-center">
-                    <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 rounded-full border border-[#E8E2D8] bg-[#F2EDE4]/70 p-1.5 backdrop-blur-xs">
+                <div className="mt-6 flex items-center justify-center sm:mt-8">
+                    <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-[#E8E2D8] bg-[#F2EDE4]/70 p-1.5 px-2 backdrop-blur-xs sm:px-1.5">
                         {CATEGORIES.map((cat) => {
                             const isActive = selectedCategory === cat.value;
                             return (
@@ -521,11 +521,10 @@ export function Catalog({
                                         handleCategoryChange(cat.value)
                                     }
                                     aria-pressed={isActive}
-                                    className={`relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-4.5 sm:py-2 sm:text-xs ${
-                                        isActive
-                                            ? 'text-[#0E2A1E]'
-                                            : 'text-[#6E6962] hover:text-[#1A1815]'
-                                    }`}
+                                    className={`relative cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wider transition-colors duration-300 sm:px-4.5 sm:py-2 sm:text-xs ${isActive
+                                        ? 'text-[#0E2A1E]'
+                                        : 'text-[#6E6962] hover:text-[#1A1815]'
+                                        }`}
                                 >
                                     {isActive && (
                                         <motion.div
@@ -592,7 +591,7 @@ export function Catalog({
 
                     <AnimatePresence mode="wait" custom={direction}>
                         {safeProducts.length === 0 ||
-                        filteredProducts.length === 0 ? (
+                            filteredProducts.length === 0 ? (
                             <motion.div
                                 key="empty"
                                 initial={{ opacity: 0 }}
@@ -827,11 +826,10 @@ export function Catalog({
                                             </span>
                                         </label>
                                         <div
-                                            className={`mt-1 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
-                                                personalErrors.whatsapp_number
-                                                    ? 'border-red-400'
-                                                    : 'border-[#EAE5DC]'
-                                            }`}
+                                            className={`mt-1 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${personalErrors.whatsapp_number
+                                                ? 'border-red-400'
+                                                : 'border-[#EAE5DC]'
+                                                }`}
                                         >
                                             <span className="inline-flex shrink-0 items-center border-r border-[#EAE5DC] bg-[#F2EDE4]/60 px-2.5 py-2 text-xs font-bold text-[#0E2A1E] select-none">
                                                 🇮🇩 +62

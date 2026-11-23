@@ -17,8 +17,8 @@ export function GaluhLogo({
     const logoSrc =
         src ||
         (isWhite
-            ? '/images/galuh_logo_white.png'
-            : '/images/galuh_logo_gold.png');
+            ? '/images/galuh_logo_white.webp'
+            : '/images/galuh_logo_gold.webp');
 
     return (
         <div className="inline-flex shrink-0 items-center gap-2.5 text-left sm:gap-3">

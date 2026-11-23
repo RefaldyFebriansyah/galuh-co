@@ -20,7 +20,7 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
 
     return (
         <aside
-            className="fixed right-6 bottom-6 z-50 flex items-center"
+            className="fixed right-4 bottom-4 z-50 flex items-center sm:right-6 sm:bottom-6"
             aria-label="Kontak WhatsApp Langsung"
         >
             {/* Entrance animation wrapper */}
@@ -77,7 +77,7 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
                         onClick={handleClick}
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="group relative flex items-center gap-2.5 overflow-hidden rounded-full bg-[#25D366] px-5 py-3.5 text-xs font-semibold text-white shadow-[0_10px_25px_rgba(37,211,102,0.35)] transition-all duration-300 hover:bg-[#20ba5a] hover:shadow-[0_12px_32px_rgba(37,211,102,0.48)]"
+                        className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-[#25D366] px-4 py-2.5 text-[11px] font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.32)] transition-all duration-300 hover:bg-[#20ba5a] hover:shadow-[0_12px_32px_rgba(37,211,102,0.48)] sm:gap-2.5 sm:px-5 sm:py-3.5 sm:text-xs"
                     >
                         {/* Elegant Light Shimmer Sweep */}
                         <motion.span

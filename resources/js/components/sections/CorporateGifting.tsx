@@ -3,7 +3,6 @@ import { useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     CheckCircle2,
-    ChevronDown,
     Send,
     ShieldCheck,
     Mail,
@@ -21,7 +20,6 @@ export interface CorporateGiftingProps {
 }
 
 export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
-    const [isMobileFormOpen, setIsMobileFormOpen] = useState(false);
     const [isDetectingLocation, setIsDetectingLocation] = useState(false);
     const form = useForm({
         name: '',
@@ -234,15 +232,8 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/80 to-transparent sm:w-32" />
                         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#FAF8F5] via-[#FAF8F5]/80 to-transparent sm:w-32" />
 
-                        <motion.div
-                            animate={{ x: ['0%', '-50%'] }}
-                            transition={{
-                                repeat: Infinity,
-                                ease: 'linear',
-                                duration: 30,
-                            }}
-                            className="flex shrink-0 items-center gap-12 py-2 pr-12 sm:gap-16 sm:pr-16 lg:gap-20 lg:pr-20"
-                        >
+                        {/* Hardware-Accelerated Marquee (Compositor GPU Animation) */}
+                        <div className="animate-marquee-css flex shrink-0 items-center gap-12 py-2 pr-12 sm:gap-16 sm:pr-16 lg:gap-20 lg:pr-20">
                             {marqueeItems.map((partner, i) => (
                                 <div
                                     key={`${partner.name}-${i}`}
@@ -260,7 +251,7 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                     />
                                 </div>
                             ))}
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
 
@@ -274,7 +265,7 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                 >
                     <div className="grid grid-cols-1 items-stretch lg:grid-cols-12">
                         {/* Left Side: Exclusive Invitation Cover & Concierge Privileges */}
-                        <div className="flex flex-col justify-between border-b border-[#EAE3D6] bg-gradient-to-br from-[#FAF8F5] via-[#F5EFEB] to-[#EFE7DE] p-8 sm:p-10 lg:col-span-5 lg:border-r lg:border-b-0 lg:p-12">
+                        <div className="flex flex-col justify-between border-b border-[#EAE3D6] bg-gradient-to-br from-[#FAF8F5] via-[#F5EFEB] to-[#EFE7DE] p-5 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0 lg:p-12">
                             <div>
                                 <div className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] text-[#7A5B24] uppercase">
                                     <span>LAYANAN RESMI B2B</span>
@@ -350,7 +341,7 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label="Konsultasi Corporate Gifting via WhatsApp"
-                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0E2A1E] py-3 text-xs font-bold tracking-[0.12em] text-white shadow-md active:scale-98"
+                                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0E2A1E] py-3.5 text-xs font-bold tracking-[0.12em] text-white shadow-md active:scale-98"
                                 >
                                     <WhatsAppIcon className="size-4 text-[#25D366]" />
                                     <span>KONSULTASI B2B VIA WHATSAPP</span>
@@ -358,35 +349,18 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                             </div>
                         </div>
 
-                        {/* Mobile Accordion Toggle Bar (< lg:) */}
-                        <div className="block border-b border-[#EAE3D6] bg-white p-4 lg:hidden">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setIsMobileFormOpen((prev) => !prev)
-                                }
-                                aria-expanded={isMobileFormOpen}
-                                className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-[#D5CEC2] bg-[#FAF8F5] px-4 py-3 text-xs font-bold tracking-[0.1em] text-[#0E2A1E] shadow-2xs transition-all active:scale-98"
-                            >
-                                <span>
-                                    {isMobileFormOpen
-                                        ? 'Tutup Formulir Penawaran Corporate ↑'
-                                        : 'Atau Isi Formulir Rincian Penawaran (B2B Form) ↓'}
+                        {/* Mobile Form Section Header (< lg:) */}
+                        <div className="border-t border-[#EAE3D6] bg-[#FAF8F5] px-5 py-3 lg:hidden">
+                            <div className="flex items-center gap-2">
+                                <span className="size-1.5 rounded-full bg-[#7A5B24]" />
+                                <span className="font-mono text-[9.5px] font-bold tracking-[0.18em] text-[#7A5B24] uppercase">
+                                    FORMULIR PENAWARAN &amp; SAMPEL B2B
                                 </span>
-                                <ChevronDown
-                                    className={`size-4 text-[#7A5B24] transition-transform duration-300 ${
-                                        isMobileFormOpen ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
+                            </div>
                         </div>
 
                         {/* Right Side: Order Slip / Inquiry Form */}
-                        <div
-                            className={`p-6 sm:p-10 lg:col-span-7 lg:p-12 ${
-                                isMobileFormOpen ? 'block' : 'hidden lg:block'
-                            }`}
-                        >
+                        <div className="p-5 sm:p-8 lg:col-span-7 lg:p-12">
                             <AnimatePresence>
                                 <motion.div
                                     initial={{ opacity: 0, y: -6 }}
@@ -438,11 +412,10 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                         )
                                                     }
                                                     placeholder="Contoh: Ibu Rina Sastrowardoyo"
-                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${
-                                                        form.errors.name
-                                                            ? 'border-red-400'
-                                                            : 'border-[#EAE5DC]'
-                                                    }`}
+                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${form.errors.name
+                                                        ? 'border-red-400'
+                                                        : 'border-[#EAE5DC]'
+                                                        }`}
                                                 />
                                                 {form.errors.name && (
                                                     <p className="mt-1 text-[10px] text-red-600">
@@ -510,11 +483,10 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                         )
                                                     }
                                                     placeholder="rina@adhikencana.co.id"
-                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${
-                                                        form.errors.email
-                                                            ? 'border-red-400'
-                                                            : 'border-[#EAE5DC]'
-                                                    }`}
+                                                    className={`mt-1.5 w-full rounded-xl border bg-[#FAF8F5] px-4 py-3 text-xs text-[#1A1815] transition-all focus:border-[#C5A880] focus:bg-white focus:outline-hidden ${form.errors.email
+                                                        ? 'border-red-400'
+                                                        : 'border-[#EAE5DC]'
+                                                        }`}
                                                 />
                                                 {form.errors.email && (
                                                     <p className="mt-1 text-[10px] text-red-600">
@@ -534,12 +506,11 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                     </span>
                                                 </label>
                                                 <div
-                                                    className={`mt-1.5 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${
-                                                        form.errors
-                                                            .whatsapp_number
-                                                            ? 'border-red-400'
-                                                            : 'border-[#EAE5DC]'
-                                                    }`}
+                                                    className={`mt-1.5 flex items-center overflow-hidden rounded-xl border bg-[#FAF8F5] transition-all focus-within:border-[#C5A880] focus-within:bg-white ${form.errors
+                                                        .whatsapp_number
+                                                        ? 'border-red-400'
+                                                        : 'border-[#EAE5DC]'
+                                                        }`}
                                                 >
                                                     <span className="inline-flex shrink-0 items-center border-r border-[#EAE5DC] bg-[#F2EDE4]/60 px-3 py-3 text-xs font-bold text-[#0E2A1E] select-none">
                                                         🇮🇩 +62
@@ -594,13 +565,13 @@ export function CorporateGifting({ whatsappNumber }: CorporateGiftingProps) {
                                                 </div>
                                                 {form.errors
                                                     .whatsapp_number && (
-                                                    <p className="mt-1 text-[10px] text-red-600">
-                                                        {
-                                                            form.errors
-                                                                .whatsapp_number
-                                                        }
-                                                    </p>
-                                                )}
+                                                        <p className="mt-1 text-[10px] text-red-600">
+                                                            {
+                                                                form.errors
+                                                                    .whatsapp_number
+                                                            }
+                                                        </p>
+                                                    )}
                                             </div>
                                         </div>
 

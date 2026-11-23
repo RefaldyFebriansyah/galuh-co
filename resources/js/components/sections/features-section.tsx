@@ -147,7 +147,7 @@ export function FeaturesSection() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
-                    className="mt-8 grid grid-cols-2 items-stretch gap-3 md:grid-cols-4 md:gap-4"
+                    className="mt-6 grid grid-cols-2 items-stretch gap-2.5 sm:mt-8 sm:gap-4 md:grid-cols-4"
                 >
                     {features.map((feature, idx) => {
                         const Icon = feature.icon;
@@ -162,7 +162,7 @@ export function FeaturesSection() {
                                         ease: [0.16, 1, 0.3, 1],
                                     },
                                 }}
-                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-3.5 shadow-2xs transition-shadow duration-300 hover:shadow-md sm:p-5"
+                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-3 shadow-2xs transition-shadow duration-300 hover:shadow-md sm:p-5"
                             >
                                 <div>
                                     <span
@@ -171,12 +171,12 @@ export function FeaturesSection() {
                                         <Icon className="size-4 sm:size-5" />
                                     </span>
 
-                                    <h3 className="mt-2.5 font-serif text-xs font-bold text-[#1A1815] sm:mt-4 sm:text-base">
+                                    <h3 className="mt-2 font-serif text-xs leading-snug font-bold text-[#1A1815] sm:mt-4 sm:text-base">
                                         {feature.title}
                                     </h3>
                                 </div>
 
-                                <p className="mt-2 text-[10px] leading-relaxed text-[#8C877E] sm:mt-2.5 sm:text-[11px]">
+                                <p className="mt-1.5 text-[10px] leading-relaxed text-[#8C877E] sm:mt-2.5 sm:text-[11px]">
                                     <span className="block sm:hidden">
                                         {feature.shortDescription}
                                     </span>
@@ -195,19 +195,19 @@ export function FeaturesSection() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
-                    className="mt-8 overflow-hidden rounded-2xl bg-[#0E2A1E] px-4 py-5 text-white shadow-xl sm:mt-10 sm:px-6 sm:py-7"
+                    className="mt-6 overflow-hidden rounded-2xl bg-[#0E2A1E] px-3.5 py-4.5 text-white shadow-xl sm:mt-10 sm:px-6 sm:py-7"
                 >
-                    <div className="grid grid-cols-3 gap-2 divide-x divide-white/10 text-center sm:gap-6">
+                    <div className="grid grid-cols-3 gap-1.5 divide-x divide-white/10 text-center sm:gap-6">
                         {stats.map((stat, idx) => (
                             <div key={idx} className="px-1 sm:px-4">
-                                <span className="font-serif text-xl font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
+                                <span className="font-serif text-lg font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
                                     <AnimatedCounter
                                         target={stat.target}
                                         decimals={stat.decimals}
                                         suffix={stat.suffix}
                                     />
                                 </span>
-                                <span className="mt-1 block text-[7.5px] font-bold tracking-[0.14em] text-[#C5A880] uppercase sm:text-[9px] sm:tracking-[0.2em]">
+                                <span className="mt-1 block text-[8px] font-bold tracking-[0.14em] text-[#C5A880] uppercase sm:text-[9px] sm:tracking-[0.2em]">
                                     {stat.label}
                                 </span>
                             </div>

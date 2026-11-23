@@ -210,4 +210,66 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
+    /* GPU-accelerated compositor animations (Zero Main-Thread Blocking) */
+    @keyframes floatHamperLeft {
+        0%,
+        100% {
+            transform: translateY(-16px) rotate(-3deg) translateX(-4px);
+        }
+        50% {
+            transform: translateY(14px) rotate(2deg) translateX(6px);
+        }
+    }
+
+    @keyframes floatHamperRight {
+        0%,
+        100% {
+            transform: translateY(14px) rotate(2.5deg) translateX(5px);
+        }
+        50% {
+            transform: translateY(-16px) rotate(-2.5deg) translateX(-5px);
+        }
+    }
+
+    @keyframes breathShadow {
+        0%,
+        100% {
+            transform: scaleX(1.08) scaleY(1.04);
+            opacity: 0.38;
+        }
+        50% {
+            transform: scaleX(0.85) scaleY(0.72);
+            opacity: 0.2;
+        }
+    }
+
+    @keyframes marqueeSlow {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-float-left {
+        animation: floatHamperLeft 7s ease-in-out infinite;
+        will-change: transform;
+    }
+
+    .animate-float-right {
+        animation: floatHamperRight 7.6s ease-in-out infinite;
+        will-change: transform;
+    }
+
+    .animate-breath-shadow {
+        animation: breathShadow 7.2s ease-in-out infinite;
+        will-change: transform, opacity;
+    }
+
+    .animate-marquee-css {
+        animation: marqueeSlow 32s linear infinite;
+        will-change: transform;
+    }
 }
