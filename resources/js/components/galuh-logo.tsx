@@ -37,17 +37,17 @@ export function GaluhLogo({
                 >
                     <span
                         className={`font-serif text-base font-bold tracking-[0.16em] whitespace-nowrap uppercase md:text-lg ${
-                            isWhite ? 'text-white' : 'text-[#1A1815]'
+                            isWhite ? 'text-white' : 'text-[#16233B]'
                         }`}
                     >
                         GALUH &amp; CO.
                     </span>
                     <div className="flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
-                        <span className="h-px w-2.5 bg-[#C5A880]/60" />
-                        <span className="text-[7.5px] font-bold tracking-[0.22em] whitespace-nowrap text-[#C5A880] uppercase md:text-[8px]">
+                        <span className="h-px w-2.5 bg-[#A88B54]/60" />
+                        <span className="text-[7.5px] font-bold tracking-[0.22em] whitespace-nowrap text-[#A88B54] uppercase md:text-[8px]">
                             HAMPERS &amp; GIFT
                         </span>
-                        <span className="h-px w-2.5 bg-[#C5A880]/60" />
+                        <span className="h-px w-2.5 bg-[#A88B54]/60" />
                     </div>
                 </div>
             )}

@@ -1,4 +1,4 @@
-﻿import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     ArrowRight,
@@ -249,16 +249,16 @@ export default function AdminWaLeadsIndex({
                 <button
                     type="button"
                     onClick={() => setManualModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C]"
                 >
-                    <Plus className="size-3.5 text-[#B89352]" />
+                    <Plus className="size-3.5 text-[#A88B54]" />
                     <span>Catat Lead Manual</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Pipeline Status Filter Tabs */}
-                <div className="flex scrollbar-none overflow-x-auto rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6">
+                <div className="flex scrollbar-none overflow-x-auto rounded-2xl border-b border-[#16233B]/10 bg-white px-4 shadow-2xs sm:px-6">
                     <nav className="flex min-w-max space-x-6">
                         {[
                             {
@@ -304,16 +304,16 @@ export default function AdminWaLeadsIndex({
                                     }}
                                     className={`relative flex items-center gap-2 py-4 text-xs font-semibold transition-colors ${
                                         isCurrent
-                                            ? 'text-[#0B291E]'
-                                            : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                            ? 'text-[#16233B]'
+                                            : 'text-[#16233B]/50 hover:text-[#16233B]'
                                     }`}
                                 >
                                     <span>{tab.label}</span>
                                     <span
                                         className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${
                                             isCurrent
-                                                ? 'bg-[#0B291E] text-white'
-                                                : 'bg-[#0B291E]/5 text-[#0B291E]/60'
+                                                ? 'bg-[#16233B] text-white'
+                                                : 'bg-[#16233B]/5 text-[#16233B]/60'
                                         }`}
                                     >
                                         {tab.count}
@@ -321,7 +321,7 @@ export default function AdminWaLeadsIndex({
                                     {isCurrent && (
                                         <motion.div
                                             layoutId="pipeline-active-tab"
-                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
+                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#A88B54]"
                                         />
                                     )}
                                 </button>
@@ -331,10 +331,10 @@ export default function AdminWaLeadsIndex({
                 </div>
 
                 {/* 2. Search & Filter Bar */}
-                <div className="flex flex-col gap-3 rounded-2xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 rounded-2xl border border-[#16233B]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex flex-1 items-center gap-3">
                         <div className="relative min-w-[260px] flex-1">
-                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#0B291E]/40" />
+                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#16233B]/40" />
                             <input
                                 type="text"
                                 value={searchVal}
@@ -343,14 +343,14 @@ export default function AdminWaLeadsIndex({
                                     e.key === 'Enter' && handleFilterApply()
                                 }
                                 placeholder="Cari nama klien, perusahaan, nomor WA..."
-                                className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:outline-hidden"
+                                className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF6EE] py-1.5 pr-3 pl-8 text-xs text-[#16233B] placeholder-[#16233B]/40 focus:outline-hidden"
                             />
                         </div>
 
                         <button
                             type="button"
                             onClick={() => handleFilterApply()}
-                            className="rounded-lg bg-[#0B291E]/10 px-3 py-1.5 text-xs font-semibold text-[#0B291E] hover:bg-[#0B291E] hover:text-white"
+                            className="rounded-lg bg-[#16233B]/10 px-3 py-1.5 text-xs font-semibold text-[#16233B] hover:bg-[#16233B] hover:text-white"
                         >
                             Terapkan
                         </button>
@@ -358,10 +358,10 @@ export default function AdminWaLeadsIndex({
                 </div>
 
                 {/* 3. Leads Table */}
-                <div className="overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs">
+                <div className="overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs">
                     <table className="w-full text-left text-xs">
                         <thead>
-                            <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
+                            <tr className="border-b border-[#16233B]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
                                 <th className="px-4 py-3">
                                     Klien / Perusahaan
                                 </th>
@@ -376,12 +376,12 @@ export default function AdminWaLeadsIndex({
                                 <th className="px-4 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
+                        <tbody className="divide-y divide-[#16233B]/5 text-[#16233B]">
                             {leads.length === 0 ? (
                                 <tr>
                                     <td
                                         colSpan={6}
-                                        className="py-12 text-center text-xs text-[#0B291E]/50"
+                                        className="py-12 text-center text-xs text-[#16233B]/50"
                                     >
                                         Tidak ada data lead WhatsApp yang cocok.
                                     </td>
@@ -393,21 +393,21 @@ export default function AdminWaLeadsIndex({
                                     return (
                                         <tr
                                             key={lead.id}
-                                            className="transition-colors hover:bg-[#F7F5F0]/50"
+                                            className="transition-colors hover:bg-[#FAF6EE]/50"
                                         >
                                             {/* Client / Company */}
                                             <td className="px-4 py-3.5">
                                                 <div>
-                                                    <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                    <h4 className="text-sm font-semibold text-[#16233B]">
                                                         {lead.client_name}
                                                     </h4>
                                                     {lead.company_name ? (
-                                                        <span className="inline-flex items-center gap-1 text-[11px] text-[#0B291E]/60">
-                                                            <Building2 className="size-3 text-[#B89352]" />
+                                                        <span className="inline-flex items-center gap-1 text-[11px] text-[#16233B]/60">
+                                                            <Building2 className="size-3 text-[#A88B54]" />
                                                             {lead.company_name}
                                                         </span>
                                                     ) : (
-                                                        <span className="font-mono text-[10px] text-[#0B291E]/40">
+                                                        <span className="font-mono text-[10px] text-[#16233B]/40">
                                                             Personal Client
                                                         </span>
                                                     )}
@@ -421,14 +421,14 @@ export default function AdminWaLeadsIndex({
                                                         href={`https://wa.me/${lead.wa_number.replace(/\D/g, '')}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center gap-1 font-mono text-xs font-semibold text-[#0B291E] hover:text-[#B89352]"
+                                                        className="flex items-center gap-1 font-mono text-xs font-semibold text-[#16233B] hover:text-[#A88B54]"
                                                     >
                                                         <span>
                                                             +{lead.wa_number}
                                                         </span>
                                                         <ExternalLink className="size-2.5 opacity-40" />
                                                     </a>
-                                                    <span className="py-0.2 mt-0.5 inline-block rounded border border-[#0B291E]/10 bg-[#FAF8F5] px-1.5 font-mono text-[9px] text-[#0B291E]/60">
+                                                    <span className="py-0.2 mt-0.5 inline-block rounded border border-[#16233B]/10 bg-[#FAF8F5] px-1.5 font-mono text-[9px] text-[#16233B]/60">
                                                         {lead.source}
                                                     </span>
                                                 </div>
@@ -437,11 +437,11 @@ export default function AdminWaLeadsIndex({
                                             {/* Package & Boxes */}
                                             <td className="px-4 py-3.5">
                                                 <div>
-                                                    <span className="font-medium text-[#0B291E]">
+                                                    <span className="font-medium text-[#16233B]">
                                                         {lead.package_name ||
                                                             'Konsultasi Kustom'}
                                                     </span>
-                                                    <p className="font-mono text-[11px] text-[#B89352]">
+                                                    <p className="font-mono text-[11px] text-[#A88B54]">
                                                         {lead.estimated_packages ||
                                                             '1 - 25 Box'}
                                                     </p>
@@ -452,7 +452,7 @@ export default function AdminWaLeadsIndex({
                                             <td className="max-w-xs px-4 py-3.5">
                                                 <div className="space-y-0.5">
                                                     {lead.greeting_card_message ? (
-                                                        <p className="line-clamp-1 text-[11px] text-[#0B291E]/70 italic">
+                                                        <p className="line-clamp-1 text-[11px] text-[#16233B]/70 italic">
                                                             &ldquo;
                                                             {
                                                                 lead.greeting_card_message
@@ -460,12 +460,12 @@ export default function AdminWaLeadsIndex({
                                                             &rdquo;
                                                         </p>
                                                     ) : (
-                                                        <span className="text-[10px] text-[#0B291E]/40">
+                                                        <span className="text-[10px] text-[#16233B]/40">
                                                             -
                                                         </span>
                                                     )}
                                                     {lead.engraving_name && (
-                                                        <span className="inline-block rounded border border-[#0B291E]/10 bg-[#FAF8F5] px-1.5 font-mono text-[9.5px] text-[#0B291E]">
+                                                        <span className="inline-block rounded border border-[#16233B]/10 bg-[#FAF8F5] px-1.5 font-mono text-[9.5px] text-[#16233B]">
                                                             Grafir:{' '}
                                                             {
                                                                 lead.engraving_name
@@ -514,9 +514,9 @@ export default function AdminWaLeadsIndex({
                                                         onClick={() =>
                                                             openFollowUp(lead)
                                                         }
-                                                        className="inline-flex items-center gap-1 rounded-md border border-[#0B291E]/15 bg-white px-2.5 py-1 text-xs font-semibold text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]"
+                                                        className="inline-flex items-center gap-1 rounded-md border border-[#16233B]/15 bg-white px-2.5 py-1 text-xs font-semibold text-[#16233B] shadow-2xs hover:border-[#A88B54] hover:text-[#A88B54]"
                                                     >
-                                                        <Send className="size-3 text-[#B89352]" />
+                                                        <Send className="size-3 text-[#A88B54]" />
                                                         <span>Follow Up</span>
                                                     </button>
                                                     <button
@@ -559,12 +559,12 @@ export default function AdminWaLeadsIndex({
                             onClick={(e) => e.stopPropagation()}
                             className="flex h-full w-full max-w-lg flex-col justify-between bg-white shadow-2xl"
                         >
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <div>
-                                    <h3 className="text-base font-semibold text-[#0B291E]">
+                                    <h3 className="text-base font-semibold text-[#16233B]">
                                         1-Click WhatsApp Follow-Up
                                     </h3>
-                                    <p className="text-xs text-[#0B291E]/60">
+                                    <p className="text-xs text-[#16233B]/60">
                                         Kirim balasan cepat &amp;
                                         terpersonalisasi ke klien
                                     </p>
@@ -572,7 +572,7 @@ export default function AdminWaLeadsIndex({
                                 <button
                                     type="button"
                                     onClick={() => setFollowUpDrawerOpen(false)}
-                                    className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
+                                    className="p-1 text-[#16233B]/60 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -580,19 +580,19 @@ export default function AdminWaLeadsIndex({
 
                             <div className="flex-1 scrollbar-none space-y-4 overflow-y-auto p-6 text-xs">
                                 {/* Selected Client Card */}
-                                <div className="space-y-1 rounded-xl border border-[#0B291E]/10 bg-[#FAF8F5] p-3.5">
+                                <div className="space-y-1 rounded-xl border border-[#16233B]/10 bg-[#FAF8F5] p-3.5">
                                     <div className="flex items-center justify-between">
-                                        <h4 className="text-sm font-semibold text-[#0B291E]">
+                                        <h4 className="text-sm font-semibold text-[#16233B]">
                                             {selectedLead.client_name}
                                         </h4>
-                                        <span className="font-mono text-xs text-[#B89352]">
+                                        <span className="font-mono text-xs text-[#A88B54]">
                                             +{selectedLead.wa_number}
                                         </span>
                                     </div>
-                                    <p className="text-[11.5px] text-[#0B291E]/60">
+                                    <p className="text-[11.5px] text-[#16233B]/60">
                                         {selectedLead.package_name ||
                                             'Konsultasi Kustom'}{' '}
-                                        •{' '}
+                                        �{' '}
                                         {selectedLead.estimated_packages ||
                                             'Belum ditargetkan'}
                                     </p>
@@ -600,7 +600,7 @@ export default function AdminWaLeadsIndex({
 
                                 {/* Template Picker */}
                                 <div className="space-y-1.5">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Pilih Template Balasan Cepat
                                     </label>
                                     <div className="space-y-1.5">
@@ -616,15 +616,15 @@ export default function AdminWaLeadsIndex({
                                                 className={`w-full rounded-lg border p-2.5 text-left transition-colors ${
                                                     selectedTemplateId ===
                                                     tmpl.id
-                                                        ? 'border-[#B89352] bg-[#B89352]/10 text-[#0B291E]'
-                                                        : 'border-[#0B291E]/10 bg-white hover:bg-[#FAF8F5]'
+                                                        ? 'border-[#A88B54] bg-[#A88B54]/10 text-[#16233B]'
+                                                        : 'border-[#16233B]/10 bg-white hover:bg-[#FAF8F5]'
                                                 }`}
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <span className="text-xs font-semibold">
                                                         {tmpl.title}
                                                     </span>
-                                                    <span className="font-mono text-[9px] text-[#B89352] uppercase">
+                                                    <span className="font-mono text-[9px] text-[#A88B54] uppercase">
                                                         {tmpl.category}
                                                     </span>
                                                 </div>
@@ -636,13 +636,13 @@ export default function AdminWaLeadsIndex({
                                 {/* Preview & Edit Message Body */}
                                 <div className="space-y-1">
                                     <div className="flex items-center justify-between">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Isi Pesan WhatsApp Terpersonalisasi
                                         </label>
                                         <button
                                             type="button"
                                             onClick={handleCopyMessage}
-                                            className="inline-flex items-center gap-1 font-mono text-[10px] text-[#B89352] hover:underline"
+                                            className="inline-flex items-center gap-1 font-mono text-[10px] text-[#A88B54] hover:underline"
                                         >
                                             <Copy className="size-3" />
                                             <span>
@@ -658,9 +658,9 @@ export default function AdminWaLeadsIndex({
                                         onChange={(e) =>
                                             setCustomizedMessage(e.target.value)
                                         }
-                                        className="w-full rounded-xl border border-[#0B291E]/15 bg-[#FAF8F5] p-3 font-sans text-xs leading-relaxed text-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-xl border border-[#16233B]/15 bg-[#FAF8F5] p-3 font-sans text-xs leading-relaxed text-[#16233B] focus:outline-hidden"
                                     />
-                                    <p className="text-[10px] text-[#0B291E]/50">
+                                    <p className="text-[10px] text-[#16233B]/50">
                                         Anda dapat mengedit teks sebelum menekan
                                         tombol buka WhatsApp di bawah.
                                     </p>
@@ -668,11 +668,11 @@ export default function AdminWaLeadsIndex({
                             </div>
 
                             {/* Drawer Footer Action */}
-                            <div className="flex items-center justify-between border-t border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-between border-t border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <button
                                     type="button"
                                     onClick={() => setFollowUpDrawerOpen(false)}
-                                    className="rounded-lg border px-3.5 py-2 text-xs text-[#0B291E]"
+                                    className="rounded-lg border px-3.5 py-2 text-xs text-[#16233B]"
                                 >
                                     Tutup
                                 </button>
@@ -704,14 +704,14 @@ export default function AdminWaLeadsIndex({
                             onClick={(e) => e.stopPropagation()}
                             className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"
                         >
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
-                                <h3 className="text-base font-semibold text-[#0B291E]">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 pb-3">
+                                <h3 className="text-base font-semibold text-[#16233B]">
                                     Catat Lead WhatsApp Manual
                                 </h3>
                                 <button
                                     type="button"
                                     onClick={() => setManualModalOpen(false)}
-                                    className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
+                                    className="p-1 text-[#16233B]/60 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -723,7 +723,7 @@ export default function AdminWaLeadsIndex({
                             >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Nama Klien
                                         </label>
                                         <input
@@ -737,11 +737,11 @@ export default function AdminWaLeadsIndex({
                                                 )
                                             }
                                             placeholder="Nama lengkap klien"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Perusahaan (Opsional)
                                         </label>
                                         <input
@@ -754,14 +754,14 @@ export default function AdminWaLeadsIndex({
                                                 )
                                             }
                                             placeholder="PT / Instansi"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Nomor WhatsApp
                                         </label>
                                         <input
@@ -775,11 +775,11 @@ export default function AdminWaLeadsIndex({
                                                 )
                                             }
                                             placeholder="628123456789"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Estimasi Jumlah Box
                                         </label>
                                         <input
@@ -795,13 +795,13 @@ export default function AdminWaLeadsIndex({
                                                 )
                                             }
                                             placeholder="Contoh: 50 Box"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Paket yang Ditanyakan
                                     </label>
                                     <input
@@ -814,12 +814,12 @@ export default function AdminWaLeadsIndex({
                                             )
                                         }
                                         placeholder="Seri Emerald Royal Nusantara"
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Teks Kartu Ucapan yang Diinginkan
                                     </label>
                                     <textarea
@@ -835,24 +835,24 @@ export default function AdminWaLeadsIndex({
                                             )
                                         }
                                         placeholder="Pesan ucapan hangat yang akan dicetak di kartu..."
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
+                                <div className="flex justify-end gap-2 border-t border-[#16233B]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() =>
                                             setManualModalOpen(false)
                                         }
-                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#0B291E]"
+                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#16233B]"
                                     >
                                         Batal
                                     </button>
                                     <button
                                         type="submit"
                                         disabled={manualForm.processing}
-                                        className="rounded-lg bg-[#0B291E] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#143E2E]"
+                                        className="rounded-lg bg-[#16233B] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#2B3B5C]"
                                     >
                                         Simpan Lead
                                     </button>

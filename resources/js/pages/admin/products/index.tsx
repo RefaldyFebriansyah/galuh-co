@@ -1,4 +1,4 @@
-﻿import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import {
     Edit3,
     ExternalLink,
@@ -461,7 +461,7 @@ export default function ProductsIndex({
                                                                     .length >
                                                                     0 && (
                                                                     <span className="inline-block text-[10px] font-medium text-[#8C877E]">
-                                                                        ✦{' '}
+                                                                        ·{' '}
                                                                         {
                                                                             product
                                                                                 .contents

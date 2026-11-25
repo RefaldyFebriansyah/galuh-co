@@ -1,4 +1,4 @@
-﻿import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     Award,
@@ -14,7 +14,6 @@ import {
     Plus,
     Search,
     ShieldAlert,
-    Sparkles,
     Star,
     Trash2,
     X,
@@ -212,64 +211,64 @@ export default function AdminKatalogIndex({
                 <button
                     type="button"
                     onClick={openAddDrawer}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#2B3B5C]"
                 >
-                    <Plus className="size-3.5 text-[#B89352]" />
+                    <Plus className="size-3.5 text-[#A88B54]" />
                     <span>Tambah Paket Baru</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Stats KPI Strip */}
-                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+                <div className="grid grid-cols-2 divide-y divide-[#16233B]/10 overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             TOTAL KATALOG
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
-                            <span className="text-2xl font-semibold text-[#0B291E]">
+                            <span className="text-2xl font-semibold text-[#16233B]">
                                 {stats.total}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Paket
                             </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             TAYANG DI WEB
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stats.published}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Aktif
                             </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             FEATURED ON HERO
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
-                            <span className="text-2xl font-semibold text-[#B89352]">
+                            <span className="text-2xl font-semibold text-[#A88B54]">
                                 {stats.featured_hero}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Sorotan
                             </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             SOLD OUT
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="text-2xl font-semibold text-rose-800">
                                 {stats.sold_out}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Habis
                             </span>
                         </div>
@@ -277,10 +276,10 @@ export default function AdminKatalogIndex({
                 </div>
 
                 {/* 2. Filter Bar */}
-                <div className="flex flex-col gap-3 rounded-2xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 rounded-2xl border border-[#16233B]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex flex-1 flex-wrap items-center gap-3">
                         <div className="relative min-w-[200px] flex-1">
-                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#0B291E]/40" />
+                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#16233B]/40" />
                             <input
                                 type="text"
                                 value={searchVal}
@@ -289,7 +288,7 @@ export default function AdminKatalogIndex({
                                     e.key === 'Enter' && handleFilterApply()
                                 }
                                 placeholder="Cari paket hampers..."
-                                className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:border-[#0B291E] focus:outline-hidden"
+                                className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF6EE] py-1.5 pr-3 pl-8 text-xs text-[#16233B] placeholder-[#16233B]/40 focus:border-[#16233B] focus:outline-hidden"
                             />
                         </div>
 
@@ -299,7 +298,7 @@ export default function AdminKatalogIndex({
                             onChange={(e) => {
                                 setSelectedCategory(e.target.value);
                             }}
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Kategori</option>
                             {categories.map((c) => (
@@ -315,7 +314,7 @@ export default function AdminKatalogIndex({
                             onChange={(e) =>
                                 setSelectedPackaging(e.target.value)
                             }
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Kemasan</option>
                             {Object.entries(packagingTypes).map(
@@ -333,7 +332,7 @@ export default function AdminKatalogIndex({
                             onChange={(e) =>
                                 setSelectedVisibility(e.target.value)
                             }
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Status</option>
                             <option value="published">Tayang di Web</option>
@@ -344,7 +343,7 @@ export default function AdminKatalogIndex({
                         <button
                             type="button"
                             onClick={handleFilterApply}
-                            className="rounded-lg bg-[#0B291E]/10 px-3 py-1.5 text-xs font-semibold text-[#0B291E] transition-colors hover:bg-[#0B291E] hover:text-white"
+                            className="rounded-lg bg-[#16233B]/10 px-3 py-1.5 text-xs font-semibold text-[#16233B] transition-colors hover:bg-[#16233B] hover:text-white"
                         >
                             Terapkan
                         </button>
@@ -352,10 +351,10 @@ export default function AdminKatalogIndex({
                 </div>
 
                 {/* 3. Hampers Master Table */}
-                <div className="overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs">
+                <div className="overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs">
                     <table className="w-full text-left text-xs">
                         <thead>
-                            <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
+                            <tr className="border-b border-[#16233B]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
                                 <th className="px-4 py-3">Paket Hampers</th>
                                 <th className="px-4 py-3">
                                     Kategori &amp; Kemasan
@@ -368,12 +367,12 @@ export default function AdminKatalogIndex({
                                 <th className="px-4 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
+                        <tbody className="divide-y divide-[#16233B]/5 text-[#16233B]">
                             {hampers.length === 0 ? (
                                 <tr>
                                     <td
                                         colSpan={6}
-                                        className="py-12 text-center text-xs text-[#0B291E]/50"
+                                        className="py-12 text-center text-xs text-[#16233B]/50"
                                     >
                                         Tidak ada paket hampers yang sesuai
                                         dengan filter.
@@ -383,12 +382,12 @@ export default function AdminKatalogIndex({
                                 hampers.map((h) => (
                                     <tr
                                         key={h.id}
-                                        className="transition-colors hover:bg-[#F7F5F0]/50"
+                                        className="transition-colors hover:bg-[#FAF6EE]/50"
                                     >
                                         {/* Product Photo & Name */}
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-3">
-                                                <div className="size-11 shrink-0 overflow-hidden rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5]">
+                                                <div className="size-11 shrink-0 overflow-hidden rounded-lg border border-[#16233B]/10 bg-[#FAF8F5]">
                                                     <img
                                                         src={
                                                             h.image ||
@@ -399,10 +398,10 @@ export default function AdminKatalogIndex({
                                                     />
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                    <h4 className="text-sm font-semibold text-[#16233B]">
                                                         {h.name}
                                                     </h4>
-                                                    <p className="line-clamp-1 text-[11px] text-[#0B291E]/60">
+                                                    <p className="line-clamp-1 text-[11px] text-[#16233B]/60">
                                                         {h.short_description}
                                                     </p>
                                                     {h.is_halal && (
@@ -418,10 +417,10 @@ export default function AdminKatalogIndex({
                                         {/* Category & Packaging */}
                                         <td className="px-4 py-3">
                                             <div className="space-y-1">
-                                                <span className="inline-block rounded-md border border-[#0B291E]/10 bg-[#F7F5F0] px-2 py-0.5 text-[10.5px] font-medium text-[#0B291E]">
+                                                <span className="inline-block rounded-md border border-[#16233B]/10 bg-[#FAF6EE] px-2 py-0.5 text-[10.5px] font-medium text-[#16233B]">
                                                     {h.category}
                                                 </span>
-                                                <p className="text-[11px] text-[#0B291E]/60">
+                                                <p className="text-[11px] text-[#16233B]/60">
                                                     {packagingTypes[
                                                         h.packaging || ''
                                                     ] ||
@@ -433,10 +432,10 @@ export default function AdminKatalogIndex({
 
                                         {/* Price */}
                                         <td className="px-4 py-3">
-                                            <span className="font-mono text-xs font-semibold text-[#0B291E]">
+                                            <span className="font-mono text-xs font-semibold text-[#16233B]">
                                                 {formatIdr(h.price_from)}
                                             </span>
-                                            <span className="block text-[10px] text-[#0B291E]/50">
+                                            <span className="block text-[10px] text-[#16233B]/50">
                                                 Mulai dari
                                             </span>
                                         </td>
@@ -455,11 +454,11 @@ export default function AdminKatalogIndex({
                                                 }
                                                 className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors ${
                                                     h.is_featured_hero
-                                                        ? 'border border-[#B89352]/40 bg-[#B89352]/15 text-[#8C6D32]'
-                                                        : 'border border-[#0B291E]/10 bg-white text-[#0B291E]/40 hover:text-[#0B291E]'
+                                                        ? 'border border-[#A88B54]/40 bg-[#A88B54]/15 text-[#8C6D32]'
+                                                        : 'border border-[#16233B]/10 bg-white text-[#16233B]/40 hover:text-[#16233B]'
                                                 }`}
                                             >
-                                                <Sparkles className="size-3" />
+                                                <CheckCircle2 className="size-3" />
                                                 <span>
                                                     {h.is_featured_hero
                                                         ? 'Hero Active'
@@ -510,7 +509,7 @@ export default function AdminKatalogIndex({
                                                     onClick={() =>
                                                         openEditDrawer(h)
                                                     }
-                                                    className="rounded-md border border-[#0B291E]/15 bg-white px-2.5 py-1 text-xs font-medium text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]"
+                                                    className="rounded-md border border-[#16233B]/15 bg-white px-2.5 py-1 text-xs font-medium text-[#16233B] shadow-2xs hover:border-[#A88B54] hover:text-[#A88B54]"
                                                 >
                                                     Edit
                                                 </button>
@@ -554,14 +553,14 @@ export default function AdminKatalogIndex({
                             className="flex h-full w-full max-w-xl flex-col justify-between bg-white shadow-2xl"
                         >
                             {/* Drawer Header */}
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <div>
-                                    <h3 className="text-base font-semibold text-[#0B291E]">
+                                    <h3 className="text-base font-semibold text-[#16233B]">
                                         {editingHamper
                                             ? 'Edit Paket Hampers'
                                             : 'Tambah Paket Hampers Baru'}
                                     </h3>
-                                    <p className="text-xs text-[#0B291E]/60">
+                                    <p className="text-xs text-[#16233B]/60">
                                         Informasi detail paket untuk katalog
                                         publik &amp; konsultasi WA
                                     </p>
@@ -569,7 +568,7 @@ export default function AdminKatalogIndex({
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
-                                    className="rounded-lg p-1.5 text-[#0B291E]/60 hover:bg-[#0B291E]/5 hover:text-[#0B291E]"
+                                    className="rounded-lg p-1.5 text-[#16233B]/60 hover:bg-[#16233B]/5 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -583,7 +582,7 @@ export default function AdminKatalogIndex({
                             >
                                 {/* Name */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         Nama Paket Hampers
                                     </label>
                                     <input
@@ -594,14 +593,14 @@ export default function AdminKatalogIndex({
                                             form.setData('name', e.target.value)
                                         }
                                         placeholder="Contoh: Seri Emerald Royal Nusantara"
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Category */}
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Kategori Edisi
                                         </label>
                                         <select
@@ -612,7 +611,7 @@ export default function AdminKatalogIndex({
                                                     e.target.value,
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         >
                                             {categories.map((c) => (
                                                 <option key={c} value={c}>
@@ -624,7 +623,7 @@ export default function AdminKatalogIndex({
 
                                     {/* Packaging */}
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Kemasan Utama
                                         </label>
                                         <select
@@ -635,7 +634,7 @@ export default function AdminKatalogIndex({
                                                     e.target.value,
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         >
                                             {Object.entries(packagingTypes).map(
                                                 ([k, v]) => (
@@ -651,7 +650,7 @@ export default function AdminKatalogIndex({
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Starting Price */}
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Harga Mulai Dari (IDR)
                                         </label>
                                         <input
@@ -664,13 +663,13 @@ export default function AdminKatalogIndex({
                                                     Number(e.target.value),
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         />
                                     </div>
 
                                     {/* Visibility Status */}
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Status Tayang
                                         </label>
                                         <select
@@ -684,7 +683,7 @@ export default function AdminKatalogIndex({
                                                         | 'sold_out',
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         >
                                             <option value="published">
                                                 Tayang di Web
@@ -701,7 +700,7 @@ export default function AdminKatalogIndex({
 
                                 {/* Short Description */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         Deskripsi Singkat
                                     </label>
                                     <textarea
@@ -715,22 +714,22 @@ export default function AdminKatalogIndex({
                                             )
                                         }
                                         placeholder="Kombinasi elegan nastar Wijsman dan teh artisan dalam hardbox zamrud..."
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
 
                                 {/* Contents Bullets */}
                                 <div className="space-y-2">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         Daftar Isi Paket (Item Bullets)
                                     </label>
                                     <div className="space-y-1.5">
                                         {form.data.contents.map((item, idx) => (
                                             <div
                                                 key={idx}
-                                                className="flex items-center justify-between rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] px-3 py-1.5"
+                                                className="flex items-center justify-between rounded-lg border border-[#16233B]/10 bg-[#FAF8F5] px-3 py-1.5"
                                             >
-                                                <span className="text-xs text-[#0B291E]">
+                                                <span className="text-xs text-[#16233B]">
                                                     {item}
                                                 </span>
                                                 <button
@@ -760,12 +759,12 @@ export default function AdminKatalogIndex({
                                                 }
                                             }}
                                             placeholder="Tambah item isi baru..."
-                                            className="flex-1 rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-1.5 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="flex-1 rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-1.5 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         />
                                         <button
                                             type="button"
                                             onClick={addBullet}
-                                            className="rounded-lg bg-[#0B291E] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#143E2E]"
+                                            className="rounded-lg bg-[#16233B] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#2B3B5C]"
                                         >
                                             Tambah
                                         </button>
@@ -774,7 +773,7 @@ export default function AdminKatalogIndex({
 
                                 {/* Image URL */}
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         URL Foto Produk
                                     </label>
                                     <input
@@ -787,13 +786,13 @@ export default function AdminKatalogIndex({
                                             )
                                         }
                                         placeholder="/images/product_emerald_box.jpg"
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
 
                                 {/* Toggles */}
                                 <div className="grid grid-cols-2 gap-4 pt-2">
-                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3">
+                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#16233B]/10 bg-[#FAF8F5] p-3">
                                         <input
                                             type="checkbox"
                                             checked={form.data.is_halal}
@@ -803,19 +802,19 @@ export default function AdminKatalogIndex({
                                                     e.target.checked,
                                                 )
                                             }
-                                            className="rounded border-[#0B291E]/30 text-[#0B291E] focus:ring-0"
+                                            className="rounded border-[#16233B]/30 text-[#16233B] focus:ring-0"
                                         />
                                         <div>
-                                            <span className="text-xs font-semibold text-[#0B291E]">
+                                            <span className="text-xs font-semibold text-[#16233B]">
                                                 Sertifikat Halal
                                             </span>
-                                            <p className="text-[10px] text-[#0B291E]/50">
+                                            <p className="text-[10px] text-[#16233B]/50">
                                                 Tampilkan badge halal
                                             </p>
                                         </div>
                                     </label>
 
-                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3">
+                                    <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-[#16233B]/10 bg-[#FAF8F5] p-3">
                                         <input
                                             type="checkbox"
                                             checked={form.data.is_featured_hero}
@@ -825,13 +824,13 @@ export default function AdminKatalogIndex({
                                                     e.target.checked,
                                                 )
                                             }
-                                            className="rounded border-[#0B291E]/30 text-[#0B291E] focus:ring-0"
+                                            className="rounded border-[#16233B]/30 text-[#16233B] focus:ring-0"
                                         />
                                         <div>
-                                            <span className="text-xs font-semibold text-[#0B291E]">
+                                            <span className="text-xs font-semibold text-[#16233B]">
                                                 Featured di Hero
                                             </span>
-                                            <p className="text-[10px] text-[#0B291E]/50">
+                                            <p className="text-[10px] text-[#16233B]/50">
                                                 Tampil di carousel hero utama
                                             </p>
                                         </div>
@@ -840,11 +839,11 @@ export default function AdminKatalogIndex({
                             </form>
 
                             {/* Drawer Footer Buttons */}
-                            <div className="flex items-center justify-end gap-3 border-t border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-end gap-3 border-t border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
-                                    className="rounded-lg border border-[#0B291E]/15 bg-white px-4 py-2 text-xs font-medium text-[#0B291E] hover:bg-[#F7F5F0]"
+                                    className="rounded-lg border border-[#16233B]/15 bg-white px-4 py-2 text-xs font-medium text-[#16233B] hover:bg-[#FAF6EE]"
                                 >
                                     Batal
                                 </button>
@@ -852,7 +851,7 @@ export default function AdminKatalogIndex({
                                     type="submit"
                                     form="hamperForm"
                                     disabled={form.processing}
-                                    className="rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
+                                    className="rounded-lg bg-[#16233B] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C] disabled:opacity-50"
                                 >
                                     {form.processing
                                         ? 'Menyimpan...'

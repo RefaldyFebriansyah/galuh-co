@@ -14,7 +14,7 @@ return new class extends Migration
         // 1. Add role & phone_number to users table
         Schema::table('users', function (Blueprint $table) {
             if (! Schema::hasColumn('users', 'role')) {
-                $table->string('role')->default('super_admin')->after('email');
+                $table->string('role')->default('admin')->after('email');
             }
             if (! Schema::hasColumn('users', 'phone_number')) {
                 $table->string('phone_number')->nullable()->after('role');

@@ -4,16 +4,20 @@ import {
     ArrowRight,
     Award,
     Bookmark,
+    BookOpen,
     Calendar,
     CheckCircle2,
     ChevronDown,
     ChevronRight,
+    ClipboardList,
     Command,
     ExternalLink,
     FileText,
+    HelpCircle,
     Layers,
     LayoutDashboard,
     LogOut,
+    MapPin,
     Menu,
     MessageSquare,
     Package,
@@ -22,7 +26,9 @@ import {
     Search,
     Settings,
     Shield,
-    Sparkles,
+    ShieldCheck,
+    Truck,
+    Type,
     UserCheck,
     X,
 } from 'lucide-react';
@@ -120,20 +126,36 @@ export function AdminLayout({
     const navGroups: NavGroup[] = useMemo(
         () => [
             {
-                domain: 'MENU UTAMA',
+                domain: 'OPERASIONAL',
                 items: [
                     {
-                        label: 'Dashboard',
+                        label: 'Dashboard Admin',
                         shortLabel: 'Dashboard',
                         href: '/admin/dashboard',
                         icon: LayoutDashboard,
                         description:
-                            'Ringkasan operasional dan katalog website',
+                            'Grafik penjualan barang & ringkasan operasional studio',
+                    },
+                    {
+                        label: 'Inquiries & Pesanan',
+                        shortLabel: 'Pesanan',
+                        href: '/admin/orders',
+                        icon: ClipboardList,
+                        description:
+                            'Pesanan masuk personal & corporate yang harus di-accept admin',
+                    },
+                    {
+                        label: 'Tracking Pesanan',
+                        shortLabel: 'Tracking',
+                        href: '/admin/tracking',
+                        icon: Truck,
+                        description:
+                            'Tahapan proses studio, pengantaran kurir & resi, hingga diterima konsumen',
                     },
                 ],
             },
             {
-                domain: 'KATALOG & WEBSITE',
+                domain: 'MARKETING & EVENT',
                 items: [
                     {
                         label: 'Katalog Hampers',
@@ -141,41 +163,89 @@ export function AdminLayout({
                         href: '/admin/katalog',
                         icon: Package,
                         description:
-                            'Kelola paket hampers, varian kemasan, dan foto produk',
+                            'Tambah katalog, tentukan harga personal & corporate, serta rincian isi hampers',
                     },
                     {
-                        label: 'Konten Website',
-                        shortLabel: 'Konten Web',
-                        href: '/admin/cms-halaman',
-                        icon: Palette,
+                        label: 'Event Musiman',
+                        shortLabel: 'Event',
+                        href: '/admin/events',
+                        icon: Calendar,
                         description:
-                            'Edit banner hero musim aktif, filosofi, testimoni, dan FAQ',
-                    },
-                ],
-            },
-            {
-                domain: 'PESAN & INQUIRIES',
-                items: [
-                    {
-                        label: 'Inquiries Website',
-                        shortLabel: 'Inquiries',
-                        href: '/admin/inquiries',
-                        icon: FileText,
-                        description:
-                            'Permintaan proposal penawaran corporate dari formulir web',
+                            'Promosikan/demo event (Lebaran, Natal, dll.), iklan card foto demo & prioritas katalog',
                     },
                 ],
             },
             {
-                domain: 'PENGATURAN',
+                domain: 'KONTEN WEBSITE',
                 items: [
                     {
-                        label: 'Pengaturan Sistem',
-                        shortLabel: 'Pengaturan',
-                        href: '/admin/pengaturan',
-                        icon: Settings,
+                        label: 'Hero Showcase',
+                        shortLabel: 'Hero',
+                        href: '/admin/cms/hero',
+                        icon: Layers,
                         description:
-                            'Nomor WhatsApp resmi, jam operasional, dan akun staf',
+                            'Foto hampers melayang (auto-hapus background & kompres WebP), headline berganti & teks berjalan',
+                    },
+                    {
+                        label: 'Tentang Galuh',
+                        shortLabel: 'Tentang',
+                        href: '/admin/cms/about',
+                        icon: BookOpen,
+                        description:
+                            'Teks filosofi Galuh, 3 pilar kriya (pilar 1-3), dan foto di dalam card',
+                    },
+                    {
+                        label: 'Katalog Teks',
+                        shortLabel: 'Katalog Teks',
+                        href: '/admin/cms/katalog-teks',
+                        icon: Type,
+                        description:
+                            'Teks badge musiman, judul Koleksi Bingkisan Istimewa, dan teks deskripsi',
+                    },
+                    {
+                        label: 'Integritas Atelier',
+                        shortLabel: 'Atelier',
+                        href: '/admin/cms/atelier',
+                        icon: ShieldCheck,
+                        description:
+                            'Teks integritas atelier dan semua teks pada 4 card keunggulan',
+                    },
+                    {
+                        label: 'Panduan Pesanan',
+                        shortLabel: 'Cara Pesan',
+                        href: '/admin/cms/cara-pesan',
+                        icon: CheckCircle2,
+                        description:
+                            'Teks panduan pemesanan dan 4 tahapan alur pesanan resmi',
+                    },
+                    {
+                        label: 'FAQ',
+                        shortLabel: 'FAQ',
+                        href: '/admin/cms/faq',
+                        icon: HelpCircle,
+                        description:
+                            'Kelola daftar tanya jawab pertanyaan umum pelanggan',
+                    },
+                ],
+            },
+            {
+                domain: 'PENGATURAN SISTEM',
+                items: [
+                    {
+                        label: 'Profil & Lokasi Studio',
+                        shortLabel: 'Profil Studio',
+                        href: '/admin/pengaturan/profil',
+                        icon: MapPin,
+                        description:
+                            'Teks bio footer, nomor telepon hotline (+62), email, dan titik lokasi Maps studio',
+                    },
+                    {
+                        label: 'Akun & Keamanan',
+                        shortLabel: 'Keamanan',
+                        href: '/admin/pengaturan/keamanan',
+                        icon: Shield,
+                        description:
+                            'Kelola profil admin, email resmi, dan ubah kata sandi sistem',
                     },
                 ],
             },
@@ -212,79 +282,67 @@ export function AdminLayout({
             <Head title={`${title} — Galuh & Co. Admin Panel`} />
 
             <div
-                className="flex min-h-screen bg-slate-50 font-sans text-slate-900 antialiased selection:bg-emerald-500/20 selection:text-emerald-900"
+                className="flex min-h-screen bg-[#FAF8F5] font-sans text-[#16233B] antialiased selection:bg-[#A88B54]/25 selection:text-[#16233B]"
                 style={{
                     fontFamily:
-                        "'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                        "'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
                 }}
             >
                 {/* 1. Desktop Fixed Admin Sidebar */}
                 <aside
-                    className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-slate-800 bg-slate-900 text-slate-200 transition-all duration-200 lg:flex ${
-                        sidebarCollapsed ? 'w-20' : 'w-64'
+                    className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-[#1E2E4A] bg-[#16233B] text-[#F2EBDC] transition-all duration-200 lg:flex ${
+                        sidebarCollapsed ? 'w-20' : 'w-80'
                     }`}
                 >
                     <div className="flex flex-1 scrollbar-none flex-col overflow-y-auto">
-                        {/* Admin Brand Header */}
-                        <div className="flex h-16 items-center justify-between border-b border-slate-800 px-4">
+                        {/* Admin Brand Header — Full Width Without Clutter */}
+                        <div className="flex h-20 items-center border-b border-[#1E2E4A] px-6">
                             <Link
                                 href="/admin/dashboard"
-                                className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
+                                className="flex min-w-0 items-center gap-3.5 transition-opacity hover:opacity-90"
                             >
                                 <GaluhLogo
                                     variant="white"
-                                    className="h-7 w-auto shrink-0"
+                                    className="h-10 w-auto shrink-0"
                                     showText={false}
                                 />
                                 {!sidebarCollapsed && (
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-semibold tracking-wide text-white">
+                                    <div className="flex min-w-0 flex-col">
+                                        <span className="font-serif text-base font-bold tracking-wider text-[#F2EBDC] whitespace-nowrap">
                                             GALUH &amp; CO.
                                         </span>
-                                        <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
-                                            Admin
-                                        </span>
+                                        <div className="flex items-center gap-2 pt-0.5">
+                                            <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
+                                            <span className="text-[10px] font-bold tracking-[0.22em] text-[#A88B54] uppercase whitespace-nowrap">
+                                                Panel Admin
+                                            </span>
+                                        </div>
                                     </div>
                                 )}
                             </Link>
-
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setSidebarCollapsed(!sidebarCollapsed)
-                                }
-                                title={
-                                    sidebarCollapsed
-                                        ? 'Perbesar Sidebar'
-                                        : 'Ciutkan Sidebar'
-                                }
-                                className="hidden rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white lg:inline-flex"
-                            >
-                                <Menu className="size-4" />
-                            </button>
                         </div>
 
                         {/* Search Trigger Button */}
-                        <div className="px-3 pt-3 pb-2">
+                        <div className="px-5 pt-4 pb-2">
                             <button
                                 type="button"
                                 onClick={() => setSearchModalOpen(true)}
-                                className={`flex w-full items-center justify-between rounded-lg border border-slate-800 bg-slate-800/60 px-3 py-2 text-xs text-slate-400 transition-colors hover:border-slate-700 hover:bg-slate-800 hover:text-slate-200 ${
+                                className={`flex w-full items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/60 px-4 py-2.5 text-xs text-[#F2EBDC]/60 transition-colors hover:border-[#A88B54]/40 hover:bg-[#1E2E4A] hover:text-[#F2EBDC] ${
                                     sidebarCollapsed
                                         ? 'justify-center px-0'
                                         : ''
                                 }`}
                             >
-                                <div className="flex items-center gap-2">
-                                    <Search className="size-3.5 text-slate-400" />
+                                <div className="flex items-center gap-2.5">
+                                    <Search className="size-4 text-[#A88B54]" />
                                     {!sidebarCollapsed && (
                                         <span className="text-xs">
-                                            Cari menu...
+                                            Cari modul atau menu...
                                         </span>
                                     )}
                                 </div>
                                 {!sidebarCollapsed && (
-                                    <kbd className="rounded border border-slate-700 bg-slate-900 px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
+                                    <kbd className="rounded-md border border-[#1E2E4A] bg-[#16233B] px-2 py-0.5 font-mono text-[10px] text-[#A88B54]">
                                         ⌘K
                                     </kbd>
                                 )}
@@ -292,15 +350,15 @@ export function AdminLayout({
                         </div>
 
                         {/* Navigation Groups */}
-                        <nav className="space-y-5 px-3 py-2">
+                        <nav className="space-y-6 px-4 py-3">
                             {navGroups.map((group, groupIdx) => (
-                                <div key={groupIdx} className="space-y-1">
+                                <div key={groupIdx} className="space-y-1.5">
                                     {!sidebarCollapsed ? (
-                                        <p className="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                                        <p className="px-3 pt-2 pb-1 text-[10.5px] font-bold tracking-[0.22em] text-[#A88B54] uppercase">
                                             {group.domain}
                                         </p>
                                     ) : (
-                                        <div className="my-2 border-t border-slate-800" />
+                                        <div className="my-2 border-t border-[#1E2E4A]" />
                                     )}
 
                                     {group.items.map((item) => {
@@ -318,22 +376,22 @@ export function AdminLayout({
                                                         ? item.label
                                                         : undefined
                                                 }
-                                                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                                                className={`group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all ${
                                                     active
-                                                        ? 'bg-emerald-600 font-semibold text-white shadow-xs'
-                                                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                                                        ? 'border-l-3 border-[#A88B54] bg-[#A88B54]/15 font-bold text-white shadow-xs'
+                                                        : 'text-[#F2EBDC]/75 hover:bg-[#1E2E4A]/80 hover:text-white'
                                                 } ${sidebarCollapsed ? 'justify-center px-0 py-2.5' : ''}`}
                                             >
-                                                <div className="flex min-w-0 items-center gap-2.5">
+                                                <div className="flex min-w-0 items-center gap-3">
                                                     <Icon
-                                                        className={`size-4 shrink-0 ${
+                                                        className={`size-4.5 shrink-0 transition-colors ${
                                                             active
-                                                                ? 'text-white'
-                                                                : 'text-slate-400'
+                                                                ? 'text-[#A88B54]'
+                                                                : 'text-[#A88B54]/70 group-hover:text-[#A88B54]'
                                                         }`}
                                                     />
                                                     {!sidebarCollapsed && (
-                                                        <span className="truncate">
+                                                        <span className="truncate text-[12.5px]">
                                                             {item.label}
                                                         </span>
                                                     )}
@@ -341,7 +399,7 @@ export function AdminLayout({
 
                                                 {!sidebarCollapsed &&
                                                     active && (
-                                                        <span className="size-1.5 rounded-full bg-white" />
+                                                        <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
                                                     )}
                                             </Link>
                                         );
@@ -352,47 +410,47 @@ export function AdminLayout({
                     </div>
 
                     {/* Bottom User Bar */}
-                    <div className="space-y-2 border-t border-slate-800 p-3">
+                    <div className="space-y-2 border-t border-[#1E2E4A] p-4">
                         <a
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white ${
+                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/40 px-3.5 py-2 text-xs font-semibold text-[#F2EBDC]/80 transition-colors hover:border-[#A88B54]/40 hover:bg-[#1E2E4A] hover:text-white ${
                                 sidebarCollapsed ? 'justify-center px-0' : ''
                             }`}
                             title="Buka Website Publik"
                         >
                             <span className="flex items-center gap-2">
-                                <ExternalLink className="size-3.5 text-emerald-400" />
+                                <ExternalLink className="size-3.5 text-[#A88B54]" />
                                 {!sidebarCollapsed && (
                                     <span>Lihat Website</span>
                                 )}
                             </span>
                             {!sidebarCollapsed && (
-                                <span className="text-[10px] text-slate-400">
+                                <span className="text-[10px] text-[#A88B54]">
                                     ↗
                                 </span>
                             )}
                         </a>
 
                         <div
-                            className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-800/80 p-2 ${
+                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/60 p-2.5 transition-colors hover:border-[#A88B54]/30 ${
                                 sidebarCollapsed ? 'justify-center' : ''
                             }`}
                         >
-                            <div className="flex min-w-0 items-center gap-2">
-                                <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-emerald-600 text-xs font-bold text-white">
+                            <div className="flex min-w-0 items-center gap-2.5">
+                                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#A88B54] to-[#8C7240] font-serif text-xs font-bold text-[#16233B] shadow-xs">
                                     {user?.name
                                         ? user.name.charAt(0).toUpperCase()
                                         : 'A'}
                                 </div>
                                 {!sidebarCollapsed && (
                                     <div className="min-w-0">
-                                        <p className="truncate text-xs font-semibold text-white">
-                                            {user?.name ?? 'Administrator'}
+                                        <p className="truncate text-xs font-bold text-white">
+                                            {user?.name ?? 'Admin Galuh & Co.'}
                                         </p>
-                                        <p className="truncate text-[10px] font-medium text-emerald-400">
-                                            Admin (Full Access)
+                                        <p className="truncate text-[9.5px] font-semibold tracking-wider text-[#A88B54] uppercase">
+                                            Administrator Utama
                                         </p>
                                     </div>
                                 )}
@@ -403,7 +461,7 @@ export function AdminLayout({
                                     type="button"
                                     onClick={handleLogout}
                                     title="Keluar"
-                                    className="rounded p-1 text-slate-400 transition-colors hover:bg-slate-700 hover:text-rose-400"
+                                    className="rounded-lg p-1.5 text-[#F2EBDC]/50 transition-colors hover:bg-[#16233B] hover:text-rose-400"
                                 >
                                     <LogOut className="size-3.5" />
                                 </button>
@@ -415,28 +473,44 @@ export function AdminLayout({
                 {/* 2. Main Viewport Area */}
                 <div
                     className={`flex min-h-screen flex-1 flex-col transition-all duration-200 ${
-                        sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'
+                        sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-80'
                     }`}
                 >
                     {/* Top Header Navbar */}
-                    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6">
-                        <div className="flex items-center gap-3">
+                    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#E8DFD1] bg-white/95 px-6 backdrop-blur-md shadow-2xs sm:px-8">
+                        <div className="flex items-center gap-4">
+                            {/* Desktop Sidebar Toggle */}
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setSidebarCollapsed(!sidebarCollapsed)
+                                }
+                                title={
+                                    sidebarCollapsed
+                                        ? 'Perbesar Sidebar'
+                                        : 'Ciutkan Sidebar'
+                                }
+                                className="hidden rounded-xl border border-[#DFD7C5] bg-[#FAF8F5] p-2.5 text-[#16233B] transition-colors hover:border-[#A88B54] hover:bg-white lg:inline-flex"
+                            >
+                                <Menu className="size-4.5" />
+                            </button>
+
                             {/* Mobile Hamburger Toggle */}
                             <button
                                 type="button"
                                 onClick={() => setMobileSidebarOpen(true)}
-                                className="rounded-lg border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 lg:hidden"
+                                className="rounded-xl border border-[#DFD7C5] bg-[#FAF8F5] p-2 text-[#16233B] hover:bg-white lg:hidden"
                             >
                                 <Menu className="size-5" />
                             </button>
 
                             {/* Page Header Titles */}
                             <div>
-                                <h1 className="text-base font-bold text-slate-900 sm:text-lg">
+                                <h1 className="font-serif text-lg font-bold text-[#16233B] sm:text-xl tracking-tight">
                                     {title}
                                 </h1>
                                 {subtitle && (
-                                    <p className="hidden text-xs text-slate-500 sm:block">
+                                    <p className="hidden text-xs text-[#6E675D] sm:block">
                                         {subtitle}
                                     </p>
                                 )}
@@ -451,9 +525,9 @@ export function AdminLayout({
                                 href="/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 sm:inline-flex"
+                                className="hidden items-center gap-2 rounded-xl border border-[#DFD7C5] bg-white px-3.5 py-2 text-xs font-semibold text-[#16233B] shadow-2xs transition-colors hover:border-[#A88B54] hover:bg-[#FAF6EE] sm:inline-flex"
                             >
-                                <ExternalLink className="size-3.5 text-slate-400" />
+                                <ExternalLink className="size-3.5 text-[#A88B54]" />
                                 <span>Lihat Website</span>
                             </a>
                         </div>
@@ -517,24 +591,34 @@ export function AdminLayout({
                                 stiffness: 220,
                             }}
                             onClick={(e) => e.stopPropagation()}
-                            className="flex h-full w-72 flex-col justify-between bg-slate-900 p-4 text-slate-200 shadow-2xl"
+                            className="flex h-full w-72 flex-col justify-between bg-[#16233B] p-4 text-[#F2EBDC] shadow-2xl"
                         >
                             <div>
-                                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-semibold text-white">
-                                            GALUH &amp; CO.
-                                        </span>
-                                        <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
-                                            Admin
-                                        </span>
+                                <div className="flex items-center justify-between border-b border-[#1E2E4A] pb-4">
+                                    <div className="flex items-center gap-3">
+                                        <GaluhLogo
+                                            variant="white"
+                                            className="h-8 w-auto shrink-0"
+                                            showText={false}
+                                        />
+                                        <div className="flex flex-col">
+                                            <span className="font-serif text-sm font-bold tracking-wider text-[#F2EBDC]">
+                                                GALUH &amp; CO.
+                                            </span>
+                                            <div className="flex items-center gap-1.5 pt-0.5">
+                                                <span className="size-1.5 rounded-full bg-[#A88B54]" />
+                                                <span className="text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
+                                                    Panel Admin
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() =>
                                             setMobileSidebarOpen(false)
                                         }
-                                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"
+                                        className="rounded-lg p-1.5 text-[#F2EBDC]/60 hover:bg-[#1E2E4A] hover:text-white"
                                     >
                                         <X className="size-4" />
                                     </button>
@@ -543,7 +627,7 @@ export function AdminLayout({
                                 <nav className="mt-4 space-y-4">
                                     {navGroups.map((group, gIdx) => (
                                         <div key={gIdx} className="space-y-1">
-                                            <p className="px-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                                            <p className="px-2 text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
                                                 {group.domain}
                                             </p>
                                             {group.items.map((item) => {
@@ -559,22 +643,28 @@ export function AdminLayout({
                                                         onClick={() =>
                                                             setMobileSidebarOpen(
                                                                 false,
-                                                            )
+                                                             )
                                                         }
-                                                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
+                                                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
                                                             active
-                                                                ? 'bg-emerald-600 font-semibold text-white'
-                                                                : 'text-slate-300 hover:bg-slate-800'
+                                                                ? 'border-l-2 border-[#A88B54] bg-[#A88B54]/15 font-bold text-white shadow-xs'
+                                                                : 'text-[#F2EBDC]/75 hover:bg-[#1E2E4A] hover:text-white'
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-2.5">
-                                                            <Icon className="size-4 text-slate-400" />
+                                                            <Icon
+                                                                className={`size-4 ${
+                                                                    active
+                                                                        ? 'text-[#A88B54]'
+                                                                        : 'text-[#A88B54]/70'
+                                                                }`}
+                                                            />
                                                             <span>
                                                                 {item.label}
                                                             </span>
                                                         </div>
                                                         {active && (
-                                                            <span className="size-1.5 rounded-full bg-white" />
+                                                            <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
                                                         )}
                                                     </Link>
                                                 );
@@ -584,11 +674,11 @@ export function AdminLayout({
                                 </nav>
                             </div>
 
-                            <div className="border-t border-slate-800 pt-3">
+                            <div className="border-t border-[#1E2E4A] pt-3">
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-medium text-rose-300"
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-medium text-rose-300 hover:bg-rose-500/20"
                                 >
                                     <LogOut className="size-3.5" />
                                     <span>Keluar dari Admin</span>

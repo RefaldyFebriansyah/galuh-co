@@ -2,9 +2,9 @@ import { useRef } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import {
     Gift,
-    MessageCircle,
-    PackageCheck,
+    Building2,
     CheckCircle2,
+    PackageSearch,
     ArrowRight,
 } from 'lucide-react';
 import {
@@ -14,7 +14,23 @@ import {
     viewportOnce,
 } from '@/lib/motion';
 
-export function HowToOrder() {
+export interface HowToOrderProps {
+    orderGuideBadge?: string;
+    orderGuideTitle?: string;
+    orderGuideSubtitle?: string;
+    orderGuideSteps?: Array<{
+        number: string;
+        title: string;
+        description: string;
+    }>;
+}
+
+export function HowToOrder({
+    orderGuideBadge = 'PANDUAN PEMESANAN • SISTEM WEBSITE RESMI',
+    orderGuideTitle = 'Alur Pemesanan Mudah & Transparan',
+    orderGuideSubtitle = 'Seluruh transaksi diproses langsung di dalam website setelah Anda mendaftar atau masuk ke akun Anda, lengkap dengan konfirmasi instan dan pelacakan resi.',
+    orderGuideSteps,
+}: HowToOrderProps = {}) {
     const sectionRef = useRef<HTMLElement>(null);
 
     // Track scroll progress across the section
@@ -29,44 +45,56 @@ export function HowToOrder() {
         restDelta: 0.001,
     });
 
-    const steps = [
+    const defaultSteps = [
         {
             number: '01',
             icon: Gift,
-            title: 'Pilih Koleksi Hampers',
+            title: 'Pilih Koleksi & Detail Isi',
             description:
-                'Jelajahi kurasi katalog musiman kami atau tentukan konsep kustom sesuai tema acara dan anggaran yang diinginkan.',
+                'Jelajahi kurasi katalog musiman kami dan periksa rincian daftar isi setiap paket hampers melalui modal detail produk.',
         },
         {
             number: '02',
-            icon: MessageCircle,
-            title: 'Personalisasi & Konsultasi',
+            icon: Building2,
+            title: 'Personal atau Corporate (Min. 25)',
             description:
-                'Diskusikan detail isi paket, kartu ucapan berstempel wax, atau penambahan logo perusahaan bersama tim kurator kami.',
+                'Pesan langsung di website untuk paket personal (>1 paket) atau paket corporate dengan harga grosir resmi minimal 25 paket.',
         },
         {
             number: '03',
             icon: CheckCircle2,
-            title: 'Konfirmasi & Pengerjaan',
+            title: 'Lengkapi Alamat & Ucapan',
             description:
-                'Periksa kembali rincian desain kartu dan pesanan Anda. Setiap paket dirangkai teliti oleh tim kriya atelier dengan higienis.',
+                'Isi data penerima, gunakan fitur deteksi alamat otomatis, dan tuliskan pesan kartu ucapan berstempel wax personal.',
         },
         {
             number: '04',
-            icon: PackageCheck,
-            title: 'Pengiriman Aman Nusantara',
+            icon: PackageSearch,
+            title: 'Lacak Pesanan via Nomor Resi',
             description:
-                'Bingkisan dikemas rapi dengan perlindungan berlapis dan dikirimkan tepat waktu ke alamat penerima di seluruh Indonesia.',
+                'Pantau status pengerjaan di studio hingga perjalanan kurir secara real-time langsung di menu Lacak Pesanan website.',
         },
     ];
+
+    const stepIcons = [Gift, Building2, CheckCircle2, PackageSearch];
+
+    const steps =
+        orderGuideSteps && orderGuideSteps.length === 4
+            ? orderGuideSteps.map((s, idx) => ({
+                  number: s.number,
+                  icon: stepIcons[idx % stepIcons.length],
+                  title: s.title,
+                  description: s.description,
+              }))
+            : defaultSteps;
 
     return (
         <section
             ref={sectionRef}
             id="cara-pesan"
-            className="relative bg-[#FAF8F5] py-14 sm:py-20 lg:py-24"
+            className="relative bg-[#F2EBDC] py-14 sm:py-20 lg:py-24"
         >
-            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
                 {/* Header */}
                 <motion.div
                     variants={fadeInUp}
@@ -75,44 +103,35 @@ export function HowToOrder() {
                     viewport={viewportOnce}
                     className="mx-auto max-w-3xl text-center"
                 >
-                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#7A5B24] uppercase">
-                        <span>PANDUAN PEMESANAN</span>
-                        <span className="size-1 rounded-full bg-[#C5A880]" />
-                        <span>ATELIER SERVICE</span>
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#A88B54] uppercase">
+                        <span>{orderGuideBadge}</span>
                     </div>
 
-                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] sm:text-4xl lg:text-5xl">
-                        Langkah Pemesanan Mudah &amp;{' '}
-                        <span className="text-[#7A5B24] italic">Personal</span>
+                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#16233B] sm:text-4xl lg:text-5xl">
+                        {orderGuideTitle}
                     </h2>
 
-                    <p className="mt-3.5 text-sm leading-relaxed text-[#5C564C] sm:text-base">
-                        Setiap tahap kami rancang praktis, transparan, dan
-                        terarah untuk memudahkan pemesanan Anda, mulai dari
-                        kurasi paket hingga kotak hadiah tiba sempurna di tangan
-                        penerima.
+                    <p className="mt-3.5 text-xs leading-relaxed text-[#6E675D] sm:text-sm">
+                        {orderGuideSubtitle}
                     </p>
                 </motion.div>
 
-                {/* 1. Desktop & Tablet Horizontal Dynamic Connecting Line */}
+                {/* 1. Desktop & Tablet Horizontal Dynamic Connecting Line - Clean line with step circles above the cards */}
                 <div className="relative mt-12 hidden md:block">
-                    {/* Track Background */}
-                    <div className="absolute top-1/2 right-12 left-12 h-[2px] -translate-y-1/2 bg-[#E2DACD]" />
+                    {/* Track Background spanning horizontally */}
+                    <div className="absolute top-1/2 right-12 left-12 h-[2px] -translate-y-1/2 bg-[#A88B54]/30" />
 
                     {/* Dynamic ScaleX Fill Line */}
                     <motion.div
                         style={{ scaleX: progress }}
-                        className="absolute top-1/2 right-12 left-12 h-[2px] origin-left -translate-y-1/2 bg-gradient-to-r from-[#C5A880] via-[#0E2A1E] to-[#0E2A1E]"
+                        className="absolute top-1/2 right-12 left-12 h-[2px] origin-left -translate-y-1/2 bg-gradient-to-r from-[#A88B54] via-[#16233B] to-[#16233B]"
                     />
 
-                    {/* Step Dots on the Track */}
-                    <div className="relative flex justify-between px-8">
+                    {/* Step Dots on the Track (Elevated and perfectly positioned on the connecting line) */}
+                    <div className="relative flex justify-between px-10">
                         {steps.map((step, idx) => (
-                            <div
-                                key={idx}
-                                className="flex flex-col items-center"
-                            >
-                                <span className="flex size-8 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-xs font-bold text-[#0E2A1E] shadow-2xs">
+                            <div key={idx} className="flex flex-col items-center">
+                                <span className="flex size-9 items-center justify-center rounded-full border-2 border-[#A88B54] bg-[#F2EBDC] font-serif text-xs font-bold text-[#16233B] shadow-sm transition-transform duration-300 hover:scale-110">
                                     {step.number}
                                 </span>
                             </div>
@@ -120,13 +139,13 @@ export function HowToOrder() {
                     </div>
                 </div>
 
-                {/* 2. Responsive Step Deck: Clean Vertical Flow on Mobile (< 768px), 4-Col Grid on Desktop (>= 768px) */}
-                <div className="relative mt-8 md:mt-10">
+                {/* 2. Responsive Step Cards Grid (Positioned cleanly below the line with generous top margin so the line is NEVER covered) */}
+                <div className="relative mt-10 md:mt-12">
                     {/* Mobile Left Progress Line: Mathematically Centered at 14px (< md:) */}
-                    <div className="absolute top-4 bottom-4 left-[13px] w-[2px] bg-[#E2DACD] md:hidden">
+                    <div className="absolute top-4 bottom-4 left-[13px] w-[2px] bg-[#A88B54]/30 md:hidden">
                         <motion.div
                             style={{ scaleY: progress }}
-                            className="size-full origin-top bg-gradient-to-b from-[#C5A880] to-[#0E2A1E]"
+                            className="size-full origin-top bg-gradient-to-b from-[#A88B54] to-[#16233B]"
                         />
                     </div>
 
@@ -150,33 +169,33 @@ export function HowToOrder() {
                                             ease: [0.16, 1, 0.3, 1],
                                         },
                                     }}
-                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-4 shadow-[0_4px_20px_-8px_rgba(20,54,40,0.06)] transition-all duration-300 hover:border-[#C5A880]/70 hover:shadow-md sm:p-5"
+                                    className="group relative flex flex-col justify-between rounded-2xl border border-[#A88B54]/25 bg-white p-4 shadow-[0_4px_20px_-8px_rgba(22,35,59,0.06)] transition-all duration-300 hover:border-[#A88B54] hover:shadow-md sm:p-5"
                                 >
                                     {/* Mobile Indicator Dot centered exactly on the vertical line (x=14px) */}
-                                    <div className="absolute top-4 -left-10 flex size-7 items-center justify-center rounded-full border-2 border-[#C5A880] bg-white font-serif text-[11px] font-bold text-[#0E2A1E] shadow-2xs md:hidden">
+                                    <div className="absolute top-4 -left-10 flex size-7 items-center justify-center rounded-full border-2 border-[#A88B54] bg-[#F2EBDC] font-serif text-[11px] font-bold text-[#16233B] shadow-2xs md:hidden">
                                         {step.number}
                                     </div>
 
                                     <div>
                                         <div className="flex items-center justify-between">
-                                            <span className="hidden font-serif text-2xl font-bold text-[#1A1815] transition-colors group-hover:text-[#7A5B24] sm:text-3xl md:block">
+                                            <span className="hidden font-serif text-2xl font-bold text-[#16233B] transition-colors group-hover:text-[#A88B54] sm:text-3xl md:block">
                                                 {step.number}
                                             </span>
-                                            <span className="flex size-8 items-center justify-center rounded-xl border border-[#C5A880]/30 bg-[#FAF0D7] text-[#8B6B38] shadow-2xs transition-transform duration-300 group-hover:scale-110 sm:size-9">
+                                            <span className="flex size-8 items-center justify-center rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC] text-[#16233B] shadow-2xs transition-transform duration-300 group-hover:scale-110 sm:size-9">
                                                 <Icon className="size-4 sm:size-4.5" />
                                             </span>
                                         </div>
 
-                                        <h3 className="mt-1 font-serif text-sm font-bold text-[#1A1815] sm:text-base md:mt-4">
+                                        <h3 className="mt-1 font-serif text-sm font-bold text-[#16233B] sm:text-base md:mt-4">
                                             {step.title}
                                         </h3>
 
-                                        <p className="mt-1 text-xs leading-relaxed text-[#6E6962] sm:mt-2">
+                                        <p className="mt-1 text-xs leading-relaxed text-[#6E675D] sm:mt-2">
                                             {step.description}
                                         </p>
                                     </div>
 
-                                    <div className="mt-3 flex items-center gap-1.5 border-t border-[#F0EBE1] pt-2 text-[9.5px] font-bold tracking-wider text-[#7A5B24] uppercase sm:mt-5 sm:pt-3 sm:text-[10px]">
+                                    <div className="mt-3 flex items-center gap-1.5 border-t border-[#F2EBDC] pt-2 text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase sm:mt-5 sm:pt-3 sm:text-[10px]">
                                         <span>TAHAP {idx + 1}</span>
                                         <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
                                     </div>
@@ -190,5 +209,5 @@ export function HowToOrder() {
     );
 }
 
-export const StepsSection = HowToOrder;
 export default HowToOrder;
+export { HowToOrder as StepsSection };

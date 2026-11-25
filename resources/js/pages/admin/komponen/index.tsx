@@ -1,4 +1,4 @@
-﻿import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     AlertCircle,
@@ -173,16 +173,16 @@ export default function AdminKomponenIndex({
                 <button
                     type="button"
                     onClick={openAddDrawer}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-[#2B3B5C]"
                 >
-                    <Plus className="size-3.5 text-[#B89352]" />
+                    <Plus className="size-3.5 text-[#A88B54]" />
                     <span>Tambah Komponen</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Quick Stock Status Strip */}
-                <div className="grid grid-cols-1 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <div className="grid grid-cols-1 divide-y divide-[#16233B]/10 overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
                         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-emerald-800 uppercase">
                             TERSEDIA (READY)
@@ -191,7 +191,7 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stockStats.in_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Komponen Siap Racik
                             </span>
                         </div>
@@ -204,7 +204,7 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-amber-700">
                                 {stockStats.low_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Perlu Restock Studio
                             </span>
                         </div>
@@ -217,7 +217,7 @@ export default function AdminKomponenIndex({
                             <span className="text-2xl font-semibold text-rose-800">
                                 {stockStats.out_of_stock}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Jangan Rekomendasikan di WA
                             </span>
                         </div>
@@ -225,10 +225,10 @@ export default function AdminKomponenIndex({
                 </div>
 
                 {/* 2. Filter & Search Controls */}
-                <div className="flex flex-col gap-3 rounded-2xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 rounded-2xl border border-[#16233B]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex flex-1 flex-wrap items-center gap-3">
                         <div className="relative min-w-[200px] flex-1">
-                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#0B291E]/40" />
+                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#16233B]/40" />
                             <input
                                 type="text"
                                 value={searchVal}
@@ -237,7 +237,7 @@ export default function AdminKomponenIndex({
                                     e.key === 'Enter' && handleFilterApply()
                                 }
                                 placeholder="Cari nama komponen, SKU..."
-                                className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:border-[#0B291E] focus:outline-hidden"
+                                className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF6EE] py-1.5 pr-3 pl-8 text-xs text-[#16233B] placeholder-[#16233B]/40 focus:border-[#16233B] focus:outline-hidden"
                             />
                         </div>
 
@@ -246,7 +246,7 @@ export default function AdminKomponenIndex({
                             onChange={(e) =>
                                 setSelectedCategory(e.target.value)
                             }
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Kategori</option>
                             <option value="kudapan">
@@ -269,7 +269,7 @@ export default function AdminKomponenIndex({
                         <select
                             value={selectedStock}
                             onChange={(e) => setSelectedStock(e.target.value)}
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Status Stok</option>
                             <option value="in_stock">Tersedia</option>
@@ -280,7 +280,7 @@ export default function AdminKomponenIndex({
                         <button
                             type="button"
                             onClick={handleFilterApply}
-                            className="rounded-lg bg-[#0B291E]/10 px-3 py-1.5 text-xs font-semibold text-[#0B291E] transition-colors hover:bg-[#0B291E] hover:text-white"
+                            className="rounded-lg bg-[#16233B]/10 px-3 py-1.5 text-xs font-semibold text-[#16233B] transition-colors hover:bg-[#16233B] hover:text-white"
                         >
                             Terapkan
                         </button>
@@ -288,10 +288,10 @@ export default function AdminKomponenIndex({
                 </div>
 
                 {/* 3. Components Table */}
-                <div className="overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs">
+                <div className="overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs">
                     <table className="w-full text-left text-xs">
                         <thead>
-                            <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
+                            <tr className="border-b border-[#16233B]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
                                 <th className="px-4 py-3">
                                     Nama Komponen &amp; SKU
                                 </th>
@@ -306,12 +306,12 @@ export default function AdminKomponenIndex({
                                 <th className="px-4 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
+                        <tbody className="divide-y divide-[#16233B]/5 text-[#16233B]">
                             {components.length === 0 ? (
                                 <tr>
                                     <td
                                         colSpan={6}
-                                        className="py-12 text-center text-xs text-[#0B291E]/50"
+                                        className="py-12 text-center text-xs text-[#16233B]/50"
                                     >
                                         Tidak ada komponen yang ditemukan.
                                     </td>
@@ -320,20 +320,20 @@ export default function AdminKomponenIndex({
                                 components.map((item) => (
                                     <tr
                                         key={item.id}
-                                        className="transition-colors hover:bg-[#F7F5F0]/50"
+                                        className="transition-colors hover:bg-[#FAF6EE]/50"
                                     >
                                         {/* Name & SKU */}
                                         <td className="px-4 py-3.5">
                                             <div className="flex items-center gap-2">
-                                                <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-[#0B291E]/10 bg-[#FAF8F5] text-[#0B291E]">
-                                                    <Boxes className="size-3.5 text-[#B89352]" />
+                                                <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-[#16233B]/10 bg-[#FAF8F5] text-[#16233B]">
+                                                    <Boxes className="size-3.5 text-[#A88B54]" />
                                                 </div>
                                                 <div>
-                                                    <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                    <h4 className="text-sm font-semibold text-[#16233B]">
                                                         {item.name}
                                                     </h4>
                                                     {item.sku && (
-                                                        <span className="font-mono text-[10px] text-[#0B291E]/50">
+                                                        <span className="font-mono text-[10px] text-[#16233B]/50">
                                                             {item.sku}
                                                         </span>
                                                     )}
@@ -343,7 +343,7 @@ export default function AdminKomponenIndex({
 
                                         {/* Category */}
                                         <td className="px-4 py-3.5">
-                                            <span className="inline-block rounded-md border border-[#0B291E]/10 bg-[#F7F5F0] px-2 py-0.5 text-[10.5px] text-[#0B291E]">
+                                            <span className="inline-block rounded-md border border-[#16233B]/10 bg-[#FAF6EE] px-2 py-0.5 text-[10.5px] text-[#16233B]">
                                                 {categoryLabels[
                                                     item.category
                                                 ] || item.category}
@@ -351,7 +351,7 @@ export default function AdminKomponenIndex({
                                         </td>
 
                                         {/* Unit Cost */}
-                                        <td className="px-4 py-3.5 font-mono font-medium text-[#0B291E]">
+                                        <td className="px-4 py-3.5 font-mono font-medium text-[#16233B]">
                                             {formatIdr(item.unit_cost)}
                                         </td>
 
@@ -391,7 +391,7 @@ export default function AdminKomponenIndex({
                                         </td>
 
                                         {/* Notes */}
-                                        <td className="max-w-xs truncate px-4 py-3.5 text-[#0B291E]/60">
+                                        <td className="max-w-xs truncate px-4 py-3.5 text-[#16233B]/60">
                                             {item.description || '-'}
                                         </td>
 
@@ -403,7 +403,7 @@ export default function AdminKomponenIndex({
                                                     onClick={() =>
                                                         openEditDrawer(item)
                                                     }
-                                                    className="rounded-md border border-[#0B291E]/15 bg-white p-1 text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]"
+                                                    className="rounded-md border border-[#16233B]/15 bg-white p-1 text-[#16233B] shadow-2xs hover:border-[#A88B54] hover:text-[#A88B54]"
                                                     title="Edit Komponen"
                                                 >
                                                     <Edit3 className="size-3.5" />
@@ -447,14 +447,14 @@ export default function AdminKomponenIndex({
                             onClick={(e) => e.stopPropagation()}
                             className="flex h-full w-full max-w-md flex-col justify-between bg-white shadow-2xl"
                         >
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <div>
-                                    <h3 className="text-base font-semibold text-[#0B291E]">
+                                    <h3 className="text-base font-semibold text-[#16233B]">
                                         {editingItem
                                             ? 'Edit Komponen Isian'
                                             : 'Tambah Komponen Baru'}
                                     </h3>
-                                    <p className="text-xs text-[#0B291E]/60">
+                                    <p className="text-xs text-[#16233B]/60">
                                         Data isian hampers &amp; kemasan mix and
                                         match
                                     </p>
@@ -462,7 +462,7 @@ export default function AdminKomponenIndex({
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
-                                    className="rounded-lg p-1.5 text-[#0B291E]/60 hover:bg-[#0B291E]/5 hover:text-[#0B291E]"
+                                    className="rounded-lg p-1.5 text-[#16233B]/60 hover:bg-[#16233B]/5 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -474,7 +474,7 @@ export default function AdminKomponenIndex({
                                 className="flex-1 scrollbar-none space-y-4 overflow-y-auto p-6 text-xs"
                             >
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         Nama Komponen
                                     </label>
                                     <input
@@ -485,13 +485,13 @@ export default function AdminKomponenIndex({
                                             form.setData('name', e.target.value)
                                         }
                                         placeholder="Contoh: Nastar Wijsman Bulat 350g"
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Kategori
                                         </label>
                                         <select
@@ -507,7 +507,7 @@ export default function AdminKomponenIndex({
                                                         | 'aksesoris',
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         >
                                             <option value="kudapan">
                                                 Kudapan &amp; Kue Kering
@@ -528,7 +528,7 @@ export default function AdminKomponenIndex({
                                     </div>
 
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             SKU / Kode
                                         </label>
                                         <input
@@ -541,14 +541,14 @@ export default function AdminKomponenIndex({
                                                 )
                                             }
                                             placeholder="KOMP-NST-01"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Biaya Satuan (IDR)
                                         </label>
                                         <input
@@ -561,12 +561,12 @@ export default function AdminKomponenIndex({
                                                     Number(e.target.value),
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         />
                                     </div>
 
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-[#0B291E]">
+                                        <label className="text-xs font-semibold text-[#16233B]">
                                             Status Stok
                                         </label>
                                         <select
@@ -580,7 +580,7 @@ export default function AdminKomponenIndex({
                                                         | 'out_of_stock',
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                         >
                                             <option value="in_stock">
                                                 Tersedia (In Stock)
@@ -596,7 +596,7 @@ export default function AdminKomponenIndex({
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold text-[#0B291E]">
+                                    <label className="text-xs font-semibold text-[#16233B]">
                                         Catatan Studio / Spesifikasi
                                     </label>
                                     <textarea
@@ -609,16 +609,16 @@ export default function AdminKomponenIndex({
                                             )
                                         }
                                         placeholder="Contoh: Kemasan toples kaca bersegel emas, tahan 3 bulan pada suhu ruang..."
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs text-[#0B291E] focus:border-[#0B291E] focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
                             </form>
 
-                            <div className="flex items-center justify-end gap-3 border-t border-[#0B291E]/10 bg-[#FAF8F5] px-6 py-4">
+                            <div className="flex items-center justify-end gap-3 border-t border-[#16233B]/10 bg-[#FAF8F5] px-6 py-4">
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
-                                    className="rounded-lg border border-[#0B291E]/15 bg-white px-4 py-2 text-xs font-medium text-[#0B291E] hover:bg-[#F7F5F0]"
+                                    className="rounded-lg border border-[#16233B]/15 bg-white px-4 py-2 text-xs font-medium text-[#16233B] hover:bg-[#FAF6EE]"
                                 >
                                     Batal
                                 </button>
@@ -626,7 +626,7 @@ export default function AdminKomponenIndex({
                                     type="submit"
                                     form="compForm"
                                     disabled={form.processing}
-                                    className="rounded-lg bg-[#0B291E] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-50"
+                                    className="rounded-lg bg-[#16233B] px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C] disabled:opacity-50"
                                 >
                                     {form.processing
                                         ? 'Menyimpan...'

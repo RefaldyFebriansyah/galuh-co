@@ -16,15 +16,15 @@ class SettingSeeder extends Seeder
             // Contact & WhatsApp
             [
                 'key' => 'whatsapp_number',
-                'value' => '6281572414233',
+                'value' => '6282321773434',
                 'group' => 'contact',
                 'type' => 'string',
                 'label' => 'Nomor WhatsApp Pemesanan',
-                'description' => 'Nomor WhatsApp format internasional (tanpa tanda + atau spasi, contoh: 6281572414233)',
+                'description' => 'Nomor WhatsApp format internasional (tanpa tanda + atau spasi, contoh: 6282321773434)',
             ],
             [
                 'key' => 'contact_phone',
-                'value' => '+62 815-7241-4233',
+                'value' => '+62 823-2177-3434',
                 'group' => 'contact',
                 'type' => 'string',
                 'label' => 'Nomor Telepon Display',

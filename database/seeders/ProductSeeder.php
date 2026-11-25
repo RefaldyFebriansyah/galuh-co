@@ -285,8 +285,20 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $productData) {
+            $category = $productData['category'];
+            $eventTag = match ($category) {
+                'Paket Lebaran' => 'ramadhan',
+                'Natal & Tahun Baru' => 'natal',
+                'Paket Kantor' => 'corporate',
+                default => null,
+            };
+
+            $corporatePrice = (int) round($productData['price_from'] * 0.85, -3); // Diskon grosir ~15% untuk corporate min 25 paket
+
             Product::create([
                 ...$productData,
+                'corporate_price' => $corporatePrice,
+                'event_tag' => $eventTag,
                 'slug' => Str::slug($productData['name']),
             ]);
         }

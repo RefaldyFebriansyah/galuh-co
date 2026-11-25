@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -15,8 +16,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo(fn (Request $request) => route('admin.login'));
-        $middleware->redirectUsersTo(fn (Request $request) => route('admin.dashboard'));
+        $middleware->redirectGuestsTo(fn (Request $request) => $request->is('admin*') ? route('admin.login') : route('login'));
+        $middleware->redirectUsersTo(function (Request $request) {
+            $user = $request->user();
+            if ($user && $user->isAdmin()) {
+                return route('admin.dashboard');
+            }
+
+            return route('home');
+        });
+
+        $middleware->alias([
+            'role' => EnsureRole::class,
+        ]);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 

@@ -59,31 +59,31 @@ class DashboardController extends Controller
                 'source' => 'Hero Customizer',
                 'key' => 'hero_customizer',
                 'count' => WaLead::where('source', 'hero_customizer')->count(),
-                'color' => '#0B291E',
+                'color' => '#16233B',
             ],
             [
                 'source' => 'Katalog Corporate B2B',
                 'key' => 'catalog_corporate',
                 'count' => WaLead::where('source', 'catalog_corporate')->count(),
-                'color' => '#B89352',
+                'color' => '#A88B54',
             ],
             [
                 'source' => 'Katalog Personal',
                 'key' => 'catalog_personal',
                 'count' => WaLead::where('source', 'catalog_personal')->count(),
-                'color' => '#2E614D',
+                'color' => '#2B3B5C',
             ],
             [
                 'source' => 'Floating WA Button',
                 'key' => 'floating_wa',
                 'count' => WaLead::where('source', 'floating_wa')->count(),
-                'color' => '#143628',
+                'color' => '#8C7240',
             ],
             [
                 'source' => 'Edisi Khusus / Festive',
                 'key' => 'festive_banner',
                 'count' => WaLead::where('source', 'festive_banner')->count(),
-                'color' => '#9E7E45',
+                'color' => '#6E675D',
             ],
         ];
 

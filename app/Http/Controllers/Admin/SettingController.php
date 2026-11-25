@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -65,6 +66,8 @@ class SettingController extends Controller
             $cleanWa = preg_replace('/[^0-9]/', '', (string) $validated['whatsapp_number']);
             if (Str::startsWith($cleanWa, '0')) {
                 $cleanWa = '62'.substr($cleanWa, 1);
+            } elseif (! Str::startsWith($cleanWa, '62')) {
+                $cleanWa = '62'.$cleanWa;
             }
             Setting::set('whatsapp_number', $cleanWa, 'contact', 'string', 'Nomor WhatsApp Utama');
         }
@@ -73,6 +76,8 @@ class SettingController extends Controller
             $cleanBackup = preg_replace('/[^0-9]/', '', (string) $validated['whatsapp_backup_number']);
             if (Str::startsWith($cleanBackup, '0')) {
                 $cleanBackup = '62'.substr($cleanBackup, 1);
+            } elseif (! Str::startsWith($cleanBackup, '62')) {
+                $cleanBackup = '62'.$cleanBackup;
             }
             Setting::set('whatsapp_backup_number', $cleanBackup, 'contact', 'string', 'Nomor WhatsApp Cadangan');
         }
@@ -82,7 +87,16 @@ class SettingController extends Controller
         }
 
         if (isset($validated['contact_phone'])) {
-            Setting::set('contact_phone', $validated['contact_phone'], 'contact', 'string', 'Nomor Telepon Display');
+            $rawPhone = preg_replace('/[^0-9]/', '', (string) $validated['contact_phone']);
+            if (Str::startsWith($rawPhone, '62')) {
+                $digits = substr($rawPhone, 2);
+            } elseif (Str::startsWith($rawPhone, '0')) {
+                $digits = substr($rawPhone, 1);
+            } else {
+                $digits = $rawPhone;
+            }
+            $formattedPhone = $digits !== '' ? '+62 '.substr($digits, 0, 3).'-'.substr($digits, 3, 4).'-'.substr($digits, 7) : '';
+            Setting::set('contact_phone', $formattedPhone, 'contact', 'string', 'Nomor Telepon Display');
         }
 
         if (isset($validated['contact_email'])) {
@@ -223,5 +237,130 @@ class SettingController extends Controller
         $user->delete();
 
         return back()->with('success', "Akun {$name} berhasil dihapus.");
+    }
+
+    /**
+     * Display Profil & Lokasi Studio setting page.
+     * Manages footer bio, +62 hotline, email, operational hours, and Google Maps embed.
+     */
+    public function profilIndex(): Response
+    {
+        $companyAddress = (string) Setting::get('company_address', 'Jl. Ir. H. Juanda No. 146, Ciamis, Jawa Barat 46211');
+        $studioGmaps = (string) Setting::get('studio_gmaps_embed', '');
+        if (trim($studioGmaps) === '') {
+            $studioGmaps = 'https://maps.google.com/maps?q='.urlencode($companyAddress).'&output=embed';
+        }
+
+        $profileSettings = [
+            'footer_bio' => (string) Setting::get(
+                'footer_bio',
+                'Atelier kriya bingkisan premium dan corporate gifting artisanal yang memadukan kehangatan tradisi anyaman bambu Nusantara dengan kemewahan hardbox linen berstempel wax.'
+            ),
+            'contact_phone' => (string) Setting::get('contact_phone', '+62 823-2177-3434'),
+            'whatsapp_number' => (string) Setting::get('whatsapp_number', '6282321773434'),
+            'contact_email' => (string) Setting::get('contact_email', 'halo@galuh.co'),
+            'operational_hours' => (string) Setting::get('operational_hours', 'Senin - Sabtu: 08.00 - 18.00 WIB'),
+            'company_address' => $companyAddress,
+            'studio_gmaps_embed' => $studioGmaps,
+        ];
+
+        return Inertia::render('admin/settings/profil', [
+            'profileSettings' => $profileSettings,
+        ]);
+    }
+
+    /**
+     * Update Profil & Lokasi Studio settings (instantly syncs to landing page map & footer).
+     */
+    public function updateProfil(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'footer_bio' => ['required', 'string', 'max:500'],
+            'contact_phone' => ['required', 'string', 'max:50'],
+            'contact_email' => ['required', 'email', 'max:100'],
+            'operational_hours' => ['required', 'string', 'max:100'],
+            'company_address' => ['required', 'string', 'max:500'],
+            'studio_gmaps_embed' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        // Clean & standardize Indonesian phone number with +62
+        $rawPhone = preg_replace('/[^0-9]/', '', (string) $validated['contact_phone']);
+        if (str_starts_with($rawPhone, '62')) {
+            $digits = substr($rawPhone, 2);
+        } elseif (str_starts_with($rawPhone, '0')) {
+            $digits = substr($rawPhone, 1);
+        } else {
+            $digits = $rawPhone;
+        }
+
+        $formattedPhone = '+62 '.substr($digits, 0, 3).'-'.substr($digits, 3, 4).'-'.substr($digits, 7);
+        $waNumber = '62'.$digits;
+
+        Setting::set('footer_bio', $validated['footer_bio']);
+        Setting::set('contact_phone', $formattedPhone);
+        Setting::set('whatsapp_number', $waNumber);
+        Setting::set('contact_email', $validated['contact_email']);
+        Setting::set('operational_hours', $validated['operational_hours']);
+        Setting::set('company_address', $validated['company_address']);
+
+        $gmapsEmbed = trim((string) ($validated['studio_gmaps_embed'] ?? ''));
+        if ($gmapsEmbed === '') {
+            $gmapsEmbed = 'https://maps.google.com/maps?q='.urlencode($validated['company_address']).'&output=embed';
+        }
+
+        Setting::set('studio_gmaps_embed', $gmapsEmbed);
+
+        Cache::forget('landing_page_settings');
+
+        return back()->with('success', 'Profil & Lokasi Studio berhasil diperbarui. Data peta dan footer landing page telah diperbarui.');
+    }
+
+    /**
+     * Display Akun & Keamanan page for logged-in Administrator.
+     */
+    public function keamananIndex(): Response
+    {
+        $user = auth()->user();
+
+        return Inertia::render('admin/settings/keamanan', [
+            'adminUser' => [
+                'id' => $user?->id,
+                'name' => $user?->name,
+                'email' => $user?->email,
+                'phone_number' => $user?->phone_number,
+                'role' => $user?->role,
+            ],
+        ]);
+    }
+
+    /**
+     * Update Administrator Profile & Password.
+     */
+    public function updateKeamanan(Request $request): RedirectResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email,'.$user->id],
+            'phone_number' => ['nullable', 'string', 'max:50'],
+            'current_password' => ['nullable', 'required_with:new_password', 'current_password'],
+            'new_password' => ['nullable', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        $updateData = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'] ?? $user->phone_number,
+        ];
+
+        if (! empty($validated['new_password'])) {
+            $updateData['password'] = Hash::make($validated['new_password']);
+        }
+
+        $user->update($updateData);
+
+        return back()->with('success', 'Profil Administrator & Keamanan berhasil diperbarui.');
     }
 }

@@ -1,4 +1,4 @@
-﻿import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     Bookmark,
@@ -150,16 +150,16 @@ export default function AdminTemplateWaIndex({
                 <button
                     type="button"
                     onClick={openAddModal}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C]"
                 >
-                    <Plus className="size-3.5 text-[#B89352]" />
+                    <Plus className="size-3.5 text-[#A88B54]" />
                     <span>Tambah Template</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Category Filter Tabs */}
-                <div className="flex scrollbar-none overflow-x-auto rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6">
+                <div className="flex scrollbar-none overflow-x-auto rounded-2xl border-b border-[#16233B]/10 bg-white px-4 shadow-2xs sm:px-6">
                     <nav className="flex min-w-max space-x-6">
                         <button
                             type="button"
@@ -169,15 +169,15 @@ export default function AdminTemplateWaIndex({
                             }}
                             className={`relative py-4 text-xs font-semibold transition-colors ${
                                 !filters.category
-                                    ? 'text-[#0B291E]'
-                                    : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                    ? 'text-[#16233B]'
+                                    : 'text-[#16233B]/50 hover:text-[#16233B]'
                             }`}
                         >
                             <span>Semua Kategori</span>
                             {!filters.category && (
                                 <motion.div
                                     layoutId="template-tab-active"
-                                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
+                                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[#A88B54]"
                                 />
                             )}
                         </button>
@@ -194,15 +194,15 @@ export default function AdminTemplateWaIndex({
                                     }}
                                     className={`relative py-4 text-xs font-semibold transition-colors ${
                                         isCurrent
-                                            ? 'text-[#0B291E]'
-                                            : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                            ? 'text-[#16233B]'
+                                            : 'text-[#16233B]/50 hover:text-[#16233B]'
                                     }`}
                                 >
                                     <span>{label}</span>
                                     {isCurrent && (
                                         <motion.div
                                             layoutId="template-tab-active"
-                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#B89352]"
+                                            className="absolute inset-x-0 bottom-0 h-0.5 bg-[#A88B54]"
                                         />
                                     )}
                                 </button>
@@ -212,9 +212,9 @@ export default function AdminTemplateWaIndex({
                 </div>
 
                 {/* 2. Search Bar */}
-                <div className="flex items-center gap-3 rounded-2xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs">
+                <div className="flex items-center gap-3 rounded-2xl border border-[#16233B]/10 bg-white p-4 shadow-2xs">
                     <div className="relative min-w-[260px] flex-1">
-                        <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#0B291E]/40" />
+                        <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#16233B]/40" />
                         <input
                             type="text"
                             value={searchVal}
@@ -223,13 +223,13 @@ export default function AdminTemplateWaIndex({
                                 e.key === 'Enter' && handleFilterApply()
                             }
                             placeholder="Cari kata dalam template balasan..."
-                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:outline-hidden"
+                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF6EE] py-1.5 pr-3 pl-8 text-xs text-[#16233B] placeholder-[#16233B]/40 focus:outline-hidden"
                         />
                     </div>
                     <button
                         type="button"
                         onClick={() => handleFilterApply()}
-                        className="rounded-lg bg-[#0B291E]/10 px-3.5 py-1.5 text-xs font-semibold text-[#0B291E] hover:bg-[#0B291E] hover:text-white"
+                        className="rounded-lg bg-[#16233B]/10 px-3.5 py-1.5 text-xs font-semibold text-[#16233B] hover:bg-[#16233B] hover:text-white"
                     >
                         Cari
                     </button>
@@ -238,23 +238,23 @@ export default function AdminTemplateWaIndex({
                 {/* 3. Templates Grid */}
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                     {templates.length === 0 ? (
-                        <div className="col-span-full rounded-2xl border border-[#0B291E]/10 bg-white py-16 text-center text-xs text-[#0B291E]/50">
+                        <div className="col-span-full rounded-2xl border border-[#16233B]/10 bg-white py-16 text-center text-xs text-[#16233B]/50">
                             Tidak ada template balasan WhatsApp yang sesuai.
                         </div>
                     ) : (
                         templates.map((tmpl) => (
                             <div
                                 key={tmpl.id}
-                                className="group relative flex flex-col justify-between rounded-2xl border border-[#0B291E]/10 bg-white p-5 shadow-2xs transition-all hover:border-[#B89352]/40"
+                                className="group relative flex flex-col justify-between rounded-2xl border border-[#16233B]/10 bg-white p-5 shadow-2xs transition-all hover:border-[#A88B54]/40"
                             >
                                 <div>
                                     {/* Header */}
-                                    <div className="flex items-start justify-between gap-2 border-b border-[#0B291E]/10 pb-3">
+                                    <div className="flex items-start justify-between gap-2 border-b border-[#16233B]/10 pb-3">
                                         <div>
-                                            <h4 className="text-sm font-semibold text-[#0B291E]">
+                                            <h4 className="text-sm font-semibold text-[#16233B]">
                                                 {tmpl.title}
                                             </h4>
-                                            <span className="font-mono text-[9px] font-bold text-[#B89352] uppercase">
+                                            <span className="font-mono text-[9px] font-bold text-[#A88B54] uppercase">
                                                 {categories[tmpl.category] ||
                                                     tmpl.category}
                                             </span>
@@ -265,7 +265,7 @@ export default function AdminTemplateWaIndex({
                                                 onClick={() =>
                                                     openEditModal(tmpl)
                                                 }
-                                                className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
+                                                className="p-1 text-[#16233B]/60 hover:text-[#16233B]"
                                                 title="Edit"
                                             >
                                                 <Edit3 className="size-3.5" />
@@ -284,14 +284,14 @@ export default function AdminTemplateWaIndex({
                                     </div>
 
                                     {/* Content Preformatted */}
-                                    <pre className="mt-3 line-clamp-6 rounded-xl border border-[#0B291E]/5 bg-[#FAF8F5] p-3 font-sans text-xs leading-relaxed whitespace-pre-wrap text-[#0B291E]/80">
+                                    <pre className="mt-3 line-clamp-6 rounded-xl border border-[#16233B]/5 bg-[#FAF8F5] p-3 font-sans text-xs leading-relaxed whitespace-pre-wrap text-[#16233B]/80">
                                         {tmpl.content}
                                     </pre>
                                 </div>
 
                                 {/* Footer & 1-Click Copy */}
-                                <div className="mt-4 flex items-center justify-between border-t border-[#0B291E]/10 pt-3">
-                                    <span className="font-mono text-[9.5px] text-[#0B291E]/40">
+                                <div className="mt-4 flex items-center justify-between border-t border-[#16233B]/10 pt-3">
+                                    <span className="font-mono text-[9.5px] text-[#16233B]/40">
                                         Variabel otomatis
                                     </span>
                                     <button
@@ -300,7 +300,7 @@ export default function AdminTemplateWaIndex({
                                         className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                                             copiedId === tmpl.id
                                                 ? 'bg-emerald-600 text-white'
-                                                : 'border border-[#0B291E]/15 bg-white text-[#0B291E] shadow-2xs hover:border-[#B89352] hover:text-[#B89352]'
+                                                : 'border border-[#16233B]/15 bg-white text-[#16233B] shadow-2xs hover:border-[#A88B54] hover:text-[#A88B54]'
                                         }`}
                                     >
                                         {copiedId === tmpl.id ? (
@@ -310,7 +310,7 @@ export default function AdminTemplateWaIndex({
                                             </>
                                         ) : (
                                             <>
-                                                <Copy className="size-3 text-[#B89352]" />
+                                                <Copy className="size-3 text-[#A88B54]" />
                                                 <span>Salin Skrip</span>
                                             </>
                                         )}
@@ -336,8 +336,8 @@ export default function AdminTemplateWaIndex({
                             onClick={(e) => e.stopPropagation()}
                             className="w-full max-w-xl rounded-2xl bg-white p-6 shadow-2xl"
                         >
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
-                                <h3 className="text-base font-semibold text-[#0B291E]">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 pb-3">
+                                <h3 className="text-base font-semibold text-[#16233B]">
                                     {editingTemplate
                                         ? 'Edit Template Balasan'
                                         : 'Tambah Template Balasan WhatsApp'}
@@ -345,7 +345,7 @@ export default function AdminTemplateWaIndex({
                                 <button
                                     type="button"
                                     onClick={() => setModalOpen(false)}
-                                    className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
+                                    className="p-1 text-[#16233B]/60 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -357,7 +357,7 @@ export default function AdminTemplateWaIndex({
                             >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Judul Template
                                         </label>
                                         <input
@@ -371,11 +371,11 @@ export default function AdminTemplateWaIndex({
                                                 )
                                             }
                                             placeholder="Contoh: Sambutan Hangat Lead Baru"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Kategori Alur
                                         </label>
                                         <select
@@ -387,7 +387,7 @@ export default function AdminTemplateWaIndex({
                                                         .value as WaTemplateItem['category'],
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
                                             {Object.entries(categories).map(
                                                 ([k, label]) => (
@@ -402,7 +402,7 @@ export default function AdminTemplateWaIndex({
 
                                 {/* Dynamic Variable Chips */}
                                 <div className="space-y-1.5">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Klik untuk Sisipkan Variabel Dinamis:
                                     </label>
                                     <div className="flex flex-wrap gap-1.5">
@@ -413,7 +413,7 @@ export default function AdminTemplateWaIndex({
                                                 onClick={() =>
                                                     insertVariable(v)
                                                 }
-                                                className="rounded-md border border-[#B89352]/40 bg-[#B89352]/10 px-2 py-0.5 font-mono text-[10.5px] text-[#8C6D32] hover:bg-[#B89352] hover:text-white"
+                                                className="rounded-md border border-[#A88B54]/40 bg-[#A88B54]/10 px-2 py-0.5 font-mono text-[10.5px] text-[#8C6D32] hover:bg-[#A88B54] hover:text-white"
                                             >
                                                 + {v}
                                             </button>
@@ -422,7 +422,7 @@ export default function AdminTemplateWaIndex({
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Teks Isi Pesan WhatsApp
                                     </label>
                                     <textarea
@@ -436,22 +436,22 @@ export default function AdminTemplateWaIndex({
                                             )
                                         }
                                         placeholder="Tuliskan skrip balasan WhatsApp..."
-                                        className="w-full rounded-xl border border-[#0B291E]/15 bg-[#FAF8F5] p-3 text-xs leading-relaxed focus:outline-hidden"
+                                        className="w-full rounded-xl border border-[#16233B]/15 bg-[#FAF8F5] p-3 text-xs leading-relaxed focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
+                                <div className="flex justify-end gap-2 border-t border-[#16233B]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setModalOpen(false)}
-                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#0B291E]"
+                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#16233B]"
                                     >
                                         Batal
                                     </button>
                                     <button
                                         type="submit"
                                         disabled={form.processing}
-                                        className="rounded-lg bg-[#0B291E] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#143E2E]"
+                                        className="rounded-lg bg-[#16233B] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#2B3B5C]"
                                     >
                                         Simpan Template
                                     </button>

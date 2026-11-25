@@ -1,11 +1,10 @@
-﻿import { Head, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import {
     CheckCircle2,
     Clock,
     FileText,
     PenTool,
     Printer,
-    Sparkles,
     Tag,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -80,16 +79,16 @@ export default function AdminKartuGrafirIndex({
                 <button
                     type="button"
                     onClick={handlePrintWorksheet}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C]"
                 >
-                    <Printer className="size-3.5 text-[#B89352]" />
+                    <Printer className="size-3.5 text-[#A88B54]" />
                     <span>Cetak Lembar Kerja Studio</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Studio Inspection KPI Strip */}
-                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0 print:hidden">
+                <div className="grid grid-cols-2 divide-y divide-[#16233B]/10 overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0 print:hidden">
                     <div className="p-4 sm:p-5">
                         <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-amber-700 uppercase">
                             KARTU PERLU DICETAK
@@ -98,7 +97,7 @@ export default function AdminKartuGrafirIndex({
                             <span className="text-2xl font-semibold text-amber-700">
                                 {stats.total_pending_cards}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Antrean Cetak
                             </span>
                         </div>
@@ -111,7 +110,7 @@ export default function AdminKartuGrafirIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stats.total_printed_cards}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Siap Selip Box
                             </span>
                         </div>
@@ -124,7 +123,7 @@ export default function AdminKartuGrafirIndex({
                             <span className="text-2xl font-semibold text-purple-700">
                                 {stats.total_pending_engraving}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Antrean Mesin Laser
                             </span>
                         </div>
@@ -137,7 +136,7 @@ export default function AdminKartuGrafirIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {stats.total_completed_engraving}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 QC Grafir Lolos
                             </span>
                         </div>
@@ -145,18 +144,18 @@ export default function AdminKartuGrafirIndex({
                 </div>
 
                 {/* 2. Switcher Tabs */}
-                <div className="flex rounded-2xl border-b border-[#0B291E]/10 bg-white px-4 shadow-2xs sm:px-6 print:hidden">
+                <div className="flex rounded-2xl border-b border-[#16233B]/10 bg-white px-4 shadow-2xs sm:px-6 print:hidden">
                     <nav className="flex space-x-6">
                         <button
                             type="button"
                             onClick={() => setSelectedTab('cards')}
                             className={`flex items-center gap-2 py-4 text-xs font-semibold transition-colors ${
                                 selectedTab === 'cards'
-                                    ? 'border-b-2 border-[#B89352] text-[#0B291E]'
-                                    : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                    ? 'border-b-2 border-[#A88B54] text-[#16233B]'
+                                    : 'text-[#16233B]/50 hover:text-[#16233B]'
                             }`}
                         >
-                            <FileText className="size-3.5 text-[#B89352]" />
+                            <FileText className="size-3.5 text-[#A88B54]" />
                             <span>
                                 Checklist Kartu Ucapan Kaligrafi (
                                 {cardOrders.length})
@@ -167,11 +166,11 @@ export default function AdminKartuGrafirIndex({
                             onClick={() => setSelectedTab('engraving')}
                             className={`flex items-center gap-2 py-4 text-xs font-semibold transition-colors ${
                                 selectedTab === 'engraving'
-                                    ? 'border-b-2 border-[#B89352] text-[#0B291E]'
-                                    : 'text-[#0B291E]/50 hover:text-[#0B291E]'
+                                    ? 'border-b-2 border-[#A88B54] text-[#16233B]'
+                                    : 'text-[#16233B]/50 hover:text-[#16233B]'
                             }`}
                         >
-                            <PenTool className="size-3.5 text-[#B89352]" />
+                            <PenTool className="size-3.5 text-[#A88B54]" />
                             <span>
                                 Checklist Laser Grafir Monogram (
                                 {engravingOrders.length})
@@ -182,10 +181,10 @@ export default function AdminKartuGrafirIndex({
 
                 {/* 3. Section A: Kartu Ucapan Kaligrafi */}
                 {selectedTab === 'cards' && (
-                    <div className="overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs">
+                    <div className="overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs">
                         <table className="w-full text-left text-xs">
                             <thead>
-                                <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
+                                <tr className="border-b border-[#16233B]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
                                     <th className="px-4 py-3">
                                         Kode &amp; Pemesan
                                     </th>
@@ -203,12 +202,12 @@ export default function AdminKartuGrafirIndex({
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
+                            <tbody className="divide-y divide-[#16233B]/5 text-[#16233B]">
                                 {cardOrders.length === 0 ? (
                                     <tr>
                                         <td
                                             colSpan={5}
-                                            className="py-12 text-center text-xs text-[#0B291E]/50"
+                                            className="py-12 text-center text-xs text-[#16233B]/50"
                                         >
                                             Tidak ada antrean cetak kartu
                                             ucapan.
@@ -223,33 +222,33 @@ export default function AdminKartuGrafirIndex({
                                         return (
                                             <tr
                                                 key={order.id}
-                                                className="transition-colors hover:bg-[#F7F5F0]/50"
+                                                className="transition-colors hover:bg-[#FAF6EE]/50"
                                             >
                                                 <td className="px-4 py-3.5">
-                                                    <span className="font-mono text-xs font-bold text-[#B89352]">
+                                                    <span className="font-mono text-xs font-bold text-[#A88B54]">
                                                         {order.order_code}
                                                     </span>
-                                                    <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                    <h4 className="text-sm font-semibold text-[#16233B]">
                                                         {order.client_name}
                                                     </h4>
                                                     {order.company_name && (
-                                                        <p className="text-[11px] text-[#0B291E]/50">
+                                                        <p className="text-[11px] text-[#16233B]/50">
                                                             {order.company_name}
                                                         </p>
                                                     )}
                                                 </td>
 
                                                 <td className="px-4 py-3.5">
-                                                    <div className="font-medium text-[#0B291E]">
+                                                    <div className="font-medium text-[#16233B]">
                                                         {order.package_name}
                                                     </div>
-                                                    <span className="font-mono text-xs text-[#B89352]">
+                                                    <span className="font-mono text-xs text-[#A88B54]">
                                                         {order.quantity} Box
                                                     </span>
                                                 </td>
 
                                                 <td className="max-w-md px-4 py-3.5">
-                                                    <div className="rounded-lg border border-[#0B291E]/10 bg-[#FAF8F5] p-3 text-xs leading-relaxed text-[#0B291E] italic">
+                                                    <div className="rounded-lg border border-[#16233B]/10 bg-[#FAF8F5] p-3 text-xs leading-relaxed text-[#16233B] italic">
                                                         &ldquo;
                                                         {
                                                             order.greeting_card_text
@@ -258,7 +257,7 @@ export default function AdminKartuGrafirIndex({
                                                     </div>
                                                 </td>
 
-                                                <td className="px-4 py-3.5 font-mono text-[11px] text-[#0B291E]/70">
+                                                <td className="px-4 py-3.5 font-mono text-[11px] text-[#16233B]/70">
                                                     {order.target_delivery_date}
                                                 </td>
 
@@ -306,10 +305,10 @@ export default function AdminKartuGrafirIndex({
 
                 {/* 4. Section B: Laser Grafir Monogram */}
                 {selectedTab === 'engraving' && (
-                    <div className="overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs">
+                    <div className="overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs">
                         <table className="w-full text-left text-xs">
                             <thead>
-                                <tr className="border-b border-[#0B291E]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#B89352] uppercase">
+                                <tr className="border-b border-[#16233B]/10 bg-[#FAF8F5] font-mono text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
                                     <th className="px-4 py-3">
                                         Kode &amp; Pemesan
                                     </th>
@@ -327,12 +326,12 @@ export default function AdminKartuGrafirIndex({
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#0B291E]/5 text-[#0B291E]">
+                            <tbody className="divide-y divide-[#16233B]/5 text-[#16233B]">
                                 {engravingOrders.length === 0 ? (
                                     <tr>
                                         <td
                                             colSpan={5}
-                                            className="py-12 text-center text-xs text-[#0B291E]/50"
+                                            className="py-12 text-center text-xs text-[#16233B]/50"
                                         >
                                             Tidak ada antrean pengerjaan laser
                                             grafir saat ini.
@@ -347,27 +346,27 @@ export default function AdminKartuGrafirIndex({
                                         return (
                                             <tr
                                                 key={order.id}
-                                                className="transition-colors hover:bg-[#F7F5F0]/50"
+                                                className="transition-colors hover:bg-[#FAF6EE]/50"
                                             >
                                                 <td className="px-4 py-3.5">
-                                                    <span className="font-mono text-xs font-bold text-[#B89352]">
+                                                    <span className="font-mono text-xs font-bold text-[#A88B54]">
                                                         {order.order_code}
                                                     </span>
-                                                    <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                    <h4 className="text-sm font-semibold text-[#16233B]">
                                                         {order.client_name}
                                                     </h4>
                                                     {order.company_name && (
-                                                        <p className="text-[11px] text-[#0B291E]/50">
+                                                        <p className="text-[11px] text-[#16233B]/50">
                                                             {order.company_name}
                                                         </p>
                                                     )}
                                                 </td>
 
                                                 <td className="px-4 py-3.5">
-                                                    <div className="font-medium text-[#0B291E]">
+                                                    <div className="font-medium text-[#16233B]">
                                                         {order.package_name}
                                                     </div>
-                                                    <span className="font-mono text-xs text-[#B89352]">
+                                                    <span className="font-mono text-xs text-[#A88B54]">
                                                         {order.quantity} Box
                                                     </span>
                                                 </td>
@@ -378,7 +377,7 @@ export default function AdminKartuGrafirIndex({
                                                             (name, i) => (
                                                                 <span
                                                                     key={i}
-                                                                    className="rounded-md border border-[#0B291E]/15 bg-[#FAF8F5] px-2 py-0.5 font-mono text-[11px] text-[#0B291E]"
+                                                                    className="rounded-md border border-[#16233B]/15 bg-[#FAF8F5] px-2 py-0.5 font-mono text-[11px] text-[#16233B]"
                                                                 >
                                                                     {name}
                                                                 </span>
@@ -387,7 +386,7 @@ export default function AdminKartuGrafirIndex({
                                                     </div>
                                                 </td>
 
-                                                <td className="px-4 py-3.5 font-mono text-[11px] text-[#0B291E]/70">
+                                                <td className="px-4 py-3.5 font-mono text-[11px] text-[#16233B]/70">
                                                     {order.target_delivery_date}
                                                 </td>
 

@@ -1,4 +1,4 @@
-﻿import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
     AlertTriangle,
@@ -15,7 +15,6 @@ import {
     Plus,
     Search,
     ShieldAlert,
-    Sparkles,
     Trash2,
     Truck,
     X,
@@ -172,38 +171,38 @@ export default function AdminProduksiIndex({
                 <button
                     type="button"
                     onClick={() => setModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B291E] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#143E2E]"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-[#2B3B5C]"
                 >
-                    <Plus className="size-3.5 text-[#B89352]" />
+                    <Plus className="size-3.5 text-[#A88B54]" />
                     <span>Buat Pesanan Produksi</span>
                 </button>
             }
         >
             <div className="space-y-6">
                 {/* 1. Studio Operational Summary Strip */}
-                <div className="grid grid-cols-2 divide-y divide-[#0B291E]/10 overflow-hidden rounded-2xl border border-[#0B291E]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+                <div className="grid grid-cols-2 divide-y divide-[#16233B]/10 overflow-hidden rounded-2xl border border-[#16233B]/10 bg-white shadow-2xs sm:grid-cols-4 sm:divide-x sm:divide-y-0">
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             TOTAL ANTREAN
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
-                            <span className="text-2xl font-semibold text-[#0B291E]">
+                            <span className="text-2xl font-semibold text-[#16233B]">
                                 {summary.total_orders}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Batch Pesanan
                             </span>
                         </div>
                     </div>
                     <div className="p-4 sm:p-5">
-                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#B89352] uppercase">
+                        <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
                             TOTAL VOLUME
                         </span>
                         <div className="mt-2 flex items-baseline gap-2">
-                            <span className="text-2xl font-semibold text-[#0B291E]">
+                            <span className="text-2xl font-semibold text-[#16233B]">
                                 {summary.total_boxes}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Kotak Hadiah
                             </span>
                         </div>
@@ -216,7 +215,7 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-rose-700">
                                 {summary.urgent_count}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Mendekati Deadline
                             </span>
                         </div>
@@ -229,7 +228,7 @@ export default function AdminProduksiIndex({
                             <span className="text-2xl font-semibold text-emerald-800">
                                 {summary.ready_count}
                             </span>
-                            <span className="text-xs text-[#0B291E]/50">
+                            <span className="text-xs text-[#16233B]/50">
                                 Menunggu Kurir
                             </span>
                         </div>
@@ -237,10 +236,10 @@ export default function AdminProduksiIndex({
                 </div>
 
                 {/* 2. Filter Bar */}
-                <div className="flex flex-col gap-3 rounded-2xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 rounded-2xl border border-[#16233B]/10 bg-white p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex flex-1 items-center gap-3">
                         <div className="relative min-w-[260px] flex-1">
-                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#0B291E]/40" />
+                            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#16233B]/40" />
                             <input
                                 type="text"
                                 value={searchVal}
@@ -249,7 +248,7 @@ export default function AdminProduksiIndex({
                                     e.key === 'Enter' && handleFilterApply()
                                 }
                                 placeholder="Cari kode pesanan, nama klien, paket..."
-                                className="w-full rounded-lg border border-[#0B291E]/15 bg-[#F7F5F0] py-1.5 pr-3 pl-8 text-xs text-[#0B291E] placeholder-[#0B291E]/40 focus:outline-hidden"
+                                className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF6EE] py-1.5 pr-3 pl-8 text-xs text-[#16233B] placeholder-[#16233B]/40 focus:outline-hidden"
                             />
                         </div>
 
@@ -258,7 +257,7 @@ export default function AdminProduksiIndex({
                             onChange={(e) =>
                                 setSelectedPriority(e.target.value)
                             }
-                            className="rounded-lg border border-[#0B291E]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#0B291E] focus:outline-hidden"
+                            className="rounded-lg border border-[#16233B]/15 bg-white py-1.5 pr-7 pl-3 text-xs text-[#16233B] focus:outline-hidden"
                         >
                             <option value="">Semua Prioritas</option>
                             <option value="urgent">Urgent</option>
@@ -269,7 +268,7 @@ export default function AdminProduksiIndex({
                         <button
                             type="button"
                             onClick={handleFilterApply}
-                            className="rounded-lg bg-[#0B291E]/10 px-3.5 py-1.5 text-xs font-semibold text-[#0B291E] hover:bg-[#0B291E] hover:text-white"
+                            className="rounded-lg bg-[#16233B]/10 px-3.5 py-1.5 text-xs font-semibold text-[#16233B] hover:bg-[#16233B] hover:text-white"
                         >
                             Terapkan
                         </button>
@@ -285,24 +284,24 @@ export default function AdminProduksiIndex({
                         return (
                             <div
                                 key={stageKey}
-                                className="flex flex-col rounded-2xl border border-[#0B291E]/10 bg-[#FAF8F5] p-3.5 shadow-2xs"
+                                className="flex flex-col rounded-2xl border border-[#16233B]/10 bg-[#FAF8F5] p-3.5 shadow-2xs"
                             >
                                 {/* Column Header */}
-                                <div className="border-b border-[#0B291E]/10 px-1 pb-3">
+                                <div className="border-b border-[#16233B]/10 px-1 pb-3">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <span className="flex size-5 items-center justify-center rounded-full bg-[#0B291E] font-mono text-[10px] font-bold text-white">
+                                            <span className="flex size-5 items-center justify-center rounded-full bg-[#16233B] font-mono text-[10px] font-bold text-white">
                                                 {colIdx + 1}
                                             </span>
-                                            <h3 className="text-xs font-bold text-[#0B291E]">
+                                            <h3 className="text-xs font-bold text-[#16233B]">
                                                 {col.title}
                                             </h3>
                                         </div>
-                                        <span className="rounded-full border border-[#0B291E]/10 bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-[#B89352]">
+                                        <span className="rounded-full border border-[#16233B]/10 bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-[#A88B54]">
                                             {orders.length}
                                         </span>
                                     </div>
-                                    <p className="mt-1 line-clamp-1 text-[10.5px] text-[#0B291E]/50">
+                                    <p className="mt-1 line-clamp-1 text-[10.5px] text-[#16233B]/50">
                                         {col.description}
                                     </p>
                                 </div>
@@ -310,7 +309,7 @@ export default function AdminProduksiIndex({
                                 {/* Order Cards List */}
                                 <div className="mt-3 max-h-[70vh] flex-1 scrollbar-none space-y-3 overflow-y-auto pr-0.5">
                                     {orders.length === 0 ? (
-                                        <div className="rounded-xl border-2 border-dashed border-[#0B291E]/10 py-12 text-center text-xs text-[#0B291E]/40">
+                                        <div className="rounded-xl border-2 border-dashed border-[#16233B]/10 py-12 text-center text-xs text-[#16233B]/40">
                                             Tidak ada antrean
                                         </div>
                                     ) : (
@@ -326,11 +325,11 @@ export default function AdminProduksiIndex({
                                             return (
                                                 <div
                                                     key={order.id}
-                                                    className="group relative rounded-xl border border-[#0B291E]/10 bg-white p-4 shadow-2xs transition-all hover:border-[#B89352]/40 hover:shadow-xs"
+                                                    className="group relative rounded-xl border border-[#16233B]/10 bg-white p-4 shadow-2xs transition-all hover:border-[#A88B54]/40 hover:shadow-xs"
                                                 >
                                                     {/* Top Card Row */}
                                                     <div className="flex items-center justify-between">
-                                                        <span className="font-mono text-[10.5px] font-bold text-[#B89352]">
+                                                        <span className="font-mono text-[10.5px] font-bold text-[#A88B54]">
                                                             {order.order_code}
                                                         </span>
                                                         <span
@@ -342,11 +341,11 @@ export default function AdminProduksiIndex({
 
                                                     {/* Client & Company */}
                                                     <div className="mt-2">
-                                                        <h4 className="text-sm font-semibold text-[#0B291E]">
+                                                        <h4 className="text-sm font-semibold text-[#16233B]">
                                                             {order.client_name}
                                                         </h4>
                                                         {order.company_name && (
-                                                            <p className="truncate text-[11px] text-[#0B291E]/60">
+                                                            <p className="truncate text-[11px] text-[#16233B]/60">
                                                                 {
                                                                     order.company_name
                                                                 }
@@ -355,11 +354,11 @@ export default function AdminProduksiIndex({
                                                     </div>
 
                                                     {/* Package & Quantity */}
-                                                    <div className="mt-2.5 rounded-lg border border-[#0B291E]/5 bg-[#FAF8F5] p-2 text-[11px]">
-                                                        <div className="font-medium text-[#0B291E]">
+                                                    <div className="mt-2.5 rounded-lg border border-[#16233B]/5 bg-[#FAF8F5] p-2 text-[11px]">
+                                                        <div className="font-medium text-[#16233B]">
                                                             {order.package_name}
                                                         </div>
-                                                        <div className="mt-0.5 flex items-center justify-between font-mono text-[10.5px] text-[#B89352]">
+                                                        <div className="mt-0.5 flex items-center justify-between font-mono text-[10.5px] text-[#A88B54]">
                                                             <span>Volume:</span>
                                                             <span className="font-bold">
                                                                 {order.quantity}{' '}
@@ -369,9 +368,9 @@ export default function AdminProduksiIndex({
                                                     </div>
 
                                                     {/* Target Delivery Date */}
-                                                    <div className="mt-2.5 flex items-center justify-between text-[10.5px] text-[#0B291E]/60">
+                                                    <div className="mt-2.5 flex items-center justify-between text-[10.5px] text-[#16233B]/60">
                                                         <div className="flex items-center gap-1">
-                                                            <Calendar className="size-3 text-[#B89352]" />
+                                                            <Calendar className="size-3 text-[#A88B54]" />
                                                             <span>
                                                                 Kirim:{' '}
                                                                 {
@@ -382,7 +381,7 @@ export default function AdminProduksiIndex({
                                                     </div>
 
                                                     {/* Stage Movement Controls */}
-                                                    <div className="mt-3 flex items-center justify-between border-t border-[#0B291E]/10 pt-2.5">
+                                                    <div className="mt-3 flex items-center justify-between border-t border-[#16233B]/10 pt-2.5">
                                                         <button
                                                             type="button"
                                                             disabled={
@@ -394,7 +393,7 @@ export default function AdminProduksiIndex({
                                                                     'prev',
                                                                 )
                                                             }
-                                                            className="inline-flex items-center gap-1 rounded p-1 text-[10.5px] text-[#0B291E]/50 hover:bg-[#FAF8F5] hover:text-[#0B291E] disabled:opacity-20"
+                                                            className="inline-flex items-center gap-1 rounded p-1 text-[10.5px] text-[#16233B]/50 hover:bg-[#FAF8F5] hover:text-[#16233B] disabled:opacity-20"
                                                             title="Kembali ke tahap sebelumnya"
                                                         >
                                                             <ArrowLeft className="size-3" />
@@ -412,11 +411,11 @@ export default function AdminProduksiIndex({
                                                                     'next',
                                                                 )
                                                             }
-                                                            className="inline-flex items-center gap-1 rounded bg-[#0B291E] px-2.5 py-1 text-[10.5px] font-semibold text-white shadow-2xs hover:bg-[#143E2E] disabled:opacity-20"
+                                                            className="inline-flex items-center gap-1 rounded bg-[#16233B] px-2.5 py-1 text-[10.5px] font-semibold text-white shadow-2xs hover:bg-[#2B3B5C] disabled:opacity-20"
                                                             title="Lanjut ke tahap berikutnya"
                                                         >
                                                             <span>Maju</span>
-                                                            <ArrowRight className="size-3 text-[#B89352]" />
+                                                            <ArrowRight className="size-3 text-[#A88B54]" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -444,14 +443,14 @@ export default function AdminProduksiIndex({
                             onClick={(e) => e.stopPropagation()}
                             className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"
                         >
-                            <div className="flex items-center justify-between border-b border-[#0B291E]/10 pb-3">
-                                <h3 className="text-base font-semibold text-[#0B291E]">
+                            <div className="flex items-center justify-between border-b border-[#16233B]/10 pb-3">
+                                <h3 className="text-base font-semibold text-[#16233B]">
                                     Buat Pesanan Produksi Studio
                                 </h3>
                                 <button
                                     type="button"
                                     onClick={() => setModalOpen(false)}
-                                    className="p-1 text-[#0B291E]/60 hover:text-[#0B291E]"
+                                    className="p-1 text-[#16233B]/60 hover:text-[#16233B]"
                                 >
                                     <X className="size-4" />
                                 </button>
@@ -463,7 +462,7 @@ export default function AdminProduksiIndex({
                             >
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Nama Klien
                                         </label>
                                         <input
@@ -477,11 +476,11 @@ export default function AdminProduksiIndex({
                                                 )
                                             }
                                             placeholder="Nama pemesan"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Perusahaan (Opsional)
                                         </label>
                                         <input
@@ -494,14 +493,14 @@ export default function AdminProduksiIndex({
                                                 )
                                             }
                                             placeholder="PT / Instansi"
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Nama Paket Hampers
                                         </label>
                                         <input
@@ -514,11 +513,11 @@ export default function AdminProduksiIndex({
                                                     e.target.value,
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Jumlah Box
                                         </label>
                                         <input
@@ -532,14 +531,14 @@ export default function AdminProduksiIndex({
                                                     Number(e.target.value),
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Target Tanggal Kirim
                                         </label>
                                         <input
@@ -554,11 +553,11 @@ export default function AdminProduksiIndex({
                                                     e.target.value,
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 font-mono text-xs focus:outline-hidden"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="font-semibold text-[#0B291E]">
+                                        <label className="font-semibold text-[#16233B]">
                                             Tingkat Prioritas
                                         </label>
                                         <select
@@ -572,7 +571,7 @@ export default function AdminProduksiIndex({
                                                         | 'urgent',
                                                 )
                                             }
-                                            className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                            className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                         >
                                             <option value="normal">
                                                 Normal
@@ -588,7 +587,7 @@ export default function AdminProduksiIndex({
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="font-semibold text-[#0B291E]">
+                                    <label className="font-semibold text-[#16233B]">
                                         Teks Kartu Ucapan
                                     </label>
                                     <textarea
@@ -601,22 +600,22 @@ export default function AdminProduksiIndex({
                                             )
                                         }
                                         placeholder="Pesan kaligrafi pada kartu..."
-                                        className="w-full rounded-lg border border-[#0B291E]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
+                                        className="w-full rounded-lg border border-[#16233B]/15 bg-[#FAF8F5] p-2 text-xs focus:outline-hidden"
                                     />
                                 </div>
 
-                                <div className="flex justify-end gap-2 border-t border-[#0B291E]/10 pt-3">
+                                <div className="flex justify-end gap-2 border-t border-[#16233B]/10 pt-3">
                                     <button
                                         type="button"
                                         onClick={() => setModalOpen(false)}
-                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#0B291E]"
+                                        className="rounded-lg border px-3 py-1.5 text-xs text-[#16233B]"
                                     >
                                         Batal
                                     </button>
                                     <button
                                         type="submit"
                                         disabled={form.processing}
-                                        className="rounded-lg bg-[#0B291E] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#143E2E]"
+                                        className="rounded-lg bg-[#16233B] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#2B3B5C]"
                                     >
                                         Buat Antrean
                                     </button>

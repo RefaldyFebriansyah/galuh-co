@@ -7,8 +7,10 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        'Halo GALUH & CO., saya tertarik bertanya mengenai koleksi hampers premium.',
+    const rawNumber = (whatsappNumber || '').replace(/\D/g, '');
+    const cleanNumber = rawNumber.startsWith('0') ? `62${rawNumber.slice(1)}` : rawNumber || '6282321773434';
+    const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(
+        'Halo GALUH & CO., saya ingin konsultasi mengenai pesanan hampers eksklusif & custom corporate gifting.',
     )}`;
 
     const handleClick = () => {
@@ -111,8 +113,9 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
                             <WhatsAppIcon className="size-5 text-white" />
                         </motion.div>
 
-                        <span className="relative z-10 hidden font-medium tracking-wide sm:inline">
-                            Pesan via WhatsApp
+                        <span className="relative z-10 flex items-center gap-1.5 font-bold tracking-wide">
+                            <span className="size-1.5 rounded-full bg-white animate-pulse" />
+                            <span>Konsultasi WhatsApp</span>
                         </span>
                     </motion.a>
                 </motion.div>

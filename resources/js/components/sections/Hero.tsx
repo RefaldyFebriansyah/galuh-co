@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react';
 import {
     motion,
     AnimatePresence,
@@ -8,7 +8,6 @@ import {
     useScroll,
     MotionConfig,
 } from 'motion/react';
-import { WhatsAppIcon } from '@/components/whatsapp-icon';
 import { ArrowRight } from 'lucide-react';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 
@@ -22,6 +21,16 @@ export interface HeroProps {
     heroTitle?: string;
     heroSubtitle?: string;
     heroTagline?: string;
+    heroFloatingImageLeft?: string;
+    heroFloatingImageRight?: string;
+    heroRotatingWords?: string[];
+    heroMarqueeText?: string;
+    dynamicStats?: {
+        total_hampers_sold: number;
+        total_corporate_clients: number;
+        average_rating: number;
+        total_reviews: number;
+    };
 }
 
 const ROTATING_TARGETS = [
@@ -86,10 +95,12 @@ function FloatingHamperLeft({
     onScrollToCatalog,
     mouseSpringX,
     mouseSpringY,
+    imageSrc = '/images/floating-hamper-rattan.webp',
 }: {
     onScrollToCatalog: () => void;
     mouseSpringX: any;
     mouseSpringY: any;
+    imageSrc?: string;
 }) {
     // Parallax mouse depth tracking
     const tiltX = useTransform(mouseSpringX, [-600, 600], [-16, 12]);
@@ -119,7 +130,7 @@ function FloatingHamperLeft({
             >
                 {/* Pure Product Cut-out without card or frame (High-efficiency WebP) */}
                 <img
-                    src="/images/floating-hamper-rattan.webp"
+                    src={imageSrc}
                     alt="Signature Heritage Rattan Hamper GALUH & CO."
                     className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
                     loading="lazy"
@@ -145,10 +156,12 @@ function FloatingHamperRight({
     onScrollToCatalog,
     mouseSpringX,
     mouseSpringY,
+    imageSrc = '/images/floating-hamper-emerald.webp',
 }: {
     onScrollToCatalog: () => void;
     mouseSpringX: any;
     mouseSpringY: any;
+    imageSrc?: string;
 }) {
     // Parallax mouse depth tracking (counter-movement creates immersive 3D depth)
     const tiltX = useTransform(mouseSpringX, [-600, 600], [12, -16]);
@@ -178,7 +191,7 @@ function FloatingHamperRight({
             >
                 {/* Pure Product Cut-out without card or frame (High-efficiency WebP) */}
                 <img
-                    src="/images/floating-hamper-emerald.webp"
+                    src={imageSrc}
                     alt="Emerald Executive Corporate Gifting GALUH & CO."
                     className="h-auto w-full object-contain drop-shadow-[0_8px_14px_rgba(26,24,21,0.10)] drop-shadow-[0_24px_32px_rgba(26,24,21,0.18)] filter transition-all duration-500 group-hover:drop-shadow-[0_32px_42px_rgba(26,24,21,0.25)]"
                     loading="lazy"
@@ -196,7 +209,7 @@ function FloatingHamperRight({
 }
 
 export function Hero({
-    whatsappNumber = '6281572414233',
+    whatsappNumber = '6282321773434',
     heroBadge = 'Signature Atelier Hampers & Gift',
     heroTitlePrefix = 'Hampers Eksklusif',
     heroDescription = 'Pilihan hampers premium dan hadiah perusahaan dengan kemasan eksklusif. Siap melengkapi setiap momen istimewa Anda dengan mudah dan berkelas.',
@@ -205,9 +218,19 @@ export function Hero({
     heroTitle,
     heroSubtitle,
     heroTagline,
+    heroFloatingImageLeft,
+    heroFloatingImageRight,
+    heroRotatingWords,
+    heroMarqueeText,
+    dynamicStats,
 }: HeroProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
+
+    const rotatingTargets =
+        heroRotatingWords && heroRotatingWords.length > 0
+            ? heroRotatingWords
+            : ROTATING_TARGETS;
 
     // Global cursor tracking across the hero section for 3D parallax depth
     const mouseSectionX = useMotionValue(0);
@@ -233,10 +256,10 @@ export function Hero({
     // Dynamic Editorial Keyword Transition (Continuous luxury cycle without cliché typewriter)
     useEffect(() => {
         const timer = setInterval(() => {
-            setPhraseIndex((prev) => (prev + 1) % ROTATING_TARGETS.length);
+            setPhraseIndex((prev) => (prev + 1) % rotatingTargets.length);
         }, 3600);
         return () => clearInterval(timer);
-    }, []);
+    }, [rotatingTargets]);
 
     // Scroll-linked Parallax for atmospheric luxury feel
     const { scrollYProgress } = useScroll({
@@ -246,7 +269,10 @@ export function Hero({
 
     const parallaxTextY = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    const rawHeroWa = (whatsappNumber || '').replace(/\D/g, '');
+    const cleanHeroWa = rawHeroWa.startsWith('0') ? `62${rawHeroWa.slice(1)}` : rawHeroWa || '6281572414233';
+
+    const whatsappUrl = `https://wa.me/${cleanHeroWa}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya tertarik bertanya mengenai koleksi hampers premium & corporate gifting.',
     )}`;
 
@@ -254,12 +280,31 @@ export function Hero({
         .replace(/^[✦*✨\s]+|[✦*✨\s]+$/g, '')
         .trim();
 
+    // Dynamically resolve Hero Badge text from Admin CMS settings (heroBadge)
+    const resolvedHeroBadge = useMemo(() => {
+        const raw = (heroBadge || '').trim();
+        if (!raw) return 'ATELIER BINGKISAN';
+        // If user already typed "GALUH & CO. • ..." or "GALUH & CO. - ..."
+        return raw.replace(/^galuh\s*&\s*co\.?\s*[•\-\|]?\s*/i, '').trim() || raw;
+    }, [heroBadge]);
+
     const handleScrollToCatalog = () => {
         const el = document.getElementById('koleksi');
         if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
+    // Guarantee pure transparent cutout hampers (prevent accidental square/rectangular scene photos)
+    const resolvedImageLeft =
+        heroFloatingImageLeft && !heroFloatingImageLeft.includes('product_rattan_box')
+            ? heroFloatingImageLeft
+            : '/images/floating-hamper-rattan.webp';
+
+    const resolvedImageRight =
+        heroFloatingImageRight && !heroFloatingImageRight.includes('product_emerald_box')
+            ? heroFloatingImageRight
+            : '/images/floating-hamper-emerald.webp';
 
     return (
         <MotionConfig reducedMotion="user">
@@ -277,6 +322,7 @@ export function Hero({
                     onScrollToCatalog={handleScrollToCatalog}
                     mouseSpringX={smoothMouseX}
                     mouseSpringY={smoothMouseY}
+                    imageSrc={resolvedImageLeft}
                 />
 
                 {/* 2. Right Floating Hamper (Executive Emerald) - Pure Product, No Card/Frame */}
@@ -284,6 +330,7 @@ export function Hero({
                     onScrollToCatalog={handleScrollToCatalog}
                     mouseSpringX={smoothMouseX}
                     mouseSpringY={smoothMouseY}
+                    imageSrc={resolvedImageRight}
                 />
 
                 {/* Center Editorial Hero Area - Perfectly Scaled to Always Fit Viewport */}
@@ -298,34 +345,46 @@ export function Hero({
                         {/* Atelier Metadata Tag */}
                         <motion.div
                             variants={staggerItem}
-                            className="inline-flex items-center gap-2 rounded-full border border-[#D5CEC2]/75 bg-white/70 px-3.5 py-1 text-[9.5px] font-semibold tracking-[0.2em] text-[#8C877E] uppercase shadow-2xs backdrop-blur-xs sm:px-4 sm:py-1.5 sm:text-[10.5px]"
+                            className="inline-flex items-center gap-2 rounded-full border border-[#DFD7C5] bg-white/80 px-3.5 py-1 text-[9.5px] font-semibold tracking-[0.2em] text-[#6E675D] uppercase shadow-2xs backdrop-blur-xs sm:px-4 sm:py-1.5 sm:text-[10.5px]"
                         >
-                            <span className="font-bold text-[#7A5B24]">
-                                {heroEyebrow || 'ATELIER GALUH & CO.'}
+                            <span className="font-bold text-[#A88B54]">
+                                GALUH & CO.
                             </span>
-                            <span className="size-1 rounded-full bg-[#C5A880]" />
-                            <span>{activeEdition || cleanKicker}</span>
+                            {resolvedHeroBadge && (
+                                <>
+                                    <span className="size-1 rounded-full bg-[#A88B54]" />
+                                    <span className="font-bold text-[#A88B54]">
+                                        {resolvedHeroBadge}
+                                    </span>
+                                </>
+                            )}
+                            {activeEdition && activeEdition.trim() && (
+                                <>
+                                    <span className="size-1 rounded-full bg-[#A88B54]" />
+                                    <span>{activeEdition.trim()}</span>
+                                </>
+                            )}
                         </motion.div>
 
                         {/* Headline with High-Craft Serif Typography & Kinetic Target Glide */}
                         <motion.h1
                             variants={staggerItem}
-                            className="font-serif text-[1.85rem] leading-[1.2] font-normal tracking-tight text-[#1A1815] sm:text-4xl md:text-5xl lg:text-[2.85rem] xl:text-[3.35rem]"
+                            className="font-serif text-[1.85rem] leading-[1.2] font-normal tracking-tight text-[#16233B] sm:text-4xl md:text-5xl lg:text-[2.85rem] xl:text-[3.35rem]"
                         >
                             <span className="block">
                                 {heroTitlePrefix ||
                                     (heroTitle &&
-                                    heroTitle.toLowerCase().includes(' untuk')
+                                        heroTitle.toLowerCase().includes(' untuk')
                                         ? heroTitle.split(/\s+untuk\b/i)[0]
                                         : 'Hampers Eksklusif')}{' '}
-                                <span className="font-normal text-[#7A5B24] italic">
+                                <span className="font-normal text-[#A88B54] italic">
                                     untuk
                                 </span>
                             </span>
                             <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
                                 <AnimatePresence mode="wait">
                                     <motion.span
-                                        key={ROTATING_TARGETS[phraseIndex]}
+                                        key={rotatingTargets[phraseIndex % rotatingTargets.length]}
                                         initial={{
                                             y: 30,
                                             opacity: 0,
@@ -345,9 +404,9 @@ export function Hero({
                                             duration: 0.55,
                                             ease: [0.16, 1, 0.3, 1],
                                         }}
-                                        className="inline-block bg-gradient-to-r from-[#7A5B24] via-[#8C6D37] to-[#5C4215] bg-clip-text font-normal text-transparent italic"
+                                        className="inline-block bg-gradient-to-r from-[#A88B54] via-[#8E7441] to-[#A88B54] bg-clip-text font-normal text-transparent italic"
                                     >
-                                        {ROTATING_TARGETS[phraseIndex]}
+                                        {rotatingTargets[phraseIndex % rotatingTargets.length]}
                                     </motion.span>
                                 </AnimatePresence>
                             </span>
@@ -356,7 +415,7 @@ export function Hero({
                         {/* Description */}
                         <motion.p
                             variants={staggerItem}
-                            className="max-w-xl text-xs leading-relaxed text-[#5C564C] sm:text-sm md:text-base lg:text-[15px]"
+                            className="max-w-xl text-xs leading-relaxed text-[#6E675D] sm:text-sm md:text-base lg:text-[15px]"
                         >
                             {heroSubtitle || heroDescription}
                         </motion.p>
@@ -365,7 +424,7 @@ export function Hero({
                         {heroTagline && (
                             <motion.p
                                 variants={staggerItem}
-                                className="font-serif text-xs text-[#7A5B24] italic sm:text-[13px]"
+                                className="font-serif text-xs text-[#A88B54] italic sm:text-[13px]"
                             >
                                 “{heroTagline}”
                             </motion.p>
@@ -380,53 +439,65 @@ export function Hero({
                                 <a
                                     href="#koleksi"
                                     aria-label="Jelajahi Koleksi Hampers"
-                                    className="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#0E2A1E] px-6 py-3.5 text-[11px] font-bold tracking-[0.14em] text-white shadow-sm transition-all duration-300 hover:bg-[#163d2c] hover:shadow-md sm:w-auto sm:px-7 sm:py-3.5 sm:text-xs"
+                                    className="group inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#16233B] px-6 py-3.5 text-[11px] font-bold tracking-[0.14em] text-white shadow-sm transition-all duration-300 hover:bg-[#223354] hover:shadow-md sm:w-auto sm:px-7 sm:py-3.5 sm:text-xs"
                                 >
                                     <span>JELAJAHI KOLEKSI</span>
-                                    <ArrowRight className="size-3.5 text-[#C5A880] transition-transform duration-300 group-hover:translate-x-1" />
+                                    <ArrowRight className="size-3.5 text-[#A88B54] transition-transform duration-300 group-hover:translate-x-1" />
                                 </a>
                             </MagneticButton>
 
                             <MagneticButton>
                                 <a
-                                    href={whatsappUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Konsultasi Hampers via WhatsApp"
-                                    className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-[#D5CEC2] bg-white px-5 py-3.5 text-[11px] font-bold tracking-[0.12em] text-[#0E2A1E] shadow-2xs transition-all duration-300 hover:border-[#0E2A1E] hover:bg-[#FAF8F5] sm:w-auto sm:px-6.5 sm:py-3.5 sm:text-xs"
+                                    href="#koleksi"
+                                    aria-label="Pesan Hampers Langsung di Website"
+                                    className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-[#DFD7C5] bg-white px-5 py-3.5 text-[11px] font-bold tracking-[0.12em] text-[#16233B] shadow-2xs transition-all duration-300 hover:border-[#16233B] hover:bg-[#FAF6EE] sm:w-auto sm:px-6.5 sm:py-3.5 sm:text-xs"
                                 >
-                                    <WhatsAppIcon className="size-4 text-[#25D366]" />
-                                    <span>KONSULTASI HAMPERS</span>
+                                    <span>PESAN SEKARANG</span>
+                                    <ArrowRight className="size-3.5 text-[#16233B]" />
                                 </a>
                             </MagneticButton>
                         </motion.div>
 
-                        {/* Clean 3-Part Metric Strip (Structured Pill on Mobile) */}
+                        {/* Clean 3-Part Metric Strip (Structured Pill on Mobile) - Dynamic From Database (Starts at 0) */}
                         <motion.div
                             variants={staggerItem}
-                            className="mt-1 grid w-full max-w-xl grid-cols-3 gap-2 rounded-2xl border border-[#EAE5DC] bg-white/70 p-2.5 text-center shadow-2xs backdrop-blur-xs sm:mt-0 sm:gap-6 sm:rounded-none sm:border-x-0 sm:border-t sm:border-b-0 sm:bg-transparent sm:p-0 sm:pt-4 sm:shadow-none sm:backdrop-blur-none"
+                            className="mt-1 grid w-full max-w-xl grid-cols-3 gap-2 rounded-2xl border border-[#DFD7C5] bg-white/70 p-2.5 text-center shadow-2xs backdrop-blur-xs sm:mt-0 sm:gap-6 sm:rounded-none sm:border-x-0 sm:border-t sm:border-b-0 sm:bg-transparent sm:p-0 sm:pt-4 sm:shadow-none sm:backdrop-blur-none"
                         >
                             <div className="flex flex-col justify-center">
-                                <span className="font-serif text-lg font-bold tracking-tight text-[#1A1815] sm:text-2xl lg:text-3xl">
-                                    5,000+
+                                <span className="font-serif text-lg font-bold tracking-tight text-[#16233B] sm:text-2xl lg:text-3xl">
+                                    {(
+                                        dynamicStats?.total_hampers_sold ?? 0
+                                    ).toLocaleString('id-ID')}
+                                    {(dynamicStats?.total_hampers_sold ?? 0) > 0
+                                        ? '+'
+                                        : ''}
                                 </span>
-                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
+                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#6E675D] uppercase sm:text-[10px]">
                                     Hampers Terkirim
                                 </p>
                             </div>
-                            <div className="flex flex-col justify-center border-l border-[#EAE5DC] pl-2 sm:pl-6">
-                                <span className="font-serif text-lg font-bold tracking-tight text-[#0E2A1E] sm:text-2xl lg:text-3xl">
-                                    100+
+                            <div className="flex flex-col justify-center border-l border-[#DFD7C5] pl-2 sm:pl-6">
+                                <span className="font-serif text-lg font-bold tracking-tight text-[#16233B] sm:text-2xl lg:text-3xl">
+                                    {(
+                                        dynamicStats?.total_corporate_clients ??
+                                        0
+                                    ).toLocaleString('id-ID')}
+                                    {(dynamicStats?.total_corporate_clients ??
+                                        0) > 0
+                                        ? '+'
+                                        : ''}
                                 </span>
-                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
+                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#6E675D] uppercase sm:text-[10px]">
                                     Klien Korporat
                                 </p>
                             </div>
-                            <div className="flex flex-col justify-center border-l border-[#EAE5DC] pl-2 sm:pl-6">
-                                <span className="font-serif text-lg font-bold tracking-tight text-[#9E7E45] sm:text-2xl lg:text-3xl">
-                                    4.9 / 5.0
+                            <div className="flex flex-col justify-center border-l border-[#DFD7C5] pl-2 sm:pl-6">
+                                <span className="font-serif text-lg font-bold tracking-tight text-[#A88B54] sm:text-2xl lg:text-3xl">
+                                    {(dynamicStats?.average_rating ?? 0) > 0
+                                        ? `${dynamicStats?.average_rating} / 5.0`
+                                        : '0.0 / 5.0'}
                                 </span>
-                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#8C877E] uppercase sm:text-[10px]">
+                                <p className="mt-0.5 text-[8.5px] font-semibold tracking-wider text-[#6E675D] uppercase sm:text-[10px]">
                                     Rating Kepuasan
                                 </p>
                             </div>
@@ -435,38 +506,50 @@ export function Hero({
                 </div>
 
                 {/* Atelier Silk Ribbon Running Marquee - Fits Viewport Naturally Without Cut-Off */}
-                <div className="relative z-20 mt-2 overflow-hidden border-y border-[#EAE3D6] bg-white/40 py-2 backdrop-blur-xs sm:mt-3 sm:py-2.5">
+                <div className="relative z-20 mt-2 overflow-hidden border-y border-[#DFD7C5] bg-white/40 py-2 backdrop-blur-xs sm:mt-3 sm:py-2.5">
                     <div className="relative flex overflow-hidden">
                         {/* Soft Edge Gradient Masks */}
-                        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#FAF7F2] to-transparent sm:w-24" />
-                        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#FAF7F2] to-transparent sm:w-24" />
+                        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#F2EBDC] to-transparent sm:w-24" />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#F2EBDC] to-transparent sm:w-24" />
 
                         {/* Pure CSS Hardware-Accelerated Marquee (Zero JS Main-Thread Overhead) */}
-                        <div className="animate-marquee-css flex shrink-0 items-center gap-8 py-0.5 text-[9.5px] font-semibold tracking-[0.24em] whitespace-nowrap text-[#5C564C] uppercase sm:text-[10.5px]">
-                            {[
-                                'BUTTER WIJSMAN BELANDA',
-                                'HARDBOX LINEN ZAMRUD 1200GSM',
-                                'PITA VELVET & SATIN SUTRA',
-                                'STEMPEL LILIN WAX ASLI',
-                                'GRAFIR LASER MONOGRAM PERSONAL',
-                                'KUE KERING ARTISAN RESEP KLASIK',
-                                'BOROSILIKAT TAHAN PANAS',
-                                'PENGIRIMAN AMAN SELURUH NUSANTARA',
-                                'BUTTER WIJSMAN BELANDA',
-                                'HARDBOX LINEN ZAMRUD 1200GSM',
-                                'PITA VELVET & SATIN SUTRA',
-                                'STEMPEL LILIN WAX ASLI',
-                                'GRAFIR LASER MONOGRAM PERSONAL',
-                                'KUE KERING ARTISAN RESEP KLASIK',
-                                'BOROSILIKAT TAHAN PANAS',
-                                'PENGIRIMAN AMAN SELURUH NUSANTARA',
-                            ].map((item, idx) => (
+                        <div className="animate-marquee-css flex shrink-0 items-center gap-8 py-0.5 text-[9.5px] font-semibold tracking-[0.24em] whitespace-nowrap text-[#6E675D] uppercase sm:text-[10.5px]">
+                            {(heroMarqueeText
+                                ? [
+                                    ...heroMarqueeText
+                                        .split(/[•,]/)
+                                        .map((s) => s.trim())
+                                        .filter(Boolean),
+                                    ...heroMarqueeText
+                                        .split(/[•,]/)
+                                        .map((s) => s.trim())
+                                        .filter(Boolean),
+                                ]
+                                : [
+                                    'BUTTER WIJSMAN BELANDA',
+                                    'HARDBOX LINEN DEEP NAVY 1200GSM',
+                                    'PITA VELVET & SATIN SUTRA',
+                                    'STEMPEL LILIN WAX ASLI',
+                                    'GRAFIR LASER MONOGRAM PERSONAL',
+                                    'KUE KERING ARTISAN RESEP KLASIK',
+                                    'BOROSILIKAT TAHAN PANAS',
+                                    'PENGIRIMAN AMAN SELURUH NUSANTARA',
+                                    'BUTTER WIJSMAN BELANDA',
+                                    'HARDBOX LINEN DEEP NAVY 1200GSM',
+                                    'PITA VELVET & SATIN SUTRA',
+                                    'STEMPEL LILIN WAX ASLI',
+                                    'GRAFIR LASER MONOGRAM PERSONAL',
+                                    'KUE KERING ARTISAN RESEP KLASIK',
+                                    'BOROSILIKAT TAHAN PANAS',
+                                    'PENGIRIMAN AMAN SELURUH NUSANTARA',
+                                ]
+                            ).map((item, idx) => (
                                 <span
                                     key={idx}
                                     className="inline-flex items-center gap-8"
                                 >
                                     <span>{item}</span>
-                                    <span className="size-1 rounded-full bg-[#C5A880]" />
+                                    <span className="size-1 rounded-full bg-[#A88B54]" />
                                 </span>
                             ))}
                         </div>

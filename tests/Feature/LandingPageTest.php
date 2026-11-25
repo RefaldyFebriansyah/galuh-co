@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Setting;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('landing page loads successfully with active products and whatsapp number', function () {
@@ -28,5 +29,18 @@ test('landing page loads successfully with active products and whatsapp number',
             && collect($products)->contains(fn ($p) => $p['name'] === 'Active Hamper Premium')
             && ! collect($products)->contains(fn ($p) => $p['name'] === 'Inactive Hamper Old')
         )
+    );
+});
+
+test('landing page loads updated whatsapp number when configured in settings', function () {
+    Setting::set('whatsapp_number', '6282321773434');
+
+    $response = $this->get(route('home'));
+
+    $response->assertOk();
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('welcome')
+        ->where('whatsappNumber', '6282321773434')
+        ->where('settings.whatsapp_number', '6282321773434')
     );
 });

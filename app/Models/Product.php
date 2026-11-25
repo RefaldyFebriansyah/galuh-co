@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,13 +17,21 @@ use Illuminate\Support\Facades\Cache;
  * @property string $name
  * @property string $slug
  * @property string $category
+ * @property string $packaging
+ * @property bool $is_halal
+ * @property bool $is_featured_hero
+ * @property string $visibility
  * @property string $short_description
  * @property array<int, string> $contents
  * @property int $price_from
+ * @property int|null $corporate_price
+ * @property string|null $event_tag
  * @property string $image
+ * @property array<int, string>|null $images
  * @property int $sort_order
  * @property bool $is_active
  * @property string $formatted_price
+ * @property string|null $formatted_corporate_price
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -40,6 +49,8 @@ use Illuminate\Support\Facades\Cache;
     'short_description',
     'contents',
     'price_from',
+    'corporate_price',
+    'event_tag',
     'image',
     'images',
     'sort_order',
@@ -57,6 +68,7 @@ class Product extends Model
      */
     protected $appends = [
         'formatted_price',
+        'formatted_corporate_price',
     ];
 
     /**
@@ -84,6 +96,7 @@ class Product extends Model
             'contents' => 'array',
             'images' => 'array',
             'price_from' => 'integer',
+            'corporate_price' => 'integer',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
             'is_halal' => 'boolean',
@@ -99,27 +112,55 @@ class Product extends Model
     protected function formattedPrice(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => 'Rp '.number_format((float) $this->price_from, 0, ',', '.'),
+            get: fn () => 'Rp '.number_format($this->price_from, 0, ',', '.'),
+        );
+    }
+
+    /**
+     * Format corporate wholesale price to Indonesian Rupiah
+     *
+     * @return Attribute<string|null, never>
+     */
+    protected function formattedCorporatePrice(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $price = $this->corporate_price ?: (int) ($this->price_from * 0.88); // Default 12% wholesale tier
+
+                return 'Rp '.number_format($price, 0, ',', '.');
+            },
         );
     }
 
     /**
      * Scope a query to only include active products.
      *
-     * @param  Builder<static>  $query
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
      */
-    public function scopeActive(Builder $query): void
+    public function scopeActive(Builder $query): Builder
     {
-        $query->where('is_active', true);
+        return $query->where('is_active', true);
     }
 
     /**
-     * Scope a query to filter products by category.
+     * Scope a query to filter by category.
      *
-     * @param  Builder<static>  $query
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
      */
-    public function scopeCategory(Builder $query, string $category): void
+    public function scopeCategory(Builder $query, string $category): Builder
     {
-        $query->where('category', $category);
+        return $query->where('category', $category);
+    }
+
+    /**
+     * Get reviews for this product.
+     *
+     * @return HasMany<Review, $this>
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

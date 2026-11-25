@@ -1,4 +1,4 @@
-import { Gem, MessageCircle, Palette, Truck } from 'lucide-react';
+import { Gem, ShieldCheck, Palette, Truck, PackageSearch } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -59,85 +59,126 @@ function AnimatedCounter({
     );
 }
 
-export function FeaturesSection() {
-    const features = [
+interface FeaturesSectionProps {
+    dynamicStats?: {
+        total_hampers_sold?: number;
+        total_corporate_clients?: number;
+        average_rating?: number;
+        total_reviews?: number;
+    };
+    atelierBadge?: string;
+    atelierTitle?: string;
+    atelierSubtitle?: string;
+    atelierCards?: Array<{
+        title: string;
+        shortDescription: string;
+        description: string;
+    }>;
+}
+
+export function FeaturesSection({
+    dynamicStats,
+    atelierBadge = 'STANDAR KRIYA • INTEGRITAS ATELIER',
+    atelierTitle = 'Komitmen Kualitas & Kepercayaan Klien',
+    atelierSubtitle = 'Setiap bingkisan kami rangkai dengan dedikasi tinggi untuk menjaga kehangatan relasi keluarga maupun citra positif instansi korporat Anda.',
+    atelierCards,
+}: FeaturesSectionProps) {
+    const cardIcons = [Gem, Palette, Truck, PackageSearch];
+    const cardBgs = [
+        'bg-[#F2EBDC] text-[#16233B] border border-[#A88B54]/30',
+        'bg-[#16233B]/10 text-[#16233B] border border-[#16233B]/20',
+        'bg-[#F2EBDC] text-[#16233B] border border-[#A88B54]/30',
+        'bg-[#16233B]/10 text-[#16233B] border border-[#16233B]/20',
+    ];
+
+    const defaultFeatures = [
         {
-            title: 'Kurasi Produk Pilihan',
+            title: 'Kurasi Bahan Pilihan',
             shortDescription:
-                'Kurasi bermutu tinggi & higienis untuk kesan istimewa.',
+                'Bahan pangan bermutu tinggi & higienis untuk kesan istimewa.',
             description:
-                'Setiap isi hampers dipilih secara cermat dari produk berkualitas terbaik dan higienis untuk menghadirkan pengalaman membuka hadiah yang berkesan.',
-            iconBg: 'bg-[#FAF0D7] text-[#8B6B38] border border-[#C5A880]/30',
+                'Setiap isi hampers dipilih secara teliti dari produk bermutu terbaik dan higienis untuk menghadirkan pengalaman membuka hadiah yang berkesan.',
+            iconBg: 'bg-[#F2EBDC] text-[#16233B] border border-[#A88B54]/30',
             icon: Gem,
         },
         {
-            title: 'Kustom Identitas & Kartu',
+            title: 'Kustom Grafir & Stempel Wax',
             shortDescription:
-                'Kustomisasi logo, pita serasi, & kartu ucapan berstempel wax.',
+                'Kustomisasi logo korporat, pita satin, & kartu ucapan wax seal.',
             description:
-                'Bebas menambahkan logo perusahaan, pita serasi, serta kartu ucapan khusus yang dipersonalisasi sesuai kebutuhan acara Anda.',
-            iconBg: 'bg-[#E2EBE5] text-[#0E2A1E] border border-[#0E2A1E]/15',
+                'Bebas menambahkan logo perusahaan via grafir laser, pita warna korporat, serta kartu ucapan khusus berstempel lilin wax mewah.',
+            iconBg: 'bg-[#16233B]/10 text-[#16233B] border border-[#16233B]/20',
             icon: Palette,
         },
         {
-            title: 'Pengiriman Aman & Tepat',
+            title: 'Pengiriman Aman Terproteksi',
             shortDescription:
-                'Kemasan berlapis aman dengan pengiriman tepat waktu.',
+                'Kemasan hardbox berlapis aman dengan perlindungan kurir.',
             description:
-                'Dikemas rapi dengan perlindungan berlapis untuk memastikan setiap kotak hadiah tiba dalam kondisi sempurna dan tepat waktu di lokasi tujuan.',
-            iconBg: 'bg-[#F5EEDD] text-[#8B6B38] border border-[#C5A880]/30',
+                'Dikemas rapi dengan perlindungan berlapis dan kurir atelier terlatih untuk memastikan kotak hadiah tiba dalam kondisi utuh.',
+            iconBg: 'bg-[#F2EBDC] text-[#16233B] border border-[#A88B54]/30',
             icon: Truck,
         },
         {
-            title: 'Konsultasi Mudah Via WhatsApp',
+            title: 'Sistem Lacak Resi Website',
             shortDescription:
-                'Konsultasi cepat via WhatsApp untuk rekomendasi paket.',
+                'Pemesanan langsung di website dengan nomor resi pelacakan.',
             description:
-                'Tim kami siap membantu merekomendasikan pilihan paket terbaik yang sesuai dengan tema acara maupun anggaran Anda secara langsung.',
-            iconBg: 'bg-[#EAF3ED] text-[#0E2A1E] border border-[#0E2A1E]/15',
-            icon: MessageCircle,
+                'Pemesanan aman langsung di website dan kemudahan memantau setiap tahapan produksi hingga paket diterima melalui menu Lacak Pesanan.',
+            iconBg: 'bg-[#16233B]/10 text-[#16233B] border border-[#16233B]/20',
+            icon: PackageSearch,
         },
     ];
 
+    const features =
+        atelierCards && atelierCards.length === 4
+            ? atelierCards.map((c, idx) => ({
+                  title: c.title,
+                  shortDescription: c.shortDescription,
+                  description: c.description,
+                  iconBg: cardBgs[idx % cardBgs.length],
+                  icon: cardIcons[idx % cardIcons.length],
+              }))
+            : defaultFeatures;
+
+    // Real-Life Dynamic Statistics from database starting strictly from 0
     const stats = [
         {
-            target: 98.8,
-            decimals: 1,
-            suffix: '%',
-            label: 'PENGIRIMAN TEPAT WAKTU',
-        },
-        { target: 250, decimals: 0, suffix: '+', label: 'MITRA PERUSAHAAN' },
-        {
-            target: 12000,
+            target: dynamicStats?.total_hampers_sold ?? 0,
             decimals: 0,
             suffix: '+',
-            label: 'SENYUMAN PENERIMA HADIAH',
+            label: 'HAMPERS TERKIRIM',
+        },
+        {
+            target: dynamicStats?.total_corporate_clients ?? 0,
+            decimals: 0,
+            suffix: '+',
+            label: 'KLIEN KORPORAT',
+        },
+        {
+            target: dynamicStats?.average_rating ?? 0.0,
+            decimals: 1,
+            suffix: ' / 5.0',
+            label: 'RATING KEPUASAN REAL-TIME',
         },
     ];
 
     return (
         <section
             id="keunggulan"
-            className="bg-[#FAF8F5] py-10 md:py-14 lg:py-16"
+            className="bg-[#F2EBDC] py-12 sm:py-16 lg:py-20"
         >
-            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
                 {/* Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#7A5B24] uppercase">
-                        <span>STANDAR KRIYA</span>
-                        <span className="size-1 rounded-full bg-[#C5A880]" />
-                        <span>INTEGRITAS PRODUK</span>
+                    <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-[#A88B54] uppercase">
+                        <span>{atelierBadge}</span>
                     </div>
-                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#1A1815] md:text-4xl lg:text-5xl">
-                        Komitmen Kualitas &amp;{' '}
-                        <span className="text-[#7A5B24] italic">
-                            Kepercayaan
-                        </span>
+                    <h2 className="mt-3 font-serif text-3xl font-normal tracking-tight text-[#16233B] md:text-4xl lg:text-5xl">
+                        {atelierTitle}
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-[#5C564C] md:text-base">
-                        Setiap bingkisan kami rangkai dengan standar terbaik
-                        untuk menjaga kesan hangat bagi orang terdekat maupun
-                        citra positif perusahaan Anda.
+                    <p className="mt-3 text-xs leading-relaxed text-[#6E675D] sm:text-sm">
+                        {atelierSubtitle}
                     </p>
                 </div>
 
@@ -147,7 +188,7 @@ export function FeaturesSection() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
-                    className="mt-6 grid grid-cols-2 items-stretch gap-2.5 sm:mt-8 sm:gap-4 md:grid-cols-4"
+                    className="mt-8 grid grid-cols-2 items-stretch gap-3 sm:gap-4 md:grid-cols-4"
                 >
                     {features.map((feature, idx) => {
                         const Icon = feature.icon;
@@ -162,7 +203,7 @@ export function FeaturesSection() {
                                         ease: [0.16, 1, 0.3, 1],
                                     },
                                 }}
-                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#EAE5DC] bg-white p-3 shadow-2xs transition-shadow duration-300 hover:shadow-md sm:p-5"
+                                className="group flex h-full flex-col justify-between rounded-2xl border border-[#A88B54]/25 bg-white p-4 shadow-2xs transition-shadow duration-300 hover:border-[#A88B54] hover:shadow-md sm:p-5"
                             >
                                 <div>
                                     <span
@@ -171,12 +212,12 @@ export function FeaturesSection() {
                                         <Icon className="size-4 sm:size-5" />
                                     </span>
 
-                                    <h3 className="mt-2 font-serif text-xs leading-snug font-bold text-[#1A1815] sm:mt-4 sm:text-base">
+                                    <h3 className="mt-3 font-serif text-xs leading-snug font-bold text-[#16233B] sm:text-base">
                                         {feature.title}
                                     </h3>
                                 </div>
 
-                                <p className="mt-1.5 text-[10px] leading-relaxed text-[#8C877E] sm:mt-2.5 sm:text-[11px]">
+                                <p className="mt-2 text-[10px] leading-relaxed text-[#6E675D] sm:text-[11px]">
                                     <span className="block sm:hidden">
                                         {feature.shortDescription}
                                     </span>
@@ -189,25 +230,25 @@ export function FeaturesSection() {
                     })}
                 </motion.div>
 
-                {/* Deep Emerald Stats Banner with Animated Count-Up */}
+                {/* Deep Navy Stats Banner with Real-Life Dynamic Statistics */}
                 <motion.div
                     variants={fadeInUp}
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewportOnce}
-                    className="mt-6 overflow-hidden rounded-2xl bg-[#0E2A1E] px-3.5 py-4.5 text-white shadow-xl sm:mt-10 sm:px-6 sm:py-7"
+                    className="mt-8 overflow-hidden rounded-2xl border border-[#A88B54]/30 bg-[#16233B] px-4 py-5 text-white shadow-xl sm:mt-10 sm:px-6 sm:py-7"
                 >
-                    <div className="grid grid-cols-3 gap-1.5 divide-x divide-white/10 text-center sm:gap-6">
+                    <div className="grid grid-cols-3 gap-2 divide-x divide-white/10 text-center sm:gap-6">
                         {stats.map((stat, idx) => (
                             <div key={idx} className="px-1 sm:px-4">
-                                <span className="font-serif text-lg font-normal tracking-tight text-white sm:text-3xl md:text-4xl">
+                                <span className="font-serif text-lg font-normal tracking-tight text-[#F2EBDC] sm:text-3xl md:text-4xl">
                                     <AnimatedCounter
                                         target={stat.target}
                                         decimals={stat.decimals}
                                         suffix={stat.suffix}
                                     />
                                 </span>
-                                <span className="mt-1 block text-[8px] font-bold tracking-[0.14em] text-[#C5A880] uppercase sm:text-[9px] sm:tracking-[0.2em]">
+                                <span className="mt-1 block text-[8px] font-bold tracking-[0.14em] text-[#A88B54] uppercase sm:text-[9px] sm:tracking-[0.2em]">
                                     {stat.label}
                                 </span>
                             </div>
