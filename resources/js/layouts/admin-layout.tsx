@@ -1,20 +1,11 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-    ArrowRight,
-    Award,
-    Bookmark,
-    BookOpen,
-    Calendar,
     CheckCircle2,
-    ChevronDown,
-    ChevronRight,
     ClipboardList,
-    Command,
     ExternalLink,
     FileText,
     HelpCircle,
-    Layers,
     LayoutDashboard,
     LogOut,
     MapPin,
@@ -22,13 +13,10 @@ import {
     MessageSquare,
     Package,
     Palette,
-    Plus,
     Search,
     Settings,
-    Shield,
     ShieldCheck,
     Truck,
-    Type,
     UserCheck,
     X,
 } from 'lucide-react';
@@ -150,102 +138,102 @@ export function AdminLayout({
                         href: '/admin/tracking',
                         icon: Truck,
                         description:
-                            'Tahapan proses studio, pengantaran kurir & resi, hingga diterima konsumen',
+                            'Update status 4 tahap pengiriman & nomor resi kurir',
+                    },
+                    {
+                        label: 'Data WhatsApp Leads',
+                        shortLabel: 'WA Leads',
+                        href: '/admin/wa-leads',
+                        icon: MessageSquare,
+                        description:
+                            'Log interaksi & tracking klik konsultasi WhatsApp resmi',
                     },
                 ],
             },
             {
-                domain: 'MARKETING & EVENT',
+                domain: 'PRODUK & KATALOG',
                 items: [
                     {
                         label: 'Katalog Hampers',
-                        shortLabel: 'Katalog',
-                        href: '/admin/katalog',
+                        shortLabel: 'Produk',
+                        href: '/admin/products',
                         icon: Package,
                         description:
-                            'Tambah katalog, tentukan harga personal & corporate, serta rincian isi hampers',
+                            'Kelola daftar hampers, harga, foto, & status tayang',
                     },
                     {
-                        label: 'Event Musiman',
-                        shortLabel: 'Event',
-                        href: '/admin/events',
-                        icon: Calendar,
+                        label: 'Katalog Corporate B2B',
+                        shortLabel: 'Corporate B2B',
+                        href: '/admin/corporate-b2b',
+                        icon: ClipboardList,
                         description:
-                            'Promosikan/demo event (Lebaran, Natal, dll.), iklan card foto demo & prioritas katalog',
+                            'Katalog hampers corporate & custom packaging perusahaan',
                     },
                 ],
             },
             {
-                domain: 'KONTEN WEBSITE',
+                domain: 'KONTEN & WEBSITE',
                 items: [
                     {
-                        label: 'Hero Showcase',
-                        shortLabel: 'Hero',
+                        label: 'Editor CMS Halaman',
+                        shortLabel: 'CMS Halaman',
+                        href: '/admin/cms-halaman',
+                        icon: FileText,
+                        description:
+                            'Pusat navigasi sunting teks & visual landing page',
+                    },
+                    {
+                        label: 'Hero & Galeri Depan',
+                        shortLabel: 'Hero Section',
                         href: '/admin/cms/hero',
-                        icon: Layers,
+                        icon: Palette,
                         description:
-                            'Foto hampers melayang (auto-hapus background & kompres WebP), headline berganti & teks berjalan',
+                            'Headline atelier, subjudul, & customizer preview',
                     },
                     {
-                        label: 'Tentang Galuh',
-                        shortLabel: 'Tentang',
-                        href: '/admin/cms/about',
-                        icon: BookOpen,
-                        description:
-                            'Teks filosofi Galuh, 3 pilar kriya (pilar 1-3), dan foto di dalam card',
-                    },
-                    {
-                        label: 'Katalog Teks',
-                        shortLabel: 'Katalog Teks',
-                        href: '/admin/cms/katalog-teks',
-                        icon: Type,
-                        description:
-                            'Teks badge musiman, judul Koleksi Bingkisan Istimewa, dan teks deskripsi',
-                    },
-                    {
-                        label: 'Integritas Atelier',
+                        label: 'Cerita Filosofi Atelier',
                         shortLabel: 'Atelier',
                         href: '/admin/cms/atelier',
-                        icon: ShieldCheck,
+                        icon: MapPin,
                         description:
-                            'Teks integritas atelier dan semua teks pada 4 card keunggulan',
+                            'Narasi heritage, craftsmanship, & nilai Galuh & Co.',
                     },
                     {
-                        label: 'Panduan Pesanan',
-                        shortLabel: 'Cara Pesan',
-                        href: '/admin/cms/cara-pesan',
-                        icon: CheckCircle2,
-                        description:
-                            'Teks panduan pemesanan dan 4 tahapan alur pesanan resmi',
-                    },
-                    {
-                        label: 'FAQ',
+                        label: 'FAQ & Bantuan Konsumen',
                         shortLabel: 'FAQ',
                         href: '/admin/cms/faq',
                         icon: HelpCircle,
                         description:
-                            'Kelola daftar tanya jawab pertanyaan umum pelanggan',
+                            'Tanya jawab pemesanan, pengiriman, & custom hampers',
                     },
                 ],
             },
             {
-                domain: 'PENGATURAN SISTEM',
+                domain: 'PENGATURAN',
                 items: [
                     {
-                        label: 'Profil & Lokasi Studio',
-                        shortLabel: 'Profil Studio',
-                        href: '/admin/pengaturan/profil',
-                        icon: MapPin,
+                        label: 'Profil & Kontak WA',
+                        shortLabel: 'Profil',
+                        href: '/admin/settings/profil',
+                        icon: UserCheck,
                         description:
-                            'Teks bio footer, nomor telepon hotline (+62), email, dan titik lokasi Maps studio',
+                            'Nomor WhatsApp concierge, nama studio, & kontak resmi',
                     },
                     {
-                        label: 'Akun & Keamanan',
+                        label: 'Keamanan & Akun',
                         shortLabel: 'Keamanan',
-                        href: '/admin/pengaturan/keamanan',
-                        icon: Shield,
+                        href: '/admin/settings/keamanan',
+                        icon: ShieldCheck,
                         description:
-                            'Kelola profil admin, email resmi, dan ubah kata sandi sistem',
+                            'Ganti password admin & proteksi autentikasi',
+                    },
+                    {
+                        label: 'Pengaturan Sistem',
+                        shortLabel: 'Sistem',
+                        href: '/admin/settings',
+                        icon: Settings,
+                        description:
+                            'Konfigurasi environment aplikasi & data toko',
                     },
                 ],
             },
@@ -282,38 +270,38 @@ export function AdminLayout({
             <Head title={`${title} — Galuh & Co. Admin Panel`} />
 
             <div
-                className="flex min-h-screen bg-[#FAF8F5] font-sans text-[#16233B] antialiased selection:bg-[#A88B54]/25 selection:text-[#16233B]"
+                className="flex min-h-screen bg-[#F8FAFC] font-sans text-[#16233B] antialiased selection:bg-[#16233B] selection:text-white"
                 style={{
                     fontFamily:
-                        "'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                        "'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 }}
             >
-                {/* 1. Desktop Fixed Admin Sidebar */}
+                {/* 1. Desktop Fixed Admin Sidebar (Biru Navy & Emas Menyala) */}
                 <aside
-                    className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-[#1E2E4A] bg-[#16233B] text-[#F2EBDC] transition-all duration-200 lg:flex ${
-                        sidebarCollapsed ? 'w-20' : 'w-80'
+                    className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-[#1E2E4A] bg-[#16233B] text-white transition-all duration-200 lg:flex ${
+                        sidebarCollapsed ? 'w-20' : 'w-72'
                     }`}
                 >
                     <div className="flex flex-1 scrollbar-none flex-col overflow-y-auto">
-                        {/* Admin Brand Header — Full Width Without Clutter */}
-                        <div className="flex h-20 items-center border-b border-[#1E2E4A] px-6">
+                        {/* Admin Brand Header */}
+                        <div className="flex h-16 items-center border-b border-[#1E2E4A] px-5">
                             <Link
                                 href="/admin/dashboard"
-                                className="flex min-w-0 items-center gap-3.5 transition-opacity hover:opacity-90"
+                                className="flex min-w-0 items-center gap-3 transition-opacity hover:opacity-90"
                             >
                                 <GaluhLogo
                                     variant="white"
-                                    className="h-10 w-auto shrink-0"
+                                    className="h-9 w-auto shrink-0"
                                     showText={false}
                                 />
                                 {!sidebarCollapsed && (
                                     <div className="flex min-w-0 flex-col">
-                                        <span className="font-serif text-base font-bold tracking-wider whitespace-nowrap text-[#F2EBDC]">
+                                        <span className="text-sm font-extrabold tracking-wider whitespace-nowrap text-white">
                                             GALUH &amp; CO.
                                         </span>
-                                        <div className="flex items-center gap-2 pt-0.5">
-                                            <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
-                                            <span className="text-[10px] font-bold tracking-[0.22em] whitespace-nowrap text-[#A88B54] uppercase">
+                                        <div className="flex items-center gap-1.5 pt-0.5">
+                                            <span className="size-2 rounded-full bg-[#F59E0B] shadow-[0_0_10px_#F59E0B]" />
+                                            <span className="text-[10px] font-bold tracking-[0.2em] whitespace-nowrap text-[#F59E0B] uppercase drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]">
                                                 Panel Admin
                                             </span>
                                         </div>
@@ -323,26 +311,26 @@ export function AdminLayout({
                         </div>
 
                         {/* Search Trigger Button */}
-                        <div className="px-5 pt-4 pb-2">
+                        <div className="px-4 pt-3.5 pb-2">
                             <button
                                 type="button"
                                 onClick={() => setSearchModalOpen(true)}
-                                className={`flex w-full items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/60 px-4 py-2.5 text-xs text-[#F2EBDC]/60 transition-colors hover:border-[#A88B54]/40 hover:bg-[#1E2E4A] hover:text-[#F2EBDC] ${
+                                className={`flex w-full items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/70 px-3.5 py-2 text-xs text-slate-300 transition-colors hover:border-[#F59E0B]/50 hover:bg-[#1E2E4A] hover:text-white ${
                                     sidebarCollapsed
                                         ? 'justify-center px-0'
                                         : ''
                                 }`}
                             >
                                 <div className="flex items-center gap-2.5">
-                                    <Search className="size-4 text-[#A88B54]" />
+                                    <Search className="size-4 shrink-0 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
                                     {!sidebarCollapsed && (
                                         <span className="text-xs">
-                                            Cari modul atau menu...
+                                            Cari modul admin...
                                         </span>
                                     )}
                                 </div>
                                 {!sidebarCollapsed && (
-                                    <kbd className="rounded-md border border-[#1E2E4A] bg-[#16233B] px-2 py-0.5 font-mono text-[10px] text-[#A88B54]">
+                                    <kbd className="rounded-md border border-[#334155] bg-[#16233B] px-1.5 py-0.5 font-mono text-[10px] text-[#F59E0B]">
                                         ⌘K
                                     </kbd>
                                 )}
@@ -350,11 +338,11 @@ export function AdminLayout({
                         </div>
 
                         {/* Navigation Groups */}
-                        <nav className="space-y-6 px-4 py-3">
+                        <nav className="space-y-5 px-3 py-2">
                             {navGroups.map((group, groupIdx) => (
-                                <div key={groupIdx} className="space-y-1.5">
+                                <div key={groupIdx} className="space-y-1">
                                     {!sidebarCollapsed ? (
-                                        <p className="px-3 pt-2 pb-1 text-[10.5px] font-bold tracking-[0.22em] text-[#A88B54] uppercase">
+                                        <p className="px-3 pt-2 pb-1 text-[10px] font-extrabold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]">
                                             {group.domain}
                                         </p>
                                     ) : (
@@ -376,22 +364,22 @@ export function AdminLayout({
                                                         ? item.label
                                                         : undefined
                                                 }
-                                                className={`group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all ${
+                                                className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-semibold transition-all ${
                                                     active
-                                                        ? 'border-l-3 border-[#A88B54] bg-[#A88B54]/15 font-bold text-white shadow-xs'
-                                                        : 'text-[#F2EBDC]/75 hover:bg-[#1E2E4A]/80 hover:text-white'
+                                                        ? 'border-l-4 border-[#F59E0B] bg-[#1E2E4A] font-bold text-white shadow-xs'
+                                                        : 'text-slate-300 hover:bg-[#1E2E4A]/70 hover:text-white'
                                                 } ${sidebarCollapsed ? 'justify-center px-0 py-2.5' : ''}`}
                                             >
                                                 <div className="flex min-w-0 items-center gap-3">
                                                     <Icon
-                                                        className={`size-4.5 shrink-0 transition-colors ${
+                                                        className={`size-4.5 shrink-0 transition-transform group-hover:scale-110 ${
                                                             active
-                                                                ? 'text-[#A88B54]'
-                                                                : 'text-[#A88B54]/70 group-hover:text-[#A88B54]'
+                                                                ? 'text-[#F59E0B] drop-shadow-[0_0_8px_rgba(245,158,11,0.85)]'
+                                                                : 'text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.65)]'
                                                         }`}
                                                     />
                                                     {!sidebarCollapsed && (
-                                                        <span className="truncate text-[12.5px]">
+                                                        <span className="truncate text-xs">
                                                             {item.label}
                                                         </span>
                                                     )}
@@ -399,7 +387,7 @@ export function AdminLayout({
 
                                                 {!sidebarCollapsed &&
                                                     active && (
-                                                        <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
+                                                        <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
                                                     )}
                                             </Link>
                                         );
@@ -410,36 +398,36 @@ export function AdminLayout({
                     </div>
 
                     {/* Bottom User Bar */}
-                    <div className="space-y-2 border-t border-[#1E2E4A] p-4">
+                    <div className="space-y-2 border-t border-[#1E2E4A] p-3.5">
                         <a
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/40 px-3.5 py-2 text-xs font-semibold text-[#F2EBDC]/80 transition-colors hover:border-[#A88B54]/40 hover:bg-[#1E2E4A] hover:text-white ${
+                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/50 px-3 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-[#F59E0B]/50 hover:bg-[#1E2E4A] hover:text-white ${
                                 sidebarCollapsed ? 'justify-center px-0' : ''
                             }`}
                             title="Buka Website Publik"
                         >
                             <span className="flex items-center gap-2">
-                                <ExternalLink className="size-3.5 text-[#A88B54]" />
+                                <ExternalLink className="size-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
                                 {!sidebarCollapsed && (
                                     <span>Lihat Website</span>
                                 )}
                             </span>
                             {!sidebarCollapsed && (
-                                <span className="text-[10px] text-[#A88B54]">
+                                <span className="text-[10px] text-[#F59E0B]">
                                     ↗
                                 </span>
                             )}
                         </a>
 
                         <div
-                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/60 p-2.5 transition-colors hover:border-[#A88B54]/30 ${
+                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/70 p-2.5 transition-colors hover:border-[#F59E0B]/40 ${
                                 sidebarCollapsed ? 'justify-center' : ''
                             }`}
                         >
                             <div className="flex min-w-0 items-center gap-2.5">
-                                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#A88B54] to-[#8C7240] font-serif text-xs font-bold text-[#16233B] shadow-xs">
+                                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-xs font-extrabold text-[#16233B] shadow-[0_0_8px_rgba(245,158,11,0.4)]">
                                     {user?.name
                                         ? user.name.charAt(0).toUpperCase()
                                         : 'A'}
@@ -449,8 +437,8 @@ export function AdminLayout({
                                         <p className="truncate text-xs font-bold text-white">
                                             {user?.name ?? 'Admin Galuh & Co.'}
                                         </p>
-                                        <p className="truncate text-[9.5px] font-semibold tracking-wider text-[#A88B54] uppercase">
-                                            Administrator Utama
+                                        <p className="truncate text-[9.5px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                            Administrator
                                         </p>
                                     </div>
                                 )}
@@ -461,7 +449,7 @@ export function AdminLayout({
                                     type="button"
                                     onClick={handleLogout}
                                     title="Keluar"
-                                    className="rounded-lg p-1.5 text-[#F2EBDC]/50 transition-colors hover:bg-[#16233B] hover:text-rose-400"
+                                    className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-[#16233B] hover:text-rose-400"
                                 >
                                     <LogOut className="size-3.5" />
                                 </button>
@@ -470,14 +458,14 @@ export function AdminLayout({
                     </div>
                 </aside>
 
-                {/* 2. Main Viewport Area */}
+                {/* 2. Main Viewport Area (Putih Bersih & Biru Navy) */}
                 <div
                     className={`flex min-h-screen flex-1 flex-col transition-all duration-200 ${
-                        sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-80'
+                        sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'
                     }`}
                 >
                     {/* Top Header Navbar */}
-                    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#E8DFD1] bg-white/95 px-6 shadow-2xs backdrop-blur-md sm:px-8">
+                    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-5 shadow-xs sm:px-8">
                         <div className="flex items-center gap-4">
                             {/* Desktop Sidebar Toggle */}
                             <button
@@ -490,7 +478,7 @@ export function AdminLayout({
                                         ? 'Perbesar Sidebar'
                                         : 'Ciutkan Sidebar'
                                 }
-                                className="hidden rounded-xl border border-[#DFD7C5] bg-[#FAF8F5] p-2.5 text-[#16233B] transition-colors hover:border-[#A88B54] hover:bg-white lg:inline-flex"
+                                className="hidden rounded-xl border border-slate-200 bg-slate-50 p-2 text-[#16233B] transition-colors hover:border-[#16233B] hover:bg-white lg:inline-flex"
                             >
                                 <Menu className="size-4.5" />
                             </button>
@@ -499,18 +487,18 @@ export function AdminLayout({
                             <button
                                 type="button"
                                 onClick={() => setMobileSidebarOpen(true)}
-                                className="rounded-xl border border-[#DFD7C5] bg-[#FAF8F5] p-2 text-[#16233B] hover:bg-white lg:hidden"
+                                className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-[#16233B] hover:bg-white lg:hidden"
                             >
                                 <Menu className="size-5" />
                             </button>
 
-                            {/* Page Header Titles */}
+                            {/* Page Header Titles (Standard Clean Sans Font) */}
                             <div>
-                                <h1 className="font-serif text-lg font-bold tracking-tight text-[#16233B] sm:text-xl">
+                                <h1 className="text-base font-extrabold tracking-tight text-[#16233B] sm:text-lg">
                                     {title}
                                 </h1>
                                 {subtitle && (
-                                    <p className="hidden text-xs text-[#6E675D] sm:block">
+                                    <p className="hidden text-xs text-slate-500 sm:block">
                                         {subtitle}
                                     </p>
                                 )}
@@ -525,9 +513,9 @@ export function AdminLayout({
                                 href="/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hidden items-center gap-2 rounded-xl border border-[#DFD7C5] bg-white px-3.5 py-2 text-xs font-semibold text-[#16233B] shadow-2xs transition-colors hover:border-[#A88B54] hover:bg-[#FAF6EE] sm:inline-flex"
+                                className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#16233B] shadow-2xs transition-colors hover:border-[#16233B] hover:bg-slate-50 sm:inline-flex"
                             >
-                                <ExternalLink className="size-3.5 text-[#A88B54]" />
+                                <ExternalLink className="size-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
                                 <span>Lihat Website</span>
                             </a>
                         </div>
@@ -550,8 +538,8 @@ export function AdminLayout({
                                     }`}
                                 >
                                     <div className="flex items-center gap-2">
-                                        <CheckCircle2 className="size-4 shrink-0" />
-                                        <span className="font-medium">
+                                        <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+                                        <span className="font-semibold">
                                             {toastMessage}
                                         </span>
                                     </div>
@@ -567,7 +555,7 @@ export function AdminLayout({
                         )}
                     </AnimatePresence>
 
-                    {/* Page Content Canvas */}
+                    {/* Page Content Canvas (Putih & Slate Bersih) */}
                     <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
                         {children}
                     </main>
@@ -591,10 +579,10 @@ export function AdminLayout({
                                 stiffness: 220,
                             }}
                             onClick={(e) => e.stopPropagation()}
-                            className="flex h-full w-72 flex-col justify-between bg-[#16233B] p-4 text-[#F2EBDC] shadow-2xl"
+                            className="flex h-full w-72 flex-col justify-between bg-[#16233B] p-4 text-white shadow-2xl"
                         >
                             <div>
-                                <div className="flex items-center justify-between border-b border-[#1E2E4A] pb-4">
+                                <div className="flex items-center justify-between border-b border-[#1E2E4A] pb-3.5">
                                     <div className="flex items-center gap-3">
                                         <GaluhLogo
                                             variant="white"
@@ -602,12 +590,12 @@ export function AdminLayout({
                                             showText={false}
                                         />
                                         <div className="flex flex-col">
-                                            <span className="font-serif text-sm font-bold tracking-wider text-[#F2EBDC]">
+                                            <span className="text-sm font-extrabold tracking-wider text-white">
                                                 GALUH &amp; CO.
                                             </span>
                                             <div className="flex items-center gap-1.5 pt-0.5">
-                                                <span className="size-1.5 rounded-full bg-[#A88B54]" />
-                                                <span className="text-[9px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
+                                                <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
+                                                <span className="text-[9px] font-bold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
                                                     Panel Admin
                                                 </span>
                                             </div>
@@ -618,7 +606,7 @@ export function AdminLayout({
                                         onClick={() =>
                                             setMobileSidebarOpen(false)
                                         }
-                                        className="rounded-lg p-1.5 text-[#F2EBDC]/60 hover:bg-[#1E2E4A] hover:text-white"
+                                        className="rounded-lg p-1.5 text-slate-300 hover:bg-[#1E2E4A] hover:text-white"
                                     >
                                         <X className="size-4" />
                                     </button>
@@ -627,7 +615,7 @@ export function AdminLayout({
                                 <nav className="mt-4 space-y-4">
                                     {navGroups.map((group, gIdx) => (
                                         <div key={gIdx} className="space-y-1">
-                                            <p className="px-2 text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
+                                            <p className="px-2 text-[10px] font-extrabold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
                                                 {group.domain}
                                             </p>
                                             {group.items.map((item) => {
@@ -645,26 +633,22 @@ export function AdminLayout({
                                                                 false,
                                                             )
                                                         }
-                                                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                                                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
                                                             active
-                                                                ? 'border-l-2 border-[#A88B54] bg-[#A88B54]/15 font-bold text-white shadow-xs'
-                                                                : 'text-[#F2EBDC]/75 hover:bg-[#1E2E4A] hover:text-white'
+                                                                ? 'border-l-3 border-[#F59E0B] bg-[#1E2E4A] font-bold text-white shadow-xs'
+                                                                : 'text-slate-300 hover:bg-[#1E2E4A] hover:text-white'
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-2.5">
                                                             <Icon
-                                                                className={`size-4 ${
-                                                                    active
-                                                                        ? 'text-[#A88B54]'
-                                                                        : 'text-[#A88B54]/70'
-                                                                }`}
+                                                                className={`size-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]`}
                                                             />
                                                             <span>
                                                                 {item.label}
                                                             </span>
                                                         </div>
                                                         {active && (
-                                                            <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
+                                                            <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
                                                         )}
                                                     </Link>
                                                 );
@@ -678,7 +662,7 @@ export function AdminLayout({
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-medium text-rose-300 hover:bg-rose-500/20"
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-semibold text-rose-300 hover:bg-rose-500/20"
                                 >
                                     <LogOut className="size-3.5" />
                                     <span>Keluar dari Admin</span>
@@ -704,7 +688,7 @@ export function AdminLayout({
                             className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
                         >
                             <div className="flex items-center border-b border-slate-200 px-4 py-3">
-                                <Search className="mr-2.5 size-4 shrink-0 text-slate-400" />
+                                <Search className="mr-2.5 size-4 shrink-0 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
                                 <input
                                     type="text"
                                     value={searchQuery}
@@ -713,7 +697,7 @@ export function AdminLayout({
                                     }
                                     placeholder="Ketik untuk mencari menu atau modul admin..."
                                     autoFocus
-                                    className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
+                                    className="w-full bg-transparent text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
                                 />
                                 <kbd className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">
                                     ESC
@@ -742,11 +726,11 @@ export function AdminLayout({
                                                     className="flex items-center justify-between rounded-lg p-2.5 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
                                                 >
                                                     <div className="flex items-center gap-3">
-                                                        <div className="flex size-7 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
-                                                            <Icon className="size-4" />
+                                                        <div className="flex size-7 items-center justify-center rounded-md bg-[#16233B] text-[#F59E0B]">
+                                                            <Icon className="size-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-xs font-semibold text-slate-900">
+                                                            <p className="text-xs font-bold text-slate-900">
                                                                 {item.label}
                                                             </p>
                                                             <p className="text-[11px] text-slate-500">

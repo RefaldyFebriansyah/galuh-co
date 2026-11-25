@@ -129,65 +129,65 @@ export default function AdminOrdersIndex({
             <div className="space-y-6">
                 {/* Stats Overview Grid */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
-                        <span className="block text-[9.5px] font-bold tracking-wider text-[#6E675D] uppercase">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="block text-[9.5px] font-bold tracking-wider text-slate-500 uppercase">
                             Total Pesanan
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-[#16233B]">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-[#16233B]">
                             {stats.total_orders}
                         </span>
                     </div>
 
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
-                        <span className="block text-[9.5px] font-bold tracking-wider text-[#6E675D] uppercase">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="block text-[9.5px] font-bold tracking-wider text-slate-500 uppercase">
                             Pesanan Personal
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-[#16233B]">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-[#16233B]">
                             {stats.personal_orders}
                         </span>
                     </div>
 
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
-                        <span className="block text-[9.5px] font-bold tracking-wider text-[#A88B54] uppercase">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+                        <span className="block text-[9.5px] font-bold tracking-wider text-slate-500 uppercase">
                             Corporate (B2B)
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-[#A88B54]">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-[#16233B]">
                             {stats.corporate_orders}
                         </span>
                     </div>
 
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
                         <span className="block text-[9.5px] font-bold tracking-wider text-amber-600 uppercase">
                             Di Studio
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-amber-700">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-amber-700">
                             {stats.studio_processing}
                         </span>
                     </div>
 
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
                         <span className="block text-[9.5px] font-bold tracking-wider text-blue-600 uppercase">
                             Dalam Kurir
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-blue-700">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-blue-700">
                             {stats.in_delivery}
                         </span>
                     </div>
 
-                    <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
                         <span className="block text-[9.5px] font-bold tracking-wider text-emerald-600 uppercase">
                             Selesai Diterima
                         </span>
-                        <span className="mt-1 font-serif text-2xl font-bold text-emerald-700">
+                        <span className="mt-1 font-sans text-2xl font-extrabold text-emerald-700">
                             {stats.delivered}
                         </span>
                     </div>
 
-                    <div className="col-span-2 rounded-2xl border border-[#A88B54]/40 bg-[#16233B] p-4 text-white shadow-sm sm:col-span-4 lg:col-span-1">
-                        <span className="block text-[9px] font-bold tracking-wider text-[#A88B54] uppercase">
+                    <div className="col-span-2 rounded-xl border border-[#16233B] bg-[#16233B] p-4 text-white shadow-xs sm:col-span-4 lg:col-span-1">
+                        <span className="block text-[9px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
                             Total Pendapatan
                         </span>
-                        <span className="mt-1 block truncate font-serif text-lg font-bold text-[#F2EBDC]">
+                        <span className="mt-1 block truncate font-sans text-lg font-extrabold text-white">
                             Rp{' '}
                             {Number(stats.total_revenue).toLocaleString(
                                 'id-ID',
@@ -455,7 +455,7 @@ export default function AdminOrdersIndex({
                                                 <span className="font-bold text-[#16233B]">
                                                     {order.total_quantity} Paket
                                                 </span>
-                                                <span className="block font-serif font-bold text-[#A88B54]">
+                                                <span className="block font-sans font-bold text-[#16233B]">
                                                     Rp{' '}
                                                     {Number(
                                                         order.total_amount,
@@ -573,14 +573,14 @@ export default function AdminOrdersIndex({
                                 <X className="size-4" />
                             </button>
 
-                            <div className="border-b border-[#F2EBDC] pb-3">
-                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#A88B54] uppercase">
-                                    SUPER ADMIN DISPATCH
+                            <div className="border-b border-slate-200 pb-3">
+                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                    DISPATCH PESANAN
                                 </span>
-                                <h3 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                                <h3 className="mt-1 font-sans text-xl font-extrabold text-[#16233B]">
                                     Perbarui Status &amp; Nomor Resi
                                 </h3>
-                                <p className="text-xs text-[#6E675D]">
+                                <p className="text-xs text-slate-500">
                                     Pesanan: {selectedOrder.order_number} •
                                     Penerima: {selectedOrder.recipient_name}
                                 </p>

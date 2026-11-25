@@ -193,7 +193,7 @@ export default function AdminTrackingIndex({
                                     </span>
                                 </div>
                                 <h3
-                                    className={`mt-2 font-serif text-sm font-bold ${isFiltered ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}
+                                    className={`mt-2 font-sans text-sm font-bold ${isFiltered ? 'text-white' : 'text-[#16233B]'}`}
                                 >
                                     {stage.label}
                                 </h3>
@@ -302,7 +302,7 @@ export default function AdminTrackingIndex({
                 {orders.data.length === 0 ? (
                     <div className="rounded-2xl border border-[#A88B54]/25 bg-white p-12 text-center text-[#6E675D]">
                         <Truck className="mx-auto size-12 text-[#A88B54]/50" />
-                        <h3 className="mt-3 font-serif text-lg font-bold text-[#16233B]">
+                        <h3 className="mt-3 font-sans text-lg font-extrabold text-[#16233B]">
                             Tidak Ada Pesanan di Tahap Ini
                         </h3>
                         <p className="mt-1 text-xs">
@@ -343,7 +343,7 @@ export default function AdminTrackingIndex({
                                         </div>
 
                                         <div className="flex items-center gap-3">
-                                            <span className="font-serif font-bold text-[#16233B]">
+                                            <span className="font-sans font-extrabold text-[#16233B]">
                                                 {order.total_quantity} Paket (
                                                 {Number(
                                                     order.total_amount,
@@ -448,21 +448,21 @@ export default function AdminTrackingIndex({
                                                                         title={`Klik untuk ubah status ke ${stg.fullTitle}`}
                                                                     >
                                                                         <span
-                                                                            className={`flex size-8 items-center justify-center rounded-full font-serif text-xs font-bold transition-all ${
+                                                                            className={`flex size-8 items-center justify-center rounded-full font-sans text-xs font-extrabold transition-all ${
                                                                                 isDone
-                                                                                    ? 'bg-[#16233B] text-[#A88B54] shadow-xs'
-                                                                                    : 'border border-[#A88B54]/30 bg-white text-[#6E675D]'
-                                                                            } ${isCurrent ? 'scale-110 ring-2 ring-[#A88B54] ring-offset-2' : ''}`}
+                                                                                    ? 'bg-[#16233B] text-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.5)]'
+                                                                                    : 'border border-slate-300 bg-white text-slate-500'
+                                                                            } ${isCurrent ? 'scale-110 ring-2 ring-[#F59E0B] ring-offset-2' : ''}`}
                                                                         >
                                                                             {
                                                                                 stg.num
                                                                             }
                                                                         </span>
                                                                         <span
-                                                                            className={`mt-2 font-serif text-[11px] font-bold ${
+                                                                            className={`mt-2 font-sans text-[11px] font-bold ${
                                                                                 isDone
                                                                                     ? 'text-[#16233B]'
-                                                                                    : 'text-[#6E675D]'
+                                                                                    : 'text-slate-500'
                                                                             }`}
                                                                         >
                                                                             {
@@ -505,10 +505,10 @@ export default function AdminTrackingIndex({
                         >
                             <div className="flex items-center justify-between border-b border-[#F2EBDC] bg-[#16233B] px-6 py-4 text-[#F2EBDC]">
                                 <div>
-                                    <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
-                                        UPDATE STATUS & RESI PENGIRIMAN
+                                    <span className="text-[10px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                        UPDATE STATUS &amp; RESI PENGIRIMAN
                                     </span>
-                                    <h3 className="font-serif text-lg font-bold text-white">
+                                    <h3 className="font-sans text-lg font-extrabold text-white">
                                         Pesanan #{activeOrder.order_number}
                                     </h3>
                                 </div>
