@@ -184,7 +184,7 @@ export default function AdminOrdersIndex({
                     </div>
 
                     <div className="col-span-2 rounded-xl border border-[#16233B] bg-[#16233B] p-4 text-white shadow-xs sm:col-span-4 lg:col-span-1">
-                        <span className="block text-[9px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                        <span className="block text-[9px] font-bold tracking-wider text-slate-300 uppercase">
                             Total Pendapatan
                         </span>
                         <span className="mt-1 block truncate font-sans text-lg font-extrabold text-white">
@@ -574,7 +574,7 @@ export default function AdminOrdersIndex({
                             </button>
 
                             <div className="border-b border-slate-200 pb-3">
-                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
                                     DISPATCH PESANAN
                                 </span>
                                 <h3 className="mt-1 font-sans text-xl font-extrabold text-[#16233B]">

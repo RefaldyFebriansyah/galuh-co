@@ -270,13 +270,13 @@ export function AdminLayout({
             <Head title={`${title} — Galuh & Co. Admin Panel`} />
 
             <div
-                className="flex min-h-screen bg-[#F8FAFC] font-sans text-[#16233B] antialiased selection:bg-[#16233B] selection:text-white"
+                className="flex min-h-screen bg-[#F8FAFC] font-sans text-slate-900 antialiased selection:bg-[#16233B] selection:text-white"
                 style={{
                     fontFamily:
                         "'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 }}
             >
-                {/* 1. Desktop Fixed Admin Sidebar (Biru Navy & Emas Menyala) */}
+                {/* 1. Desktop Fixed Admin Sidebar (Biru Navy Elegan & Muted Gold) */}
                 <aside
                     className={`fixed inset-y-0 left-0 z-40 hidden flex-col justify-between border-r border-[#1E2E4A] bg-[#16233B] text-white transition-all duration-200 lg:flex ${
                         sidebarCollapsed ? 'w-20' : 'w-72'
@@ -291,7 +291,7 @@ export function AdminLayout({
                             >
                                 <GaluhLogo
                                     variant="white"
-                                    className="h-9 w-auto shrink-0"
+                                    className="h-8 w-auto shrink-0"
                                     showText={false}
                                 />
                                 {!sidebarCollapsed && (
@@ -300,8 +300,8 @@ export function AdminLayout({
                                             GALUH &amp; CO.
                                         </span>
                                         <div className="flex items-center gap-1.5 pt-0.5">
-                                            <span className="size-2 rounded-full bg-[#F59E0B] shadow-[0_0_10px_#F59E0B]" />
-                                            <span className="text-[10px] font-bold tracking-[0.2em] whitespace-nowrap text-[#F59E0B] uppercase drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]">
+                                            <span className="size-1.5 rounded-full bg-[#D4AF37]" />
+                                            <span className="text-[10px] font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase">
                                                 Panel Admin
                                             </span>
                                         </div>
@@ -315,14 +315,14 @@ export function AdminLayout({
                             <button
                                 type="button"
                                 onClick={() => setSearchModalOpen(true)}
-                                className={`flex w-full items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/70 px-3.5 py-2 text-xs text-slate-300 transition-colors hover:border-[#F59E0B]/50 hover:bg-[#1E2E4A] hover:text-white ${
+                                className={`flex w-full items-center justify-between rounded-xl border border-slate-700/60 bg-[#1E2E4A]/50 px-3.5 py-2 text-xs text-slate-300 transition-colors hover:border-slate-500 hover:bg-[#1E2E4A] hover:text-white ${
                                     sidebarCollapsed
                                         ? 'justify-center px-0'
                                         : ''
                                 }`}
                             >
                                 <div className="flex items-center gap-2.5">
-                                    <Search className="size-4 shrink-0 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <Search className="size-4 shrink-0 text-slate-400" />
                                     {!sidebarCollapsed && (
                                         <span className="text-xs">
                                             Cari modul admin...
@@ -330,7 +330,7 @@ export function AdminLayout({
                                     )}
                                 </div>
                                 {!sidebarCollapsed && (
-                                    <kbd className="rounded-md border border-[#334155] bg-[#16233B] px-1.5 py-0.5 font-mono text-[10px] text-[#F59E0B]">
+                                    <kbd className="rounded border border-slate-700 bg-[#16233B] px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
                                         ⌘K
                                     </kbd>
                                 )}
@@ -342,7 +342,7 @@ export function AdminLayout({
                             {navGroups.map((group, groupIdx) => (
                                 <div key={groupIdx} className="space-y-1">
                                     {!sidebarCollapsed ? (
-                                        <p className="px-3 pt-2 pb-1 text-[10px] font-extrabold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]">
+                                        <p className="px-3 pt-2 pb-1 text-[10px] font-semibold tracking-wider text-slate-400 uppercase">
                                             {group.domain}
                                         </p>
                                     ) : (
@@ -364,18 +364,18 @@ export function AdminLayout({
                                                         ? item.label
                                                         : undefined
                                                 }
-                                                className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-semibold transition-all ${
+                                                className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-xs transition-all ${
                                                     active
-                                                        ? 'border-l-4 border-[#F59E0B] bg-[#1E2E4A] font-bold text-white shadow-xs'
-                                                        : 'text-slate-300 hover:bg-[#1E2E4A]/70 hover:text-white'
+                                                        ? 'border-l-3 border-[#D4AF37] bg-[#1E2E4A] font-bold text-white shadow-xs'
+                                                        : 'font-medium text-slate-300 hover:bg-[#1E2E4A]/60 hover:text-white'
                                                 } ${sidebarCollapsed ? 'justify-center px-0 py-2.5' : ''}`}
                                             >
                                                 <div className="flex min-w-0 items-center gap-3">
                                                     <Icon
-                                                        className={`size-4.5 shrink-0 transition-transform group-hover:scale-110 ${
+                                                        className={`size-4.5 shrink-0 transition-colors ${
                                                             active
-                                                                ? 'text-[#F59E0B] drop-shadow-[0_0_8px_rgba(245,158,11,0.85)]'
-                                                                : 'text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.65)]'
+                                                                ? 'text-[#D4AF37]'
+                                                                : 'text-slate-400 group-hover:text-slate-200'
                                                         }`}
                                                     />
                                                     {!sidebarCollapsed && (
@@ -387,7 +387,7 @@ export function AdminLayout({
 
                                                 {!sidebarCollapsed &&
                                                     active && (
-                                                        <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
+                                                        <span className="size-1.5 rounded-full bg-[#D4AF37]" />
                                                     )}
                                             </Link>
                                         );
@@ -403,31 +403,31 @@ export function AdminLayout({
                             href="/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/50 px-3 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-[#F59E0B]/50 hover:bg-[#1E2E4A] hover:text-white ${
+                            className={`flex items-center justify-between rounded-xl border border-slate-700/50 bg-[#1E2E4A]/40 px-3 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-slate-500 hover:bg-[#1E2E4A] hover:text-white ${
                                 sidebarCollapsed ? 'justify-center px-0' : ''
                             }`}
                             title="Buka Website Publik"
                         >
                             <span className="flex items-center gap-2">
-                                <ExternalLink className="size-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <ExternalLink className="size-3.5 text-slate-400" />
                                 {!sidebarCollapsed && (
                                     <span>Lihat Website</span>
                                 )}
                             </span>
                             {!sidebarCollapsed && (
-                                <span className="text-[10px] text-[#F59E0B]">
+                                <span className="text-[10px] text-slate-400">
                                     ↗
                                 </span>
                             )}
                         </a>
 
                         <div
-                            className={`flex items-center justify-between rounded-xl border border-[#1E2E4A] bg-[#1E2E4A]/70 p-2.5 transition-colors hover:border-[#F59E0B]/40 ${
+                            className={`flex items-center justify-between rounded-xl border border-slate-700/60 bg-[#1E2E4A]/60 p-2.5 transition-colors ${
                                 sidebarCollapsed ? 'justify-center' : ''
                             }`}
                         >
                             <div className="flex min-w-0 items-center gap-2.5">
-                                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-xs font-extrabold text-[#16233B] shadow-[0_0_8px_rgba(245,158,11,0.4)]">
+                                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-slate-600/50 bg-[#2A3B5C] text-xs font-extrabold text-[#D4AF37]">
                                     {user?.name
                                         ? user.name.charAt(0).toUpperCase()
                                         : 'A'}
@@ -437,7 +437,7 @@ export function AdminLayout({
                                         <p className="truncate text-xs font-bold text-white">
                                             {user?.name ?? 'Admin Galuh & Co.'}
                                         </p>
-                                        <p className="truncate text-[9.5px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                        <p className="truncate text-[9.5px] font-semibold tracking-wider text-slate-400 uppercase">
                                             Administrator
                                         </p>
                                     </div>
@@ -492,7 +492,7 @@ export function AdminLayout({
                                 <Menu className="size-5" />
                             </button>
 
-                            {/* Page Header Titles (Standard Clean Sans Font) */}
+                            {/* Page Header Titles */}
                             <div>
                                 <h1 className="text-base font-extrabold tracking-tight text-[#16233B] sm:text-lg">
                                     {title}
@@ -513,9 +513,9 @@ export function AdminLayout({
                                 href="/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#16233B] shadow-2xs transition-colors hover:border-[#16233B] hover:bg-slate-50 sm:inline-flex"
+                                className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#16233B] shadow-2xs transition-colors hover:border-slate-300 hover:bg-slate-50 sm:inline-flex"
                             >
-                                <ExternalLink className="size-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <ExternalLink className="size-3.5 text-slate-500" />
                                 <span>Lihat Website</span>
                             </a>
                         </div>
@@ -594,8 +594,8 @@ export function AdminLayout({
                                                 GALUH &amp; CO.
                                             </span>
                                             <div className="flex items-center gap-1.5 pt-0.5">
-                                                <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
-                                                <span className="text-[9px] font-bold tracking-[0.2em] text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                                <span className="size-1.5 rounded-full bg-[#D4AF37]" />
+                                                <span className="text-[9px] font-semibold tracking-wider text-slate-400 uppercase">
                                                     Panel Admin
                                                 </span>
                                             </div>
@@ -615,7 +615,7 @@ export function AdminLayout({
                                 <nav className="mt-4 space-y-4">
                                     {navGroups.map((group, gIdx) => (
                                         <div key={gIdx} className="space-y-1">
-                                            <p className="px-2 text-[10px] font-extrabold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                            <p className="px-2 text-[10px] font-semibold tracking-wider text-slate-400 uppercase">
                                                 {group.domain}
                                             </p>
                                             {group.items.map((item) => {
@@ -635,20 +635,24 @@ export function AdminLayout({
                                                         }
                                                         className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
                                                             active
-                                                                ? 'border-l-3 border-[#F59E0B] bg-[#1E2E4A] font-bold text-white shadow-xs'
+                                                                ? 'border-l-3 border-[#D4AF37] bg-[#1E2E4A] font-bold text-white shadow-xs'
                                                                 : 'text-slate-300 hover:bg-[#1E2E4A] hover:text-white'
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-2.5">
                                                             <Icon
-                                                                className={`size-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]`}
+                                                                className={`size-4 ${
+                                                                    active
+                                                                        ? 'text-[#D4AF37]'
+                                                                        : 'text-slate-400'
+                                                                }`}
                                                             />
                                                             <span>
                                                                 {item.label}
                                                             </span>
                                                         </div>
                                                         {active && (
-                                                            <span className="size-1.5 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B]" />
+                                                            <span className="size-1.5 rounded-full bg-[#D4AF37]" />
                                                         )}
                                                     </Link>
                                                 );
@@ -688,7 +692,7 @@ export function AdminLayout({
                             className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl"
                         >
                             <div className="flex items-center border-b border-slate-200 px-4 py-3">
-                                <Search className="mr-2.5 size-4 shrink-0 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <Search className="mr-2.5 size-4 shrink-0 text-slate-400" />
                                 <input
                                     type="text"
                                     value={searchQuery}
@@ -726,8 +730,8 @@ export function AdminLayout({
                                                     className="flex items-center justify-between rounded-lg p-2.5 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
                                                 >
                                                     <div className="flex items-center gap-3">
-                                                        <div className="flex size-7 items-center justify-center rounded-md bg-[#16233B] text-[#F59E0B]">
-                                                            <Icon className="size-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                                        <div className="flex size-7 items-center justify-center rounded-md bg-[#16233B] text-slate-200">
+                                                            <Icon className="size-4 text-slate-300" />
                                                         </div>
                                                         <div>
                                                             <p className="text-xs font-bold text-slate-900">

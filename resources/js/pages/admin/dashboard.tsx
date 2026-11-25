@@ -263,7 +263,7 @@ export default function AdminDashboard({
                         href="/admin/orders"
                         className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#16233B] shadow-2xs transition-all hover:border-slate-300 hover:bg-slate-50"
                     >
-                        <ShoppingBag className="h-3.5 w-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                        <ShoppingBag className="h-3.5 w-3.5 text-slate-600" />
                         <span>Kelola Pesanan</span>
                     </Link>
                     <a
@@ -273,7 +273,7 @@ export default function AdminDashboard({
                         className="inline-flex items-center gap-1.5 rounded-xl bg-[#16233B] px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition-all hover:bg-[#0F172A]"
                     >
                         <span>Lihat Website</span>
-                        <ArrowUpRight className="h-3.5 w-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                        <ArrowUpRight className="h-3.5 w-3.5 text-slate-300" />
                     </a>
                 </div>
             }
@@ -286,7 +286,7 @@ export default function AdminDashboard({
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#16233B] uppercase">
-                                <Calendar className="h-3.5 w-3.5 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <Calendar className="h-3.5 w-3.5 text-slate-600" />
                                 Periode Omset:
                             </span>
 
@@ -341,7 +341,7 @@ export default function AdminDashboard({
                                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                     }`}
                                 >
-                                    <Filter className="h-3 w-3 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <Filter className="h-3 w-3 text-slate-500" />
                                     <span>Pilih Rentang Tanggal</span>
                                 </button>
                             </div>
@@ -401,7 +401,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
 
-                {/* 2. Hanya 3 Kartu Metrik Utama (Biru Navy, Putih, Icon Emas Menyala) */}
+                {/* 2. Hanya 3 Kartu Metrik Utama (Biru Navy, Putih, Bersih & Elegan) */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {/* Kartu 1: Omset Penjualan */}
                     <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
@@ -422,8 +422,8 @@ export default function AdminDashboard({
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#16233B] shadow-xs">
-                                <TrendingUp className="h-6 w-6 text-[#F59E0B] drop-shadow-[0_0_8px_rgba(245,158,11,0.85)]" />
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-[#16233B] shadow-2xs">
+                                <TrendingUp className="h-6 w-6 text-emerald-600" />
                             </div>
                         </div>
                         <div className="mt-4 border-t border-slate-100 pt-2 text-[11px] text-slate-500">
@@ -449,14 +449,14 @@ export default function AdminDashboard({
                                 </div>
                                 <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-500">
                                     <span className="inline-flex items-center gap-1 rounded-full border border-amber-200/60 bg-amber-50 px-2 py-0.5 text-[11px] font-bold text-amber-800">
-                                        <Clock className="h-3 w-3 text-[#F59E0B] drop-shadow-[0_0_4px_rgba(245,158,11,0.6)]" />
+                                        <Clock className="h-3 w-3 text-amber-600" />
                                         {metrics.orders_in_tracking} dalam
                                         proses kirim
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#16233B] shadow-xs">
-                                <ShoppingBag className="h-6 w-6 text-[#F59E0B] drop-shadow-[0_0_8px_rgba(245,158,11,0.85)]" />
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-[#16233B] shadow-2xs">
+                                <ShoppingBag className="h-6 w-6 text-[#16233B]" />
                             </div>
                         </div>
                         <div className="mt-4 border-t border-slate-100 pt-2 text-[11px] text-slate-500">
@@ -486,7 +486,7 @@ export default function AdminDashboard({
                                     {[1, 2, 3, 4, 5].map((s) => (
                                         <Star
                                             key={s}
-                                            className="h-4 w-4 fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]"
+                                            className="h-4 w-4 fill-amber-400 text-amber-400"
                                         />
                                     ))}
                                     <span className="ml-1 text-xs font-semibold text-slate-500">
@@ -494,8 +494,8 @@ export default function AdminDashboard({
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#16233B] shadow-xs">
-                                <Award className="h-6 w-6 text-[#F59E0B] drop-shadow-[0_0_8px_rgba(245,158,11,0.85)]" />
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-[#16233B] shadow-2xs">
+                                <Award className="h-6 w-6 text-[#16233B]" />
                             </div>
                         </div>
                         <div className="mt-4 border-t border-slate-100 pt-2 text-[11px] text-slate-500">
@@ -556,7 +556,7 @@ export default function AdminDashboard({
                     <div className="relative mt-6 w-full">
                         {chart_data.length === 0 ? (
                             <div className="flex h-56 flex-col items-center justify-center rounded-xl bg-slate-50 text-center text-xs text-slate-500">
-                                <Calendar className="mb-2 h-7 w-7 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <Calendar className="mb-2 h-7 w-7 text-slate-400" />
                                 <p className="font-semibold text-slate-900">
                                     Belum ada transaksi di rentang tanggal ini
                                 </p>
@@ -644,13 +644,13 @@ export default function AdminDashboard({
                                                     y1={paddingTop}
                                                     x2={points[hoveredIndex].x}
                                                     y2={paddingTop + plotHeight}
-                                                    stroke="#F59E0B"
+                                                    stroke="#16233B"
                                                     strokeWidth="1.5"
                                                     strokeDasharray="3 3"
                                                 />
                                             )}
 
-                                        {/* Data Dots (Emas Menyala) */}
+                                        {/* Data Dots (Clean White with Navy Stroke) */}
                                         {points.map((pt, idx) => {
                                             const isHovered =
                                                 hoveredIndex === idx;
@@ -659,19 +659,20 @@ export default function AdminDashboard({
                                                     <circle
                                                         cx={pt.x}
                                                         cy={pt.y}
-                                                        r={isHovered ? 6 : 4}
+                                                        r={
+                                                            isHovered
+                                                                ? 5.5
+                                                                : 3.5
+                                                        }
                                                         fill={
                                                             isHovered
-                                                                ? '#F59E0B'
+                                                                ? '#16233B'
                                                                 : '#ffffff'
                                                         }
-                                                        stroke="#F59E0B"
+                                                        stroke="#16233B"
                                                         strokeWidth={
                                                             isHovered ? 2.5 : 2
                                                         }
-                                                        style={{
-                                                            filter: 'drop-shadow(0 0 5px rgba(245, 158, 11, 0.7))',
-                                                        }}
                                                     />
                                                 </g>
                                             );
@@ -742,7 +743,7 @@ export default function AdminDashboard({
                                                         'translateX(-50%)',
                                                 }}
                                             >
-                                                <div className="font-bold text-[#F59E0B] drop-shadow-[0_0_4px_rgba(245,158,11,0.6)]">
+                                                <div className="font-bold text-slate-200">
                                                     {points[hoveredIndex].data
                                                         .full_label ||
                                                         points[hoveredIndex]
@@ -785,17 +786,17 @@ export default function AdminDashboard({
                     <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs lg:col-span-7">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div className="flex items-center gap-2">
-                                <ShoppingBag className="h-4 w-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                <ShoppingBag className="h-4 w-4 text-[#16233B]" />
                                 <h3 className="text-base font-extrabold text-[#16233B]">
                                     Pesanan E-Commerce Terbaru
                                 </h3>
                             </div>
                             <Link
                                 href="/admin/orders"
-                                className="inline-flex items-center gap-1 text-xs font-bold text-[#16233B] transition-colors hover:text-[#F59E0B]"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-[#16233B] transition-colors hover:text-slate-600"
                             >
                                 <span>Lihat Semua</span>
-                                <ArrowUpRight className="h-3.5 w-3.5 text-[#F59E0B] drop-shadow-[0_0_5px_rgba(245,158,11,0.6)]" />
+                                <ArrowUpRight className="h-3.5 w-3.5 text-slate-400" />
                             </Link>
                         </div>
 
@@ -846,7 +847,7 @@ export default function AdminDashboard({
                                                     href={`/admin/tracking?search=${order.order_number}`}
                                                     className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-[#16233B] transition-colors hover:bg-[#16233B] hover:text-white"
                                                 >
-                                                    <Truck className="h-3 w-3 text-[#F59E0B] drop-shadow-[0_0_5px_rgba(245,158,11,0.7)]" />
+                                                    <Truck className="h-3 w-3 text-slate-500" />
                                                     <span>Resi</span>
                                                 </Link>
                                             </div>
@@ -863,7 +864,7 @@ export default function AdminDashboard({
                         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <div className="flex items-center gap-2">
-                                    <Star className="h-4 w-4 fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                                     <h3 className="text-base font-extrabold text-[#16233B]">
                                         Ulasan Pembeli Terbaru
                                     </h3>
@@ -898,7 +899,7 @@ export default function AdminDashboard({
                                                     }).map((_, i) => (
                                                         <Star
                                                             key={i}
-                                                            className="h-3 w-3 fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_0_4px_rgba(245,158,11,0.6)]"
+                                                            className="h-3 w-3 fill-amber-400 text-amber-400"
                                                         />
                                                     ))}
                                                 </div>
@@ -922,28 +923,28 @@ export default function AdminDashboard({
                                     href="/admin/orders"
                                     className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#16233B] hover:bg-white"
                                 >
-                                    <ShoppingBag className="h-4 w-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <ShoppingBag className="h-4 w-4 text-slate-600" />
                                     <span>Semua Pesanan</span>
                                 </Link>
                                 <Link
                                     href="/admin/tracking"
                                     className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#16233B] hover:bg-white"
                                 >
-                                    <Truck className="h-4 w-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <Truck className="h-4 w-4 text-slate-600" />
                                     <span>Lacak &amp; Resi</span>
                                 </Link>
                                 <Link
                                     href="/admin/products"
                                     className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#16233B] hover:bg-white"
                                 >
-                                    <Package className="h-4 w-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <Package className="h-4 w-4 text-slate-600" />
                                     <span>Katalog Hampers</span>
                                 </Link>
                                 <Link
                                     href="/admin/cms-halaman"
                                     className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#16233B] hover:bg-white"
                                 >
-                                    <FileText className="h-4 w-4 text-[#F59E0B] drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]" />
+                                    <FileText className="h-4 w-4 text-slate-600" />
                                     <span>Konten Website</span>
                                 </Link>
                             </div>

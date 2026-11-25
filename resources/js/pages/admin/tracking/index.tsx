@@ -450,9 +450,9 @@ export default function AdminTrackingIndex({
                                                                         <span
                                                                             className={`flex size-8 items-center justify-center rounded-full font-sans text-xs font-extrabold transition-all ${
                                                                                 isDone
-                                                                                    ? 'bg-[#16233B] text-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.5)]'
+                                                                                    ? 'bg-[#16233B] text-white shadow-xs'
                                                                                     : 'border border-slate-300 bg-white text-slate-500'
-                                                                            } ${isCurrent ? 'scale-110 ring-2 ring-[#F59E0B] ring-offset-2' : ''}`}
+                                                                            } ${isCurrent ? 'scale-110 ring-2 ring-[#16233B] ring-offset-2' : ''}`}
                                                                         >
                                                                             {
                                                                                 stg.num
@@ -505,7 +505,7 @@ export default function AdminTrackingIndex({
                         >
                             <div className="flex items-center justify-between border-b border-[#F2EBDC] bg-[#16233B] px-6 py-4 text-[#F2EBDC]">
                                 <div>
-                                    <span className="text-[10px] font-bold tracking-wider text-[#F59E0B] uppercase drop-shadow-[0_0_4px_rgba(245,158,11,0.5)]">
+                                    <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                                         UPDATE STATUS &amp; RESI PENGIRIMAN
                                     </span>
                                     <h3 className="font-sans text-lg font-extrabold text-white">
