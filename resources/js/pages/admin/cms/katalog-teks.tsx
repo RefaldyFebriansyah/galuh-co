@@ -61,7 +61,7 @@ export default function AdminCmsKatalogTeks({
                         <Type className="size-4" />
                         <span>HEADER KOLEKSI HAMPERS LANDING PAGE</span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Teks Judul & Narasi Katalog
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -97,7 +97,7 @@ export default function AdminCmsKatalogTeks({
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Contoh: Koleksi Bingkisan Istimewa"
-                                    className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-serif text-sm font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                    className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-sans text-sm font-bold text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                 />
                             </div>
 
@@ -129,7 +129,7 @@ export default function AdminCmsKatalogTeks({
                                     <span>{badge}</span>
                                 </div>
 
-                                <h3 className="mt-2 font-serif text-2xl font-normal text-[#16233B]">
+                                <h3 className="mt-2 font-sans text-2xl font-bold text-[#16233B]">
                                     {title}
                                 </h3>
 

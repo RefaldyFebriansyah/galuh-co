@@ -129,7 +129,7 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                             <HelpCircle className="size-4" />
                             <span>MANAJEMEN PERTANYAAN UMUM</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Daftar FAQ ({faqs.length} Pertanyaan)
                         </h2>
                     </div>
@@ -159,8 +159,8 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                 {/* FAQ List Cards */}
                 {faqs.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#A88B54]/40 bg-white p-12 text-center shadow-xs">
-                        <HelpCircle className="size-10 text-[#A88B54]" />
-                        <h3 className="mt-3 font-serif text-base font-bold text-[#16233B]">
+                        <HelpCircle className="size-10 text-[#D4AF37]" />
+                        <h3 className="mt-3 font-sans text-base font-bold text-[#16233B]">
                             Belum Ada Pertanyaan FAQ Tersimpan di Database
                         </h3>
                         <p className="mt-1 max-w-md text-xs text-[#6E675D]">
@@ -172,7 +172,7 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                         <button
                             type="button"
                             onClick={handleRestoreDefaults}
-                            className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#A88B54] hover:text-[#16233B]"
+                            className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[#223354]"
                         >
                             <RotateCcw className="size-3.5" />
                             <span>Muat 6 Pertanyaan Bawaan Landing Page</span>
@@ -183,11 +183,11 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                         {faqs.map((faq) => (
                             <div
                                 key={faq.id}
-                                className="flex flex-col justify-between gap-4 rounded-2xl border border-[#A88B54]/25 bg-white p-5 shadow-xs transition-all sm:flex-row sm:items-start"
+                                className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition-all sm:flex-row sm:items-start"
                             >
                                 <div className="flex-1 space-y-1.5">
                                     <div className="flex items-center gap-2">
-                                        <span className="rounded-full bg-[#F2EBDC] px-2.5 py-0.5 text-[9.5px] font-bold text-[#16233B] uppercase">
+                                        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[9.5px] font-bold text-[#16233B] uppercase">
                                             {faq.category}
                                         </span>
                                         {!faq.is_active && (
@@ -196,10 +196,10 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                                             </span>
                                         )}
                                     </div>
-                                    <h3 className="font-serif text-sm font-bold text-[#16233B]">
+                                    <h3 className="font-sans text-sm font-bold text-[#16233B]">
                                         {faq.question}
                                     </h3>
-                                    <p className="text-xs leading-relaxed text-[#6E675D]">
+                                    <p className="text-xs leading-relaxed text-slate-600">
                                         {faq.answer}
                                     </p>
                                 </div>
@@ -208,7 +208,7 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                                     <button
                                         type="button"
                                         onClick={() => handleOpenEdit(faq)}
-                                        className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[#A88B54]/30 bg-[#FAF8F5] px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-[#16233B] hover:text-white"
+                                        className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-slate-50"
                                     >
                                         <Edit3 className="size-3.5" />
                                         <span>Edit</span>
@@ -236,10 +236,10 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-lg overflow-hidden rounded-3xl border border-[#A88B54]/30 bg-white shadow-2xl"
+                        className="w-full max-w-lg overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl"
                     >
-                        <div className="flex items-center justify-between border-b border-[#F2EBDC] bg-[#16233B] px-6 py-4 text-[#F2EBDC]">
-                            <h3 className="font-serif text-base font-bold text-white">
+                        <div className="flex items-center justify-between border-b border-slate-100 bg-[#16233B] px-6 py-4 text-white">
+                            <h3 className="font-sans text-base font-bold text-white">
                                 {editingFaq
                                     ? 'Edit Pertanyaan FAQ'
                                     : 'Tambah Pertanyaan FAQ Baru'}

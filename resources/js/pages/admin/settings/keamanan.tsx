@@ -78,19 +78,19 @@ export default function AdminSettingsKeamanan({
 
             <form onSubmit={handleSave} className="max-w-2xl space-y-6">
                 {/* 1. Profil Administrator */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <User className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                            <User className="size-4 text-[#D4AF37]" />
                             <span>DATA PROFIL ADMINISTRATOR</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Identitas Akun Admin Tunggal
                         </h2>
                     </div>
 
                     <div>
-                        <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                        <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                             Nama Lengkap Administrator:
                         </label>
                         <input
@@ -98,7 +98,7 @@ export default function AdminSettingsKeamanan({
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                         {errors.name && (
                             <p className="mt-1 text-[11px] text-rose-600">
@@ -108,7 +108,7 @@ export default function AdminSettingsKeamanan({
                     </div>
 
                     <div>
-                        <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                        <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                             Alamat Email Login:
                         </label>
                         <input
@@ -116,7 +116,7 @@ export default function AdminSettingsKeamanan({
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                         {errors.email && (
                             <p className="mt-1 text-[11px] text-rose-600">
@@ -127,22 +127,22 @@ export default function AdminSettingsKeamanan({
                 </div>
 
                 {/* 2. Ubah Kata Sandi */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <Key className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                            <Key className="size-4 text-[#D4AF37]" />
                             <span>KEAMANAN & KATA SANDI</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Perbarui Kata Sandi Akses
                         </h2>
-                        <p className="mt-1 text-[11px] text-[#6E675D]">
+                        <p className="mt-1 text-[11px] text-slate-500">
                             Kosongkan jika Anda tidak ingin mengubah kata sandi.
                         </p>
                     </div>
 
                     <div>
-                        <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                        <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                             Kata Sandi Saat Ini:
                         </label>
                         <input
@@ -150,7 +150,7 @@ export default function AdminSettingsKeamanan({
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             placeholder="Masukkan sandi saat ini..."
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                         {errors.current_password && (
                             <p className="mt-1 text-[11px] text-rose-600">
@@ -161,7 +161,7 @@ export default function AdminSettingsKeamanan({
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Kata Sandi Baru:
                             </label>
                             <input
@@ -169,7 +169,7 @@ export default function AdminSettingsKeamanan({
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 placeholder="Minimal 6 karakter..."
-                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                             />
                             {errors.new_password && (
                                 <p className="mt-1 text-[11px] text-rose-600">
@@ -179,7 +179,7 @@ export default function AdminSettingsKeamanan({
                         </div>
 
                         <div>
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Konfirmasi Kata Sandi Baru:
                             </label>
                             <input
@@ -189,7 +189,7 @@ export default function AdminSettingsKeamanan({
                                     setNewPasswordConfirmation(e.target.value)
                                 }
                                 placeholder="Ulangi kata sandi baru..."
-                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                             />
                             {errors.new_password_confirmation && (
                                 <p className="mt-1 text-[11px] text-rose-600">
@@ -201,11 +201,11 @@ export default function AdminSettingsKeamanan({
                 </div>
 
                 {/* Save Button */}
-                <div className="flex items-center justify-end gap-3 rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
+                <div className="flex items-center justify-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
                     <button
                         type="submit"
                         disabled={isSaving}
-                        className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#223354] disabled:opacity-50"
                     >
                         <Save className="size-4" />
                         <span>

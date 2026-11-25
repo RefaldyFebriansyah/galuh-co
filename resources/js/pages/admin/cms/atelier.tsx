@@ -120,7 +120,7 @@ export default function AdminCmsAtelier({
                             <ShieldCheck className="size-4" />
                             <span>HEADER INTEGRITAS ATELIER</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Headline & Narasi Standar Kriya Atelier
                         </h2>
                     </div>
@@ -148,7 +148,7 @@ export default function AdminCmsAtelier({
                                 required
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-sans text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                         </div>
                     </div>
@@ -173,7 +173,7 @@ export default function AdminCmsAtelier({
                         <Layers className="size-4" />
                         <span>4 CARD KEUNGGULAN STANDAR KRIYA</span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Ubah Seluruh Teks pada 4 Card
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -188,7 +188,7 @@ export default function AdminCmsAtelier({
                                 className="space-y-3 rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-5 text-xs"
                             >
                                 <div className="flex items-center justify-between border-b border-[#A88B54]/20 pb-2">
-                                    <span className="font-serif text-sm font-bold text-[#16233B]">
+                                    <span className="font-sans text-sm font-bold text-[#16233B]">
                                         CARD 0{idx + 1}
                                     </span>
                                     <span className="rounded bg-[#16233B] px-2 py-0.5 font-mono text-[9.5px] font-bold text-[#A88B54]">
@@ -211,7 +211,7 @@ export default function AdminCmsAtelier({
                                                 e.target.value,
                                             )
                                         }
-                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-sans text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                 </div>
 

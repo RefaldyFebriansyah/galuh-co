@@ -19,14 +19,14 @@ export default function AdminLogin() {
         <>
             <Head title="Masuk ke Panel Admin — GALUH & CO." />
 
-            <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#F2EBDC] px-4 py-12 font-sans selection:bg-[#A88B54] selection:text-white">
-                {/* Subtle Luxury Ambient Background */}
+            <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-4 py-12 font-sans selection:bg-[#16233B] selection:text-white">
+                {/* Subtle Modern Ambient Background */}
                 <div
-                    className="pointer-events-none absolute -top-40 -left-40 size-[450px] rounded-full bg-[#A88B54]/10 blur-[120px]"
+                    className="pointer-events-none absolute -top-40 -left-40 size-[450px] rounded-full bg-slate-200/50 blur-[120px]"
                     aria-hidden="true"
                 />
                 <div
-                    className="pointer-events-none absolute -right-40 -bottom-40 size-[450px] rounded-full bg-[#16233B]/10 blur-[120px]"
+                    className="pointer-events-none absolute -right-40 -bottom-40 size-[450px] rounded-full bg-[#16233B]/5 blur-[120px]"
                     aria-hidden="true"
                 />
 
@@ -36,21 +36,21 @@ export default function AdminLogin() {
                         <div className="inline-flex justify-center">
                             <GaluhLogo className="h-11 w-auto" />
                         </div>
-                        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#A88B54]/30 bg-[#16233B] px-3 py-1 text-[10px] font-bold tracking-widest text-[#F2EBDC] uppercase">
-                            <Shield className="size-3 text-[#A88B54]" />
+                        <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-bold tracking-widest text-[#16233B] uppercase shadow-2xs">
+                            <Shield className="size-3 text-[#D4AF37]" />
                             <span>PORTAL RESMI ADMIN</span>
                         </div>
-                        <h1 className="mt-2.5 font-serif text-2xl font-bold tracking-tight text-[#16233B]">
+                        <h1 className="mt-2.5 font-sans text-2xl font-extrabold tracking-tight text-[#16233B]">
                             Atelier Command Studio
                         </h1>
-                        <p className="mt-1 text-xs text-[#6E675D]">
+                        <p className="mt-1 text-xs text-slate-500">
                             Masuk untuk memproses pesanan, tracking resi, dan
                             mengelola seluruh konten website.
                         </p>
                     </div>
 
                     {/* Login Card */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white/95 p-6 shadow-[0_16px_40px_-16px_rgba(22,35,59,0.12)] backdrop-blur-md">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                         <form onSubmit={submit} className="space-y-4">
                             {/* Email */}
                             <div>
@@ -61,7 +61,7 @@ export default function AdminLogin() {
                                     Email Admin
                                 </label>
                                 <div className="relative">
-                                    <Mail className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#6E675D]" />
+                                    <Mail className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="email"
                                         type="email"
@@ -72,7 +72,7 @@ export default function AdminLogin() {
                                         onChange={(e) =>
                                             setData('email', e.target.value)
                                         }
-                                        className="w-full rounded-xl border border-[#DFD7C5] bg-[#FAF6EE] py-2.5 pr-4 pl-9 text-xs text-[#16233B] transition-all placeholder:text-[#6E675D]/50 focus:border-[#A88B54] focus:bg-white focus:outline-hidden"
+                                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-4 pl-9 text-xs text-slate-900 transition-all placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                                         placeholder="admin@galuhco.id"
                                     />
                                 </div>
@@ -92,7 +92,7 @@ export default function AdminLogin() {
                                     Password
                                 </label>
                                 <div className="relative">
-                                    <Lock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#6E675D]" />
+                                    <Lock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
                                     <input
                                         id="password"
                                         type="password"
@@ -103,7 +103,7 @@ export default function AdminLogin() {
                                         onChange={(e) =>
                                             setData('password', e.target.value)
                                         }
-                                        className="w-full rounded-xl border border-[#DFD7C5] bg-[#FAF6EE] py-2.5 pr-4 pl-9 text-xs text-[#16233B] transition-all placeholder:text-[#6E675D]/50 focus:border-[#A88B54] focus:bg-white focus:outline-hidden"
+                                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-4 pl-9 text-xs text-slate-900 transition-all placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -115,7 +115,7 @@ export default function AdminLogin() {
                             </div>
 
                             {/* Remember Checkbox */}
-                            <div className="flex items-center justify-between pt-0.5 text-xs text-[#6E675D]">
+                            <div className="flex items-center justify-between pt-0.5 text-xs text-slate-500">
                                 <label className="flex cursor-pointer items-center gap-2">
                                     <input
                                         type="checkbox"
@@ -127,11 +127,11 @@ export default function AdminLogin() {
                                                 e.target.checked,
                                             )
                                         }
-                                        className="size-4 rounded border-[#DFD7C5] text-[#16233B] focus:ring-[#A88B54]"
+                                        className="size-4 rounded border-slate-300 text-[#16233B] focus:ring-[#16233B]"
                                     />
                                     <span>Ingat sesi admin</span>
                                 </label>
-                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#A88B54]">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-600">
                                     <ShieldCheck className="size-3.5 text-emerald-600" />
                                     <span>Role: Admin</span>
                                 </span>
@@ -141,7 +141,7 @@ export default function AdminLogin() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full cursor-pointer rounded-full bg-[#16233B] py-3 text-xs font-bold tracking-[0.14em] text-white uppercase shadow-md transition-all duration-300 hover:bg-[#223354] active:scale-[0.99] disabled:opacity-50"
+                                className="w-full cursor-pointer rounded-xl bg-[#16233B] py-3 text-xs font-bold tracking-[0.14em] text-white uppercase shadow-xs transition-all duration-300 hover:bg-[#223354] active:scale-[0.99] disabled:opacity-50"
                             >
                                 {processing
                                     ? 'Memverifikasi...'
@@ -150,8 +150,8 @@ export default function AdminLogin() {
                         </form>
 
                         {/* Helper credentials pill for quick test */}
-                        <div className="mt-5 rounded-xl border border-[#DFD7C5] bg-[#FAF6EE] p-3 text-center text-xs text-[#6E675D]">
-                            <div className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
+                        <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-3 text-center text-xs text-slate-600">
+                            <div className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
                                 Kredensial Bawaan:
                             </div>
                             <div className="mt-1 font-mono text-[11px] font-semibold text-[#16233B]">
@@ -166,7 +166,7 @@ export default function AdminLogin() {
                                         remember: true,
                                     });
                                 }}
-                                className="mt-2 inline-flex cursor-pointer items-center rounded-lg border border-[#DFD7C5] bg-white px-2.5 py-1 text-[10.5px] font-bold text-[#16233B] hover:border-[#16233B]"
+                                className="mt-2 inline-flex cursor-pointer items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10.5px] font-bold text-[#16233B] hover:border-slate-400"
                             >
                                 Isi Otomatis Kredensial
                             </button>
@@ -177,7 +177,7 @@ export default function AdminLogin() {
                     <div className="mt-5 text-center">
                         <Link
                             href="/"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6E675D] transition-colors hover:text-[#16233B]"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#16233B]"
                         >
                             <ArrowLeft className="size-3.5" />
                             <span>Kembali ke Halaman Depan</span>

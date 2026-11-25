@@ -270,7 +270,7 @@ export function AdminLayout({
             <Head title={`${title} — Galuh & Co. Admin Panel`} />
 
             <div
-                className="flex min-h-screen bg-[#F8FAFC] font-sans text-slate-900 antialiased selection:bg-[#16233B] selection:text-white"
+                className="admin-layout flex min-h-screen bg-[#F8FAFC] font-sans text-slate-900 antialiased selection:bg-[#16233B] selection:text-white [&_*]:font-sans"
                 style={{
                     fontFamily:
                         "'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",

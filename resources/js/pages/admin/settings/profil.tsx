@@ -129,24 +129,24 @@ export default function AdminSettingsProfil({
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Kontak & Hotline Perusahaan */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <Phone className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                            <Phone className="size-4 text-[#D4AF37]" />
                             <span>INFORMASI KONTAK RESMI & HOTLINE (+62)</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Nomor Hotline, WhatsApp, & Email Galuh & Co.
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Nomor Telepon / Hotline Resmi (+62):
                             </label>
-                            <div className="mt-1 flex items-center overflow-hidden rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 transition-all focus-within:border-[#A88B54] focus-within:bg-white">
-                                <span className="inline-flex shrink-0 items-center border-r border-[#A88B54]/30 bg-[#F2EBDC] px-3 py-2.5 text-xs font-bold text-[#16233B] select-none">
+                            <div className="mt-1 flex items-center overflow-hidden rounded-xl border border-slate-200 bg-white transition-all focus-within:border-[#16233B] focus-within:ring-1 focus-within:ring-[#16233B]">
+                                <span className="inline-flex shrink-0 items-center border-r border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-bold text-slate-700 select-none">
                                     +62
                                 </span>
                                 <input
@@ -155,13 +155,13 @@ export default function AdminSettingsProfil({
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                     placeholder="815-7241-4233"
-                                    className="w-full bg-transparent px-3 py-2.5 text-xs text-[#16233B] focus:outline-hidden"
+                                    className="w-full bg-transparent px-3 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-hidden"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Alamat Email Resmi:
                             </label>
                             <input
@@ -170,13 +170,13 @@ export default function AdminSettingsProfil({
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="halo@galuh.co"
-                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                        <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                             Jam Operasional Studio & Concierge:
                         </label>
                         <input
@@ -185,22 +185,22 @@ export default function AdminSettingsProfil({
                             value={hours}
                             onChange={(e) => setHours(e.target.value)}
                             placeholder="Senin - Sabtu: 08.00 - 18.00 WIB"
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                     </div>
                 </div>
 
                 {/* 2. Titik Lokasi Perusahaan & Google Maps */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <MapPin className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                            <MapPin className="size-4 text-[#D4AF37]" />
                             <span>TITIK LOKASI PRODUKSI & PETA ATELIER</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Alamat Studio Produksi & Google Maps
                         </h2>
-                        <p className="mt-1 text-xs text-[#6E675D]">
+                        <p className="mt-1 text-xs text-slate-500">
                             Data ini akan langsung memperbarui peta interaktif
                             di atas footer landing page secara real-time.
                         </p>
@@ -208,10 +208,10 @@ export default function AdminSettingsProfil({
 
                     <div>
                         <div className="flex items-center justify-between">
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Alamat Lengkap Studio Atelier:
                             </label>
-                            <span className="font-mono text-[9.5px] text-[#A88B54]">
+                            <span className="font-mono text-[9.5px] text-slate-500">
                                 Terhubung Langsung ke Google Maps
                             </span>
                         </div>
@@ -223,17 +223,17 @@ export default function AdminSettingsProfil({
                                 handleAddressChange(e.target.value)
                             }
                             placeholder="Jl. Ir. H. Juanda No. 146, Ciamis, Jawa Barat 46211"
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                     </div>
 
                     <div>
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                            <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                            <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                                 Google Maps Embed URL / Titik Koordinat:
                             </label>
                             <div className="flex items-center gap-2">
-                                <label className="flex cursor-pointer items-center gap-1.5 font-mono text-[9.5px] text-[#6E675D]">
+                                <label className="flex cursor-pointer items-center gap-1.5 font-mono text-[9.5px] text-slate-500">
                                     <input
                                         type="checkbox"
                                         checked={autoSyncMaps}
@@ -246,7 +246,7 @@ export default function AdminSettingsProfil({
                                                 );
                                             }
                                         }}
-                                        className="size-3.5 accent-[#A88B54]"
+                                        className="size-3.5 accent-[#16233B]"
                                     />
                                     <span>Auto-Sync dari Alamat</span>
                                 </label>
@@ -255,10 +255,10 @@ export default function AdminSettingsProfil({
                                     onClick={() =>
                                         setGmapsEmbed(buildGmapsEmbed(address))
                                     }
-                                    className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[#A88B54]/40 bg-[#FAF8F5] px-2.5 py-1 text-[10px] font-bold text-[#16233B] shadow-2xs transition-all hover:bg-[#A88B54] hover:text-[#16233B] active:scale-95"
+                                    className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-[#16233B] shadow-2xs transition-all hover:border-slate-300 hover:bg-slate-100 active:scale-95"
                                     title="Klik untuk membuat embed URL otomatis berdasarkan alamat studio di atas"
                                 >
-                                    <Navigation className="size-3 text-[#A88B54]" />
+                                    <Navigation className="size-3 text-[#16233B]" />
                                     <span>Isi Otomatis dari Alamat</span>
                                 </button>
                             </div>
@@ -272,10 +272,10 @@ export default function AdminSettingsProfil({
                                 setAutoSyncMaps(false);
                             }}
                             placeholder="Otomatis di-generate dari alamat studio di atas (atau paste link / tag <iframe> Google Maps)"
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-mono text-xs text-[#16233B] placeholder:text-[#6E675D]/40 focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 font-mono text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
 
-                        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[10.5px] text-[#6E675D]">
+                        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[10.5px] text-slate-500">
                             <span>
                                 Otomatis terisi dari alamat di atas. Boleh
                                 dikosongkan atau paste tag &lt;iframe&gt; / link
@@ -285,7 +285,7 @@ export default function AdminSettingsProfil({
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.trim())}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 font-semibold text-[#A88B54] hover:underline"
+                                className="inline-flex items-center gap-1 font-semibold text-[#16233B] hover:underline"
                             >
                                 <span>Cek Titik di Google Maps</span>
                                 <ExternalLink className="size-3" />
@@ -294,16 +294,16 @@ export default function AdminSettingsProfil({
                     </div>
 
                     {/* Maps Live Preview */}
-                    <div className="mt-4 overflow-hidden rounded-2xl border border-[#A88B54]/30 bg-white shadow-sm">
-                        <div className="flex items-center justify-between border-b border-[#F2EBDC] bg-[#FAF8F5] px-4 py-2">
-                            <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
+                    <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
+                        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2">
+                            <span className="text-[10px] font-bold tracking-wider text-slate-600 uppercase">
                                 PREVIEW PETA STUDIO PADA WEBSITE:
                             </span>
-                            <span className="max-w-xs truncate text-[10px] text-[#6E675D]">
+                            <span className="max-w-xs truncate text-[10px] text-slate-500">
                                 Titik: {address || 'Alamat Studio'}
                             </span>
                         </div>
-                        <div className="h-64 w-full bg-[#FAF8F5]">
+                        <div className="h-64 w-full bg-slate-50">
                             {effectiveGmaps ? (
                                 <iframe
                                     key={effectiveGmaps}
@@ -315,8 +315,8 @@ export default function AdminSettingsProfil({
                                     loading="lazy"
                                 />
                             ) : (
-                                <div className="flex h-full flex-col items-center justify-center p-6 text-center text-[#6E675D]">
-                                    <MapPin className="size-8 text-[#A88B54]" />
+                                <div className="flex h-full flex-col items-center justify-center p-6 text-center text-slate-500">
+                                    <MapPin className="size-8 text-slate-400" />
                                     <p className="mt-2 font-semibold text-[#16233B]">
                                         Peta belum memiliki titik lokasi
                                     </p>
@@ -331,19 +331,19 @@ export default function AdminSettingsProfil({
                 </div>
 
                 {/* 3. Teks Bio Footer Brand */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <FileText className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                            <FileText className="size-4 text-[#D4AF37]" />
                             <span>TEKS FILOSOFI PADA FOOTER</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Bio Ringkas Galuh & Co. di Bagian Footer
                         </h2>
                     </div>
 
                     <div>
-                        <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
+                        <label className="block text-[11px] font-bold tracking-wider text-[#16233B] uppercase">
                             Teks Profil Brand Footer:
                         </label>
                         <textarea
@@ -351,17 +351,17 @@ export default function AdminSettingsProfil({
                             required
                             value={footerBio}
                             onChange={(e) => setFooterBio(e.target.value)}
-                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#16233B] focus:ring-1 focus:ring-[#16233B] focus:outline-hidden"
                         />
                     </div>
                 </div>
 
                 {/* Save Button */}
-                <div className="flex items-center justify-end gap-3 rounded-2xl border border-[#A88B54]/30 bg-white p-4 shadow-sm">
+                <div className="flex items-center justify-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
                     <button
                         type="submit"
                         disabled={isSaving}
-                        className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#223354] disabled:opacity-50"
                     >
                         <Save className="size-4" />
                         <span>

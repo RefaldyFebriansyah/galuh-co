@@ -118,7 +118,7 @@ export default function AdminCmsCaraPesan({
                             <ListOrdered className="size-4" />
                             <span>HEADER PANDUAN PEMESANAN</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Headline & Subtitle Cara Pesan
                         </h2>
                     </div>
@@ -146,7 +146,7 @@ export default function AdminCmsCaraPesan({
                                 required
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-sans text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                         </div>
                     </div>
@@ -171,7 +171,7 @@ export default function AdminCmsCaraPesan({
                         <CheckCircle2 className="size-4" />
                         <span>4 TAHAPAN LANGKAH PEMESANAN (01 SAMPAI 04)</span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Ubah Judul & Deskripsi Langkah 1 - 4
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -186,7 +186,7 @@ export default function AdminCmsCaraPesan({
                                 className="space-y-3 rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-4 text-xs"
                             >
                                 <div className="flex items-center justify-between border-b border-[#A88B54]/20 pb-2">
-                                    <span className="font-serif text-lg font-bold text-[#16233B]">
+                                    <span className="font-sans text-sm font-bold text-[#16233B]">
                                         TAHAP {step.number}
                                     </span>
                                     <span className="rounded-full bg-[#16233B] px-2 py-0.5 font-mono text-[9.5px] font-bold text-[#A88B54]">
@@ -228,7 +228,7 @@ export default function AdminCmsCaraPesan({
                                                 e.target.value,
                                             )
                                         }
-                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-sans text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                 </div>
 

@@ -154,7 +154,7 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                             <BookOpen className="size-4" />
                             <span>TEKS UTAMA TENTANG GALUH & CO.</span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Headline & Narasi Filosofi Brand
                         </h2>
                     </div>
@@ -205,7 +205,7 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                         <Layers className="size-4" />
                         <span>3 PILAR KRIYA ATELIER (NO. 1 SAMPAI NO. 3)</span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Teks & Foto di Dalam Setiap Card Pilar
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -221,7 +221,7 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                             >
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between border-b border-[#A88B54]/20 pb-2">
-                                        <span className="font-serif text-lg font-bold text-[#16233B]">
+                                        <span className="font-sans text-base font-bold text-[#16233B]">
                                             PILAR {pillar.num}
                                         </span>
                                         <span className="rounded bg-[#16233B] px-2 py-0.5 font-mono text-[10px] font-bold text-[#A88B54]">
@@ -263,7 +263,7 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                                     e.target.value,
                                                 )
                                             }
-                                            className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                            className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-sans text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
                                     </div>
 

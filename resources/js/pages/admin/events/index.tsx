@@ -324,15 +324,15 @@ export default function AdminEventsIndex({
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Active Event Selector */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
-                    <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                        <Calendar className="size-4" />
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
+                    <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                        <Calendar className="size-4 text-[#D4AF37]" />
                         <span>PILIH TEMA EVENT AKTIF</span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Musim Perayaan & Tema yang Sedang Berjalan
                     </h2>
-                    <p className="mt-1 text-xs text-[#6E675D]">
+                    <p className="mt-1 text-xs text-slate-500">
                         Ketika suatu event diaktifkan, produk yang ditandai
                         dengan event tersebut akan otomatis bergeser ke posisi
                         paling atas di katalog landing page.
@@ -348,16 +348,16 @@ export default function AdminEventsIndex({
                                     onClick={() => handleSelectEvent(evt.id)}
                                     className={`flex cursor-pointer flex-col justify-between rounded-xl border p-4 text-left transition-all ${
                                         isSelected
-                                            ? 'border-[#A88B54] bg-[#16233B] text-[#F2EBDC] shadow-md ring-2 ring-[#A88B54]'
-                                            : 'border-[#A88B54]/25 bg-[#FAF8F5] text-[#16233B] hover:border-[#A88B54]/60'
+                                            ? 'border-[#16233B] bg-[#16233B] text-white shadow-md ring-2 ring-slate-300'
+                                            : 'border-slate-200 bg-white text-slate-900 hover:border-slate-400'
                                     }`}
                                 >
                                     <div className="flex items-center justify-between">
                                         <span
                                             className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
                                                 isSelected
-                                                    ? 'bg-[#A88B54] text-[#16233B]'
-                                                    : 'bg-[#F2EBDC] text-[#16233B]'
+                                                    ? 'bg-white/20 text-white'
+                                                    : 'bg-slate-100 text-slate-700'
                                             }`}
                                         >
                                             {evt.id === 'custom'
@@ -366,11 +366,11 @@ export default function AdminEventsIndex({
                                                 : evt.badge}
                                         </span>
                                         {isSelected && (
-                                            <CheckCircle2 className="size-4 text-[#A88B54]" />
+                                            <CheckCircle2 className="size-4 text-[#D4AF37]" />
                                         )}
                                     </div>
                                     <h3
-                                        className={`mt-3 font-serif text-sm font-bold ${isSelected ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}
+                                        className={`mt-3 font-sans text-sm font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}
                                     >
                                         {evt.id === 'custom'
                                             ? customName ||
@@ -389,8 +389,8 @@ export default function AdminEventsIndex({
 
                     {/* Custom Event Name & Badge Inputs (Active when Custom is selected) */}
                     {activeEvent === 'custom' && (
-                        <div className="mt-4 rounded-xl border border-[#A88B54]/40 bg-[#F2EBDC]/40 p-4">
-                            <span className="text-[10.5px] font-bold tracking-wider text-[#A88B54] uppercase">
+                        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <span className="text-[10.5px] font-bold tracking-wider text-slate-600 uppercase">
                                 PENGATURAN TEMA KUSTOM SENDIRI:
                             </span>
                             <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -405,7 +405,7 @@ export default function AdminEventsIndex({
                                             setCustomName(e.target.value)
                                         }
                                         placeholder="Contoh: Spesial Hari Ibu / Anniversary Perusahaan"
-                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/40 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
                                 <div>
@@ -419,7 +419,7 @@ export default function AdminEventsIndex({
                                             setCustomBadge(e.target.value)
                                         }
                                         placeholder="Contoh: Edisi Spesial Hari Ibu"
-                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/40 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
                                 </div>
                             </div>
@@ -428,16 +428,16 @@ export default function AdminEventsIndex({
                 </div>
 
                 {/* 2. Demo Card Banner Promotion Settings */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
-                    <div className="flex items-center justify-between border-b border-[#F2EBDC] pb-4">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                         <div>
-                            <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                                <Tag className="size-4" />
+                            <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                                <Tag className="size-4 text-[#D4AF37]" />
                                 <span>
                                     KARTU DEMO & PROMOSI EVENT DI LAYER TERATAS
                                 </span>
                             </div>
-                            <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                            <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                                 Iklan / Card Foto Demo Musim Aktif
                             </h2>
                         </div>
@@ -449,7 +449,7 @@ export default function AdminEventsIndex({
                                 onChange={(e) =>
                                     setBannerActive(e.target.checked)
                                 }
-                                className="size-4 accent-[#A88B54]"
+                                className="size-4 accent-[#16233B]"
                             />
                             <span className="text-xs font-bold text-[#16233B]">
                                 Tampilkan Banner Demo di Web
@@ -543,7 +543,7 @@ export default function AdminEventsIndex({
                                                                 className="size-8 rounded-lg object-cover"
                                                             />
                                                             <div className="max-w-[140px] truncate">
-                                                                <p className="truncate font-serif text-[11px] font-bold text-[#16233B]">
+                                                                <p className="truncate font-sans text-[11px] font-bold text-[#16233B]">
                                                                     {prod.name}
                                                                 </p>
                                                                 <span className="text-[9.5px] font-semibold text-[#A88B54]">
@@ -562,7 +562,7 @@ export default function AdminEventsIndex({
 
                                 {/* Upload & Reset Action Buttons */}
                                 <div className="mt-2 flex flex-wrap gap-2">
-                                    <label className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[#A88B54]/40 bg-[#16233B] px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#A88B54] hover:text-[#16233B] active:scale-95">
+                                    <label className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-[#16233B] px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#223354] active:scale-95">
                                         <Upload className="size-3.5" />
                                         <span>
                                             Upload Foto Kustom (SVG / JPG)
@@ -589,7 +589,7 @@ export default function AdminEventsIndex({
                                                         .image,
                                                 )
                                             }
-                                            className="cursor-pointer rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] hover:bg-[#F2EBDC]"
+                                            className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                                         >
                                             Reset ke Foto Hampers #1
                                         </button>
@@ -605,9 +605,9 @@ export default function AdminEventsIndex({
                                             setBannerImage(e.target.value)
                                         }
                                         placeholder="/images/product_emerald_box.jpg atau data:image/..."
-                                        className="w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                                     />
-                                    <p className="mt-1 text-[11px] text-[#6E675D]">
+                                    <p className="mt-1 text-[11px] text-slate-500">
                                         Foto banner otomatis diambil dari
                                         hampers katalog di atas, atau Anda bisa
                                         upload gambar sendiri.
@@ -617,12 +617,12 @@ export default function AdminEventsIndex({
                         </div>
 
                         {/* Right: Real-time Live Preview Card */}
-                        <div className="flex flex-col justify-center rounded-2xl border border-[#A88B54]/30 bg-[#16233B] p-6 text-[#F2EBDC] shadow-lg lg:col-span-5">
-                            <span className="text-[9.5px] font-bold tracking-widest text-[#A88B54] uppercase">
+                        <div className="flex flex-col justify-center rounded-2xl border border-slate-700 bg-[#16233B] p-6 text-white shadow-lg lg:col-span-5">
+                            <span className="text-[9.5px] font-bold tracking-widest text-[#D4AF37] uppercase">
                                 PREVIEW CARD PROMO DI WEBSITE:
                             </span>
 
-                            <div className="relative mt-3 overflow-hidden rounded-xl border border-[#A88B54]/30">
+                            <div className="relative mt-3 overflow-hidden rounded-xl border border-slate-700">
                                 <img
                                     src={
                                         bannerImage ||
@@ -636,15 +636,15 @@ export default function AdminEventsIndex({
                                     }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#16233B] via-transparent to-transparent" />
-                                <span className="absolute top-3 left-3 rounded-full bg-[#A88B54] px-2.5 py-0.5 text-[10px] font-bold text-[#16233B]">
+                                <span className="absolute top-3 left-3 rounded-full border border-slate-600 bg-[#16233B]/80 px-2.5 py-0.5 text-[10px] font-bold text-[#D4AF37]">
                                     {activeEventInfo.badge}
                                 </span>
                             </div>
 
-                            <h4 className="mt-3 font-serif text-base font-bold text-white">
+                            <h4 className="mt-3 font-sans text-base font-bold text-white">
                                 {bannerTitle}
                             </h4>
-                            <p className="mt-1 line-clamp-2 text-xs text-[#F2EBDC]/75">
+                            <p className="mt-1 line-clamp-2 text-xs text-slate-300">
                                 {bannerSubtitle}
                             </p>
                         </div>
@@ -652,21 +652,21 @@ export default function AdminEventsIndex({
                 </div>
 
                 {/* 3. Hampers Event Selection (Automated Top-Priority) */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
-                    <div className="flex flex-col gap-2 border-b border-[#F2EBDC] pb-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
+                    <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                                <Package className="size-4" />
+                            <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                                <Package className="size-4 text-[#D4AF37]" />
                                 <span>
                                     PILIH HAMPERS UNTUK EVENT{' '}
                                     {activeEventInfo.name.toUpperCase()}
                                 </span>
                             </div>
-                            <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                            <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                                 Hampers yang Dipromosikan Paling Atas (
                                 {selectedProductIds.length} Terpilih)
                             </h2>
-                            <p className="mt-0.5 text-xs text-[#6E675D]">
+                            <p className="mt-0.5 text-xs text-slate-500">
                                 Hampers yang sesuai tema otomatis tercentang.
                                 Anda juga dapat bebas mencentang atau menambah
                                 hampers kustom lainnya.
@@ -677,7 +677,7 @@ export default function AdminEventsIndex({
                             <button
                                 type="button"
                                 onClick={handleApplyAutoMatch}
-                                className="cursor-pointer rounded-lg border border-[#A88B54] bg-[#A88B54]/15 px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-[#A88B54] hover:text-[#16233B]"
+                                className="cursor-pointer rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-slate-100"
                                 title="Otomatis mencocokkan hampers berdasarkan kata kunci tema yang dipilih"
                             >
                                 Cocokkan Otomatis Tema Ini
@@ -685,7 +685,7 @@ export default function AdminEventsIndex({
                             <button
                                 type="button"
                                 onClick={handleSelectAll}
-                                className="cursor-pointer rounded-lg border border-[#A88B54]/40 bg-[#FAF8F5] px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-[#16233B] hover:text-white"
+                                className="cursor-pointer rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-[#16233B] hover:text-white"
                             >
                                 {selectedProductIds.length === products.length
                                     ? 'Batal Semua'
@@ -695,8 +695,8 @@ export default function AdminEventsIndex({
                     </div>
 
                     {autoSelectFeedback && (
-                        <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#A88B54]/40 bg-[#A88B54]/10 p-3 text-xs font-semibold text-[#16233B]">
-                            <CheckCircle2 className="size-4 text-[#A88B54]" />
+                        <div className="mt-4 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold text-[#16233B]">
+                            <CheckCircle2 className="size-4 text-emerald-600" />
                             <span>{autoSelectFeedback}</span>
                         </div>
                     )}
@@ -725,15 +725,15 @@ export default function AdminEventsIndex({
                                     }
                                     className={`group flex cursor-pointer items-center gap-3.5 rounded-xl border p-3.5 transition-all ${
                                         isIncluded
-                                            ? 'border-[#A88B54] bg-[#F2EBDC]/40 shadow-xs'
-                                            : 'border-slate-200 bg-white opacity-70 hover:border-[#A88B54]/40 hover:opacity-100'
+                                            ? 'border-[#16233B] bg-slate-50 shadow-xs'
+                                            : 'border-slate-200 bg-white opacity-75 hover:border-slate-400 hover:opacity-100'
                                     }`}
                                 >
                                     <input
                                         type="checkbox"
                                         checked={isIncluded}
                                         onChange={() => {}} // handled by div click
-                                        className="size-4 shrink-0 accent-[#A88B54]"
+                                        className="size-4 shrink-0 accent-[#16233B]"
                                     />
 
                                     <img
@@ -742,7 +742,7 @@ export default function AdminEventsIndex({
                                             '/images/product_bamboo_box.jpg'
                                         }
                                         alt={product.name}
-                                        className="size-14 shrink-0 rounded-lg border border-[#A88B54]/20 object-cover"
+                                        className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover"
                                         onError={(e) => {
                                             (e.target as HTMLImageElement).src =
                                                 '/images/product_bamboo_box.jpg';
@@ -751,11 +751,11 @@ export default function AdminEventsIndex({
 
                                     <div className="min-w-0 flex-1 text-xs">
                                         <div className="flex items-center gap-1.5">
-                                            <p className="truncate font-serif font-bold text-[#16233B]">
+                                            <p className="truncate font-sans font-bold text-[#16233B]">
                                                 {product.name}
                                             </p>
                                             {isThemeMatch && (
-                                                <span className="py-0.2 shrink-0 rounded bg-[#A88B54]/20 px-1.5 text-[8px] font-bold text-[#A88B54]">
+                                                <span className="py-0.2 shrink-0 rounded bg-slate-200 px-1.5 text-[8px] font-bold text-slate-700">
                                                     Cocok
                                                 </span>
                                             )}

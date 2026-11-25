@@ -184,6 +184,12 @@
         background-color: #ffffff !important;
         color: #16233b !important;
     }
+
+    /* Enforce clean standard admin sans font across all admin layouts and components */
+    .admin-layout,
+    .admin-layout * {
+        font-family: var(--font-sans) !important;
+    }
 }
 
 /* Editorial Luxury Utilities */

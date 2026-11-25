@@ -228,7 +228,7 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                             KOMPRESI WEBP
                         </span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Visual Kriya Hampers Kiri & Kanan
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -363,7 +363,7 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                             KATA-KATA BERGANTI SECARA OTOMATIS (ROTATING WORDS)
                         </span>
                     </div>
-                    <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                    <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                         Teks yang Berubah-ubah di Headline Hero
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
@@ -375,7 +375,7 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                         {rotatingWords.map((word, idx) => (
                             <span
                                 key={idx}
-                                className="inline-flex items-center gap-1.5 rounded-full border border-[#A88B54]/30 bg-[#F2EBDC] px-3 py-1 font-serif text-xs font-bold text-[#16233B]"
+                                className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 font-sans text-xs font-bold text-[#16233B]"
                             >
                                 <span>{word}</span>
                                 <button
@@ -401,12 +401,12 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                                 }
                             }}
                             placeholder="Ketik kata baru..."
-                            className="flex-1 rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-[#16233B] focus:border-[#16233B] focus:outline-hidden"
                         />
                         <button
                             type="button"
                             onClick={handleAddWord}
-                            className="rounded-xl bg-[#16233B] px-4 py-2 text-xs font-bold text-white hover:bg-[#A88B54] hover:text-[#16233B]"
+                            className="rounded-xl bg-[#16233B] px-4 py-2 text-xs font-bold text-white hover:bg-[#223354]"
                         >
                             Tambah Kata
                         </button>
@@ -414,15 +414,15 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                 </div>
 
                 {/* 3. Headline, Subheadline & Marquee Running Text */}
-                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
-                    <div className="border-b border-[#F2EBDC] pb-3">
-                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                            <Type className="size-4" />
+                <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-xs shadow-xs">
+                    <div className="border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-slate-500 uppercase">
+                            <Type className="size-4 text-[#D4AF37]" />
                             <span>
                                 KONTEN HEADLINE & TEKS BERJALAN (MARQUEE)
                             </span>
                         </div>
-                        <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
+                        <h2 className="mt-1 font-sans text-lg font-bold text-[#16233B]">
                             Headline, Subtitle, dan Marquee Text
                         </h2>
                     </div>
