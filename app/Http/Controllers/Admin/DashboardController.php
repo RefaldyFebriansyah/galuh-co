@@ -11,6 +11,7 @@ use App\Models\Review;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WaLead;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,25 +19,122 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     /**
-     * Display the Atelier Operations Overview.
+     * Display the Atelier Operations Overview with revenue chart and date range filtering.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $startOfWeek = Carbon::now()->startOfWeek();
+        $now = Carbon::now();
+        $period = $request->input('period', 'this_month');
 
-        // 1. Real E-Commerce & Atelier Performance Metrics
-        $totalOrdersCount = Order::count();
-        $totalRevenue = (int) Order::sum('total_amount');
+        switch ($period) {
+            case 'today':
+                $startDate = $now->copy()->startOfDay();
+                $endDate = $now->copy()->endOfDay();
+                $periodLabel = 'Hari Ini ('.$now->translatedFormat('d M Y').')';
+                break;
+            case 'this_week':
+                $startDate = $now->copy()->startOfWeek();
+                $endDate = $now->copy()->endOfWeek();
+                $periodLabel = 'Minggu Ini ('.$startDate->translatedFormat('d M').' - '.$endDate->translatedFormat('d M Y').')';
+                break;
+            case 'custom':
+                $startDate = $request->filled('start_date')
+                    ? Carbon::parse($request->input('start_date'))->startOfDay()
+                    : $now->copy()->subDays(30)->startOfDay();
+                $endDate = $request->filled('end_date')
+                    ? Carbon::parse($request->input('end_date'))->endOfDay()
+                    : $now->copy()->endOfDay();
+                $periodLabel = $startDate->translatedFormat('d M Y').' - '.$endDate->translatedFormat('d M Y');
+                break;
+            case 'this_month':
+            default:
+                $period = 'this_month';
+                $startDate = $now->copy()->startOfMonth();
+                $endDate = $now->copy()->endOfMonth();
+                $periodLabel = 'Bulan '.$now->translatedFormat('F Y');
+                break;
+        }
+
+        // 1. Metrics for selected period
+        $periodOrdersQuery = Order::whereBetween('created_at', [$startDate, $endDate]);
+        $periodRevenue = (int) (clone $periodOrdersQuery)->sum('total_amount');
+        $periodOrdersCount = (int) (clone $periodOrdersQuery)->count();
+        $periodAov = $periodOrdersCount > 0 ? (int) round($periodRevenue / $periodOrdersCount) : 0;
+
+        // All-time metrics
+        $allTimeRevenue = (int) Order::sum('total_amount');
+        $allTimeOrders = Order::count();
         $ordersInTrackingCount = Order::whereIn('shipping_status', ['studio_processing', 'quality_check', 'in_delivery'])->count();
         $deliveredOrdersCount = Order::where('shipping_status', 'delivered')->count();
         $registeredCustomersCount = User::where('role', 'user')->count();
         $totalReviewsCount = Review::count();
         $averageRating = (float) round((float) (Review::avg('rating') ?: 5.0), 1);
 
-        $waClicksThisWeek = WaLead::where('created_at', '>=', $startOfWeek)->count();
-        $activeB2bNegotiations = Order::where('order_type', 'corporate')->count() + WaLead::where('status', 'negosiasi_custom')->count();
+        // 2. Generate Chart Data
+        $chartData = [];
+        if ($period === 'today') {
+            $intervals = [
+                ['00:00', '03:59', '00:00 - 03:59'],
+                ['04:00', '07:59', '04:00 - 07:59'],
+                ['08:00', '11:59', '08:00 - 11:59'],
+                ['12:00', '15:59', '12:00 - 15:59'],
+                ['16:00', '19:59', '16:00 - 19:59'],
+                ['20:00', '23:59', '20:00 - 23:59'],
+            ];
+            foreach ($intervals as $interval) {
+                $blockStart = $now->copy()->setTimeFromTimeString($interval[0]);
+                $blockEnd = $now->copy()->setTimeFromTimeString($interval[1]);
+                $blockOrders = Order::whereBetween('created_at', [$blockStart, $blockEnd]);
+                $chartData[] = [
+                    'date' => $interval[0],
+                    'label' => $interval[0],
+                    'full_label' => $interval[2],
+                    'revenue' => (int) (clone $blockOrders)->sum('total_amount'),
+                    'orders' => (int) (clone $blockOrders)->count(),
+                ];
+            }
+        } else {
+            $diffDays = $startDate->diffInDays($endDate);
+            if ($diffDays > 45) {
+                $cursor = $startDate->copy();
+                while ($cursor <= $endDate) {
+                    $weekStart = $cursor->copy()->startOfWeek();
+                    $weekEnd = $cursor->copy()->endOfWeek();
+                    if ($weekEnd > $endDate) {
+                        $weekEnd = $endDate->copy();
+                    }
 
-        // Most popular package (based on actual order items or leads fallback)
+                    $weekOrders = Order::whereBetween('created_at', [$weekStart, $weekEnd]);
+                    $chartData[] = [
+                        'date' => $weekStart->format('Y-m-d'),
+                        'label' => $weekStart->translatedFormat('d M'),
+                        'full_label' => $weekStart->translatedFormat('d M').' - '.$weekEnd->translatedFormat('d M Y'),
+                        'revenue' => (int) (clone $weekOrders)->sum('total_amount'),
+                        'orders' => (int) (clone $weekOrders)->count(),
+                    ];
+                    $cursor->addWeek();
+                }
+            } else {
+                $cursor = $startDate->copy()->startOfDay();
+                $actualEnd = $endDate->copy()->startOfDay();
+                while ($cursor <= $actualEnd) {
+                    $dayStart = $cursor->copy()->startOfDay();
+                    $dayEnd = $cursor->copy()->endOfDay();
+                    $dayOrders = Order::whereBetween('created_at', [$dayStart, $dayEnd]);
+
+                    $chartData[] = [
+                        'date' => $cursor->format('Y-m-d'),
+                        'label' => $cursor->format('d/m'),
+                        'full_label' => $cursor->translatedFormat('l, d F Y'),
+                        'revenue' => (int) (clone $dayOrders)->sum('total_amount'),
+                        'orders' => (int) (clone $dayOrders)->count(),
+                    ];
+                    $cursor->addDay();
+                }
+            }
+        }
+
+        // 3. Most popular package
         $popularOrderItem = OrderItem::selectRaw('product_name, SUM(quantity) as total_qty')
             ->groupBy('product_name')
             ->orderByDesc('total_qty')
@@ -54,74 +152,18 @@ class DashboardController extends Controller
                 : 'Seri Emerald Royal Nusantara';
         }
 
-        // 2. Tracking & Order Pipeline Breakdown
-        $orderPipeline = [
-            'studio_processing' => Order::where('shipping_status', 'studio_processing')->count(),
-            'quality_check' => Order::where('shipping_status', 'quality_check')->count(),
-            'in_delivery' => Order::where('shipping_status', 'in_delivery')->count(),
-            'delivered' => $deliveredOrdersCount,
-        ];
-
-        // 3. Recent Real E-Commerce Orders
+        // 4. Recent Real Orders
         $recentOrders = Order::with('items')
             ->latest()
-            ->take(6)
+            ->take(5)
             ->get();
 
-        // 4. Recent Verified Customer Reviews
+        // 5. Recent Verified Reviews
         $recentReviews = Review::latest()
-            ->take(4)
+            ->take(3)
             ->get();
 
-        // 5. Lead Source Distribution
-        $sourceDistribution = [
-            [
-                'source' => 'Pesanan E-Commerce Langsung',
-                'key' => 'ecommerce_direct',
-                'count' => $totalOrdersCount,
-                'color' => '#16233B',
-            ],
-            [
-                'source' => 'Hero Customizer',
-                'key' => 'hero_customizer',
-                'count' => WaLead::where('source', 'hero_customizer')->count(),
-                'color' => '#A88B54',
-            ],
-            [
-                'source' => 'Katalog Corporate B2B',
-                'key' => 'catalog_corporate',
-                'count' => WaLead::where('source', 'catalog_corporate')->count() + Order::where('order_type', 'corporate')->count(),
-                'color' => '#2B3B5C',
-            ],
-            [
-                'source' => 'Floating WA Button',
-                'key' => 'floating_wa',
-                'count' => WaLead::where('source', 'floating_wa')->count(),
-                'color' => '#8C7240',
-            ],
-            [
-                'source' => 'Edisi Khusus / Festive',
-                'key' => 'festive_banner',
-                'count' => WaLead::where('source', 'festive_banner')->count(),
-                'color' => '#6E675D',
-            ],
-        ];
-
-        // 6. Recent WhatsApp Inquiries Feed
-        $recentWaLeads = WaLead::latest()
-            ->take(6)
-            ->get();
-
-        // 7. Catalog Stats
-        $catalogStats = [
-            'total_hampers' => Product::count(),
-            'active_hampers' => Product::where('is_active', true)->count(),
-            'total_inquiries' => WaLead::count() + Inquiry::count(),
-            'deal_orders_count' => $totalOrdersCount,
-        ];
-
-        $whatsappConcierge = Setting::get('whatsapp_number', '6281572414233');
-
+        // 6. Legacy compatibility for existing tests
         $recentInquiries = Inquiry::latest()->take(5)->get();
         $legacyStats = [
             'productsTotal' => Product::count(),
@@ -129,29 +171,53 @@ class DashboardController extends Controller
             'categoryCounts' => Product::selectRaw('category, count(*) as count')->groupBy('category')->pluck('count', 'category')->toArray(),
             'inquiriesTotal' => Inquiry::count(),
             'inquiriesNew' => Inquiry::where('status', 'new')->count(),
-            'totalOrders' => $totalOrdersCount,
-            'totalRevenue' => $totalRevenue,
+            'totalOrders' => $allTimeOrders,
+            'totalRevenue' => $allTimeRevenue,
         ];
 
+        $whatsappConcierge = Setting::get('whatsapp_number', '6281572414233');
+
         return Inertia::render('admin/dashboard', [
-            'kpis' => [
-                'total_orders' => $totalOrdersCount,
-                'total_revenue' => $totalRevenue,
-                'total_revenue_formatted' => 'Rp '.number_format($totalRevenue, 0, ',', '.'),
+            'filter' => [
+                'period' => $period,
+                'period_label' => $periodLabel,
+                'start_date' => $startDate->format('Y-m-d'),
+                'end_date' => $endDate->format('Y-m-d'),
+            ],
+            'chart_data' => $chartData,
+            'metrics' => [
+                'period_revenue' => $periodRevenue,
+                'period_revenue_formatted' => 'Rp '.number_format($periodRevenue, 0, ',', '.'),
+                'period_orders_count' => $periodOrdersCount,
+                'period_aov_formatted' => 'Rp '.number_format($periodAov, 0, ',', '.'),
+                'all_time_revenue_formatted' => 'Rp '.number_format($allTimeRevenue, 0, ',', '.'),
+                'all_time_orders' => $allTimeOrders,
                 'orders_in_tracking' => $ordersInTrackingCount,
                 'registered_customers' => $registeredCustomersCount,
                 'total_reviews' => $totalReviewsCount,
                 'average_rating' => $averageRating,
-                'wa_clicks_this_week' => $waClicksThisWeek,
-                'active_b2b_negotiations' => $activeB2bNegotiations,
                 'most_popular_package' => $mostPopularPackage,
             ],
-            'order_pipeline' => $orderPipeline,
+            'kpis' => [
+                'total_orders' => $periodOrdersCount,
+                'total_revenue' => $periodRevenue,
+                'total_revenue_formatted' => 'Rp '.number_format($periodRevenue, 0, ',', '.'),
+                'orders_in_tracking' => $ordersInTrackingCount,
+                'registered_customers' => $registeredCustomersCount,
+                'total_reviews' => $totalReviewsCount,
+                'average_rating' => $averageRating,
+                'wa_clicks_this_week' => WaLead::where('created_at', '>=', $now->copy()->startOfWeek())->count(),
+                'active_b2b_negotiations' => Order::where('order_type', 'corporate')->count(),
+                'most_popular_package' => $mostPopularPackage,
+            ],
+            'order_pipeline' => [
+                'studio_processing' => Order::where('shipping_status', 'studio_processing')->count(),
+                'quality_check' => Order::where('shipping_status', 'quality_check')->count(),
+                'in_delivery' => Order::where('shipping_status', 'in_delivery')->count(),
+                'delivered' => $deliveredOrdersCount,
+            ],
             'recent_orders' => $recentOrders,
             'recent_reviews' => $recentReviews,
-            'lead_source_stats' => $sourceDistribution,
-            'recent_wa_leads' => $recentWaLeads,
-            'catalog_stats' => $catalogStats,
             'whatsapp_concierge' => $whatsappConcierge,
             'stats' => $legacyStats,
             'recentInquiries' => $recentInquiries,

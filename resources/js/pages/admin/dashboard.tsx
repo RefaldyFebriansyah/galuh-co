@@ -1,94 +1,258 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import {
     ArrowUpRight,
     Award,
+    Calendar,
     CheckCircle2,
     Clock,
     FileText,
-    MessageSquare,
+    Filter,
     Package,
-    Palette,
-    Settings,
     ShoppingBag,
     Star,
     TrendingUp,
     Truck,
-    Users,
 } from 'lucide-react';
+import { useId, useMemo, useState } from 'react';
 import { AdminLayout } from '@/layouts/admin-layout';
 import type { Order, Review } from '@/types/models';
 
-interface LeadSourceStat {
-    source: string;
-    key: string;
-    count: number;
-    color: string;
+interface ChartDataPoint {
+    date: string;
+    label: string;
+    full_label?: string;
+    revenue: number;
+    orders: number;
+}
+
+interface FilterProps {
+    period: 'today' | 'this_week' | 'this_month' | 'custom' | string;
+    period_label: string;
+    start_date: string;
+    end_date: string;
+}
+
+interface MetricsProps {
+    period_revenue: number;
+    period_revenue_formatted: string;
+    period_orders_count: number;
+    period_aov_formatted: string;
+    all_time_revenue_formatted: string;
+    all_time_orders: number;
+    orders_in_tracking: number;
+    registered_customers: number;
+    total_reviews: number;
+    average_rating: number;
+    most_popular_package: string;
 }
 
 interface DashboardProps {
-    kpis: {
-        total_orders: number;
-        total_revenue: number;
-        total_revenue_formatted: string;
-        orders_in_tracking: number;
-        registered_customers: number;
-        total_reviews: number;
-        average_rating: number;
-        wa_clicks_this_week: number;
-        active_b2b_negotiations: number;
-        most_popular_package: string;
-    };
-    order_pipeline: {
-        studio_processing: number;
-        quality_check: number;
-        in_delivery: number;
-        delivered: number;
-    };
-    recent_orders: Order[];
-    recent_reviews: Review[];
-    lead_source_stats: LeadSourceStat[];
-    whatsapp_concierge: string;
+    filter: FilterProps;
+    chart_data?: ChartDataPoint[];
+    metrics: MetricsProps;
+    recent_orders?: Order[];
+    recent_reviews?: Review[];
+    whatsapp_concierge?: string;
 }
 
 export default function AdminDashboard({
-    kpis,
-    order_pipeline,
-    recent_orders,
-    recent_reviews,
-    lead_source_stats,
-    whatsapp_concierge,
+    filter,
+    chart_data = [],
+    metrics,
+    recent_orders = [],
+    recent_reviews = [],
 }: DashboardProps) {
-    const totalLeadSourcesCount = lead_source_stats.reduce(
-        (acc, curr) => acc + curr.count,
-        0,
+    const [chartMetric, setChartMetric] = useState<'revenue' | 'orders'>(
+        'revenue',
     );
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [customStart, setCustomStart] = useState<string>(filter.start_date);
+    const [customEnd, setCustomEnd] = useState<string>(filter.end_date);
+    const [isCustomMode, setIsCustomMode] = useState<boolean>(
+        filter.period === 'custom',
+    );
+
+    const gradientId = useId();
+
+    const handlePeriodChange = (
+        periodKey: string,
+        start?: string,
+        end?: string,
+    ) => {
+        if (periodKey === 'custom') {
+            setIsCustomMode(true);
+            return;
+        }
+
+        setIsCustomMode(false);
+        router.get(
+            '/admin/dashboard',
+            { period: periodKey },
+            { preserveState: true, preserveScroll: true, replace: true },
+        );
+    };
+
+    const handleApplyCustomDate = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get(
+            '/admin/dashboard',
+            {
+                period: 'custom',
+                start_date: customStart,
+                end_date: customEnd,
+            },
+            { preserveState: true, preserveScroll: true, replace: true },
+        );
+    };
+
+    // Chart dimensions and calculations
+    const svgWidth = 860;
+    const svgHeight = 240;
+    const paddingLeft = 70;
+    const paddingRight = 30;
+    const paddingTop = 25;
+    const paddingBottom = 40;
+    const plotWidth = svgWidth - paddingLeft - paddingRight;
+    const plotHeight = svgHeight - paddingTop - paddingBottom;
+
+    const { maxValue, points, yTicks } = useMemo(() => {
+        const values = chart_data.map((d) =>
+            chartMetric === 'revenue' ? d.revenue : d.orders,
+        );
+        const rawMax = Math.max(...values, 0);
+        let max = rawMax > 0 ? rawMax : chartMetric === 'revenue' ? 1000000 : 5;
+
+        // Round max up to nice round number for clean ticks
+        if (chartMetric === 'revenue') {
+            const step = Math.pow(10, Math.floor(Math.log10(max)));
+            max = Math.ceil(max / step) * step;
+            if (max === rawMax) {
+                max = rawMax * 1.15;
+            }
+        } else {
+            max = Math.ceil(max * 1.25);
+            if (max < 4) {
+                max = 4;
+            }
+        }
+
+        const count = chart_data.length;
+        const pts = chart_data.map((d, i) => {
+            const val = chartMetric === 'revenue' ? d.revenue : d.orders;
+            const x =
+                count <= 1
+                    ? paddingLeft + plotWidth / 2
+                    : paddingLeft + (i / (count - 1)) * plotWidth;
+            const y = paddingTop + plotHeight - (val / max) * plotHeight;
+            return { x, y, val, data: d };
+        });
+
+        // 4 Y axis ticks: 100%, 66%, 33%, 0%
+        const ticks = [
+            {
+                y: paddingTop,
+                label:
+                    chartMetric === 'revenue'
+                        ? max >= 1000000
+                            ? `${(max / 1000000).toFixed(1)} jt`
+                            : `${Math.round(max / 1000)} rb`
+                        : `${Math.round(max)}`,
+            },
+            {
+                y: paddingTop + plotHeight * 0.33,
+                label:
+                    chartMetric === 'revenue'
+                        ? max * 0.66 >= 1000000
+                            ? `${((max * 0.66) / 1000000).toFixed(1)} jt`
+                            : `${Math.round((max * 0.66) / 1000)} rb`
+                        : `${Math.round(max * 0.66)}`,
+            },
+            {
+                y: paddingTop + plotHeight * 0.66,
+                label:
+                    chartMetric === 'revenue'
+                        ? max * 0.33 >= 1000000
+                            ? `${((max * 0.33) / 1000000).toFixed(1)} jt`
+                            : `${Math.round((max * 0.33) / 1000)} rb`
+                        : `${Math.round(max * 0.33)}`,
+            },
+            {
+                y: paddingTop + plotHeight,
+                label: '0',
+            },
+        ];
+
+        return { maxValue: max, points: pts, yTicks: ticks };
+    }, [
+        chart_data,
+        chartMetric,
+        paddingLeft,
+        paddingTop,
+        plotHeight,
+        plotWidth,
+    ]);
+
+    // Build SVG path strings
+    const pathString = useMemo(() => {
+        if (points.length === 0) {
+            return '';
+        }
+        if (points.length === 1) {
+            return `M ${points[0].x - 30} ${points[0].y} L ${points[0].x + 30} ${points[0].y}`;
+        }
+        return points.reduce((acc, pt, idx) => {
+            return idx === 0 ? `M ${pt.x} ${pt.y}` : `${acc} L ${pt.x} ${pt.y}`;
+        }, '');
+    }, [points]);
+
+    const areaString = useMemo(() => {
+        if (points.length === 0) {
+            return '';
+        }
+        const bottomY = paddingTop + plotHeight;
+        if (points.length === 1) {
+            return `M ${points[0].x - 30} ${bottomY} L ${points[0].x - 30} ${points[0].y} L ${points[0].x + 30} ${points[0].y} L ${points[0].x + 30} ${bottomY} Z`;
+        }
+        const first = points[0];
+        const last = points[points.length - 1];
+        return `${pathString} L ${last.x} ${bottomY} L ${first.x} ${bottomY} Z`;
+    }, [points, pathString, paddingTop, plotHeight]);
+
+    // Format currency helper
+    const formatRp = (amount: number) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+        }).format(amount);
+    };
 
     const getStageBadge = (stage: string) => {
         switch (stage) {
             case 'studio_processing':
                 return {
                     label: 'Kurasi Studio',
-                    bg: 'bg-amber-50 text-amber-800 border-amber-200',
+                    bg: 'bg-amber-50 text-amber-900 border-amber-300',
                 };
             case 'quality_check':
                 return {
                     label: 'QC & Segel Wax',
-                    bg: 'bg-purple-50 text-purple-800 border-purple-200',
+                    bg: 'bg-purple-50 text-purple-900 border-purple-300',
                 };
             case 'in_delivery':
                 return {
                     label: 'Dalam Kurir',
-                    bg: 'bg-sky-50 text-sky-800 border-sky-200',
+                    bg: 'bg-sky-50 text-sky-900 border-sky-300',
                 };
             case 'delivered':
                 return {
                     label: 'Telah Diterima',
-                    bg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                    bg: 'bg-emerald-50 text-emerald-900 border-emerald-300',
                 };
             default:
                 return {
                     label: 'Diproses',
-                    bg: 'bg-slate-50 text-slate-700 border-slate-200',
+                    bg: 'bg-slate-50 text-slate-800 border-slate-300',
                 };
         }
     };
@@ -96,316 +260,614 @@ export default function AdminDashboard({
     return (
         <AdminLayout
             title="Dashboard Operasional"
-            subtitle="Ringkasan performa penjualan hampers, alur tracking pesanan, dan kepuasan pelanggan"
+            subtitle="Ringkasan performa omset, tren grafik transaksi, dan pesanan hampers atelier"
             headerAction={
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                     <Link
                         href="/admin/orders"
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#A88B54]/40 bg-white px-3.5 py-1.5 text-xs font-bold text-[#16233B] shadow-2xs transition-colors hover:border-[#16233B]"
+                        className="inline-flex items-center gap-2 rounded-xl border border-[#A88B54]/40 bg-white px-3.5 py-2 text-xs font-semibold text-[#16233B] shadow-xs transition-all hover:bg-[#F2EBDC]"
                     >
-                        <FileText className="size-3.5 text-[#A88B54]" />
+                        <ShoppingBag className="h-3.5 w-3.5 text-[#A88B54]" />
                         <span>Kelola Pesanan</span>
                     </Link>
-                    <Link
-                        href="/admin/tracking"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-[#16233B] px-3.5 py-1.5 text-xs font-bold tracking-wider text-white uppercase shadow-xs transition-colors hover:bg-[#A88B54] hover:text-[#16233B]"
+                    <a
+                        href="/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-[#16233B] px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition-all hover:bg-[#A88B54] hover:text-[#16233B]"
                     >
-                        <Truck className="size-3.5 text-[#A88B54]" />
-                        <span>Update Resi &amp; Tracking</span>
-                    </Link>
+                        <span>Lihat Website</span>
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
                 </div>
             }
         >
-            <Head title="Dashboard — Admin Galuh & Co." />
+            <Head title="Dashboard Operasional - Admin Galuh & Co." />
 
             <div className="space-y-6">
-                {/* 1. Real Performance KPI Cards */}
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-                    {/* Card 1: Total Orders */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-5 shadow-[0_4px_16px_-6px_rgba(22,35,59,0.05)] transition-all duration-300 hover:border-[#A88B54]/50 hover:shadow-[0_8px_24px_-8px_rgba(22,35,59,0.1)]">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold tracking-[0.18em] text-[#6E675D] uppercase">
-                                Total Pesanan Masuk
+                {/* 1. Bar Pengaturan Periode & Rentang Tanggal Omset */}
+                <div className="rounded-2xl border border-[#A88B54]/25 bg-white p-4 shadow-xs">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <span className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
+                                <Calendar className="h-3.5 w-3.5" />
+                                Periode Omset:
                             </span>
-                            <div className="flex size-9 items-center justify-center rounded-xl border border-[#16233B]/20 bg-[#16233B]/10 text-[#16233B]">
-                                <ShoppingBag className="size-4.5" />
-                            </div>
-                        </div>
-                        <div className="mt-3 flex items-baseline gap-2">
-                            <span className="font-serif text-3xl font-bold tracking-tight text-[#16233B]">
-                                {kpis.total_orders}
-                            </span>
-                            <span className="text-xs font-medium text-[#6E675D]">
-                                Pesanan Aktif
-                            </span>
-                        </div>
-                        <div className="mt-1 flex items-center gap-2 text-xs text-[#6E675D]">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10.5px] font-semibold text-amber-800">
-                                <Clock className="size-3" />
-                                {kpis.orders_in_tracking} Sedang Diproses
-                            </span>
-                        </div>
-                    </div>
 
-                    {/* Card 2: Total Revenue */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-5 shadow-[0_4px_16px_-6px_rgba(22,35,59,0.05)] transition-all duration-300 hover:border-[#A88B54]/50 hover:shadow-[0_8px_24px_-8px_rgba(22,35,59,0.1)]">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold tracking-[0.18em] text-[#6E675D] uppercase">
-                                Total Omset Penjualan
-                            </span>
-                            <div className="flex size-9 items-center justify-center rounded-xl border border-emerald-300/60 bg-emerald-50 text-emerald-700">
-                                <TrendingUp className="size-4.5" />
+                            <div className="flex flex-wrap items-center gap-1.5">
+                                <button
+                                    type="button"
+                                    onClick={() => handlePeriodChange('today')}
+                                    className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                        filter.period === 'today' &&
+                                        !isCustomMode
+                                            ? 'bg-[#16233B] text-white shadow-xs'
+                                            : 'bg-[#F2EBDC]/60 text-[#16233B] hover:bg-[#F2EBDC]'
+                                    }`}
+                                >
+                                    Hari Ini
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handlePeriodChange('this_week')
+                                    }
+                                    className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                        filter.period === 'this_week' &&
+                                        !isCustomMode
+                                            ? 'bg-[#16233B] text-white shadow-xs'
+                                            : 'bg-[#F2EBDC]/60 text-[#16233B] hover:bg-[#F2EBDC]'
+                                    }`}
+                                >
+                                    Minggu Ini
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handlePeriodChange('this_month')
+                                    }
+                                    className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                        filter.period === 'this_month' &&
+                                        !isCustomMode
+                                            ? 'bg-[#16233B] text-white shadow-xs'
+                                            : 'bg-[#F2EBDC]/60 text-[#16233B] hover:bg-[#F2EBDC]'
+                                    }`}
+                                >
+                                    Bulan Ini
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsCustomMode(true)}
+                                    className={`inline-flex items-center gap-1 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                                        filter.period === 'custom' ||
+                                        isCustomMode
+                                            ? 'bg-[#A88B54] text-[#16233B] shadow-xs'
+                                            : 'bg-[#F2EBDC]/60 text-[#16233B] hover:bg-[#F2EBDC]'
+                                    }`}
+                                >
+                                    <Filter className="h-3 w-3" />
+                                    <span>Pilih Rentang Tanggal</span>
+                                </button>
                             </div>
-                        </div>
-                        <div className="mt-3">
-                            <span className="font-serif text-2xl font-bold tracking-tight text-[#16233B]">
-                                {kpis.total_revenue_formatted}
-                            </span>
-                        </div>
-                        <p className="mt-1 text-xs text-[#6E675D]">
-                            Akumulasi pesanan personal &amp; B2B
-                        </p>
-                    </div>
-
-                    {/* Card 3: Most Popular Package */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-5 shadow-[0_4px_16px_-6px_rgba(22,35,59,0.05)] transition-all duration-300 hover:border-[#A88B54]/50 hover:shadow-[0_8px_24px_-8px_rgba(22,35,59,0.1)]">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold tracking-[0.18em] text-[#6E675D] uppercase">
-                                Paket Paling Diminati
-                            </span>
-                            <div className="flex size-9 items-center justify-center rounded-xl border border-[#A88B54]/30 bg-[#A88B54]/10 text-[#A88B54]">
-                                <Award className="size-4.5" />
-                            </div>
-                        </div>
-                        <div className="mt-3">
-                            <h4 className="line-clamp-1 font-serif text-lg font-bold text-[#16233B]">
-                                {kpis.most_popular_package}
-                            </h4>
-                            <p className="mt-1 text-xs text-[#6E675D]">
-                                Paling banyak dipesan &amp; diminati
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Card 4: Customer Satisfaction & Rating */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-5 shadow-[0_4px_16px_-6px_rgba(22,35,59,0.05)] transition-all duration-300 hover:border-[#A88B54]/50 hover:shadow-[0_8px_24px_-8px_rgba(22,35,59,0.1)]">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold tracking-[0.18em] text-[#6E675D] uppercase">
-                                Kepuasan &amp; Ulasan
-                            </span>
-                            <div className="flex size-9 items-center justify-center rounded-xl border border-[#A88B54]/30 bg-[#A88B54]/10 text-[#A88B54]">
-                                <Star className="size-4.5 fill-[#A88B54]" />
-                            </div>
-                        </div>
-                        <div className="mt-3 flex items-baseline gap-2">
-                            <span className="font-serif text-3xl font-bold tracking-tight text-[#16233B]">
-                                {kpis.average_rating}
-                            </span>
-                            <span className="text-xs font-semibold text-[#A88B54]">
-                                / 5.0 Bintang
-                            </span>
-                        </div>
-                        <div className="mt-1 flex items-center justify-between text-xs text-[#6E675D]">
-                            <span>{kpis.total_reviews} Ulasan Masuk</span>
-                            <span className="font-semibold text-[#16233B]">
-                                {kpis.registered_customers} Pelanggan
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 2. Visual Tracking Pipeline Progress */}
-                <div className="rounded-2xl border border-[#DFD7C5] bg-white p-6 shadow-xs">
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#DFD7C5]/60 pb-4">
-                        <div>
-                            <div className="flex items-center gap-2">
-                                <span className="size-2 animate-pulse rounded-full bg-emerald-500" />
-                                <h3 className="font-serif text-base font-bold text-[#16233B]">
-                                    Alur Pengerjaan &amp; Pengiriman (Tracking
-                                    Pipeline)
-                                </h3>
-                            </div>
-                            <p className="mt-0.5 text-xs text-[#6E675D]">
-                                Pantau pergerakan fisik setiap hampers dari meja
-                                kurasi atelier hingga sampai di tangan penerima
-                            </p>
-                        </div>
-                        <Link
-                            href="/admin/tracking"
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A88B54] hover:text-[#16233B]"
-                        >
-                            <span>Buka Papan Pelacakan Resi</span>
-                            <ArrowUpRight className="size-4" />
-                        </Link>
-                    </div>
-
-                    <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {/* Step 1 */}
-                        <div className="relative rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-4 transition-all hover:border-[#A88B54]">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
-                                    Tahap 01
-                                </span>
-                                <span className="rounded-full bg-amber-100 px-2 py-0.5 font-mono text-xs font-bold text-amber-900">
-                                    {order_pipeline.studio_processing} Paket
-                                </span>
-                            </div>
-                            <h4 className="mt-2 text-xs font-bold text-[#16233B]">
-                                Kurasi &amp; Penataan Studio
-                            </h4>
-                            <p className="mt-1 text-[11px] text-[#6E675D]">
-                                Pemilihan anyaman &amp; isian artisanal
-                            </p>
                         </div>
 
-                        {/* Step 2 */}
-                        <div className="relative rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-4 transition-all hover:border-[#A88B54]">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
-                                    Tahap 02
-                                </span>
-                                <span className="rounded-full bg-purple-100 px-2 py-0.5 font-mono text-xs font-bold text-purple-900">
-                                    {order_pipeline.quality_check} Paket
-                                </span>
-                            </div>
-                            <h4 className="mt-2 text-xs font-bold text-[#16233B]">
-                                QC &amp; Segel Lilin Wax
-                            </h4>
-                            <p className="mt-1 text-[11px] text-[#6E675D]">
-                                Kartu ucapan, grafir &amp; stempel emas
-                            </p>
-                        </div>
+                        {/* Form Input Rentang Tanggal (Bisa dari tanggal berapa ke berapa) */}
+                        {isCustomMode && (
+                            <form
+                                onSubmit={handleApplyCustomDate}
+                                className="flex flex-wrap items-center gap-2 pt-2 lg:pt-0"
+                            >
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-xs font-semibold text-[#6E675D]">
+                                        Dari:
+                                    </span>
+                                    <input
+                                        type="date"
+                                        value={customStart}
+                                        onChange={(e) =>
+                                            setCustomStart(e.target.value)
+                                        }
+                                        style={{ colorScheme: 'light' }}
+                                        required
+                                        className="rounded-xl border border-[#A88B54]/40 bg-white px-2.5 py-1 text-xs font-semibold text-[#16233B] shadow-2xs focus:border-[#A88B54] focus:outline-hidden"
+                                    />
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-xs font-semibold text-[#6E675D]">
+                                        Sampai:
+                                    </span>
+                                    <input
+                                        type="date"
+                                        value={customEnd}
+                                        onChange={(e) =>
+                                            setCustomEnd(e.target.value)
+                                        }
+                                        style={{ colorScheme: 'light' }}
+                                        required
+                                        className="rounded-xl border border-[#A88B54]/40 bg-white px-2.5 py-1 text-xs font-semibold text-[#16233B] shadow-2xs focus:border-[#A88B54] focus:outline-hidden"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="rounded-xl bg-[#16233B] px-3.5 py-1 text-xs font-bold text-white shadow-2xs transition-all hover:bg-[#A88B54] hover:text-[#16233B]"
+                                >
+                                    Terapkan
+                                </button>
+                            </form>
+                        )}
 
-                        {/* Step 3 */}
-                        <div className="relative rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-4 transition-all hover:border-[#A88B54]">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
-                                    Tahap 03
-                                </span>
-                                <span className="rounded-full bg-sky-100 px-2 py-0.5 font-mono text-xs font-bold text-sky-900">
-                                    {order_pipeline.in_delivery} Paket
-                                </span>
-                            </div>
-                            <h4 className="mt-2 text-xs font-bold text-[#16233B]">
-                                Dalam Pengiriman Kurir
-                            </h4>
-                            <p className="mt-1 text-[11px] text-[#6E675D]">
-                                Armada khusus berpenyejuk kabin
-                            </p>
-                        </div>
-
-                        {/* Step 4 */}
-                        <div className="relative rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-4 transition-all hover:border-[#A88B54]">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
-                                    Tahap 04
-                                </span>
-                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-mono text-xs font-bold text-emerald-900">
-                                    {order_pipeline.delivered} Paket
-                                </span>
-                            </div>
-                            <h4 className="mt-2 text-xs font-bold text-[#16233B]">
-                                Telah Diterima Konsumen
-                            </h4>
-                            <p className="mt-1 text-[11px] text-[#6E675D]">
-                                Tiba dengan aman &amp; sempurna
-                            </p>
+                        <div className="text-right text-xs text-[#6E675D]">
+                            Rentang Aktif:{' '}
+                            <span className="font-bold text-[#16233B]">
+                                {filter.period_label}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {/* 3. Live Feeds: Recent Orders & Recent Customer Reviews */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    {/* Left: Recent Real Orders (2 Columns) */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-6 shadow-xs lg:col-span-2">
-                        <div className="flex items-center justify-between border-b border-[#DFD7C5]/60 pb-4">
+                {/* 2. Hanya 3 Kartu Metrik Utama (Ringkas, Padat, Tidak Berantakan) */}
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    {/* Kartu 1: Omset Penjualan */}
+                    <div className="relative overflow-hidden rounded-2xl border border-[#A88B54]/30 bg-white p-5 shadow-sm transition-all hover:border-[#A88B54]/60">
+                        <div className="flex items-start justify-between gap-4">
                             <div>
+                                <span className="text-[11px] font-bold tracking-wider text-[#A88B54] uppercase">
+                                    Omset Penjualan Terpilih
+                                </span>
+                                <div className="mt-1 font-serif text-2xl font-bold tracking-tight text-[#16233B] sm:text-3xl">
+                                    {metrics.period_revenue_formatted}
+                                </div>
+                                <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-[#6E675D]">
+                                    <span>
+                                        Rata-rata order:{' '}
+                                        <b className="text-[#16233B]">
+                                            {metrics.period_aov_formatted}
+                                        </b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F2EBDC] text-[#A88B54]">
+                                <TrendingUp className="h-5 w-5" />
+                            </div>
+                        </div>
+                        <div className="mt-4 border-t border-[#F2EBDC] pt-2 text-[11px] text-[#6E675D]">
+                            Total Omset Keseluruhan:{' '}
+                            <span className="font-bold text-[#16233B]">
+                                {metrics.all_time_revenue_formatted}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Kartu 2: Total Pesanan Masuk */}
+                    <div className="relative overflow-hidden rounded-2xl border border-[#A88B54]/30 bg-white p-5 shadow-sm transition-all hover:border-[#A88B54]/60">
+                        <div className="flex items-start justify-between gap-4">
+                            <div>
+                                <span className="text-[11px] font-bold tracking-wider text-[#16233B]/70 uppercase">
+                                    Total Pesanan Masuk
+                                </span>
+                                <div className="mt-1 font-serif text-2xl font-bold tracking-tight text-[#16233B] sm:text-3xl">
+                                    {metrics.period_orders_count}{' '}
+                                    <span className="font-sans text-sm font-semibold text-[#6E675D]">
+                                        Pesanan
+                                    </span>
+                                </div>
+                                <div className="mt-1.5 flex items-center gap-2 text-xs text-[#6E675D]">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-bold text-amber-800">
+                                        <Clock className="h-3 w-3" />
+                                        {metrics.orders_in_tracking} dalam
+                                        proses kirim
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#16233B] text-[#F2EBDC]">
+                                <ShoppingBag className="h-5 w-5" />
+                            </div>
+                        </div>
+                        <div className="mt-4 border-t border-[#F2EBDC] pt-2 text-[11px] text-[#6E675D]">
+                            Paket Paling Laris:{' '}
+                            <span className="font-bold text-[#16233B]">
+                                {metrics.most_popular_package}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Kartu 3: Kepuasan & Ulasan Pelanggan */}
+                    <div className="relative overflow-hidden rounded-2xl border border-[#A88B54]/30 bg-white p-5 shadow-sm transition-all hover:border-[#A88B54]/60">
+                        <div className="flex items-start justify-between gap-4">
+                            <div>
+                                <span className="text-[11px] font-bold tracking-wider text-[#16233B]/70 uppercase">
+                                    Rating &amp; Kepuasan
+                                </span>
+                                <div className="mt-1 flex items-baseline gap-2 font-serif text-2xl font-bold tracking-tight text-[#16233B] sm:text-3xl">
+                                    <span>
+                                        {metrics.average_rating.toFixed(1)}
+                                    </span>
+                                    <span className="font-sans text-sm font-semibold text-[#6E675D]">
+                                        / 5.0
+                                    </span>
+                                </div>
+                                <div className="mt-1.5 flex items-center gap-1 text-amber-500">
+                                    {[1, 2, 3, 4, 5].map((s) => (
+                                        <Star
+                                            key={s}
+                                            className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                                        />
+                                    ))}
+                                    <span className="ml-1 text-xs font-semibold text-[#6E675D]">
+                                        ({metrics.total_reviews} ulasan)
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#A88B54] text-white">
+                                <Award className="h-5 w-5" />
+                            </div>
+                        </div>
+                        <div className="mt-4 border-t border-[#F2EBDC] pt-2 text-[11px] text-[#6E675D]">
+                            Pelanggan Terdaftar:{' '}
+                            <span className="font-bold text-[#16233B]">
+                                {metrics.registered_customers} Akun
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Section Grafik Interaktif Omset & Pesanan */}
+                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-5 shadow-sm sm:p-6">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 className="font-serif text-lg font-bold text-[#16233B] sm:text-xl">
+                                Grafik Tren{' '}
+                                {chartMetric === 'revenue'
+                                    ? 'Omset Penjualan'
+                                    : 'Volume Pesanan'}
+                            </h2>
+                            <p className="text-xs text-[#6E675D]">
+                                Pergerakan transaksi atelier untuk periode{' '}
+                                <b className="text-[#16233B]">
+                                    {filter.period_label}
+                                </b>
+                            </p>
+                        </div>
+
+                        {/* Switch Metric: Omset (Rp) vs Pesanan */}
+                        <div className="flex items-center gap-1 rounded-xl bg-[#F2EBDC]/80 p-1">
+                            <button
+                                type="button"
+                                onClick={() => setChartMetric('revenue')}
+                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                                    chartMetric === 'revenue'
+                                        ? 'bg-[#16233B] text-white shadow-xs'
+                                        : 'text-[#16233B] hover:bg-white/60'
+                                }`}
+                            >
+                                Omset (Rp)
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setChartMetric('orders')}
+                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                                    chartMetric === 'orders'
+                                        ? 'bg-[#16233B] text-white shadow-xs'
+                                        : 'text-[#16233B] hover:bg-white/60'
+                                }`}
+                            >
+                                Jumlah Pesanan
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* SVG Graphic Area */}
+                    <div className="relative mt-6 w-full">
+                        {chart_data.length === 0 ? (
+                            <div className="flex h-56 flex-col items-center justify-center rounded-xl bg-[#F2EBDC]/30 text-center text-xs text-[#6E675D]">
+                                <Calendar className="mb-2 h-7 w-7 text-[#A88B54]" />
+                                <p className="font-semibold text-[#16233B]">
+                                    Belum ada transaksi di rentang tanggal ini
+                                </p>
+                                <p className="mt-1 text-[#6E675D]">
+                                    Silakan pilih rentang tanggal lain pada
+                                    filter di atas
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="w-full overflow-x-auto pb-2">
+                                <div className="relative min-w-[700px]">
+                                    <svg
+                                        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+                                        className="h-64 w-full overflow-visible"
+                                    >
+                                        <defs>
+                                            <linearGradient
+                                                id={gradientId}
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
+                                            >
+                                                <stop
+                                                    offset="0%"
+                                                    stopColor={
+                                                        chartMetric ===
+                                                        'revenue'
+                                                            ? '#A88B54'
+                                                            : '#16233B'
+                                                    }
+                                                    stopOpacity="0.35"
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor={
+                                                        chartMetric ===
+                                                        'revenue'
+                                                            ? '#A88B54'
+                                                            : '#16233B'
+                                                    }
+                                                    stopOpacity="0.0"
+                                                />
+                                            </linearGradient>
+                                        </defs>
+
+                                        {/* Y-Axis Horizontal Grid Lines */}
+                                        {yTicks.map((t, idx) => (
+                                            <g key={idx}>
+                                                <line
+                                                    x1={paddingLeft}
+                                                    y1={t.y}
+                                                    x2={svgWidth - paddingRight}
+                                                    y2={t.y}
+                                                    stroke="#DCD3C1"
+                                                    strokeWidth="1"
+                                                    strokeDasharray="4 4"
+                                                />
+                                                <text
+                                                    x={paddingLeft - 10}
+                                                    y={t.y + 4}
+                                                    textAnchor="end"
+                                                    className="fill-[#6E675D] font-mono text-[10px]"
+                                                >
+                                                    {t.label}
+                                                </text>
+                                            </g>
+                                        ))}
+
+                                        {/* Area Fill */}
+                                        {areaString && (
+                                            <path
+                                                d={areaString}
+                                                fill={`url(#${gradientId})`}
+                                            />
+                                        )}
+
+                                        {/* Main Curve Line */}
+                                        {pathString && (
+                                            <path
+                                                d={pathString}
+                                                fill="none"
+                                                stroke={
+                                                    chartMetric === 'revenue'
+                                                        ? '#A88B54'
+                                                        : '#16233B'
+                                                }
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        )}
+
+                                        {/* Hover Guide Line */}
+                                        {hoveredIndex !== null &&
+                                            points[hoveredIndex] && (
+                                                <line
+                                                    x1={points[hoveredIndex].x}
+                                                    y1={paddingTop}
+                                                    x2={points[hoveredIndex].x}
+                                                    y2={paddingTop + plotHeight}
+                                                    stroke="#A88B54"
+                                                    strokeWidth="1.5"
+                                                    strokeDasharray="3 3"
+                                                />
+                                            )}
+
+                                        {/* Data Dots */}
+                                        {points.map((pt, idx) => {
+                                            const isHovered =
+                                                hoveredIndex === idx;
+                                            return (
+                                                <g key={idx}>
+                                                    <circle
+                                                        cx={pt.x}
+                                                        cy={pt.y}
+                                                        r={
+                                                            isHovered
+                                                                ? 5.5
+                                                                : 3.5
+                                                        }
+                                                        fill="#ffffff"
+                                                        stroke={
+                                                            chartMetric ===
+                                                            'revenue'
+                                                                ? '#A88B54'
+                                                                : '#16233B'
+                                                        }
+                                                        strokeWidth={
+                                                            isHovered ? 2.5 : 2
+                                                        }
+                                                    />
+                                                </g>
+                                            );
+                                        })}
+
+                                        {/* X-Axis Labels (Smart Skip for wide data) */}
+                                        {points.map((pt, idx) => {
+                                            const count = points.length;
+                                            const step =
+                                                count > 25
+                                                    ? 4
+                                                    : count > 14
+                                                      ? 2
+                                                      : 1;
+                                            if (
+                                                idx % step !== 0 &&
+                                                idx !== count - 1
+                                            ) {
+                                                return null;
+                                            }
+                                            return (
+                                                <text
+                                                    key={idx}
+                                                    x={pt.x}
+                                                    y={svgHeight - 14}
+                                                    textAnchor="middle"
+                                                    className="fill-[#6E675D] font-mono text-[10px]"
+                                                >
+                                                    {pt.data.label}
+                                                </text>
+                                            );
+                                        })}
+
+                                        {/* Invisible Mouse Target Columns for smooth hovering */}
+                                        {points.map((pt, idx) => {
+                                            const stepWidth =
+                                                plotWidth /
+                                                Math.max(points.length, 1);
+                                            return (
+                                                <rect
+                                                    key={idx}
+                                                    x={pt.x - stepWidth / 2}
+                                                    y={paddingTop}
+                                                    width={stepWidth}
+                                                    height={plotHeight}
+                                                    fill="transparent"
+                                                    className="cursor-pointer"
+                                                    onMouseEnter={() =>
+                                                        setHoveredIndex(idx)
+                                                    }
+                                                    onMouseLeave={() =>
+                                                        setHoveredIndex(null)
+                                                    }
+                                                />
+                                            );
+                                        })}
+                                    </svg>
+
+                                    {/* Tooltip Overlay */}
+                                    {hoveredIndex !== null &&
+                                        points[hoveredIndex] && (
+                                            <div
+                                                className="pointer-events-none absolute z-20 rounded-xl border border-[#A88B54]/40 bg-[#16233B] p-2.5 text-xs text-white shadow-xl transition-all"
+                                                style={{
+                                                    left: `${(points[hoveredIndex].x / svgWidth) * 100}%`,
+                                                    top: `${Math.max((points[hoveredIndex].y / svgHeight) * 100 - 35, 5)}%`,
+                                                    transform:
+                                                        'translateX(-50%)',
+                                                }}
+                                            >
+                                                <div className="font-bold text-[#A88B54]">
+                                                    {points[hoveredIndex].data
+                                                        .full_label ||
+                                                        points[hoveredIndex]
+                                                            .data.label}
+                                                </div>
+                                                <div className="mt-1 flex items-center justify-between gap-4 font-mono text-[11px]">
+                                                    <span className="text-[#F2EBDC]/80">
+                                                        Omset:
+                                                    </span>
+                                                    <span className="font-bold text-white">
+                                                        {formatRp(
+                                                            points[hoveredIndex]
+                                                                .data.revenue,
+                                                        )}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between gap-4 font-mono text-[11px]">
+                                                    <span className="text-[#F2EBDC]/80">
+                                                        Pesanan:
+                                                    </span>
+                                                    <span className="font-bold text-white">
+                                                        {
+                                                            points[hoveredIndex]
+                                                                .data.orders
+                                                        }{' '}
+                                                        transaksi
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* 4. Dua Kolom Ringkas: Pesanan Terbaru & Ulasan Pembeli (Tanpa Kelebihan Card) */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                    {/* Kolom Kiri: Pesanan E-Commerce Terbaru (7 Kolom) */}
+                    <div className="rounded-2xl border border-[#A88B54]/25 bg-white p-5 shadow-sm lg:col-span-7">
+                        <div className="flex items-center justify-between border-b border-[#F2EBDC] pb-3">
+                            <div className="flex items-center gap-2">
+                                <ShoppingBag className="h-4 w-4 text-[#A88B54]" />
                                 <h3 className="font-serif text-base font-bold text-[#16233B]">
                                     Pesanan E-Commerce Terbaru
                                 </h3>
-                                <p className="text-xs text-[#6E675D]">
-                                    Daftar pesanan langsung yang baru masuk dari
-                                    keranjang website
-                                </p>
                             </div>
                             <Link
                                 href="/admin/orders"
-                                className="text-xs font-bold text-[#A88B54] transition-colors hover:text-[#16233B]"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-[#A88B54] hover:underline"
                             >
-                                Kelola Semua Pesanan →
+                                <span>Lihat Semua</span>
+                                <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
                         </div>
 
-                        <div className="mt-4 divide-y divide-[#DFD7C5]/40">
+                        <div className="mt-3 divide-y divide-[#F2EBDC]">
                             {recent_orders.length === 0 ? (
-                                <div className="py-12 text-center text-xs text-[#6E675D]">
-                                    <ShoppingBag className="mx-auto mb-2 size-8 text-[#A88B54]/40" />
-                                    Belum ada pesanan masuk. Pesanan pelanggan
-                                    dari website akan otomatis tampil di sini.
+                                <div className="py-8 text-center text-xs text-[#6E675D]">
+                                    Belum ada transaksi pesanan e-commerce
+                                    masuk.
                                 </div>
                             ) : (
                                 recent_orders.map((order) => {
-                                    const stageBadge = getStageBadge(
+                                    const badge = getStageBadge(
                                         order.shipping_status,
                                     );
-                                    const firstItem = order.items?.[0];
-                                    const otherItemsCount =
-                                        (order.items?.length || 1) - 1;
-
                                     return (
                                         <div
                                             key={order.id}
-                                            className="flex flex-col justify-between gap-3 py-3.5 sm:flex-row sm:items-center"
+                                            className="flex flex-col justify-between gap-2 py-3 sm:flex-row sm:items-center"
                                         >
-                                            <div className="space-y-1">
-                                                <div className="flex flex-wrap items-center gap-2">
+                                            <div className="space-y-0.5">
+                                                <div className="flex items-center gap-2">
                                                     <span className="font-mono text-xs font-bold text-[#16233B]">
-                                                        #{order.order_number}
+                                                        {order.order_number}
                                                     </span>
                                                     <span
-                                                        className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${stageBadge.bg}`}
+                                                        className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${badge.bg}`}
                                                     >
-                                                        {stageBadge.label}
-                                                    </span>
-                                                    <span className="rounded-md bg-[#FAF6EE] px-2 py-0.5 text-[10px] font-semibold text-[#A88B54] uppercase">
-                                                        {order.order_type ===
-                                                        'corporate'
-                                                            ? 'Corporate B2B'
-                                                            : 'Personal'}
+                                                        {badge.label}
                                                     </span>
                                                 </div>
                                                 <div className="text-xs text-[#6E675D]">
+                                                    {order.recipient_name}{' '}
+                                                    &bull;{' '}
                                                     <span className="font-semibold text-[#16233B]">
-                                                        {order.recipient_name}
+                                                        {order.total_quantity}{' '}
+                                                        item
                                                     </span>
-                                                    {firstItem && (
-                                                        <span>
-                                                            {' '}
-                                                            •{' '}
-                                                            {
-                                                                firstItem.product_name
-                                                            }{' '}
-                                                            (
-                                                            {firstItem.quantity}{' '}
-                                                            pcs)
-                                                            {otherItemsCount >
-                                                                0 &&
-                                                                ` +${otherItemsCount} produk lain`}
-                                                        </span>
-                                                    )}
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center justify-between gap-3 sm:justify-end">
                                                 <span className="font-mono text-xs font-bold text-[#16233B]">
-                                                    {order.formatted_total}
+                                                    {formatRp(
+                                                        order.total_amount,
+                                                    )}
                                                 </span>
                                                 <Link
-                                                    href={`/admin/tracking?resi=${order.tracking_number || order.order_number}`}
-                                                    className="inline-flex items-center gap-1 rounded-lg border border-[#A88B54]/30 bg-[#FAF8F5] px-2.5 py-1 text-[11px] font-semibold text-[#16233B] hover:border-[#16233B] hover:bg-white"
+                                                    href={`/admin/tracking?search=${order.order_number}`}
+                                                    className="inline-flex items-center gap-1 rounded-lg border border-[#A88B54]/30 bg-[#F2EBDC]/50 px-2.5 py-1 text-[11px] font-semibold text-[#16233B] hover:bg-[#A88B54] hover:text-white"
                                                 >
-                                                    <span>Update Resi</span>
-                                                    <ArrowUpRight className="size-3 text-[#A88B54]" />
+                                                    <Truck className="h-3 w-3" />
+                                                    <span>Resi</span>
                                                 </Link>
                                             </div>
                                         </div>
@@ -415,253 +877,96 @@ export default function AdminDashboard({
                         </div>
                     </div>
 
-                    {/* Right: Verified Customer Reviews (1 Column) */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-6 shadow-xs">
-                        <div className="flex items-center justify-between border-b border-[#DFD7C5]/60 pb-4">
-                            <div>
-                                <h3 className="font-serif text-base font-bold text-[#16233B]">
-                                    Ulasan Pembeli Terbaru
-                                </h3>
-                                <p className="text-xs text-[#6E675D]">
-                                    Feedback &amp; rating nyata pelanggan
-                                </p>
-                            </div>
-                            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10.5px] font-bold text-emerald-800">
-                                {kpis.total_reviews} Ulasan
-                            </span>
-                        </div>
-
-                        <div className="mt-4 space-y-3.5">
-                            {recent_reviews.length === 0 ? (
-                                <div className="py-12 text-center text-xs text-[#6E675D]">
-                                    <Star className="mx-auto mb-2 size-7 text-[#A88B54]/40" />
-                                    Belum ada ulasan yang masuk dari pelanggan.
+                    {/* Kolom Kanan: Ulasan Pembeli & Pintasan Modul (5 Kolom) */}
+                    <div className="space-y-6 lg:col-span-5">
+                        {/* Ulasan Konsumen */}
+                        <div className="rounded-2xl border border-[#A88B54]/25 bg-white p-5 shadow-sm">
+                            <div className="flex items-center justify-between border-b border-[#F2EBDC] pb-3">
+                                <div className="flex items-center gap-2">
+                                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                                    <h3 className="font-serif text-base font-bold text-[#16233B]">
+                                        Ulasan Pembeli Terbaru
+                                    </h3>
                                 </div>
-                            ) : (
-                                recent_reviews.map((rev) => (
-                                    <div
-                                        key={rev.id}
-                                        className="rounded-xl border border-[#DFD7C5]/70 bg-[#FAF8F5] p-3 text-xs"
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-bold text-[#16233B]">
-                                                {rev.customer_name}
-                                            </span>
-                                            <div className="flex items-center gap-0.5">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        className={`size-3 ${
-                                                            i < rev.rating
-                                                                ? 'fill-[#A88B54] text-[#A88B54]'
-                                                                : 'text-slate-300'
-                                                        }`}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <p className="mt-1.5 line-clamp-2 text-[#6E675D] italic">
-                                            "{rev.comment}"
-                                        </p>
-                                        <div className="mt-2 flex items-center justify-between text-[10.5px] text-[#A88B54]">
-                                            <span className="inline-flex items-center gap-1">
-                                                <CheckCircle2 className="size-3 text-emerald-600" />
-                                                {rev.customer_title ||
-                                                    'Pembeli Terverifikasi'}
-                                            </span>
-                                            <span className="text-slate-400">
-                                                {rev.likes_count} Suka
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* 4. Bottom Row: Traffic Lead Distribution & Quick Actions */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    {/* Left: Lead Sources Distribution (2 Cols) */}
-                    <div className="rounded-2xl border border-[#DFD7C5] bg-white p-6 shadow-xs lg:col-span-2">
-                        <div className="flex items-center justify-between border-b border-[#DFD7C5]/60 pb-4">
-                            <div>
-                                <h3 className="font-serif text-base font-bold text-[#16233B]">
-                                    Distribusi Sumber Pesanan &amp; Interaksi
-                                </h3>
-                                <p className="text-xs text-[#6E675D]">
-                                    Kanal pemesanan dan konversi paling aktif di
-                                    platform Galuh &amp; Co.
-                                </p>
-                            </div>
-                            <span className="rounded-full border border-[#A88B54]/30 bg-[#FAF6EE] px-3 py-1 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
-                                Total {totalLeadSourcesCount} Konversi
-                            </span>
-                        </div>
-
-                        <div className="mt-5 space-y-4">
-                            {lead_source_stats.map((stat) => {
-                                const percentage =
-                                    totalLeadSourcesCount > 0
-                                        ? Math.round(
-                                              (stat.count /
-                                                  totalLeadSourcesCount) *
-                                                  100,
-                                          )
-                                        : 0;
-
-                                return (
-                                    <div key={stat.key} className="space-y-1.5">
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="font-medium text-[#16233B]">
-                                                {stat.source}
-                                            </span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-mono text-[#6E675D]">
-                                                    {stat.count} aktivitas
-                                                </span>
-                                                <span className="w-10 text-right font-bold text-[#16233B]">
-                                                    {percentage}%
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="h-2 w-full overflow-hidden rounded-full bg-[#FAF6EE]">
-                                            <div
-                                                className="h-full rounded-full transition-all duration-500"
-                                                style={{
-                                                    width: `${percentage}%`,
-                                                    backgroundColor: stat.color,
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Right: Quick Actions */}
-                    <div className="flex flex-col justify-between rounded-2xl border border-[#DFD7C5] bg-white p-6 shadow-xs">
-                        <div>
-                            <div className="border-b border-[#DFD7C5]/60 pb-4">
-                                <h3 className="font-serif text-base font-bold text-[#16233B]">
-                                    Pusat Aksi Cepat
-                                </h3>
-                                <p className="text-xs text-[#6E675D]">
-                                    Pintasan navigasi langsung modul backoffice
-                                </p>
+                                <span className="text-xs font-semibold text-[#6E675D]">
+                                    Terverifikasi
+                                </span>
                             </div>
 
-                            <div className="mt-4 space-y-2">
+                            <div className="mt-3 space-y-3">
+                                {recent_reviews.length === 0 ? (
+                                    <div className="py-6 text-center text-xs text-[#6E675D]">
+                                        Belum ada ulasan yang ditinggalkan
+                                        pembeli.
+                                    </div>
+                                ) : (
+                                    recent_reviews.map((rev) => (
+                                        <div
+                                            key={rev.id}
+                                            className="rounded-xl border border-[#F2EBDC] bg-[#FAF6EE]/50 p-3"
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-xs font-bold text-[#16233B]">
+                                                        {rev.customer_name}
+                                                    </span>
+                                                    <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                                                </div>
+                                                <div className="flex items-center gap-0.5 text-amber-500">
+                                                    {Array.from({
+                                                        length: rev.rating,
+                                                    }).map((_, i) => (
+                                                        <Star
+                                                            key={i}
+                                                            className="h-3 w-3 fill-amber-400 text-amber-400"
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <p className="mt-1.5 text-xs text-[#6E675D] italic">
+                                                &ldquo;{rev.comment}&rdquo;
+                                            </p>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Akses Cepat Ringkas */}
+                        <div className="rounded-2xl border border-[#A88B54]/25 bg-white p-5 shadow-sm">
+                            <h3 className="border-b border-[#F2EBDC] pb-2 font-serif text-sm font-bold text-[#16233B]">
+                                Akses Cepat Modul Atelier
+                            </h3>
+                            <div className="mt-3 grid grid-cols-2 gap-2">
                                 <Link
                                     href="/admin/orders"
-                                    className="group flex items-center justify-between rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-2.5 text-xs text-[#16233B] transition-all hover:border-[#A88B54] hover:bg-white hover:shadow-2xs"
+                                    className="flex items-center gap-2 rounded-xl border border-[#F2EBDC] bg-[#FAF6EE] p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#A88B54]"
                                 >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="flex size-8 items-center justify-center rounded-lg bg-[#16233B] text-[#A88B54] transition-colors group-hover:bg-[#A88B54] group-hover:text-[#16233B]">
-                                            <FileText className="size-4" />
-                                        </div>
-                                        <div>
-                                            <span className="block font-bold">
-                                                Inquiries &amp; Pesanan Masuk
-                                            </span>
-                                            <span className="text-[11px] text-[#6E675D]">
-                                                Kelola pesanan e-commerce &amp;
-                                                B2B
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowUpRight className="size-4 text-[#6E675D] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#16233B]" />
+                                    <ShoppingBag className="h-4 w-4 text-[#A88B54]" />
+                                    <span>Semua Pesanan</span>
                                 </Link>
-
                                 <Link
                                     href="/admin/tracking"
-                                    className="group flex items-center justify-between rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-2.5 text-xs text-[#16233B] transition-all hover:border-[#A88B54] hover:bg-white hover:shadow-2xs"
+                                    className="flex items-center gap-2 rounded-xl border border-[#F2EBDC] bg-[#FAF6EE] p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#A88B54]"
                                 >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="flex size-8 items-center justify-center rounded-lg bg-[#16233B] text-[#A88B54] transition-colors group-hover:bg-[#A88B54] group-hover:text-[#16233B]">
-                                            <Truck className="size-4" />
-                                        </div>
-                                        <div>
-                                            <span className="block font-bold">
-                                                Pelacakan Resi &amp; Ekspedisi
-                                            </span>
-                                            <span className="text-[11px] text-[#6E675D]">
-                                                Tahapan studio hingga kurir
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowUpRight className="size-4 text-[#6E675D] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#16233B]" />
+                                    <Truck className="h-4 w-4 text-[#A88B54]" />
+                                    <span>Lacak &amp; Resi</span>
                                 </Link>
-
                                 <Link
-                                    href="/admin/katalog"
-                                    className="group flex items-center justify-between rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-2.5 text-xs text-[#16233B] transition-all hover:border-[#A88B54] hover:bg-white hover:shadow-2xs"
+                                    href="/admin/products"
+                                    className="flex items-center gap-2 rounded-xl border border-[#F2EBDC] bg-[#FAF6EE] p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#A88B54]"
                                 >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="flex size-8 items-center justify-center rounded-lg bg-[#16233B] text-[#A88B54] transition-colors group-hover:bg-[#A88B54] group-hover:text-[#16233B]">
-                                            <Package className="size-4" />
-                                        </div>
-                                        <div>
-                                            <span className="block font-bold">
-                                                Katalog Hampers
-                                            </span>
-                                            <span className="text-[11px] text-[#6E675D]">
-                                                Kelola paket &amp; foto produk
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowUpRight className="size-4 text-[#6E675D] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#16233B]" />
+                                    <Package className="h-4 w-4 text-[#A88B54]" />
+                                    <span>Katalog Hampers</span>
                                 </Link>
-
                                 <Link
-                                    href="/admin/pengaturan/profil"
-                                    className="group flex items-center justify-between rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-2.5 text-xs text-[#16233B] transition-all hover:border-[#A88B54] hover:bg-white hover:shadow-2xs"
+                                    href="/admin/cms-halaman"
+                                    className="flex items-center gap-2 rounded-xl border border-[#F2EBDC] bg-[#FAF6EE] p-2.5 text-xs font-bold text-[#16233B] transition-all hover:border-[#A88B54]"
                                 >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="flex size-8 items-center justify-center rounded-lg bg-[#16233B] text-[#A88B54] transition-colors group-hover:bg-[#A88B54] group-hover:text-[#16233B]">
-                                            <Settings className="size-4" />
-                                        </div>
-                                        <div>
-                                            <span className="block font-bold">
-                                                Pengaturan Profil &amp; WA
-                                            </span>
-                                            <span className="text-[11px] text-[#6E675D]">
-                                                Nomor WA Concierge &amp; studio
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowUpRight className="size-4 text-[#6E675D] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#16233B]" />
-                                </Link>
-
-                                <Link
-                                    href="/admin/cms/hero"
-                                    className="group flex items-center justify-between rounded-xl border border-[#DFD7C5]/80 bg-[#FAF8F5] p-2.5 text-xs text-[#16233B] transition-all hover:border-[#A88B54] hover:bg-white hover:shadow-2xs"
-                                >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="flex size-8 items-center justify-center rounded-lg bg-[#16233B] text-[#A88B54] transition-colors group-hover:bg-[#A88B54] group-hover:text-[#16233B]">
-                                            <Palette className="size-4" />
-                                        </div>
-                                        <div>
-                                            <span className="block font-bold">
-                                                Konten Landing Page
-                                            </span>
-                                            <span className="text-[11px] text-[#6E675D]">
-                                                Hero, Tentang, FAQ, &amp; Teks
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <ArrowUpRight className="size-4 text-[#6E675D] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#16233B]" />
+                                    <FileText className="h-4 w-4 text-[#A88B54]" />
+                                    <span>Konten Website</span>
                                 </Link>
                             </div>
-                        </div>
-
-                        <div className="mt-4 flex items-center justify-between border-t border-[#DFD7C5]/60 pt-3 text-xs text-[#6E675D]">
-                            <span>WhatsApp Resmi:</span>
-                            <span className="rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-0.5 font-mono text-[11px] font-bold text-emerald-800">
-                                +{whatsapp_concierge}
-                            </span>
                         </div>
                     </div>
                 </div>
