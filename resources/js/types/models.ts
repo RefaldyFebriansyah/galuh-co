@@ -96,6 +96,21 @@ export interface TrackingLogItem {
 
 export type TrackingLog = TrackingLogItem;
 
+export interface Review {
+    id: number;
+    user_id?: number;
+    order_id?: number | null;
+    product_id?: number | null;
+    customer_name: string;
+    customer_title?: string | null;
+    rating: number;
+    comment: string;
+    likes_count: number;
+    is_published?: boolean;
+    created_at?: string;
+    updated_at?: string;
+}
+
 export interface ReviewItem {
     id: number;
     name: string;
