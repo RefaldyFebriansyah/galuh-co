@@ -241,34 +241,60 @@ export default function AdminTrackingIndex({
                                 setSelectedStatus(e.target.value);
                                 handleFilter(e.target.value, searchTerm);
                             }}
+                            style={{ colorScheme: 'light' }}
                             className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
                             <option
                                 value="all"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 Semua Tahap Tracking
                             </option>
                             <option
                                 value="studio_processing"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 1. Kurasi Studio
                             </option>
                             <option
                                 value="quality_check"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 2. QC &amp; Segel Lilin
                             </option>
                             <option
                                 value="in_delivery"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 3. Dalam Kurir
                             </option>
                             <option
                                 value="delivered"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 4. Telah Diterima
@@ -513,16 +539,27 @@ export default function AdminTrackingIndex({
                                         onChange={(e) =>
                                             setModalStage(e.target.value)
                                         }
+                                        style={{ colorScheme: 'light' }}
                                         className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2.5 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                                     >
                                         <option
                                             value="studio_processing"
+                                            style={{
+                                                backgroundColor: '#ffffff',
+                                                color: '#16233b',
+                                            }}
+                                            style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                             className="bg-white text-[#16233B]"
                                         >
                                             Tahap 1: Diproses di Studio Atelier
                                         </option>
                                         <option
                                             value="quality_check"
+                                            style={{
+                                                backgroundColor: '#ffffff',
+                                                color: '#16233b',
+                                            }}
+                                            style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                             className="bg-white text-[#16233B]"
                                         >
                                             Tahap 2: Quality Check &amp; Segel
@@ -530,6 +567,11 @@ export default function AdminTrackingIndex({
                                         </option>
                                         <option
                                             value="in_delivery"
+                                            style={{
+                                                backgroundColor: '#ffffff',
+                                                color: '#16233b',
+                                            }}
+                                            style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                             className="bg-white text-[#16233B]"
                                         >
                                             Tahap 3: Diserahkan ke Kurir &amp;
@@ -537,6 +579,11 @@ export default function AdminTrackingIndex({
                                         </option>
                                         <option
                                             value="delivered"
+                                            style={{
+                                                backgroundColor: '#ffffff',
+                                                color: '#16233b',
+                                            }}
+                                            style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                             className="bg-white text-[#16233B]"
                                         >
                                             Tahap 4: Pesanan Diterima Konsumen

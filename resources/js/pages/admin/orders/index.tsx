@@ -210,22 +210,38 @@ export default function AdminOrdersIndex({
                                     searchTerm,
                                 );
                             }}
+                            style={{ colorScheme: 'light' }}
                             className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
                             <option
                                 value="all"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 Semua Tipe Pesanan
                             </option>
                             <option
                                 value="personal"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 Paket Personal
                             </option>
                             <option
                                 value="corporate"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 Paket Corporate (B2B)
@@ -243,34 +259,60 @@ export default function AdminOrdersIndex({
                                     searchTerm,
                                 );
                             }}
+                            style={{ colorScheme: 'light' }}
                             className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
                             <option
                                 value="all"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 Semua Status Pengiriman
                             </option>
                             <option
                                 value="studio_processing"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 1. Diproses di Studio
                             </option>
                             <option
                                 value="quality_check"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 2. Quality Check &amp; Packing
                             </option>
                             <option
                                 value="in_delivery"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 3. Dalam Pengiriman
                             </option>
                             <option
                                 value="delivered"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#16233b',
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                 className="bg-white text-[#16233B]"
                             >
                                 4. Diterima Konsumen
@@ -356,7 +398,7 @@ export default function AdminOrdersIndex({
                                                 <div className="flex items-center gap-1.5">
                                                     <span className="rounded bg-[#16233B] px-1.5 py-0.5 font-mono text-[9px] font-bold text-white">
                                                         {order.order_type ===
-                                                        'corporate'
+                                                            'corporate'
                                                             ? 'B2B'
                                                             : 'PERSONAL'}
                                                     </span>
@@ -431,29 +473,28 @@ export default function AdminOrdersIndex({
 
                                             <td className="px-4 py-3.5">
                                                 <span
-                                                    className={`inline-block rounded-full px-2.5 py-0.5 text-[10.5px] font-bold ${
-                                                        order.shipping_status ===
+                                                    className={`inline-block rounded-full px-2.5 py-0.5 text-[10.5px] font-bold ${order.shipping_status ===
                                                         'delivered'
-                                                            ? 'bg-emerald-100 text-emerald-800'
+                                                        ? 'bg-emerald-100 text-emerald-800'
+                                                        : order.shipping_status ===
+                                                            'in_delivery'
+                                                            ? 'bg-blue-100 text-blue-800'
                                                             : order.shipping_status ===
-                                                                'in_delivery'
-                                                              ? 'bg-blue-100 text-blue-800'
-                                                              : order.shipping_status ===
-                                                                  'quality_check'
+                                                                'quality_check'
                                                                 ? 'bg-amber-100 text-amber-800'
                                                                 : 'bg-[#F2EBDC] text-[#16233B]'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {order.shipping_status ===
-                                                    'delivered'
+                                                        'delivered'
                                                         ? '4. Diterima'
                                                         : order.shipping_status ===
                                                             'in_delivery'
-                                                          ? '3. Dalam Kurir'
-                                                          : order.shipping_status ===
-                                                              'quality_check'
-                                                            ? '2. QC & Packing'
-                                                            : '1. Di Studio'}
+                                                            ? '3. Dalam Kurir'
+                                                            : order.shipping_status ===
+                                                                'quality_check'
+                                                                ? '2. QC & Packing'
+                                                                : '1. Di Studio'}
                                                 </span>
                                                 <span className="mt-0.5 block text-[10px] text-[#6E675D]">
                                                     {order.shipping_courier}
@@ -464,27 +505,27 @@ export default function AdminOrdersIndex({
                                                 <div className="flex items-center justify-end gap-2">
                                                     {order.status ===
                                                         'pending' && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                if (
-                                                                    confirm(
-                                                                        `Accept pesanan #${order.order_number}? Pesanan akan diteruskan ke Studio Atelier dan pelacakan resi diaktifkan.`,
-                                                                    )
-                                                                ) {
-                                                                    router.post(
-                                                                        `/admin/orders/${order.id}/accept`,
-                                                                    );
-                                                                }
-                                                            }}
-                                                            className="inline-flex cursor-pointer items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-emerald-700"
-                                                        >
-                                                            <CheckCircle2 className="size-3.5" />
-                                                            <span>
-                                                                Accept Pesanan
-                                                            </span>
-                                                        </button>
-                                                    )}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (
+                                                                        confirm(
+                                                                            `Accept pesanan #${order.order_number}? Pesanan akan diteruskan ke Studio Atelier dan pelacakan resi diaktifkan.`,
+                                                                        )
+                                                                    ) {
+                                                                        router.post(
+                                                                            `/admin/orders/${order.id}/accept`,
+                                                                        );
+                                                                    }
+                                                                }}
+                                                                className="inline-flex cursor-pointer items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-emerald-700"
+                                                            >
+                                                                <CheckCircle2 className="size-3.5" />
+                                                                <span>
+                                                                    Accept Pesanan
+                                                                </span>
+                                                            </button>
+                                                        )}
                                                     <button
                                                         type="button"
                                                         onClick={() =>
@@ -569,12 +610,18 @@ export default function AdminOrdersIndex({
                                         onChange={(e) =>
                                             setShippingStatus(e.target.value)
                                         }
+                                        style={{ colorScheme: 'light' }}
                                         className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-white px-3.5 py-2 text-xs font-bold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                                     >
                                         {SHIPPING_STAGES.map((st) => (
                                             <option
                                                 key={st.value}
                                                 value={st.value}
+                                                style={{
+                                                    backgroundColor: '#ffffff',
+                                                    color: '#16233b',
+                                                }}
+                                                style={{ backgroundColor: '#ffffff', color: '#16233b' }}
                                                 className="bg-white text-[#16233B]"
                                             >
                                                 {st.label}

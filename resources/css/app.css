@@ -169,17 +169,20 @@
     html,
     body {
         @apply bg-background text-foreground;
-        color-scheme: light;
+        color-scheme: light !important;
     }
 
-    select {
-        color-scheme: light;
-        background-color: #ffffff;
+    select,
+    select option,
+    select optgroup,
+    input,
+    textarea {
+        color-scheme: light !important;
     }
 
     select option {
-        background-color: #ffffff;
-        color: #16233b;
+        background-color: #ffffff !important;
+        color: #16233b !important;
     }
 }
 
