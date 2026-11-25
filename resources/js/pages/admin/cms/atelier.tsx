@@ -21,7 +21,9 @@ interface AdminCmsAtelierProps {
     atelierSettings: AtelierSettings;
 }
 
-export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProps) {
+export default function AdminCmsAtelier({
+    atelierSettings,
+}: AdminCmsAtelierProps) {
     const [badge, setBadge] = useState(
         atelierSettings.atelier_badge || 'STANDAR MUTU ATELIER',
     );
@@ -34,31 +36,38 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
     );
 
     const [cards, setCards] = useState<AtelierCardItem[]>(() => {
-        if (atelierSettings.atelier_cards && atelierSettings.atelier_cards.length === 4) {
+        if (
+            atelierSettings.atelier_cards &&
+            atelierSettings.atelier_cards.length === 4
+        ) {
             return atelierSettings.atelier_cards;
         }
         return [
             {
                 title: 'Kurasi Bahan Pilihan',
-                shortDescription: 'Bahan pangan bermutu tinggi & higienis untuk kesan istimewa.',
+                shortDescription:
+                    'Bahan pangan bermutu tinggi & higienis untuk kesan istimewa.',
                 description:
                     'Setiap isi hampers dipilih secara teliti dari produk bermutu terbaik dan higienis untuk menghadirkan pengalaman membuka hadiah yang berkesan.',
             },
             {
                 title: 'Kustom Grafir & Stempel Wax',
-                shortDescription: 'Kustomisasi logo korporat, pita satin, & kartu ucapan wax seal.',
+                shortDescription:
+                    'Kustomisasi logo korporat, pita satin, & kartu ucapan wax seal.',
                 description:
                     'Bebas menambahkan logo perusahaan via grafir laser, pita warna korporat, serta kartu ucapan khusus berstempel lilin wax mewah.',
             },
             {
                 title: 'Pengiriman Aman Terproteksi',
-                shortDescription: 'Kemasan hardbox berlapis aman dengan perlindungan kurir.',
+                shortDescription:
+                    'Kemasan hardbox berlapis aman dengan perlindungan kurir.',
                 description:
                     'Dikemas rapi dengan perlindungan berlapis dan kurir atelier terlatih untuk memastikan kotak hadiah tiba dalam kondisi utuh.',
             },
             {
                 title: 'Pelacakan Resi Real-Time',
-                shortDescription: 'Sistem monitoring pengerjaan hingga tiba di tangan penerima.',
+                shortDescription:
+                    'Sistem monitoring pengerjaan hingga tiba di tangan penerima.',
                 description:
                     'Pantau setiap proses kurasi studio hingga pengantaran kurir melalui nomor resi resmi langsung di website.',
             },
@@ -105,7 +114,7 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Header Teks Utama Section */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <ShieldCheck className="size-4" />
@@ -139,7 +148,7 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
                                 required
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="mt-1 w-full font-serif font-bold rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                         </div>
                     </div>
@@ -168,17 +177,18 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
                         Ubah Seluruh Teks pada 4 Card
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Admin dapat merubah judul, deskripsi ringkas, dan deskripsi detail untuk masing-masing card.
+                        Admin dapat merubah judul, deskripsi ringkas, dan
+                        deskripsi detail untuk masing-masing card.
                     </p>
 
                     <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
                         {cards.map((card, idx) => (
                             <div
                                 key={idx}
-                                className="rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-5 space-y-3 text-xs"
+                                className="space-y-3 rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-5 text-xs"
                             >
                                 <div className="flex items-center justify-between border-b border-[#A88B54]/20 pb-2">
-                                    <span className="font-serif font-bold text-sm text-[#16233B]">
+                                    <span className="font-serif text-sm font-bold text-[#16233B]">
                                         CARD 0{idx + 1}
                                     </span>
                                     <span className="rounded bg-[#16233B] px-2 py-0.5 font-mono text-[9.5px] font-bold text-[#A88B54]">
@@ -195,9 +205,13 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
                                         required
                                         value={card.title}
                                         onChange={(e) =>
-                                            handleCardChange(idx, 'title', e.target.value)
+                                            handleCardChange(
+                                                idx,
+                                                'title',
+                                                e.target.value,
+                                            )
                                         }
-                                        className="mt-1 w-full font-serif font-bold rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                 </div>
 
@@ -251,7 +265,11 @@ export default function AdminCmsAtelier({ atelierSettings }: AdminCmsAtelierProp
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Integritas Atelier'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan Integritas Atelier'}
+                        </span>
                     </button>
                 </div>
             </form>

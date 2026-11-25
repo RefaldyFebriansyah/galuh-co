@@ -78,23 +78,33 @@ export default function AdminTrackingIndex({
     filters,
 }: AdminTrackingIndexProps) {
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
-    const [selectedStatus, setSelectedStatus] = useState(filters.status || 'all');
+    const [selectedStatus, setSelectedStatus] = useState(
+        filters.status || 'all',
+    );
 
     // Quick Update Modal state
     const [activeOrder, setActiveOrder] = useState<Order | null>(null);
     const [modalStage, setModalStage] = useState('studio_processing');
-    const [modalCourier, setModalCourier] = useState('Kurir Khusus Galuh Atelier');
+    const [modalCourier, setModalCourier] = useState(
+        'Kurir Khusus Galuh Atelier',
+    );
     const [modalTrackingNumber, setModalTrackingNumber] = useState('');
     const [modalNote, setModalNote] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFilter = (status = selectedStatus, search = searchTerm) => {
-        router.get('/admin/tracking', { status, search }, { preserveState: true });
+        router.get(
+            '/admin/tracking',
+            { status, search },
+            { preserveState: true },
+        );
     };
 
     const handleOpenModal = (order: Order, defaultStage?: string) => {
         setActiveOrder(order);
-        setModalStage(defaultStage || order.shipping_status || 'studio_processing');
+        setModalStage(
+            defaultStage || order.shipping_status || 'studio_processing',
+        );
         setModalCourier(order.shipping_courier || 'Kurir Khusus Galuh Atelier');
         setModalTrackingNumber(order.tracking_number || '');
         setModalNote('');
@@ -158,28 +168,38 @@ export default function AdminTrackingIndex({
                                 key={idx}
                                 type="button"
                                 onClick={() => {
-                                    const nextStatus = isFiltered ? 'all' : stage.key;
+                                    const nextStatus = isFiltered
+                                        ? 'all'
+                                        : stage.key;
                                     setSelectedStatus(nextStatus);
                                     handleFilter(nextStatus, searchTerm);
                                 }}
-                                className={`flex flex-col justify-between rounded-2xl border p-4 text-left transition-all duration-200 cursor-pointer ${
+                                className={`flex cursor-pointer flex-col justify-between rounded-2xl border p-4 text-left transition-all duration-200 ${
                                     isFiltered
                                         ? 'border-[#A88B54] bg-[#16233B] text-[#F2EBDC] shadow-md'
                                         : 'border-[#A88B54]/25 bg-white text-[#16233B] hover:border-[#A88B54]/60'
                                 }`}
                             >
                                 <div className="flex items-center justify-between">
-                                    <span className={`font-mono text-xs font-bold ${isFiltered ? 'text-[#A88B54]' : 'text-[#6E675D]'}`}>
+                                    <span
+                                        className={`font-mono text-xs font-bold ${isFiltered ? 'text-[#A88B54]' : 'text-[#6E675D]'}`}
+                                    >
                                         TAHAP {stage.num}
                                     </span>
-                                    <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${isFiltered ? 'bg-[#A88B54] text-[#16233B]' : 'bg-[#F2EBDC] text-[#16233B]'}`}>
+                                    <span
+                                        className={`rounded-full px-2 py-0.5 text-xs font-bold ${isFiltered ? 'bg-[#A88B54] text-[#16233B]' : 'bg-[#F2EBDC] text-[#16233B]'}`}
+                                    >
                                         {count} Pesanan
                                     </span>
                                 </div>
-                                <h3 className={`mt-2 font-serif text-sm font-bold ${isFiltered ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}>
+                                <h3
+                                    className={`mt-2 font-serif text-sm font-bold ${isFiltered ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}
+                                >
                                     {stage.label}
                                 </h3>
-                                <p className={`mt-0.5 line-clamp-1 text-[11px] ${isFiltered ? 'text-[#F2EBDC]/70' : 'text-[#6E675D]'}`}>
+                                <p
+                                    className={`mt-0.5 line-clamp-1 text-[11px] ${isFiltered ? 'text-[#F2EBDC]/70' : 'text-[#6E675D]'}`}
+                                >
                                     {stage.desc}
                                 </p>
                             </button>
@@ -224,8 +244,12 @@ export default function AdminTrackingIndex({
                             className="rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         >
                             <option value="all">Semua Tahap Tracking</option>
-                            <option value="studio_processing">1. Kurasi Studio</option>
-                            <option value="quality_check">2. QC & Segel Lilin</option>
+                            <option value="studio_processing">
+                                1. Kurasi Studio
+                            </option>
+                            <option value="quality_check">
+                                2. QC & Segel Lilin
+                            </option>
                             <option value="in_delivery">3. Dalam Kurir</option>
                             <option value="delivered">4. Telah Diterima</option>
                         </select>
@@ -240,13 +264,16 @@ export default function AdminTrackingIndex({
                             Tidak Ada Pesanan di Tahap Ini
                         </h3>
                         <p className="mt-1 text-xs">
-                            Seluruh pesanan yang telah di-accept akan muncul di sini untuk diperbarui tahapannya.
+                            Seluruh pesanan yang telah di-accept akan muncul di
+                            sini untuk diperbarui tahapannya.
                         </p>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         {orders.data.map((order) => {
-                            const currentIdx = getStageIndex(order.shipping_status);
+                            const currentIdx = getStageIndex(
+                                order.shipping_status,
+                            );
 
                             return (
                                 <div
@@ -257,12 +284,17 @@ export default function AdminTrackingIndex({
                                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F2EBDC] bg-[#FAF8F5] px-5 py-3 text-xs">
                                         <div className="flex items-center gap-2">
                                             <span className="rounded bg-[#16233B] px-2 py-0.5 font-mono text-[9.5px] font-bold text-white">
-                                                {order.order_type === 'corporate' ? 'CORPORATE B2B' : 'PERSONAL'}
+                                                {order.order_type ===
+                                                'corporate'
+                                                    ? 'CORPORATE B2B'
+                                                    : 'PERSONAL'}
                                             </span>
                                             <span className="font-mono font-bold text-[#16233B]">
                                                 #{order.order_number}
                                             </span>
-                                            <span className="hidden text-[#6E675D] sm:inline">•</span>
+                                            <span className="hidden text-[#6E675D] sm:inline">
+                                                •
+                                            </span>
                                             <span className="hidden font-mono font-bold text-[#A88B54] sm:inline">
                                                 Resi: {order.tracking_number}
                                             </span>
@@ -270,11 +302,21 @@ export default function AdminTrackingIndex({
 
                                         <div className="flex items-center gap-3">
                                             <span className="font-serif font-bold text-[#16233B]">
-                                                {order.total_quantity} Paket ({Number(order.total_amount).toLocaleString('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })})
+                                                {order.total_quantity} Paket (
+                                                {Number(
+                                                    order.total_amount,
+                                                ).toLocaleString('id-ID', {
+                                                    style: 'currency',
+                                                    currency: 'IDR',
+                                                    maximumFractionDigits: 0,
+                                                })}
+                                                )
                                             </span>
                                             <button
                                                 type="button"
-                                                onClick={() => handleOpenModal(order)}
+                                                onClick={() =>
+                                                    handleOpenModal(order)
+                                                }
                                                 className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[#A88B54]/40 bg-white px-3 py-1 text-xs font-bold text-[#16233B] transition-all hover:bg-[#16233B] hover:text-white"
                                             >
                                                 <Edit3 className="size-3" />
@@ -298,19 +340,28 @@ export default function AdminTrackingIndex({
                                                     {order.company_name && (
                                                         <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-[#F2EBDC] px-2 py-0.5 text-[10.5px] font-semibold text-[#16233B]">
                                                             <Building2 className="size-3 text-[#A88B54]" />
-                                                            <span>{order.company_name}</span>
+                                                            <span>
+                                                                {
+                                                                    order.company_name
+                                                                }
+                                                            </span>
                                                         </span>
                                                     )}
                                                 </div>
 
                                                 <div className="pt-2 text-xs text-[#6E675D]">
                                                     <p className="line-clamp-2">
-                                                        <span className="font-semibold text-[#16233B]">Tujuan: </span>
+                                                        <span className="font-semibold text-[#16233B]">
+                                                            Tujuan:{' '}
+                                                        </span>
                                                         {order.shipping_address}
                                                     </p>
                                                     <p className="mt-1">
-                                                        <span className="font-semibold text-[#16233B]">Kurir: </span>
-                                                        {order.shipping_courier || 'Kurir Khusus Galuh Atelier'}
+                                                        <span className="font-semibold text-[#16233B]">
+                                                            Kurir:{' '}
+                                                        </span>
+                                                        {order.shipping_courier ||
+                                                            'Kurir Khusus Galuh Atelier'}
                                                     </p>
                                                 </div>
                                             </div>
@@ -330,40 +381,60 @@ export default function AdminTrackingIndex({
 
                                                     {/* Step Circles */}
                                                     <div className="relative grid grid-cols-4 gap-2">
-                                                        {TRACKING_STAGES.map((stg, sIdx) => {
-                                                            const isDone = sIdx <= currentIdx;
-                                                            const isCurrent = sIdx === currentIdx;
+                                                        {TRACKING_STAGES.map(
+                                                            (stg, sIdx) => {
+                                                                const isDone =
+                                                                    sIdx <=
+                                                                    currentIdx;
+                                                                const isCurrent =
+                                                                    sIdx ===
+                                                                    currentIdx;
 
-                                                            return (
-                                                                <button
-                                                                    key={sIdx}
-                                                                    type="button"
-                                                                    onClick={() => handleOpenModal(order, stg.key)}
-                                                                    className="group flex flex-col items-center text-center cursor-pointer"
-                                                                    title={`Klik untuk ubah status ke ${stg.fullTitle}`}
-                                                                >
-                                                                    <span
-                                                                        className={`flex size-8 items-center justify-center rounded-full font-serif text-xs font-bold transition-all ${
-                                                                            isDone
-                                                                                ? 'bg-[#16233B] text-[#A88B54] shadow-xs'
-                                                                                : 'border border-[#A88B54]/30 bg-white text-[#6E675D]'
-                                                                        } ${isCurrent ? 'ring-2 ring-[#A88B54] ring-offset-2 scale-110' : ''}`}
+                                                                return (
+                                                                    <button
+                                                                        key={
+                                                                            sIdx
+                                                                        }
+                                                                        type="button"
+                                                                        onClick={() =>
+                                                                            handleOpenModal(
+                                                                                order,
+                                                                                stg.key,
+                                                                            )
+                                                                        }
+                                                                        className="group flex cursor-pointer flex-col items-center text-center"
+                                                                        title={`Klik untuk ubah status ke ${stg.fullTitle}`}
                                                                     >
-                                                                        {stg.num}
-                                                                    </span>
-                                                                    <span
-                                                                        className={`mt-2 font-serif text-[11px] font-bold ${
-                                                                            isDone ? 'text-[#16233B]' : 'text-[#6E675D]'
-                                                                        }`}
-                                                                    >
-                                                                        {stg.label}
-                                                                    </span>
-                                                                    <span className="text-[9.5px] text-[#A88B54] opacity-0 transition-opacity group-hover:opacity-100">
-                                                                        Set Tahap
-                                                                    </span>
-                                                                </button>
-                                                            );
-                                                        })}
+                                                                        <span
+                                                                            className={`flex size-8 items-center justify-center rounded-full font-serif text-xs font-bold transition-all ${
+                                                                                isDone
+                                                                                    ? 'bg-[#16233B] text-[#A88B54] shadow-xs'
+                                                                                    : 'border border-[#A88B54]/30 bg-white text-[#6E675D]'
+                                                                            } ${isCurrent ? 'scale-110 ring-2 ring-[#A88B54] ring-offset-2' : ''}`}
+                                                                        >
+                                                                            {
+                                                                                stg.num
+                                                                            }
+                                                                        </span>
+                                                                        <span
+                                                                            className={`mt-2 font-serif text-[11px] font-bold ${
+                                                                                isDone
+                                                                                    ? 'text-[#16233B]'
+                                                                                    : 'text-[#6E675D]'
+                                                                            }`}
+                                                                        >
+                                                                            {
+                                                                                stg.label
+                                                                            }
+                                                                        </span>
+                                                                        <span className="text-[9.5px] text-[#A88B54] opacity-0 transition-opacity group-hover:opacity-100">
+                                                                            Set
+                                                                            Tahap
+                                                                        </span>
+                                                                    </button>
+                                                                );
+                                                            },
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,20 +479,35 @@ export default function AdminTrackingIndex({
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSaveTracking} className="p-6 space-y-4 text-xs">
+                            <form
+                                onSubmit={handleSaveTracking}
+                                className="space-y-4 p-6 text-xs"
+                            >
                                 <div>
                                     <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
                                         Tahapan Pengerjaan / Pengiriman:
                                     </label>
                                     <select
                                         value={modalStage}
-                                        onChange={(e) => setModalStage(e.target.value)}
+                                        onChange={(e) =>
+                                            setModalStage(e.target.value)
+                                        }
                                         className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     >
-                                        <option value="studio_processing">Tahap 1: Diproses di Studio Atelier</option>
-                                        <option value="quality_check">Tahap 2: Quality Check & Segel Lilin Wax</option>
-                                        <option value="in_delivery">Tahap 3: Diserahkan ke Kurir & Resi Diterbitkan</option>
-                                        <option value="delivered">Tahap 4: Pesanan Diterima Konsumen</option>
+                                        <option value="studio_processing">
+                                            Tahap 1: Diproses di Studio Atelier
+                                        </option>
+                                        <option value="quality_check">
+                                            Tahap 2: Quality Check & Segel Lilin
+                                            Wax
+                                        </option>
+                                        <option value="in_delivery">
+                                            Tahap 3: Diserahkan ke Kurir & Resi
+                                            Diterbitkan
+                                        </option>
+                                        <option value="delivered">
+                                            Tahap 4: Pesanan Diterima Konsumen
+                                        </option>
                                     </select>
                                 </div>
 
@@ -433,9 +519,13 @@ export default function AdminTrackingIndex({
                                         <input
                                             type="text"
                                             value={modalTrackingNumber}
-                                            onChange={(e) => setModalTrackingNumber(e.target.value)}
+                                            onChange={(e) =>
+                                                setModalTrackingNumber(
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="GLH-2026-XXXX"
-                                            className="mt-1 w-full font-mono rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 font-mono text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
                                     </div>
                                     <div>
@@ -445,7 +535,9 @@ export default function AdminTrackingIndex({
                                         <input
                                             type="text"
                                             value={modalCourier}
-                                            onChange={(e) => setModalCourier(e.target.value)}
+                                            onChange={(e) =>
+                                                setModalCourier(e.target.value)
+                                            }
                                             placeholder="Kurir Khusus Galuh Atelier"
                                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
@@ -454,12 +546,15 @@ export default function AdminTrackingIndex({
 
                                 <div>
                                     <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
-                                        Catatan Log Pelacakan (Ditampilkan ke Konsumen):
+                                        Catatan Log Pelacakan (Ditampilkan ke
+                                        Konsumen):
                                     </label>
                                     <textarea
                                         rows={2}
                                         value={modalNote}
-                                        onChange={(e) => setModalNote(e.target.value)}
+                                        onChange={(e) =>
+                                            setModalNote(e.target.value)
+                                        }
                                         placeholder="Contoh: Paket telah selesai dikurasi, disegel wax stempel emas, dan diserahkan ke armada pengantaran."
                                         className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
@@ -478,7 +573,9 @@ export default function AdminTrackingIndex({
                                         disabled={isSubmitting}
                                         className="rounded-xl bg-[#16233B] px-5 py-2 font-bold text-white hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                                     >
-                                        {isSubmitting ? 'Menyimpan...' : 'Simpan Pembaruan Tracking'}
+                                        {isSubmitting
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Pembaruan Tracking'}
                                     </button>
                                 </div>
                             </form>

@@ -130,7 +130,10 @@ export function HowToOrder({
                     {/* Step Dots on the Track (Elevated and perfectly positioned on the connecting line) */}
                     <div className="relative flex justify-between px-10">
                         {steps.map((step, idx) => (
-                            <div key={idx} className="flex flex-col items-center">
+                            <div
+                                key={idx}
+                                className="flex flex-col items-center"
+                            >
                                 <span className="flex size-9 items-center justify-center rounded-full border-2 border-[#A88B54] bg-[#F2EBDC] font-serif text-xs font-bold text-[#16233B] shadow-sm transition-transform duration-300 hover:scale-110">
                                     {step.number}
                                 </span>

@@ -1,5 +1,14 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Lock, Mail, Phone, User, CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import {
+    ArrowLeft,
+    Lock,
+    Mail,
+    Phone,
+    User,
+    CheckCircle2,
+    Eye,
+    EyeOff,
+} from 'lucide-react';
 import { useState, type FormEventHandler } from 'react';
 import { GaluhLogo } from '@/components/galuh-logo';
 
@@ -68,7 +77,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     {/* Card Container */}
                     <div className="rounded-2xl border border-[#DFD7C5] bg-white/95 p-5 shadow-[0_12px_36px_-12px_rgba(22,35,59,0.08)] backdrop-blur-md sm:p-6 md:p-7">
-                        <form onSubmit={submit} className="space-y-3 sm:space-y-3.5">
+                        <form
+                            onSubmit={submit}
+                            className="space-y-3 sm:space-y-3.5"
+                        >
                             {/* Email */}
                             <div>
                                 <label
@@ -122,7 +134,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     <Lock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#6E675D]" />
                                     <input
                                         id="password"
-                                        type={showPassword ? 'text' : 'password'}
+                                        type={
+                                            showPassword ? 'text' : 'password'
+                                        }
                                         name="password"
                                         value={data.password}
                                         autoComplete="current-password"
@@ -135,7 +149,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
+                                        onClick={() =>
+                                            setShowPassword(!showPassword)
+                                        }
                                         className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6E675D] transition-colors hover:text-[#16233B] focus:outline-hidden"
                                         aria-label={
                                             showPassword

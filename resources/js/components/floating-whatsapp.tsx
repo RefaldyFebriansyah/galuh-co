@@ -8,7 +8,9 @@ interface FloatingWhatsAppProps {
 
 export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
     const rawNumber = (whatsappNumber || '').replace(/\D/g, '');
-    const cleanNumber = rawNumber.startsWith('0') ? `62${rawNumber.slice(1)}` : rawNumber || '6282321773434';
+    const cleanNumber = rawNumber.startsWith('0')
+        ? `62${rawNumber.slice(1)}`
+        : rawNumber || '6282321773434';
     const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya ingin konsultasi mengenai pesanan hampers eksklusif & custom corporate gifting.',
     )}`;
@@ -114,7 +116,7 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
                         </motion.div>
 
                         <span className="relative z-10 flex items-center gap-1.5 font-bold tracking-wide">
-                            <span className="size-1.5 rounded-full bg-white animate-pulse" />
+                            <span className="size-1.5 animate-pulse rounded-full bg-white" />
                             <span>Konsultasi WhatsApp</span>
                         </span>
                     </motion.a>

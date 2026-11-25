@@ -231,7 +231,8 @@ export default function AdminDashboard({
                                     Distribusi Sumber Lead Website
                                 </h3>
                                 <p className="text-xs text-[#6E675D]">
-                                    Bagian halaman yang paling banyak memicu percakapan WhatsApp
+                                    Bagian halaman yang paling banyak memicu
+                                    percakapan WhatsApp
                                 </p>
                             </div>
                             <span className="rounded-full border border-[#A88B54]/30 bg-[#FAF6EE] px-3 py-1 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
@@ -306,7 +307,8 @@ export default function AdminDashboard({
                                                 Inquiries &amp; Pesanan
                                             </span>
                                             <span className="text-[11px] text-[#6E675D]">
-                                                Kelola pesanan masuk &amp; status
+                                                Kelola pesanan masuk &amp;
+                                                status
                                             </span>
                                         </div>
                                     </div>
@@ -394,7 +396,8 @@ export default function AdminDashboard({
                                     Inquiries Website Terbaru
                                 </h3>
                                 <p className="text-xs text-[#6E675D]">
-                                    Permintaan proposal penawaran yang baru masuk dari website
+                                    Permintaan proposal penawaran yang baru
+                                    masuk dari website
                                 </p>
                             </div>
                             <Link
@@ -408,7 +411,8 @@ export default function AdminDashboard({
                         <div className="mt-4 divide-y divide-[#DFD7C5]/40">
                             {recent_wa_leads.length === 0 ? (
                                 <div className="py-8 text-center text-xs text-[#6E675D]/70">
-                                    Belum ada aktivitas konsultasi WhatsApp terbaru.
+                                    Belum ada aktivitas konsultasi WhatsApp
+                                    terbaru.
                                 </div>
                             ) : (
                                 recent_wa_leads.map((lead) => {
@@ -498,7 +502,8 @@ export default function AdminDashboard({
                                         Status Katalog &amp; Website
                                     </h3>
                                     <p className="text-xs text-[#6E675D]">
-                                        Distribusi kategori hampers dan integrasi WhatsApp
+                                        Distribusi kategori hampers dan
+                                        integrasi WhatsApp
                                     </p>
                                 </div>
                                 <Link
@@ -535,7 +540,8 @@ export default function AdminDashboard({
                                     </div>
                                 ) : (
                                     <div className="py-2 text-xs text-[#6E675D]">
-                                        {catalog_stats.active_hampers} paket aktif terdaftar di sistem.
+                                        {catalog_stats.active_hampers} paket
+                                        aktif terdaftar di sistem.
                                     </div>
                                 )}
                             </div>
@@ -549,7 +555,9 @@ export default function AdminDashboard({
                                     </span>
                                 </div>
                                 <p className="mt-1 text-[11px] leading-relaxed text-emerald-800">
-                                    Semua tombol konsultasi di halaman utama terhubung langsung ke nomor WhatsApp resmi +{whatsapp_concierge}.
+                                    Semua tombol konsultasi di halaman utama
+                                    terhubung langsung ke nomor WhatsApp resmi +
+                                    {whatsapp_concierge}.
                                 </p>
                             </div>
                         </div>

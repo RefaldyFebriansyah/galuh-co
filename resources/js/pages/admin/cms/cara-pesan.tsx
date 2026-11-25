@@ -29,7 +29,8 @@ export default function AdminCmsCaraPesan({
             'PANDUAN PEMESANAN • SISTEM WEBSITE RESMI',
     );
     const [title, setTitle] = useState(
-        caraPesanSettings.order_guide_title || 'Alur Pemesanan Mudah & Transparan',
+        caraPesanSettings.order_guide_title ||
+            'Alur Pemesanan Mudah & Transparan',
     );
     const [subtitle, setSubtitle] = useState(
         caraPesanSettings.order_guide_subtitle ||
@@ -111,7 +112,7 @@ export default function AdminCmsCaraPesan({
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Header Panduan Section */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <ListOrdered className="size-4" />
@@ -145,7 +146,7 @@ export default function AdminCmsCaraPesan({
                                 required
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="mt-1 w-full font-serif font-bold rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                         </div>
                     </div>
@@ -174,14 +175,15 @@ export default function AdminCmsCaraPesan({
                         Ubah Judul & Deskripsi Langkah 1 - 4
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Admin dapat merubah judul dan instruksi masing-masing langkah pesanan.
+                        Admin dapat merubah judul dan instruksi masing-masing
+                        langkah pesanan.
                     </p>
 
                     <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                         {steps.map((step, idx) => (
                             <div
                                 key={idx}
-                                className="rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-4 space-y-3 text-xs"
+                                className="space-y-3 rounded-2xl border border-[#A88B54]/30 bg-[#FAF8F5] p-4 text-xs"
                             >
                                 <div className="flex items-center justify-between border-b border-[#A88B54]/20 pb-2">
                                     <span className="font-serif text-lg font-bold text-[#16233B]">
@@ -201,9 +203,13 @@ export default function AdminCmsCaraPesan({
                                         required
                                         value={step.number}
                                         onChange={(e) =>
-                                            handleStepChange(idx, 'number', e.target.value)
+                                            handleStepChange(
+                                                idx,
+                                                'number',
+                                                e.target.value,
+                                            )
                                         }
-                                        className="mt-1 w-full font-mono rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-mono text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                 </div>
 
@@ -216,9 +222,13 @@ export default function AdminCmsCaraPesan({
                                         required
                                         value={step.title}
                                         onChange={(e) =>
-                                            handleStepChange(idx, 'title', e.target.value)
+                                            handleStepChange(
+                                                idx,
+                                                'title',
+                                                e.target.value,
+                                            )
                                         }
-                                        className="mt-1 w-full font-serif font-bold rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                 </div>
 
@@ -253,7 +263,11 @@ export default function AdminCmsCaraPesan({
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Panduan Pesanan'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan Panduan Pesanan'}
+                        </span>
                     </button>
                 </div>
             </form>

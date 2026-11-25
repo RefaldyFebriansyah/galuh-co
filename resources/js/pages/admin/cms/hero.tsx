@@ -32,19 +32,35 @@ interface AdminCmsHeroProps {
 
 export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
     const [badge, setBadge] = useState(heroSettings.hero_badge || '');
-    const [titlePrefix, setTitlePrefix] = useState(heroSettings.hero_title_prefix || '');
+    const [titlePrefix, setTitlePrefix] = useState(
+        heroSettings.hero_title_prefix || '',
+    );
     const [title, setTitle] = useState(heroSettings.hero_title || '');
     const [subtitle, setSubtitle] = useState(heroSettings.hero_subtitle || '');
-    const [activeEdition, setActiveEdition] = useState(heroSettings.active_edition || '');
-    const [marqueeText, setMarqueeText] = useState(heroSettings.hero_marquee_text || '');
-    const [imageLeft, setImageLeft] = useState(heroSettings.hero_floating_image_left || '');
-    const [imageRight, setImageRight] = useState(heroSettings.hero_floating_image_right || '');
+    const [activeEdition, setActiveEdition] = useState(
+        heroSettings.active_edition || '',
+    );
+    const [marqueeText, setMarqueeText] = useState(
+        heroSettings.hero_marquee_text || '',
+    );
+    const [imageLeft, setImageLeft] = useState(
+        heroSettings.hero_floating_image_left || '',
+    );
+    const [imageRight, setImageRight] = useState(
+        heroSettings.hero_floating_image_right || '',
+    );
 
     // Rotating words list
     const [rotatingWords, setRotatingWords] = useState<string[]>(
-        heroSettings.hero_rotating_words && heroSettings.hero_rotating_words.length > 0
+        heroSettings.hero_rotating_words &&
+            heroSettings.hero_rotating_words.length > 0
             ? heroSettings.hero_rotating_words
-            : ['Personal & Perusahaan', 'Mitra Perusahaan', 'Momen Istimewa', 'Momen yang Tak Diulang'],
+            : [
+                  'Personal & Perusahaan',
+                  'Mitra Perusahaan',
+                  'Momen Istimewa',
+                  'Momen yang Tak Diulang',
+              ],
     );
     const [newWord, setNewWord] = useState('');
 
@@ -66,7 +82,8 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
         reader.onload = (event) => {
             const img = new Image();
             img.onload = () => {
-                const canvas = canvasRef.current || document.createElement('canvas');
+                const canvas =
+                    canvasRef.current || document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 if (!ctx) {
                     setIsProcessingCanvas(false);
@@ -110,9 +127,12 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                     getPixel(width - 1, height - 1),
                 ];
 
-                const bgR = corners.reduce((sum, c) => sum + c[0], 0) / corners.length;
-                const bgG = corners.reduce((sum, c) => sum + c[1], 0) / corners.length;
-                const bgB = corners.reduce((sum, c) => sum + c[2], 0) / corners.length;
+                const bgR =
+                    corners.reduce((sum, c) => sum + c[0], 0) / corners.length;
+                const bgG =
+                    corners.reduce((sum, c) => sum + c[1], 0) / corners.length;
+                const bgB =
+                    corners.reduce((sum, c) => sum + c[2], 0) / corners.length;
 
                 // Threshold background detection: corner color matching + light background detection
                 for (let i = 0; i < data.length; i += 4) {
@@ -120,7 +140,9 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                     const g = data[i + 1];
                     const b = data[i + 2];
 
-                    const dist = Math.sqrt((r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2);
+                    const dist = Math.sqrt(
+                        (r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2,
+                    );
                     const isLightBg = r > 225 && g > 225 && b > 215;
 
                     if (dist < 40 || isLightBg) {
@@ -143,7 +165,9 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                 }
 
                 setIsProcessingCanvas(false);
-                setCanvasFeedback('Foto hampers berhasil diproses (Background terhapus & dikompresi ke WebP)!');
+                setCanvasFeedback(
+                    'Foto hampers berhasil diproses (Background terhapus & dikompresi ke WebP)!',
+                );
                 setTimeout(() => setCanvasFeedback(null), 4000);
             };
             img.src = event.target?.result as string;
@@ -199,13 +223,19 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                 <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
                     <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                         <Wand2 className="size-4" />
-                        <span>FOTO HAMPERS MELAYANG DENGAN AUTO-HAPUS BACKGROUND & KOMPRESI WEBP</span>
+                        <span>
+                            FOTO HAMPERS MELAYANG DENGAN AUTO-HAPUS BACKGROUND &
+                            KOMPRESI WEBP
+                        </span>
                     </div>
                     <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
                         Visual Kriya Hampers Kiri & Kanan
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Sistem secara otomatis menghapus background putih/terang pada foto dan mengompresinya menjadi format WebP berbobot sangat ringan agar loading website tetap super cepat.
+                        Sistem secara otomatis menghapus background putih/terang
+                        pada foto dan mengompresinya menjadi format WebP
+                        berbobot sangat ringan agar loading website tetap super
+                        cepat.
                     </p>
 
                     {canvasFeedback && (
@@ -245,14 +275,22 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                                         accept="image/*"
                                         className="hidden"
                                         onChange={(e) => {
-                                             const file = e.target.files?.[0];
-                                             if (file) processImageWithAutoBackgroundRemoval(file, 'left');
+                                            const file = e.target.files?.[0];
+                                            if (file)
+                                                processImageWithAutoBackgroundRemoval(
+                                                    file,
+                                                    'left',
+                                                );
                                         }}
                                     />
                                 </label>
                                 <button
                                     type="button"
-                                    onClick={() => setImageLeft('/images/floating-hamper-rattan.webp')}
+                                    onClick={() =>
+                                        setImageLeft(
+                                            '/images/floating-hamper-rattan.webp',
+                                        )
+                                    }
                                     className="cursor-pointer rounded-xl border border-[#A88B54]/40 bg-[#F2EBDC] px-3 py-2 text-xs font-semibold text-[#16233B] hover:bg-[#A88B54] hover:text-[#16233B]"
                                     title="Gunakan foto hampers artisanal transparan asli tanpa kotak latar"
                                 >
@@ -291,14 +329,22 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                                         accept="image/*"
                                         className="hidden"
                                         onChange={(e) => {
-                                             const file = e.target.files?.[0];
-                                             if (file) processImageWithAutoBackgroundRemoval(file, 'right');
+                                            const file = e.target.files?.[0];
+                                            if (file)
+                                                processImageWithAutoBackgroundRemoval(
+                                                    file,
+                                                    'right',
+                                                );
                                         }}
                                     />
                                 </label>
                                 <button
                                     type="button"
-                                    onClick={() => setImageRight('/images/floating-hamper-emerald.webp')}
+                                    onClick={() =>
+                                        setImageRight(
+                                            '/images/floating-hamper-emerald.webp',
+                                        )
+                                    }
                                     className="cursor-pointer rounded-xl border border-[#A88B54]/40 bg-[#F2EBDC] px-3 py-2 text-xs font-semibold text-[#16233B] hover:bg-[#A88B54] hover:text-[#16233B]"
                                     title="Gunakan foto hampers emerald transparan asli tanpa kotak latar"
                                 >
@@ -313,13 +359,16 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                 <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
                     <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                         <RefreshCw className="size-4" />
-                        <span>KATA-KATA BERGANTI SECARA OTOMATIS (ROTATING WORDS)</span>
+                        <span>
+                            KATA-KATA BERGANTI SECARA OTOMATIS (ROTATING WORDS)
+                        </span>
                     </div>
                     <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
                         Teks yang Berubah-ubah di Headline Hero
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Kata-kata ini akan berganti secara halus dengan animasi motion di samping teks "{titlePrefix}".
+                        Kata-kata ini akan berganti secara halus dengan animasi
+                        motion di samping teks "{titlePrefix}".
                     </p>
 
                     <div className="mt-4 flex flex-wrap gap-2">
@@ -332,7 +381,7 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                                 <button
                                     type="button"
                                     onClick={() => handleRemoveWord(idx)}
-                                    className="rounded-full p-0.5 text-[#6E675D] hover:bg-rose-100 hover:text-rose-700 cursor-pointer"
+                                    className="cursor-pointer rounded-full p-0.5 text-[#6E675D] hover:bg-rose-100 hover:text-rose-700"
                                 >
                                     <Trash2 className="size-3" />
                                 </button>
@@ -365,11 +414,13 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                 </div>
 
                 {/* 3. Headline, Subheadline & Marquee Running Text */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <Type className="size-4" />
-                            <span>KONTEN HEADLINE & TEKS BERJALAN (MARQUEE)</span>
+                            <span>
+                                KONTEN HEADLINE & TEKS BERJALAN (MARQUEE)
+                            </span>
                         </div>
                         <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
                             Headline, Subtitle, dan Marquee Text
@@ -402,7 +453,9 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                             <input
                                 type="text"
                                 value={activeEdition}
-                                onChange={(e) => setActiveEdition(e.target.value)}
+                                onChange={(e) =>
+                                    setActiveEdition(e.target.value)
+                                }
                                 placeholder="Contoh: Edisi Spesial 1447 H (Boleh dikosongkan)"
                                 className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] placeholder:text-[#6E675D]/40 focus:border-[#A88B54] focus:outline-hidden"
                             />
@@ -411,14 +464,23 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
 
                     {/* Live Preview Pill for Admin */}
                     <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#A88B54]/30 bg-[#FAF8F5] p-3 text-xs text-[#6E675D]">
-                        <span className="font-bold text-[#16233B]">Preview Tampilan Badge di Hero:</span>
+                        <span className="font-bold text-[#16233B]">
+                            Preview Tampilan Badge di Hero:
+                        </span>
                         <div className="inline-flex items-center gap-2 rounded-full border border-[#DFD7C5] bg-white px-3.5 py-1 text-[10px] font-semibold tracking-[0.15em] uppercase shadow-2xs">
-                            <span className="font-bold text-[#A88B54]">GALUH & CO.</span>
+                            <span className="font-bold text-[#A88B54]">
+                                GALUH & CO.
+                            </span>
                             {badge.trim() && (
                                 <>
                                     <span className="size-1 rounded-full bg-[#A88B54]" />
                                     <span className="font-bold text-[#A88B54]">
-                                        {badge.replace(/^galuh\s*&\s*co\.?\s*[•\-\|]?\s*/i, '').trim() || badge}
+                                        {badge
+                                            .replace(
+                                                /^galuh\s*&\s*co\.?\s*[•\-|]?\s*/i,
+                                                '',
+                                            )
+                                            .trim() || badge}
                                     </span>
                                 </>
                             )}
@@ -470,7 +532,8 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         />
                         <p className="mt-1 text-[11px] text-[#6E675D]">
-                            Teks ini berjalan secara looping terus-menerus di bawah hero section.
+                            Teks ini berjalan secara looping terus-menerus di
+                            bawah hero section.
                         </p>
                     </div>
                 </div>
@@ -483,7 +546,9 @@ export default function AdminCmsHero({ heroSettings }: AdminCmsHeroProps) {
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Hero Showcase'}</span>
+                        <span>
+                            {isSaving ? 'Menyimpan...' : 'Simpan Hero Showcase'}
+                        </span>
                     </button>
                 </div>
             </form>

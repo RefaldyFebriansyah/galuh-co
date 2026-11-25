@@ -108,7 +108,11 @@ export default function Welcome({
         document.documentElement.classList.remove('dark');
     }, []);
 
-    const rawWa = (settings?.whatsapp_number || whatsappNumber || '6281572414233').trim();
+    const rawWa = (
+        settings?.whatsapp_number ||
+        whatsappNumber ||
+        '6281572414233'
+    ).trim();
     const cleanDigits = rawWa.replace(/\D/g, '');
     const resolvedWhatsappNumber = cleanDigits.startsWith('0')
         ? `62${cleanDigits.slice(1)}`
@@ -144,8 +148,12 @@ export default function Welcome({
                             heroTitle={settings?.hero_title}
                             heroSubtitle={settings?.hero_subtitle}
                             heroTagline={settings?.hero_tagline}
-                            heroFloatingImageLeft={settings?.hero_floating_image_left}
-                            heroFloatingImageRight={settings?.hero_floating_image_right}
+                            heroFloatingImageLeft={
+                                settings?.hero_floating_image_left
+                            }
+                            heroFloatingImageRight={
+                                settings?.hero_floating_image_right
+                            }
                             heroRotatingWords={settings?.hero_rotating_words}
                             heroMarqueeText={settings?.hero_marquee_text}
                             dynamicStats={dynamicStats}
@@ -182,7 +190,9 @@ export default function Welcome({
                             catalogSubtitle={settings?.catalog_subtitle}
                             activeEvent={activeEvent || settings?.active_event}
                             eventBannerTitle={settings?.event_banner_title}
-                            eventBannerSubtitle={settings?.event_banner_subtitle}
+                            eventBannerSubtitle={
+                                settings?.event_banner_subtitle
+                            }
                             eventBannerImage={settings?.event_banner_image}
                             eventBannerActive={settings?.event_banner_active}
                         />

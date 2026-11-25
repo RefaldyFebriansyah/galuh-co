@@ -62,7 +62,14 @@ const PRESET_EVENT_TEMPLATES: Record<
         bannerSubtitle:
             'Sambut momen suci dengan bingkisan mewah berbalut hardbox zamrud dan anyaman bambu artisanal.',
         image: '/images/product_emerald_box.jpg',
-        keywords: ['lebaran', 'ramadhan', 'ramadan', 'eid', 'kencana', 'rayyan'],
+        keywords: [
+            'lebaran',
+            'ramadhan',
+            'ramadan',
+            'eid',
+            'kencana',
+            'rayyan',
+        ],
     },
     natal: {
         name: 'Natal & Tahun Baru',
@@ -80,7 +87,15 @@ const PRESET_EVENT_TEMPLATES: Record<
         bannerSubtitle:
             'Perkuat relasi bisnis dengan bingkisan eksklusif kustom berukir logo perusahaan Anda.',
         image: '/images/product_leather_box.jpg',
-        keywords: ['kantor', 'corporate', 'b2b', 'eksekutif', 'sinergi', 'apresiasi', 'office'],
+        keywords: [
+            'kantor',
+            'corporate',
+            'b2b',
+            'eksekutif',
+            'sinergi',
+            'apresiasi',
+            'office',
+        ],
     },
     imlek: {
         name: 'Tahun Baru Imlek & Musim Semi',
@@ -135,26 +150,35 @@ export default function AdminEventsIndex({
         const template = PRESET_EVENT_TEMPLATES[eventId];
         if (!template) return [];
 
-        const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normalize = (s: string) =>
+            s.toLowerCase().replace(/[^a-z0-9]/g, '');
         return products
             .filter((p) => {
                 if (p.event_tag === eventId) return true;
                 const cat = normalize(p.category || '');
                 const name = normalize(p.name || '');
-                return template.keywords.some((kw) => cat.includes(kw) || name.includes(kw));
+                return template.keywords.some(
+                    (kw) => cat.includes(kw) || name.includes(kw),
+                );
             })
             .map((p) => p.id);
     };
 
     // Track which product IDs belong to the event
-    const [selectedProductIds, setSelectedProductIds] = useState<number[]>(() => {
-        const tagged = products.filter((p) => p.event_tag === initialActiveEvent).map((p) => p.id);
-        if (tagged.length > 0) return tagged;
-        return getAutoMatchingProductIds(initialActiveEvent);
-    });
+    const [selectedProductIds, setSelectedProductIds] = useState<number[]>(
+        () => {
+            const tagged = products
+                .filter((p) => p.event_tag === initialActiveEvent)
+                .map((p) => p.id);
+            if (tagged.length > 0) return tagged;
+            return getAutoMatchingProductIds(initialActiveEvent);
+        },
+    );
 
     const [isSaving, setIsSaving] = useState(false);
-    const [autoSelectFeedback, setAutoSelectFeedback] = useState<string | null>(null);
+    const [autoSelectFeedback, setAutoSelectFeedback] = useState<string | null>(
+        null,
+    );
 
     // Hampers products currently selected that have an image
     const selectedCatalogProductsWithImage = products.filter(
@@ -205,7 +229,9 @@ export default function AdminEventsIndex({
             !validTypes.includes(file.type) &&
             !file.name.match(/\.(jpg|jpeg|png|svg|webp)$/i)
         ) {
-            alert('Format file tidak didukung. Harap upload SVG, JPG, PNG, atau WebP.');
+            alert(
+                'Format file tidak didukung. Harap upload SVG, JPG, PNG, atau WebP.',
+            );
             return;
         }
 
@@ -228,17 +254,23 @@ export default function AdminEventsIndex({
         const matchingIds = getAutoMatchingProductIds(activeEvent);
         if (matchingIds.length > 0) {
             setSelectedProductIds(matchingIds);
-            setAutoSelectFeedback(`Berhasil memilih ${matchingIds.length} hampers bertema.`);
+            setAutoSelectFeedback(
+                `Berhasil memilih ${matchingIds.length} hampers bertema.`,
+            );
             setTimeout(() => setAutoSelectFeedback(null), 3000);
         } else {
-            setAutoSelectFeedback('Tidak ada hampers bawaan yang cocok otomatis, Anda dapat memilih bebas secara kustom.');
+            setAutoSelectFeedback(
+                'Tidak ada hampers bawaan yang cocok otomatis, Anda dapat memilih bebas secara kustom.',
+            );
             setTimeout(() => setAutoSelectFeedback(null), 4000);
         }
     };
 
     const handleToggleProduct = (id: number) => {
         setSelectedProductIds((prev) =>
-            prev.includes(id) ? prev.filter((pId) => pId !== id) : [...prev, id],
+            prev.includes(id)
+                ? prev.filter((pId) => pId !== id)
+                : [...prev, id],
         );
     };
 
@@ -273,13 +305,15 @@ export default function AdminEventsIndex({
         );
     };
 
-    const currentTemplate = PRESET_EVENT_TEMPLATES[activeEvent] || PRESET_EVENT_TEMPLATES.custom;
-    const activeEventInfo =
-        availableEvents.find((e) => e.id === activeEvent) || {
-            id: 'custom',
-            name: customName || 'Event Kustom',
-            badge: customBadge || 'Custom Edition',
-        };
+    const currentTemplate =
+        PRESET_EVENT_TEMPLATES[activeEvent] || PRESET_EVENT_TEMPLATES.custom;
+    const activeEventInfo = availableEvents.find(
+        (e) => e.id === activeEvent,
+    ) || {
+        id: 'custom',
+        name: customName || 'Event Kustom',
+        badge: customBadge || 'Custom Edition',
+    };
 
     return (
         <AdminLayout
@@ -299,7 +333,9 @@ export default function AdminEventsIndex({
                         Musim Perayaan & Tema yang Sedang Berjalan
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Ketika suatu event diaktifkan, produk yang ditandai dengan event tersebut akan otomatis bergeser ke posisi paling atas di katalog landing page.
+                        Ketika suatu event diaktifkan, produk yang ditandai
+                        dengan event tersebut akan otomatis bergeser ke posisi
+                        paling atas di katalog landing page.
                     </p>
 
                     <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -310,27 +346,41 @@ export default function AdminEventsIndex({
                                     key={evt.id}
                                     type="button"
                                     onClick={() => handleSelectEvent(evt.id)}
-                                    className={`flex flex-col justify-between rounded-xl border p-4 text-left transition-all cursor-pointer ${
+                                    className={`flex cursor-pointer flex-col justify-between rounded-xl border p-4 text-left transition-all ${
                                         isSelected
                                             ? 'border-[#A88B54] bg-[#16233B] text-[#F2EBDC] shadow-md ring-2 ring-[#A88B54]'
                                             : 'border-[#A88B54]/25 bg-[#FAF8F5] text-[#16233B] hover:border-[#A88B54]/60'
                                     }`}
                                 >
                                     <div className="flex items-center justify-between">
-                                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                            isSelected ? 'bg-[#A88B54] text-[#16233B]' : 'bg-[#F2EBDC] text-[#16233B]'
-                                        }`}>
-                                            {evt.id === 'custom' ? customBadge || 'Custom Edition' : evt.badge}
+                                        <span
+                                            className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                                isSelected
+                                                    ? 'bg-[#A88B54] text-[#16233B]'
+                                                    : 'bg-[#F2EBDC] text-[#16233B]'
+                                            }`}
+                                        >
+                                            {evt.id === 'custom'
+                                                ? customBadge ||
+                                                  'Custom Edition'
+                                                : evt.badge}
                                         </span>
                                         {isSelected && (
                                             <CheckCircle2 className="size-4 text-[#A88B54]" />
                                         )}
                                     </div>
-                                    <h3 className={`mt-3 font-serif text-sm font-bold ${isSelected ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}>
-                                        {evt.id === 'custom' ? customName || 'Koleksi Kustom & Tematik Sendiri' : evt.name}
+                                    <h3
+                                        className={`mt-3 font-serif text-sm font-bold ${isSelected ? 'text-[#F2EBDC]' : 'text-[#16233B]'}`}
+                                    >
+                                        {evt.id === 'custom'
+                                            ? customName ||
+                                              'Koleksi Kustom & Tematik Sendiri'
+                                            : evt.name}
                                     </h3>
                                     <span className="mt-1 text-[10px] opacity-75">
-                                        {evt.id === 'custom' ? 'Klik untuk atur tema sendiri & pilih hampers bebas' : 'Klik untuk otomatis pilih hampers bertema ini'}
+                                        {evt.id === 'custom'
+                                            ? 'Klik untuk atur tema sendiri & pilih hampers bebas'
+                                            : 'Klik untuk otomatis pilih hampers bertema ini'}
                                     </span>
                                 </button>
                             );
@@ -351,7 +401,9 @@ export default function AdminEventsIndex({
                                     <input
                                         type="text"
                                         value={customName}
-                                        onChange={(e) => setCustomName(e.target.value)}
+                                        onChange={(e) =>
+                                            setCustomName(e.target.value)
+                                        }
                                         placeholder="Contoh: Spesial Hari Ibu / Anniversary Perusahaan"
                                         className="mt-1 w-full rounded-lg border border-[#A88B54]/40 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
@@ -363,7 +415,9 @@ export default function AdminEventsIndex({
                                     <input
                                         type="text"
                                         value={customBadge}
-                                        onChange={(e) => setCustomBadge(e.target.value)}
+                                        onChange={(e) =>
+                                            setCustomBadge(e.target.value)
+                                        }
                                         placeholder="Contoh: Edisi Spesial Hari Ibu"
                                         className="mt-1 w-full rounded-lg border border-[#A88B54]/40 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
@@ -379,7 +433,9 @@ export default function AdminEventsIndex({
                         <div>
                             <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                                 <Tag className="size-4" />
-                                <span>KARTU DEMO & PROMOSI EVENT DI LAYER TERATAS</span>
+                                <span>
+                                    KARTU DEMO & PROMOSI EVENT DI LAYER TERATAS
+                                </span>
                             </div>
                             <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
                                 Iklan / Card Foto Demo Musim Aktif
@@ -390,7 +446,9 @@ export default function AdminEventsIndex({
                             <input
                                 type="checkbox"
                                 checked={bannerActive}
-                                onChange={(e) => setBannerActive(e.target.checked)}
+                                onChange={(e) =>
+                                    setBannerActive(e.target.checked)
+                                }
                                 className="size-4 accent-[#A88B54]"
                             />
                             <span className="text-xs font-bold text-[#16233B]">
@@ -401,7 +459,7 @@ export default function AdminEventsIndex({
 
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
                         {/* Left: Input Form */}
-                        <div className="space-y-4 lg:col-span-7 text-xs">
+                        <div className="space-y-4 text-xs lg:col-span-7">
                             <div>
                                 <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
                                     Judul Card Promo Event:
@@ -410,7 +468,9 @@ export default function AdminEventsIndex({
                                     type="text"
                                     required
                                     value={bannerTitle}
-                                    onChange={(e) => setBannerTitle(e.target.value)}
+                                    onChange={(e) =>
+                                        setBannerTitle(e.target.value)
+                                    }
                                     placeholder="Contoh: Koleksi Hantaran Istimewa Hari Raya 1447 H"
                                     className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                 />
@@ -424,7 +484,9 @@ export default function AdminEventsIndex({
                                     rows={3}
                                     required
                                     value={bannerSubtitle}
-                                    onChange={(e) => setBannerSubtitle(e.target.value)}
+                                    onChange={(e) =>
+                                        setBannerSubtitle(e.target.value)
+                                    }
                                     placeholder="Contoh: Hadirkan kehangatan tradisi dengan kurasi hampers anyaman bambu dan hardbox linen berstempel wax personal..."
                                     className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                 />
@@ -441,11 +503,13 @@ export default function AdminEventsIndex({
                                 </div>
 
                                 {/* Quick Selector: Hampers from Catalog */}
-                                {selectedCatalogProductsWithImage.length > 0 && (
+                                {selectedCatalogProductsWithImage.length >
+                                    0 && (
                                     <div className="mt-2 rounded-xl border border-[#A88B54]/25 bg-[#FAF8F5] p-3">
                                         <div className="flex items-center justify-between">
                                             <span className="text-[10.5px] font-bold text-[#16233B]">
-                                                Ambil Otomatis Foto dari Hampers Katalog:
+                                                Ambil Otomatis Foto dari Hampers
+                                                Katalog:
                                             </span>
                                             <span className="text-[10px] text-[#6E675D]">
                                                 (Klik untuk pasang ke banner)
@@ -453,35 +517,45 @@ export default function AdminEventsIndex({
                                         </div>
 
                                         <div className="mt-2 flex flex-wrap gap-2">
-                                            {selectedCatalogProductsWithImage.map((prod) => {
-                                                const isCurrent = bannerImage === prod.image;
-                                                return (
-                                                    <button
-                                                        key={prod.id}
-                                                        type="button"
-                                                        onClick={() => setBannerImage(prod.image)}
-                                                        className={`flex items-center gap-2 rounded-xl border p-1.5 pr-2.5 text-left transition-all cursor-pointer ${
-                                                            isCurrent
-                                                                ? 'border-[#A88B54] bg-[#A88B54]/15 ring-2 ring-[#A88B54]/40'
-                                                                : 'border-[#A88B54]/25 bg-white hover:border-[#A88B54]/60'
-                                                        }`}
-                                                    >
-                                                        <img
-                                                            src={prod.image}
-                                                            alt={prod.name}
-                                                            className="size-8 rounded-lg object-cover"
-                                                        />
-                                                        <div className="max-w-[140px] truncate">
-                                                            <p className="truncate font-serif text-[11px] font-bold text-[#16233B]">
-                                                                {prod.name}
-                                                            </p>
-                                                            <span className="text-[9.5px] font-semibold text-[#A88B54]">
-                                                                {isCurrent ? '✓ Foto Banner Aktif' : 'Gunakan Foto Ini'}
-                                                            </span>
-                                                        </div>
-                                                    </button>
-                                                );
-                                            })}
+                                            {selectedCatalogProductsWithImage.map(
+                                                (prod) => {
+                                                    const isCurrent =
+                                                        bannerImage ===
+                                                        prod.image;
+                                                    return (
+                                                        <button
+                                                            key={prod.id}
+                                                            type="button"
+                                                            onClick={() =>
+                                                                setBannerImage(
+                                                                    prod.image,
+                                                                )
+                                                            }
+                                                            className={`flex cursor-pointer items-center gap-2 rounded-xl border p-1.5 pr-2.5 text-left transition-all ${
+                                                                isCurrent
+                                                                    ? 'border-[#A88B54] bg-[#A88B54]/15 ring-2 ring-[#A88B54]/40'
+                                                                    : 'border-[#A88B54]/25 bg-white hover:border-[#A88B54]/60'
+                                                            }`}
+                                                        >
+                                                            <img
+                                                                src={prod.image}
+                                                                alt={prod.name}
+                                                                className="size-8 rounded-lg object-cover"
+                                                            />
+                                                            <div className="max-w-[140px] truncate">
+                                                                <p className="truncate font-serif text-[11px] font-bold text-[#16233B]">
+                                                                    {prod.name}
+                                                                </p>
+                                                                <span className="text-[9.5px] font-semibold text-[#A88B54]">
+                                                                    {isCurrent
+                                                                        ? '✓ Foto Banner Aktif'
+                                                                        : 'Gunakan Foto Ini'}
+                                                                </span>
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                },
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -490,14 +564,18 @@ export default function AdminEventsIndex({
                                 <div className="mt-2 flex flex-wrap gap-2">
                                     <label className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[#A88B54]/40 bg-[#16233B] px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#A88B54] hover:text-[#16233B] active:scale-95">
                                         <Upload className="size-3.5" />
-                                        <span>Upload Foto Kustom (SVG / JPG)</span>
+                                        <span>
+                                            Upload Foto Kustom (SVG / JPG)
+                                        </span>
                                         <input
                                             type="file"
                                             accept="image/jpeg,image/png,image/svg+xml,image/webp"
                                             className="hidden"
                                             onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) handleBannerUpload(file);
+                                                const file =
+                                                    e.target.files?.[0];
+                                                if (file)
+                                                    handleBannerUpload(file);
                                             }}
                                         />
                                     </label>
@@ -505,7 +583,12 @@ export default function AdminEventsIndex({
                                     {selectedCatalogProductsWithImage[0] && (
                                         <button
                                             type="button"
-                                            onClick={() => setBannerImage(selectedCatalogProductsWithImage[0].image)}
+                                            onClick={() =>
+                                                setBannerImage(
+                                                    selectedCatalogProductsWithImage[0]
+                                                        .image,
+                                                )
+                                            }
                                             className="cursor-pointer rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] hover:bg-[#F2EBDC]"
                                         >
                                             Reset ke Foto Hampers #1
@@ -518,30 +601,38 @@ export default function AdminEventsIndex({
                                         type="text"
                                         required
                                         value={bannerImage}
-                                        onChange={(e) => setBannerImage(e.target.value)}
+                                        onChange={(e) =>
+                                            setBannerImage(e.target.value)
+                                        }
                                         placeholder="/images/product_emerald_box.jpg atau data:image/..."
                                         className="w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                     />
                                     <p className="mt-1 text-[11px] text-[#6E675D]">
-                                        Foto banner otomatis diambil dari hampers katalog di atas, atau Anda bisa upload gambar sendiri.
+                                        Foto banner otomatis diambil dari
+                                        hampers katalog di atas, atau Anda bisa
+                                        upload gambar sendiri.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Right: Real-time Live Preview Card */}
-                        <div className="flex flex-col justify-center rounded-2xl border border-[#A88B54]/30 bg-[#16233B] p-6 text-[#F2EBDC] lg:col-span-5 shadow-lg">
+                        <div className="flex flex-col justify-center rounded-2xl border border-[#A88B54]/30 bg-[#16233B] p-6 text-[#F2EBDC] shadow-lg lg:col-span-5">
                             <span className="text-[9.5px] font-bold tracking-widest text-[#A88B54] uppercase">
                                 PREVIEW CARD PROMO DI WEBSITE:
                             </span>
 
                             <div className="relative mt-3 overflow-hidden rounded-xl border border-[#A88B54]/30">
                                 <img
-                                    src={bannerImage || '/images/product_emerald_box.jpg'}
+                                    src={
+                                        bannerImage ||
+                                        '/images/product_emerald_box.jpg'
+                                    }
                                     alt="Demo Event Card"
                                     className="h-44 w-full object-cover"
                                     onError={(e) => {
-                                        (e.target as HTMLImageElement).src = '/images/product_emerald_box.jpg';
+                                        (e.target as HTMLImageElement).src =
+                                            '/images/product_emerald_box.jpg';
                                     }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#16233B] via-transparent to-transparent" />
@@ -562,17 +653,23 @@ export default function AdminEventsIndex({
 
                 {/* 3. Hampers Event Selection (Automated Top-Priority) */}
                 <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm">
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#F2EBDC] pb-4">
+                    <div className="flex flex-col gap-2 border-b border-[#F2EBDC] pb-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                                 <Package className="size-4" />
-                                <span>PILIH HAMPERS UNTUK EVENT {activeEventInfo.name.toUpperCase()}</span>
+                                <span>
+                                    PILIH HAMPERS UNTUK EVENT{' '}
+                                    {activeEventInfo.name.toUpperCase()}
+                                </span>
                             </div>
                             <h2 className="mt-1 font-serif text-xl font-bold text-[#16233B]">
-                                Hampers yang Dipromosikan Paling Atas ({selectedProductIds.length} Terpilih)
+                                Hampers yang Dipromosikan Paling Atas (
+                                {selectedProductIds.length} Terpilih)
                             </h2>
                             <p className="mt-0.5 text-xs text-[#6E675D]">
-                                Hampers yang sesuai tema otomatis tercentang. Anda juga dapat bebas mencentang atau menambah hampers kustom lainnya.
+                                Hampers yang sesuai tema otomatis tercentang.
+                                Anda juga dapat bebas mencentang atau menambah
+                                hampers kustom lainnya.
                             </p>
                         </div>
 
@@ -590,7 +687,9 @@ export default function AdminEventsIndex({
                                 onClick={handleSelectAll}
                                 className="cursor-pointer rounded-lg border border-[#A88B54]/40 bg-[#FAF8F5] px-3 py-1.5 text-xs font-bold text-[#16233B] hover:bg-[#16233B] hover:text-white"
                             >
-                                {selectedProductIds.length === products.length ? 'Batal Semua' : 'Pilih Semua'}
+                                {selectedProductIds.length === products.length
+                                    ? 'Batal Semua'
+                                    : 'Pilih Semua'}
                             </button>
                         </div>
                     </div>
@@ -604,22 +703,30 @@ export default function AdminEventsIndex({
 
                     <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {products.map((product) => {
-                            const isIncluded = selectedProductIds.includes(product.id);
+                            const isIncluded = selectedProductIds.includes(
+                                product.id,
+                            );
                             const isThemeMatch = currentTemplate.keywords.some(
                                 (kw) =>
-                                    (product.category || '').toLowerCase().includes(kw) ||
-                                    (product.name || '').toLowerCase().includes(kw) ||
+                                    (product.category || '')
+                                        .toLowerCase()
+                                        .includes(kw) ||
+                                    (product.name || '')
+                                        .toLowerCase()
+                                        .includes(kw) ||
                                     product.event_tag === activeEvent,
                             );
 
                             return (
                                 <div
                                     key={product.id}
-                                    onClick={() => handleToggleProduct(product.id)}
-                                    className={`group flex items-center gap-3.5 rounded-xl border p-3.5 transition-all cursor-pointer ${
+                                    onClick={() =>
+                                        handleToggleProduct(product.id)
+                                    }
+                                    className={`group flex cursor-pointer items-center gap-3.5 rounded-xl border p-3.5 transition-all ${
                                         isIncluded
                                             ? 'border-[#A88B54] bg-[#F2EBDC]/40 shadow-xs'
-                                            : 'border-slate-200 bg-white opacity-70 hover:opacity-100 hover:border-[#A88B54]/40'
+                                            : 'border-slate-200 bg-white opacity-70 hover:border-[#A88B54]/40 hover:opacity-100'
                                     }`}
                                 >
                                     <input
@@ -630,11 +737,15 @@ export default function AdminEventsIndex({
                                     />
 
                                     <img
-                                        src={product.image || '/images/product_bamboo_box.jpg'}
+                                        src={
+                                            product.image ||
+                                            '/images/product_bamboo_box.jpg'
+                                        }
                                         alt={product.name}
-                                        className="size-14 shrink-0 rounded-lg object-cover border border-[#A88B54]/20"
+                                        className="size-14 shrink-0 rounded-lg border border-[#A88B54]/20 object-cover"
                                         onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/images/product_bamboo_box.jpg';
+                                            (e.target as HTMLImageElement).src =
+                                                '/images/product_bamboo_box.jpg';
                                         }}
                                     />
 
@@ -644,16 +755,23 @@ export default function AdminEventsIndex({
                                                 {product.name}
                                             </p>
                                             {isThemeMatch && (
-                                                <span className="shrink-0 rounded bg-[#A88B54]/20 px-1.5 py-0.2 text-[8px] font-bold text-[#A88B54]">
+                                                <span className="py-0.2 shrink-0 rounded bg-[#A88B54]/20 px-1.5 text-[8px] font-bold text-[#A88B54]">
                                                     Cocok
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="text-[11px] text-[#A88B54] font-semibold">
-                                            Personal: Rp {Number(product.price_from).toLocaleString('id-ID')}
+                                        <p className="text-[11px] font-semibold text-[#A88B54]">
+                                            Personal: Rp{' '}
+                                            {Number(
+                                                product.price_from,
+                                            ).toLocaleString('id-ID')}
                                         </p>
                                         <p className="text-[10px] text-[#6E675D]">
-                                            B2B: Rp {Number(product.corporate_price).toLocaleString('id-ID')}/paket
+                                            B2B: Rp{' '}
+                                            {Number(
+                                                product.corporate_price,
+                                            ).toLocaleString('id-ID')}
+                                            /paket
                                         </p>
                                     </div>
 
@@ -676,7 +794,11 @@ export default function AdminEventsIndex({
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan & Aktifkan Event'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan & Aktifkan Event'}
+                        </span>
                     </button>
                 </div>
             </form>

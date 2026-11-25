@@ -30,7 +30,9 @@ export function FooterSection({
     footerBio = 'Atelier kriya bingkisan premium dan corporate gifting artisanal yang memadukan kehangatan tradisi anyaman bambu Nusantara dengan kemewahan hardbox linen berstempel wax.',
 }: FooterSectionProps) {
     const rawWa = (whatsappNumber || '').replace(/\D/g, '');
-    const cleanWaNumber = rawWa.startsWith('0') ? `62${rawWa.slice(1)}` : rawWa || '6281572414233';
+    const cleanWaNumber = rawWa.startsWith('0')
+        ? `62${rawWa.slice(1)}`
+        : rawWa || '6281572414233';
 
     const handleScrollToCatalog = () => {
         const el = document.getElementById('koleksi');
@@ -83,8 +85,10 @@ export function FooterSection({
                             </h2>
 
                             <p className="mt-3 text-xs leading-relaxed text-[#F2EBDC]/75 md:text-sm">
-                                Konsultasikan kebutuhan hampers personal, bingkisan momen spesial,
-                                maupun pengadaan korporat berskala besar langsung bersama konsultan atelier kami via WhatsApp.
+                                Konsultasikan kebutuhan hampers personal,
+                                bingkisan momen spesial, maupun pengadaan
+                                korporat berskala besar langsung bersama
+                                konsultan atelier kami via WhatsApp.
                             </p>
 
                             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">

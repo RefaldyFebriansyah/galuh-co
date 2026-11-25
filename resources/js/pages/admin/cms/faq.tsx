@@ -107,7 +107,11 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                 'Apakah Anda yakin ingin memulihkan 6 pertanyaan FAQ bawaan landing page? Semua pertanyaan FAQ standar Galuh & Co. akan dimuat ke database.',
             )
         ) {
-            router.post('/admin/cms/faq/restore-defaults', {}, { preserveScroll: true });
+            router.post(
+                '/admin/cms/faq/restore-defaults',
+                {},
+                { preserveScroll: true },
+            );
         }
     };
 
@@ -160,7 +164,10 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                             Belum Ada Pertanyaan FAQ Tersimpan di Database
                         </h3>
                         <p className="mt-1 max-w-md text-xs text-[#6E675D]">
-                            Landing page saat ini menampilkan pertanyaan cadangan. Klik tombol di bawah untuk memuat 6 pertanyaan bawaan ke database agar bisa diedit dan dikelola langsung.
+                            Landing page saat ini menampilkan pertanyaan
+                            cadangan. Klik tombol di bawah untuk memuat 6
+                            pertanyaan bawaan ke database agar bisa diedit dan
+                            dikelola langsung.
                         </p>
                         <button
                             type="button"
@@ -178,7 +185,7 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                                 key={faq.id}
                                 className="flex flex-col justify-between gap-4 rounded-2xl border border-[#A88B54]/25 bg-white p-5 shadow-xs transition-all sm:flex-row sm:items-start"
                             >
-                                <div className="space-y-1.5 flex-1">
+                                <div className="flex-1 space-y-1.5">
                                     <div className="flex items-center gap-2">
                                         <span className="rounded-full bg-[#F2EBDC] px-2.5 py-0.5 text-[9.5px] font-bold text-[#16233B] uppercase">
                                             {faq.category}
@@ -233,7 +240,9 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                     >
                         <div className="flex items-center justify-between border-b border-[#F2EBDC] bg-[#16233B] px-6 py-4 text-[#F2EBDC]">
                             <h3 className="font-serif text-base font-bold text-white">
-                                {editingFaq ? 'Edit Pertanyaan FAQ' : 'Tambah Pertanyaan FAQ Baru'}
+                                {editingFaq
+                                    ? 'Edit Pertanyaan FAQ'
+                                    : 'Tambah Pertanyaan FAQ Baru'}
                             </h3>
                             <button
                                 type="button"
@@ -244,20 +253,31 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                             </button>
                         </div>
 
-                        <form onSubmit={handleSave} className="p-6 space-y-4 text-xs">
+                        <form
+                            onSubmit={handleSave}
+                            className="space-y-4 p-6 text-xs"
+                        >
                             <div>
                                 <label className="block text-[10.5px] font-bold tracking-wider text-[#16233B] uppercase">
                                     Kategori:
                                 </label>
                                 <select
                                     value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
+                                    onChange={(e) =>
+                                        setCategory(e.target.value)
+                                    }
                                     className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                 >
                                     <option value="pemesanan">Pemesanan</option>
-                                    <option value="custom_branding">Kustom Branding & Grafir</option>
-                                    <option value="pengiriman">Pengiriman & Logistik</option>
-                                    <option value="pembayaran">Pembayaran & Invoice</option>
+                                    <option value="custom_branding">
+                                        Kustom Branding & Grafir
+                                    </option>
+                                    <option value="pengiriman">
+                                        Pengiriman & Logistik
+                                    </option>
+                                    <option value="pembayaran">
+                                        Pembayaran & Invoice
+                                    </option>
                                 </select>
                             </div>
 
@@ -269,7 +289,9 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                                     type="text"
                                     required
                                     value={question}
-                                    onChange={(e) => setQuestion(e.target.value)}
+                                    onChange={(e) =>
+                                        setQuestion(e.target.value)
+                                    }
                                     placeholder="Contoh: Berapa minimal pemesanan untuk paket corporate?"
                                     className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                 />
@@ -293,7 +315,9 @@ export default function AdminCmsFaq({ faqs }: AdminCmsFaqProps) {
                                 <input
                                     type="checkbox"
                                     checked={isActive}
-                                    onChange={(e) => setIsActive(e.target.checked)}
+                                    onChange={(e) =>
+                                        setIsActive(e.target.checked)
+                                    }
                                     className="size-4 accent-[#A88B54]"
                                 />
                                 <span className="text-xs font-bold text-[#16233B]">

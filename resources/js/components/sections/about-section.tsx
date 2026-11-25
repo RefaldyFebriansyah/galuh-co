@@ -58,7 +58,12 @@ const PILLARS: PillarItem[] = [
 
 const EASE_CUBIC = [0.22, 1, 0.36, 1] as const;
 
-export function AboutSection({ badge, title, description, pillars }: AboutSectionProps = {}) {
+export function AboutSection({
+    badge,
+    title,
+    description,
+    pillars,
+}: AboutSectionProps = {}) {
     const [activeIndex, setActiveIndex] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
 
@@ -176,7 +181,7 @@ export function AboutSection({ badge, title, description, pillars }: AboutSectio
                         <motion.div
                             style={{ x: watermarkX }}
                             aria-hidden="true"
-                            className="pointer-events-none absolute -top-10 -right-6 z-0 font-serif text-[75px] font-bold tracking-widest text-[#16233B]/[0.025] select-none whitespace-nowrap sm:text-[105px] lg:text-[130px]"
+                            className="pointer-events-none absolute -top-10 -right-6 z-0 font-serif text-[75px] font-bold tracking-widest whitespace-nowrap text-[#16233B]/[0.025] select-none sm:text-[105px] lg:text-[130px]"
                         >
                             GALUH &amp; CO.
                         </motion.div>
@@ -194,7 +199,9 @@ export function AboutSection({ badge, title, description, pillars }: AboutSectio
                                         }}
                                         className="inline-flex items-center text-[10.5px] font-semibold tracking-[0.24em] text-[#A88B54] uppercase"
                                     >
-                                        <span>{badge || 'TENTANG GALUH & CO.'}</span>
+                                        <span>
+                                            {badge || 'TENTANG GALUH & CO.'}
+                                        </span>
                                     </motion.div>
                                 </div>
 
@@ -214,7 +221,9 @@ export function AboutSection({ badge, title, description, pillars }: AboutSectio
                                             <span>{title}</span>
                                         ) : (
                                             <>
-                                                <span>Menghadirkan Kehangatan</span>{' '}
+                                                <span>
+                                                    Menghadirkan Kehangatan
+                                                </span>{' '}
                                                 <span className="block text-[#A88B54] italic sm:inline">
                                                     di Setiap Kotak Hadiah
                                                 </span>
@@ -237,27 +246,33 @@ export function AboutSection({ badge, title, description, pillars }: AboutSectio
                                 className="space-y-3.5 text-xs leading-relaxed text-[#6E675D] sm:text-sm"
                             >
                                 {description ? (
-                                    description.split(/\n\s*\n/).map((para, pIdx) => (
-                                        <p key={pIdx}>{para.trim()}</p>
-                                    ))
+                                    description
+                                        .split(/\n\s*\n/)
+                                        .map((para, pIdx) => (
+                                            <p key={pIdx}>{para.trim()}</p>
+                                        ))
                                 ) : (
                                     <>
                                         <p>
-                                            GALUH &amp; CO. lahir dari keyakinan bahwa
-                                            bingkisan terbaik bukan sekadar benda di
-                                            dalam wadah, melainkan bahasa ketulusan yang
-                                            merajut ikatan emosional dan apresiasi
-                                            berkelas. Kami mendedikasikan ketelitian
-                                            kriya pada setiap lembar pita, lipatan
-                                            linen, dan segel lilin wax.
+                                            GALUH &amp; CO. lahir dari keyakinan
+                                            bahwa bingkisan terbaik bukan
+                                            sekadar benda di dalam wadah,
+                                            melainkan bahasa ketulusan yang
+                                            merajut ikatan emosional dan
+                                            apresiasi berkelas. Kami
+                                            mendedikasikan ketelitian kriya pada
+                                            setiap lembar pita, lipatan linen,
+                                            dan segel lilin wax.
                                         </p>
                                         <p>
-                                            Mulai dari bahan kudapan butter Wijsman
-                                            autentik, madu hutan murni, hingga kemasan
-                                            anyaman bambu eksklusif—setiap pesanan
-                                            diproses langsung di website dengan sistem
-                                            pelacakan resi transparan untuk perayaan
-                                            keluarga maupun representasi resmi korporat.
+                                            Mulai dari bahan kudapan butter
+                                            Wijsman autentik, madu hutan murni,
+                                            hingga kemasan anyaman bambu
+                                            eksklusif—setiap pesanan diproses
+                                            langsung di website dengan sistem
+                                            pelacakan resi transparan untuk
+                                            perayaan keluarga maupun
+                                            representasi resmi korporat.
                                         </p>
                                     </>
                                 )}

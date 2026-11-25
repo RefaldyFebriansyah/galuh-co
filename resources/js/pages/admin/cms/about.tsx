@@ -30,9 +30,12 @@ interface AdminCmsAboutProps {
 }
 
 export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
-    const [badge, setBadge] = useState(aboutSettings.about_badge || 'TENTANG GALUH & CO.');
+    const [badge, setBadge] = useState(
+        aboutSettings.about_badge || 'TENTANG GALUH & CO.',
+    );
     const [title, setTitle] = useState(
-        aboutSettings.about_title || 'Menghadirkan Kehangatan di Setiap Kotak Hadiah',
+        aboutSettings.about_title ||
+            'Menghadirkan Kehangatan di Setiap Kotak Hadiah',
     );
     const [description, setDescription] = useState(
         aboutSettings.about_description ||
@@ -40,7 +43,10 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
     );
 
     const [pillars, setPillars] = useState<PillarItem[]>(() => {
-        if (aboutSettings.about_pillars && aboutSettings.about_pillars.length === 3) {
+        if (
+            aboutSettings.about_pillars &&
+            aboutSettings.about_pillars.length === 3
+        ) {
             return aboutSettings.about_pillars;
         }
         return [
@@ -142,7 +148,7 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Header Teks Utama Section */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <BookOpen className="size-4" />
@@ -203,7 +209,8 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                         Teks & Foto di Dalam Setiap Card Pilar
                     </h2>
                     <p className="mt-1 text-xs text-[#6E675D]">
-                        Admin dapat mengganti teks pilar no 1, 2, dan 3 serta memilih foto yang tampil di dalam card.
+                        Admin dapat mengganti teks pilar no 1, 2, dan 3 serta
+                        memilih foto yang tampil di dalam card.
                     </p>
 
                     <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -231,7 +238,11 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                             required
                                             value={pillar.num}
                                             onChange={(e) =>
-                                                handlePillarChange(idx, 'num', e.target.value)
+                                                handlePillarChange(
+                                                    idx,
+                                                    'num',
+                                                    e.target.value,
+                                                )
                                             }
                                             className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-mono text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
@@ -246,9 +257,13 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                             required
                                             value={pillar.title}
                                             onChange={(e) =>
-                                                handlePillarChange(idx, 'title', e.target.value)
+                                                handlePillarChange(
+                                                    idx,
+                                                    'title',
+                                                    e.target.value,
+                                                )
                                             }
-                                            className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif font-bold text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                            className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 font-serif text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
                                     </div>
 
@@ -261,7 +276,11 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                             required
                                             value={pillar.description}
                                             onChange={(e) =>
-                                                handlePillarChange(idx, 'description', e.target.value)
+                                                handlePillarChange(
+                                                    idx,
+                                                    'description',
+                                                    e.target.value,
+                                                )
                                             }
                                             className="mt-1 w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                                         />
@@ -272,21 +291,31 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                             <label className="block text-[10px] font-bold text-[#16233B] uppercase">
                                                 Foto Card Pilar:
                                             </label>
-                                            <span className="font-mono text-[9px] text-[#A88B54]">SVG / JPG / WebP</span>
+                                            <span className="font-mono text-[9px] text-[#A88B54]">
+                                                SVG / JPG / WebP
+                                            </span>
                                         </div>
 
                                         <div className="mt-1 space-y-2">
                                             {/* Direct Upload Button (SVG, JPG, PNG, WebP) */}
                                             <label className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#A88B54]/40 bg-[#16233B] px-3 py-2 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#A88B54] hover:text-[#16233B] active:scale-95">
                                                 <Upload className="size-3.5" />
-                                                <span>Pilih &amp; Upload Foto (SVG / JPG)</span>
+                                                <span>
+                                                    Pilih &amp; Upload Foto (SVG
+                                                    / JPG)
+                                                </span>
                                                 <input
                                                     type="file"
                                                     accept="image/jpeg,image/png,image/svg+xml,image/webp,image/gif"
                                                     className="hidden"
                                                     onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file) handleFileUpload(idx, file);
+                                                        const file =
+                                                            e.target.files?.[0];
+                                                        if (file)
+                                                            handleFileUpload(
+                                                                idx,
+                                                                file,
+                                                            );
                                                     }}
                                                 />
                                             </label>
@@ -297,7 +326,11 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                                 required
                                                 value={pillar.image}
                                                 onChange={(e) =>
-                                                    handlePillarChange(idx, 'image', e.target.value)
+                                                    handlePillarChange(
+                                                        idx,
+                                                        'image',
+                                                        e.target.value,
+                                                    )
                                                 }
                                                 placeholder="/images/product_bamboo_box.jpg atau data:image/..."
                                                 className="w-full rounded-lg border border-[#A88B54]/30 bg-white px-3 py-1.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
@@ -309,11 +342,15 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                                 {/* Preview Thumbnail */}
                                 <div className="mt-4 overflow-hidden rounded-xl border border-[#A88B54]/30 bg-white shadow-2xs">
                                     <img
-                                        src={pillar.image || '/images/product_bamboo_box.jpg'}
+                                        src={
+                                            pillar.image ||
+                                            '/images/product_bamboo_box.jpg'
+                                        }
                                         alt={pillar.title}
                                         className="h-32 w-full object-cover"
                                         onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/images/product_bamboo_box.jpg';
+                                            (e.target as HTMLImageElement).src =
+                                                '/images/product_bamboo_box.jpg';
                                         }}
                                     />
                                 </div>
@@ -330,7 +367,11 @@ export default function AdminCmsAbout({ aboutSettings }: AdminCmsAboutProps) {
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Konten Tentang Galuh'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan Konten Tentang Galuh'}
+                        </span>
                     </button>
                 </div>
             </form>

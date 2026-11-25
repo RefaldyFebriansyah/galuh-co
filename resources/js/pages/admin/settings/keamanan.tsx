@@ -36,7 +36,10 @@ export default function AdminSettingsKeamanan({
         }
 
         if (newPassword && newPassword !== newPasswordConfirmation) {
-            setErrors({ new_password_confirmation: 'Konfirmasi kata sandi baru tidak cocok.' });
+            setErrors({
+                new_password_confirmation:
+                    'Konfirmasi kata sandi baru tidak cocok.',
+            });
             return;
         }
 
@@ -75,7 +78,7 @@ export default function AdminSettingsKeamanan({
 
             <form onSubmit={handleSave} className="max-w-2xl space-y-6">
                 {/* 1. Profil Administrator */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <User className="size-4" />
@@ -98,7 +101,9 @@ export default function AdminSettingsKeamanan({
                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         />
                         {errors.name && (
-                            <p className="mt-1 text-[11px] text-rose-600">{errors.name}</p>
+                            <p className="mt-1 text-[11px] text-rose-600">
+                                {errors.name}
+                            </p>
                         )}
                     </div>
 
@@ -114,13 +119,15 @@ export default function AdminSettingsKeamanan({
                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         />
                         {errors.email && (
-                            <p className="mt-1 text-[11px] text-rose-600">{errors.email}</p>
+                            <p className="mt-1 text-[11px] text-rose-600">
+                                {errors.email}
+                            </p>
                         )}
                     </div>
                 </div>
 
                 {/* 2. Ubah Kata Sandi */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <Key className="size-4" />
@@ -146,7 +153,9 @@ export default function AdminSettingsKeamanan({
                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         />
                         {errors.current_password && (
-                            <p className="mt-1 text-[11px] text-rose-600">{errors.current_password}</p>
+                            <p className="mt-1 text-[11px] text-rose-600">
+                                {errors.current_password}
+                            </p>
                         )}
                     </div>
 
@@ -163,7 +172,9 @@ export default function AdminSettingsKeamanan({
                                 className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                             {errors.new_password && (
-                                <p className="mt-1 text-[11px] text-rose-600">{errors.new_password}</p>
+                                <p className="mt-1 text-[11px] text-rose-600">
+                                    {errors.new_password}
+                                </p>
                             )}
                         </div>
 
@@ -174,12 +185,16 @@ export default function AdminSettingsKeamanan({
                             <input
                                 type="password"
                                 value={newPasswordConfirmation}
-                                onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+                                onChange={(e) =>
+                                    setNewPasswordConfirmation(e.target.value)
+                                }
                                 placeholder="Ulangi kata sandi baru..."
                                 className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                             />
                             {errors.new_password_confirmation && (
-                                <p className="mt-1 text-[11px] text-rose-600">{errors.new_password_confirmation}</p>
+                                <p className="mt-1 text-[11px] text-rose-600">
+                                    {errors.new_password_confirmation}
+                                </p>
                             )}
                         </div>
                     </div>
@@ -193,7 +208,11 @@ export default function AdminSettingsKeamanan({
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Profil & Keamanan'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan Profil & Keamanan'}
+                        </span>
                     </button>
                 </div>
             </form>

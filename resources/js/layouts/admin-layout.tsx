@@ -308,12 +308,12 @@ export function AdminLayout({
                                 />
                                 {!sidebarCollapsed && (
                                     <div className="flex min-w-0 flex-col">
-                                        <span className="font-serif text-base font-bold tracking-wider text-[#F2EBDC] whitespace-nowrap">
+                                        <span className="font-serif text-base font-bold tracking-wider whitespace-nowrap text-[#F2EBDC]">
                                             GALUH &amp; CO.
                                         </span>
                                         <div className="flex items-center gap-2 pt-0.5">
                                             <span className="size-1.5 rounded-full bg-[#A88B54] shadow-[0_0_8px_#A88B54]" />
-                                            <span className="text-[10px] font-bold tracking-[0.22em] text-[#A88B54] uppercase whitespace-nowrap">
+                                            <span className="text-[10px] font-bold tracking-[0.22em] whitespace-nowrap text-[#A88B54] uppercase">
                                                 Panel Admin
                                             </span>
                                         </div>
@@ -477,7 +477,7 @@ export function AdminLayout({
                     }`}
                 >
                     {/* Top Header Navbar */}
-                    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#E8DFD1] bg-white/95 px-6 backdrop-blur-md shadow-2xs sm:px-8">
+                    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#E8DFD1] bg-white/95 px-6 shadow-2xs backdrop-blur-md sm:px-8">
                         <div className="flex items-center gap-4">
                             {/* Desktop Sidebar Toggle */}
                             <button
@@ -506,7 +506,7 @@ export function AdminLayout({
 
                             {/* Page Header Titles */}
                             <div>
-                                <h1 className="font-serif text-lg font-bold text-[#16233B] sm:text-xl tracking-tight">
+                                <h1 className="font-serif text-lg font-bold tracking-tight text-[#16233B] sm:text-xl">
                                     {title}
                                 </h1>
                                 {subtitle && (
@@ -643,7 +643,7 @@ export function AdminLayout({
                                                         onClick={() =>
                                                             setMobileSidebarOpen(
                                                                 false,
-                                                             )
+                                                            )
                                                         }
                                                         className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
                                                             active

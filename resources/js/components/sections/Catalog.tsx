@@ -64,7 +64,11 @@ interface PromoSlide {
     eventTag?: string;
 }
 
-function getEditorialTag(product: Product, idx: number, activeEvent?: string): string {
+function getEditorialTag(
+    product: Product,
+    idx: number,
+    activeEvent?: string,
+): string {
     if (activeEvent && product.event_tag === activeEvent) return 'Event';
     if (product.event_tag === 'ramadhan') return 'Edisi Ramadhan';
     if (product.event_tag === 'natal') return 'Edisi Natal';
@@ -256,7 +260,8 @@ export function Catalog({
         return 'all';
     }, [activeEvent]);
 
-    const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+    const [selectedCategory, setSelectedCategory] =
+        useState<string>(initialCategory);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [direction, setDirection] = useState<number>(1);
 
@@ -394,7 +399,13 @@ export function Catalog({
             category: cat,
             eventTag: activeEvent,
         };
-    }, [activeEvent, eventBannerTitle, eventBannerSubtitle, eventBannerImage, safeProducts]);
+    }, [
+        activeEvent,
+        eventBannerTitle,
+        eventBannerSubtitle,
+        eventBannerImage,
+        safeProducts,
+    ]);
 
     const handlePromoCtaClick = () => {
         handleCategoryChange(adminActiveSlide.category);
@@ -601,11 +612,11 @@ export function Catalog({
                                 <span>{adminActiveSlide.seasonLabel}</span>
                             </div>
 
-                            <h3 className="mt-3.5 font-serif text-2xl font-bold tracking-tight text-[#F2EBDC] sm:text-3xl lg:text-4xl drop-shadow-xs">
+                            <h3 className="mt-3.5 font-serif text-2xl font-bold tracking-tight text-[#F2EBDC] drop-shadow-xs sm:text-3xl lg:text-4xl">
                                 {adminActiveSlide.title}
                             </h3>
 
-                            <p className="mt-2.5 max-w-xl text-xs leading-relaxed text-[#F2EBDC]/90 sm:text-sm drop-shadow-xs">
+                            <p className="mt-2.5 max-w-xl text-xs leading-relaxed text-[#F2EBDC]/90 drop-shadow-xs sm:text-sm">
                                 {adminActiveSlide.subtitle}
                             </p>
 
@@ -624,7 +635,10 @@ export function Catalog({
                 )}
 
                 {/* 2. Interactive Category Tabs */}
-                <div id="koleksi-tabs" className="mt-6 flex items-center justify-center sm:mt-8">
+                <div
+                    id="koleksi-tabs"
+                    className="mt-6 flex items-center justify-center sm:mt-8"
+                >
                     <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-[#A88B54]/25 bg-white/70 p-1.5 px-2 backdrop-blur-xs sm:px-1.5">
                         {CATEGORIES.map((cat) => {
                             const isActive = selectedCategory === cat.value;

@@ -1,5 +1,13 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Lock, Mail, Phone, User as UserIcon, Eye, EyeOff } from 'lucide-react';
+import {
+    ArrowLeft,
+    Lock,
+    Mail,
+    Phone,
+    User as UserIcon,
+    Eye,
+    EyeOff,
+} from 'lucide-react';
 import { useState, type FormEventHandler } from 'react';
 import { GaluhLogo } from '@/components/galuh-logo';
 
@@ -176,7 +184,9 @@ export default function Register() {
                                     <Lock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#6E675D]" />
                                     <input
                                         id="password"
-                                        type={showPassword ? 'text' : 'password'}
+                                        type={
+                                            showPassword ? 'text' : 'password'
+                                        }
                                         name="password"
                                         value={data.password}
                                         autoComplete="new-password"
@@ -189,7 +199,9 @@ export default function Register() {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
+                                        onClick={() =>
+                                            setShowPassword(!showPassword)
+                                        }
                                         className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6E675D] transition-colors hover:text-[#16233B] focus:outline-hidden"
                                         aria-label={
                                             showPassword
@@ -224,7 +236,11 @@ export default function Register() {
                                     <Lock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#6E675D]" />
                                     <input
                                         id="password_confirmation"
-                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        type={
+                                            showConfirmPassword
+                                                ? 'text'
+                                                : 'password'
+                                        }
                                         name="password_confirmation"
                                         value={data.password_confirmation}
                                         autoComplete="new-password"
@@ -240,7 +256,11 @@ export default function Register() {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        onClick={() =>
+                                            setShowConfirmPassword(
+                                                !showConfirmPassword,
+                                            )
+                                        }
                                         className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6E675D] transition-colors hover:text-[#16233B] focus:outline-hidden"
                                         aria-label={
                                             showConfirmPassword

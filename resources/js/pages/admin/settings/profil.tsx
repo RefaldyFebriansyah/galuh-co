@@ -45,7 +45,10 @@ const cleanGmapsInput = (input: string): string => {
     }
 
     // If pasted regular Google Maps URL without output=embed, convert to embed format
-    if (trimmed.includes('google.com/maps') && !trimmed.includes('output=embed')) {
+    if (
+        trimmed.includes('google.com/maps') &&
+        !trimmed.includes('output=embed')
+    ) {
         const placeMatch = trimmed.match(/\/place\/([^/@?]+)/i);
         if (placeMatch && placeMatch[1]) {
             const place = decodeURIComponent(placeMatch[1].replace(/\+/g, ' '));
@@ -59,13 +62,17 @@ const cleanGmapsInput = (input: string): string => {
 export default function AdminSettingsProfil({
     profileSettings,
 }: AdminSettingsProfilProps) {
-    const [footerBio, setFooterBio] = useState(profileSettings.footer_bio || '');
+    const [footerBio, setFooterBio] = useState(
+        profileSettings.footer_bio || '',
+    );
     const [phone, setPhone] = useState(
         profileSettings.contact_phone
             ? profileSettings.contact_phone.replace(/^\+62\s?|^62|^0/, '')
             : '823-2177-3434',
     );
-    const [email, setEmail] = useState(profileSettings.contact_email || 'halo@galuh.co');
+    const [email, setEmail] = useState(
+        profileSettings.contact_email || 'halo@galuh.co',
+    );
     const [hours, setHours] = useState(
         profileSettings.operational_hours || 'Senin - Sabtu: 08.00 - 18.00 WIB',
     );
@@ -122,7 +129,7 @@ export default function AdminSettingsProfil({
 
             <form onSubmit={handleSave} className="space-y-8">
                 {/* 1. Kontak & Hotline Perusahaan */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <Phone className="size-4" />
@@ -184,7 +191,7 @@ export default function AdminSettingsProfil({
                 </div>
 
                 {/* 2. Titik Lokasi Perusahaan & Google Maps */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <MapPin className="size-4" />
@@ -194,7 +201,8 @@ export default function AdminSettingsProfil({
                             Alamat Studio Produksi & Google Maps
                         </h2>
                         <p className="mt-1 text-xs text-[#6E675D]">
-                            Data ini akan langsung memperbarui peta interaktif di atas footer landing page secara real-time.
+                            Data ini akan langsung memperbarui peta interaktif
+                            di atas footer landing page secara real-time.
                         </p>
                     </div>
 
@@ -211,7 +219,9 @@ export default function AdminSettingsProfil({
                             rows={2}
                             required
                             value={address}
-                            onChange={(e) => handleAddressChange(e.target.value)}
+                            onChange={(e) =>
+                                handleAddressChange(e.target.value)
+                            }
                             placeholder="Jl. Ir. H. Juanda No. 146, Ciamis, Jawa Barat 46211"
                             className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
                         />
@@ -231,7 +241,9 @@ export default function AdminSettingsProfil({
                                             const nextSync = e.target.checked;
                                             setAutoSyncMaps(nextSync);
                                             if (nextSync) {
-                                                setGmapsEmbed(buildGmapsEmbed(address));
+                                                setGmapsEmbed(
+                                                    buildGmapsEmbed(address),
+                                                );
                                             }
                                         }}
                                         className="size-3.5 accent-[#A88B54]"
@@ -240,7 +252,9 @@ export default function AdminSettingsProfil({
                                 </label>
                                 <button
                                     type="button"
-                                    onClick={() => setGmapsEmbed(buildGmapsEmbed(address))}
+                                    onClick={() =>
+                                        setGmapsEmbed(buildGmapsEmbed(address))
+                                    }
                                     className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-[#A88B54]/40 bg-[#FAF8F5] px-2.5 py-1 text-[10px] font-bold text-[#16233B] shadow-2xs transition-all hover:bg-[#A88B54] hover:text-[#16233B] active:scale-95"
                                     title="Klik untuk membuat embed URL otomatis berdasarkan alamat studio di atas"
                                 >
@@ -258,12 +272,14 @@ export default function AdminSettingsProfil({
                                 setAutoSyncMaps(false);
                             }}
                             placeholder="Otomatis di-generate dari alamat studio di atas (atau paste link / tag <iframe> Google Maps)"
-                            className="mt-1 w-full font-mono rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 text-xs text-[#16233B] placeholder:text-[#6E675D]/40 focus:border-[#A88B54] focus:outline-hidden"
+                            className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3.5 py-2.5 font-mono text-xs text-[#16233B] placeholder:text-[#6E675D]/40 focus:border-[#A88B54] focus:outline-hidden"
                         />
 
                         <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[10.5px] text-[#6E675D]">
                             <span>
-                                Otomatis terisi dari alamat di atas. Boleh dikosongkan atau paste tag &lt;iframe&gt; / link share Google Maps.
+                                Otomatis terisi dari alamat di atas. Boleh
+                                dikosongkan atau paste tag &lt;iframe&gt; / link
+                                share Google Maps.
                             </span>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.trim())}`}
@@ -283,7 +299,7 @@ export default function AdminSettingsProfil({
                             <span className="text-[10px] font-bold tracking-wider text-[#A88B54] uppercase">
                                 PREVIEW PETA STUDIO PADA WEBSITE:
                             </span>
-                            <span className="truncate max-w-xs text-[10px] text-[#6E675D]">
+                            <span className="max-w-xs truncate text-[10px] text-[#6E675D]">
                                 Titik: {address || 'Alamat Studio'}
                             </span>
                         </div>
@@ -301,8 +317,13 @@ export default function AdminSettingsProfil({
                             ) : (
                                 <div className="flex h-full flex-col items-center justify-center p-6 text-center text-[#6E675D]">
                                     <MapPin className="size-8 text-[#A88B54]" />
-                                    <p className="mt-2 font-semibold text-[#16233B]">Peta belum memiliki titik lokasi</p>
-                                    <p className="text-xs">Isi alamat di atas untuk memuat peta Google Maps secara otomatis.</p>
+                                    <p className="mt-2 font-semibold text-[#16233B]">
+                                        Peta belum memiliki titik lokasi
+                                    </p>
+                                    <p className="text-xs">
+                                        Isi alamat di atas untuk memuat peta
+                                        Google Maps secara otomatis.
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -310,7 +331,7 @@ export default function AdminSettingsProfil({
                 </div>
 
                 {/* 3. Teks Bio Footer Brand */}
-                <div className="rounded-2xl border border-[#A88B54]/30 bg-white p-6 shadow-sm space-y-4 text-xs">
+                <div className="space-y-4 rounded-2xl border border-[#A88B54]/30 bg-white p-6 text-xs shadow-sm">
                     <div className="border-b border-[#F2EBDC] pb-3">
                         <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-[#A88B54] uppercase">
                             <FileText className="size-4" />
@@ -343,7 +364,11 @@ export default function AdminSettingsProfil({
                         className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#16233B] px-6 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#A88B54] hover:text-[#16233B] disabled:opacity-50"
                     >
                         <Save className="size-4" />
-                        <span>{isSaving ? 'Menyimpan...' : 'Simpan Profil & Lokasi Studio'}</span>
+                        <span>
+                            {isSaving
+                                ? 'Menyimpan...'
+                                : 'Simpan Profil & Lokasi Studio'}
+                        </span>
                     </button>
                 </div>
             </form>

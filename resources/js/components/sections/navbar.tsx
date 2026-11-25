@@ -128,7 +128,11 @@ export function Navbar({ logoSrc }: NavbarProps) {
                         </a>
                     ))}
                     <Link
-                        href={authUser ? '/my-orders' : '/login?redirect=/my-orders'}
+                        href={
+                            authUser
+                                ? '/my-orders'
+                                : '/login?redirect=/my-orders'
+                        }
                         className="inline-flex items-center gap-1.5 rounded-full border border-[#A88B54]/40 bg-[#FAF6EE] px-3.5 py-1 text-xs font-bold tracking-[0.12em] text-[#16233B] transition-all hover:border-[#16233B] hover:bg-white"
                     >
                         <ShoppingBag className="size-3.5 text-[#A88B54]" />
@@ -270,7 +274,11 @@ export function Navbar({ logoSrc }: NavbarProps) {
                             ))}
 
                             <Link
-                                href={authUser ? '/my-orders' : '/login?redirect=/my-orders'}
+                                href={
+                                    authUser
+                                        ? '/my-orders'
+                                        : '/login?redirect=/my-orders'
+                                }
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="flex items-center justify-between rounded-xl border border-[#A88B54]/40 bg-white/5 p-3 text-left transition-colors hover:bg-white/10"
                             >

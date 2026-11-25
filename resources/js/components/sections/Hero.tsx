@@ -270,7 +270,9 @@ export function Hero({
     const parallaxTextY = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
     const rawHeroWa = (whatsappNumber || '').replace(/\D/g, '');
-    const cleanHeroWa = rawHeroWa.startsWith('0') ? `62${rawHeroWa.slice(1)}` : rawHeroWa || '6281572414233';
+    const cleanHeroWa = rawHeroWa.startsWith('0')
+        ? `62${rawHeroWa.slice(1)}`
+        : rawHeroWa || '6281572414233';
 
     const whatsappUrl = `https://wa.me/${cleanHeroWa}?text=${encodeURIComponent(
         'Halo GALUH & CO., saya tertarik bertanya mengenai koleksi hampers premium & corporate gifting.',
@@ -285,7 +287,9 @@ export function Hero({
         const raw = (heroBadge || '').trim();
         if (!raw) return 'ATELIER BINGKISAN';
         // If user already typed "GALUH & CO. • ..." or "GALUH & CO. - ..."
-        return raw.replace(/^galuh\s*&\s*co\.?\s*[•\-\|]?\s*/i, '').trim() || raw;
+        return (
+            raw.replace(/^galuh\s*&\s*co\.?\s*[•\-|]?\s*/i, '').trim() || raw
+        );
     }, [heroBadge]);
 
     const handleScrollToCatalog = () => {
@@ -297,12 +301,14 @@ export function Hero({
 
     // Guarantee pure transparent cutout hampers (prevent accidental square/rectangular scene photos)
     const resolvedImageLeft =
-        heroFloatingImageLeft && !heroFloatingImageLeft.includes('product_rattan_box')
+        heroFloatingImageLeft &&
+        !heroFloatingImageLeft.includes('product_rattan_box')
             ? heroFloatingImageLeft
             : '/images/floating-hamper-rattan.webp';
 
     const resolvedImageRight =
-        heroFloatingImageRight && !heroFloatingImageRight.includes('product_emerald_box')
+        heroFloatingImageRight &&
+        !heroFloatingImageRight.includes('product_emerald_box')
             ? heroFloatingImageRight
             : '/images/floating-hamper-emerald.webp';
 
@@ -374,7 +380,7 @@ export function Hero({
                             <span className="block">
                                 {heroTitlePrefix ||
                                     (heroTitle &&
-                                        heroTitle.toLowerCase().includes(' untuk')
+                                    heroTitle.toLowerCase().includes(' untuk')
                                         ? heroTitle.split(/\s+untuk\b/i)[0]
                                         : 'Hampers Eksklusif')}{' '}
                                 <span className="font-normal text-[#A88B54] italic">
@@ -384,7 +390,12 @@ export function Hero({
                             <span className="relative mt-1 block min-h-[1.25em] overflow-hidden sm:mt-1.5">
                                 <AnimatePresence mode="wait">
                                     <motion.span
-                                        key={rotatingTargets[phraseIndex % rotatingTargets.length]}
+                                        key={
+                                            rotatingTargets[
+                                                phraseIndex %
+                                                    rotatingTargets.length
+                                            ]
+                                        }
                                         initial={{
                                             y: 30,
                                             opacity: 0,
@@ -406,7 +417,12 @@ export function Hero({
                                         }}
                                         className="inline-block bg-gradient-to-r from-[#A88B54] via-[#8E7441] to-[#A88B54] bg-clip-text font-normal text-transparent italic"
                                     >
-                                        {rotatingTargets[phraseIndex % rotatingTargets.length]}
+                                        {
+                                            rotatingTargets[
+                                                phraseIndex %
+                                                    rotatingTargets.length
+                                            ]
+                                        }
                                     </motion.span>
                                 </AnimatePresence>
                             </span>
@@ -516,33 +532,33 @@ export function Hero({
                         <div className="animate-marquee-css flex shrink-0 items-center gap-8 py-0.5 text-[9.5px] font-semibold tracking-[0.24em] whitespace-nowrap text-[#6E675D] uppercase sm:text-[10.5px]">
                             {(heroMarqueeText
                                 ? [
-                                    ...heroMarqueeText
-                                        .split(/[•,]/)
-                                        .map((s) => s.trim())
-                                        .filter(Boolean),
-                                    ...heroMarqueeText
-                                        .split(/[•,]/)
-                                        .map((s) => s.trim())
-                                        .filter(Boolean),
-                                ]
+                                      ...heroMarqueeText
+                                          .split(/[•,]/)
+                                          .map((s) => s.trim())
+                                          .filter(Boolean),
+                                      ...heroMarqueeText
+                                          .split(/[•,]/)
+                                          .map((s) => s.trim())
+                                          .filter(Boolean),
+                                  ]
                                 : [
-                                    'BUTTER WIJSMAN BELANDA',
-                                    'HARDBOX LINEN DEEP NAVY 1200GSM',
-                                    'PITA VELVET & SATIN SUTRA',
-                                    'STEMPEL LILIN WAX ASLI',
-                                    'GRAFIR LASER MONOGRAM PERSONAL',
-                                    'KUE KERING ARTISAN RESEP KLASIK',
-                                    'BOROSILIKAT TAHAN PANAS',
-                                    'PENGIRIMAN AMAN SELURUH NUSANTARA',
-                                    'BUTTER WIJSMAN BELANDA',
-                                    'HARDBOX LINEN DEEP NAVY 1200GSM',
-                                    'PITA VELVET & SATIN SUTRA',
-                                    'STEMPEL LILIN WAX ASLI',
-                                    'GRAFIR LASER MONOGRAM PERSONAL',
-                                    'KUE KERING ARTISAN RESEP KLASIK',
-                                    'BOROSILIKAT TAHAN PANAS',
-                                    'PENGIRIMAN AMAN SELURUH NUSANTARA',
-                                ]
+                                      'BUTTER WIJSMAN BELANDA',
+                                      'HARDBOX LINEN DEEP NAVY 1200GSM',
+                                      'PITA VELVET & SATIN SUTRA',
+                                      'STEMPEL LILIN WAX ASLI',
+                                      'GRAFIR LASER MONOGRAM PERSONAL',
+                                      'KUE KERING ARTISAN RESEP KLASIK',
+                                      'BOROSILIKAT TAHAN PANAS',
+                                      'PENGIRIMAN AMAN SELURUH NUSANTARA',
+                                      'BUTTER WIJSMAN BELANDA',
+                                      'HARDBOX LINEN DEEP NAVY 1200GSM',
+                                      'PITA VELVET & SATIN SUTRA',
+                                      'STEMPEL LILIN WAX ASLI',
+                                      'GRAFIR LASER MONOGRAM PERSONAL',
+                                      'KUE KERING ARTISAN RESEP KLASIK',
+                                      'BOROSILIKAT TAHAN PANAS',
+                                      'PENGIRIMAN AMAN SELURUH NUSANTARA',
+                                  ]
                             ).map((item, idx) => (
                                 <span
                                     key={idx}

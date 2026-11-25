@@ -156,7 +156,7 @@ export function CorporateGifting({ products = [] }: CorporateGiftingProps) {
                                 aria-hidden="true"
                             />
                             <div
-                                className="pointer-events-none absolute -bottom-20 -right-20 size-64 rounded-full bg-[#A88B54]/10 blur-3xl"
+                                className="pointer-events-none absolute -right-20 -bottom-20 size-64 rounded-full bg-[#A88B54]/10 blur-3xl"
                                 aria-hidden="true"
                             />
 

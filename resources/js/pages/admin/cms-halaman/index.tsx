@@ -319,7 +319,8 @@ export default function AdminCmsIndex({
                             <div className="space-y-1">
                                 <div className="flex items-center justify-between">
                                     <label className="text-xs font-semibold text-[#16233B]">
-                                        Edisi Musiman Aktif (Seasonal Theme Badge)
+                                        Edisi Musiman Aktif (Seasonal Theme
+                                        Badge)
                                     </label>
                                     <span className="rounded-full bg-[#A88B54]/10 px-2 py-0.5 font-mono text-[9.5px] font-semibold text-[#A88B54]">
                                         Opsional
@@ -339,7 +340,8 @@ export default function AdminCmsIndex({
                                 />
                                 <p className="text-[10.5px] text-[#16233B]/50">
                                     Ditampilkan pada badge mengkilap di bagian
-                                    atas Hero dan kartu katalog (kosongkan jika tidak ada tema aktif)
+                                    atas Hero dan kartu katalog (kosongkan jika
+                                    tidak ada tema aktif)
                                 </p>
                             </div>
 

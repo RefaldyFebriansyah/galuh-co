@@ -44,7 +44,8 @@ export default function AdminLogin() {
                             Atelier Command Studio
                         </h1>
                         <p className="mt-1 text-xs text-[#6E675D]">
-                            Masuk untuk memproses pesanan, tracking resi, dan mengelola seluruh konten website.
+                            Masuk untuk memproses pesanan, tracking resi, dan
+                            mengelola seluruh konten website.
                         </p>
                     </div>
 
@@ -130,7 +131,7 @@ export default function AdminLogin() {
                                     />
                                     <span>Ingat sesi admin</span>
                                 </label>
-                                <span className="inline-flex items-center gap-1 text-[10px] text-[#A88B54] font-semibold">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#A88B54]">
                                     <ShieldCheck className="size-3.5 text-emerald-600" />
                                     <span>Role: Admin</span>
                                 </span>
