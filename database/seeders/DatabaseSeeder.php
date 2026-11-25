@@ -17,29 +17,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Role: Admin Utama (Super Admin) - Akses Penuh
+        // 1. Role: Admin Galuh & Co.
         User::updateOrCreate(
-            ['email' => 'admin@galuh.co.id'],
+            ['email' => 'admin@galuhco.id'],
             [
-                'name' => 'Admin Utama (Super Admin)',
-                'role' => 'super_admin',
+                'name' => 'Admin Galuh & Co.',
+                'role' => 'admin',
                 'phone_number' => '081234567890',
                 'password' => Hash::make('password'),
             ],
         );
 
-        // 2. Role: Admin Marketing - Pengelola Konten & Event
         User::updateOrCreate(
-            ['email' => 'marketing@galuh.co.id'],
+            ['email' => 'admin@galuh.co.id'],
             [
-                'name' => 'Admin Marketing',
-                'role' => 'admin_marketing',
-                'phone_number' => '081234567891',
+                'name' => 'Admin Galuh & Co.',
+                'role' => 'admin',
+                'phone_number' => '081234567890',
                 'password' => Hash::make('password'),
             ],
         );
 
-        // 3. Role: User / Pembeli - Transaksi Langsung di Website
+        // 2. Role: User / Pelanggan
         User::updateOrCreate(
             ['email' => 'user@galuh.co.id'],
             [
