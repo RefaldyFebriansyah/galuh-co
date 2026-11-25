@@ -90,6 +90,7 @@
 }
 
 :root {
+    color-scheme: light;
     --background: #f2ebdc;
     --foreground: #16233b;
     --card: #ffffff;
@@ -165,8 +166,20 @@
         @apply border-border outline-ring/50;
     }
 
+    html,
     body {
         @apply bg-background text-foreground;
+        color-scheme: light;
+    }
+
+    select {
+        color-scheme: light;
+        background-color: #ffffff;
+    }
+
+    select option {
+        background-color: #ffffff;
+        color: #16233b;
     }
 }
 

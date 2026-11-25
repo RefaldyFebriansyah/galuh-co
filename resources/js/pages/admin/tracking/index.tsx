@@ -241,17 +241,38 @@ export default function AdminTrackingIndex({
                                 setSelectedStatus(e.target.value);
                                 handleFilter(e.target.value, searchTerm);
                             }}
-                            className="rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
-                            <option value="all">Semua Tahap Tracking</option>
-                            <option value="studio_processing">
+                            <option
+                                value="all"
+                                className="bg-white text-[#16233B]"
+                            >
+                                Semua Tahap Tracking
+                            </option>
+                            <option
+                                value="studio_processing"
+                                className="bg-white text-[#16233B]"
+                            >
                                 1. Kurasi Studio
                             </option>
-                            <option value="quality_check">
-                                2. QC & Segel Lilin
+                            <option
+                                value="quality_check"
+                                className="bg-white text-[#16233B]"
+                            >
+                                2. QC &amp; Segel Lilin
                             </option>
-                            <option value="in_delivery">3. Dalam Kurir</option>
-                            <option value="delivered">4. Telah Diterima</option>
+                            <option
+                                value="in_delivery"
+                                className="bg-white text-[#16233B]"
+                            >
+                                3. Dalam Kurir
+                            </option>
+                            <option
+                                value="delivered"
+                                className="bg-white text-[#16233B]"
+                            >
+                                4. Telah Diterima
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -492,20 +513,32 @@ export default function AdminTrackingIndex({
                                         onChange={(e) =>
                                             setModalStage(e.target.value)
                                         }
-                                        className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/20 px-3 py-2.5 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2.5 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                                     >
-                                        <option value="studio_processing">
+                                        <option
+                                            value="studio_processing"
+                                            className="bg-white text-[#16233B]"
+                                        >
                                             Tahap 1: Diproses di Studio Atelier
                                         </option>
-                                        <option value="quality_check">
-                                            Tahap 2: Quality Check & Segel Lilin
-                                            Wax
+                                        <option
+                                            value="quality_check"
+                                            className="bg-white text-[#16233B]"
+                                        >
+                                            Tahap 2: Quality Check &amp; Segel
+                                            Lilin Wax
                                         </option>
-                                        <option value="in_delivery">
-                                            Tahap 3: Diserahkan ke Kurir & Resi
-                                            Diterbitkan
+                                        <option
+                                            value="in_delivery"
+                                            className="bg-white text-[#16233B]"
+                                        >
+                                            Tahap 3: Diserahkan ke Kurir &amp;
+                                            Resi Diterbitkan
                                         </option>
-                                        <option value="delivered">
+                                        <option
+                                            value="delivered"
+                                            className="bg-white text-[#16233B]"
+                                        >
                                             Tahap 4: Pesanan Diterima Konsumen
                                         </option>
                                     </select>

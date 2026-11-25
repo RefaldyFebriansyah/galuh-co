@@ -1,28 +1,15 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($page['component'] ?? '') !== 'welcome' && ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="color-scheme: light;">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="light">
 
-        {{-- Inline script to detect system dark mode preference and apply it immediately --}}
+        {{-- Enforce consistent Galuh & Co luxury light brand palette --}}
         <script>
             (function() {
-                const isWelcome = window.location.pathname === '/' || '{{ ($page["component"] ?? "") }}' === 'welcome';
-                if (isWelcome) {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.style.colorScheme = 'light';
-                    return;
-                }
-
-                const appearance = '{{ $appearance ?? "system" }}';
-
-                if (appearance === 'system') {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-                    if (prefersDark) {
-                        document.documentElement.classList.add('dark');
-                    }
-                }
+                document.documentElement.classList.remove('dark');
+                document.documentElement.style.colorScheme = 'light';
             })();
         </script>
 
@@ -30,10 +17,7 @@
         <style>
             html {
                 background-color: #f2ebdc;
-            }
-
-            html.dark {
-                background-color: #0f1a2d;
+                color-scheme: light;
             }
         </style>
 

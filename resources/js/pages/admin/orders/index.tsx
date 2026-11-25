@@ -210,11 +210,24 @@ export default function AdminOrdersIndex({
                                     searchTerm,
                                 );
                             }}
-                            className="rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/40 px-3 py-2 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
-                            <option value="all">Semua Tipe Pesanan</option>
-                            <option value="personal">Paket Personal</option>
-                            <option value="corporate">
+                            <option
+                                value="all"
+                                className="bg-white text-[#16233B]"
+                            >
+                                Semua Tipe Pesanan
+                            </option>
+                            <option
+                                value="personal"
+                                className="bg-white text-[#16233B]"
+                            >
+                                Paket Personal
+                            </option>
+                            <option
+                                value="corporate"
+                                className="bg-white text-[#16233B]"
+                            >
                                 Paket Corporate (B2B)
                             </option>
                         </select>
@@ -230,19 +243,36 @@ export default function AdminOrdersIndex({
                                     searchTerm,
                                 );
                             }}
-                            className="rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/40 px-3 py-2 text-xs font-semibold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                            className="rounded-xl border border-[#A88B54]/30 bg-white px-3 py-2 text-xs font-semibold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                         >
-                            <option value="all">Semua Status Pengiriman</option>
-                            <option value="studio_processing">
+                            <option
+                                value="all"
+                                className="bg-white text-[#16233B]"
+                            >
+                                Semua Status Pengiriman
+                            </option>
+                            <option
+                                value="studio_processing"
+                                className="bg-white text-[#16233B]"
+                            >
                                 1. Diproses di Studio
                             </option>
-                            <option value="quality_check">
-                                2. Quality Check & Packing
+                            <option
+                                value="quality_check"
+                                className="bg-white text-[#16233B]"
+                            >
+                                2. Quality Check &amp; Packing
                             </option>
-                            <option value="in_delivery">
+                            <option
+                                value="in_delivery"
+                                className="bg-white text-[#16233B]"
+                            >
                                 3. Dalam Pengiriman
                             </option>
-                            <option value="delivered">
+                            <option
+                                value="delivered"
+                                className="bg-white text-[#16233B]"
+                            >
                                 4. Diterima Konsumen
                             </option>
                         </select>
@@ -539,12 +569,13 @@ export default function AdminOrdersIndex({
                                         onChange={(e) =>
                                             setShippingStatus(e.target.value)
                                         }
-                                        className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-[#F2EBDC]/40 px-3.5 py-2 text-xs font-bold text-[#16233B] focus:border-[#A88B54] focus:outline-hidden"
+                                        className="mt-1 w-full rounded-xl border border-[#A88B54]/30 bg-white px-3.5 py-2 text-xs font-bold text-[#16233B] shadow-xs focus:border-[#A88B54] focus:outline-hidden"
                                     >
                                         {SHIPPING_STAGES.map((st) => (
                                             <option
                                                 key={st.value}
                                                 value={st.value}
+                                                className="bg-white text-[#16233B]"
                                             >
                                                 {st.label}
                                             </option>
